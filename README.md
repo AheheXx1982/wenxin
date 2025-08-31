@@ -1,4 +1,4 @@
-# 🚀 SilentX / 寂静猎手
+# 🚀 SilentXx / 寂静猎手
 
 _Modern Static Site Generator with Component Architecture_  
 _基于 Astro 的现代化静态站点生成器，集成先进的组件架构_
@@ -57,7 +57,7 @@ _数据来源 / Source: [Lighthouse Performance Test](https://developers.google.
 ## 📁 项目结构 / Project Structure
 
 ```plaintext
-SilentX/
+SilentXx/
 ├── src/                    # 源代码 / Source Code
 │   ├── components/         # 组件库 / Component library
 │   ├── constants/          # 常量配置 / Constants
@@ -101,8 +101,8 @@ pnpm preview          # 预览构建结果 / Preview build
 
 ```bash
 # 1. 克隆项目 / Clone repo
-git clone https://github.com/AheheXx1982/SilentX.git
-cd SilentX
+git clone https://github.com/AheheXx1982/SilentXx.git
+cd SilentXx
 
 # 2. 安装依赖 / Install dependencies
 pnpm install
@@ -121,7 +121,7 @@ pnpm preview
 
 ## 🌐 一键部署 / One-Click Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/AheheXx1982/SilentX)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/AheheXx1982/SilentXx)
 
 ---
 
@@ -203,4 +203,4 @@ tags: ['标签 1 / Tag1', '标签 2 / Tag2']
 [🔝 Back to Top](#top)
 
 _Made with ❤️ by SilentXx Team_
-_Copyright © 2025 SilentX. All rights reserved._
+_Copyright © 2025 SilentXx. All rights reserved._
