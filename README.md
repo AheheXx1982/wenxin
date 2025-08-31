@@ -9,8 +9,8 @@ _基于 Astro 的现代化静态站点生成器，集成先进的组件架构_
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.0.0-38b2ac?logo=tailwind-css)](https://tailwindcss.com/)
 [![React](https://img.shields.io/badge/React-19.1.1-61dafb?logo=react)](https://reactjs.org/)
 
-[🌍 Live Demo](https://www.silentxx.com) • [📖 中文文档](#中文简介) • [📖 English Docs](#english-overview) •  
-[🚀 Quick Start](#快速开始) • [🏗️ Architecture](#系统架构)
+[🌍 Live Demo](https://www.silentxx.com) • [📖 中文文档](#-项目前言--project-overview) • [📖 English Docs](#-project-overview) •  
+[🚀 Quick Start](#-开发命令--development-commands) • [🏗️ Architecture](#-项目结构--project-structure)
 
 ---
 
@@ -203,4 +203,4 @@ tags: ['标签 1 / Tag1', '标签 2 / Tag2']
 [🔝 Back to Top](#top)
 
 _Made with ❤️ by SilentXx Team_
-_Copyright © 2025 SilentXx. All rights reserved._
+_Copyright © 2020-2025 SilentXx. All rights reserved._

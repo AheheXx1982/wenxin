@@ -20,7 +20,8 @@ const { name: author } = siteConfig;
       <!-- 第一行：版权信息 -->
       <div class="text-gray-500 dark:text-gray-400">
         <p>
-          © 2025 <a
+          © {since}{since !== currentYear ? `-${currentYear}` : ''}
+          <a
             href="https://www.silentxx.com"
             target="_blank"
             rel="noopener noreferrer"
@@ -35,6 +36,7 @@ const { name: author } = siteConfig;
         <a
           href="/rss.xml"
           target="_blank"
+          rel="noopener noreferrer"
           class="hover:text-primary dark:hover:text-primary focus:ring-primary/20 inline-flex items-center gap-1 rounded text-gray-600 transition-colors focus:ring-2 focus:outline-none dark:text-gray-400"
           aria-label="订阅RSS源（在新窗口打开）"
         >
@@ -44,6 +46,7 @@ const { name: author } = siteConfig;
         <a
           href="/sitemap-index.xml"
           target="_blank"
+          rel="noopener noreferrer"
           class="hover:text-primary dark:hover:text-primary focus:ring-primary/20 inline-flex items-center gap-1 rounded text-gray-600 transition-colors focus:ring-2 focus:outline-none dark:text-gray-400"
           aria-label="查看网站地图（在新窗口打开）"
         >
