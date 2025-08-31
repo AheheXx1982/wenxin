@@ -146,12 +146,12 @@ export const socialConfig: SocialConfig = {
   // },
   Tiger: {
     url: 'https://tigr.link/s/30BPgOQ',
-    icon: 'ri:stock-line', // 使用股票线性图标替代Bilibili图标
+    icon: 'ri:stock-line', // 使用股票线性图标
     color: '#da708a',
   },
   music: {
     url: 'https://music.douyin.com/qishui/share/playlist?playlist_id=7310550250141696009',
-    icon: 'ri:music-2-line', // 使用通用音乐线性图标替代网易云音乐图标
+    icon: 'ri:music-2-line', // 使用通用音乐线性图标
     color: '#e60026',
   },
   email: {
@@ -183,10 +183,9 @@ export const socialConfig: SocialConfig = {
 const { title, alternate, subtitle } = siteConfig;
 export const seoConfig = {
   title: `${alternate ? alternate + ' = ' : ''}${title}${subtitle ? ' = ' + subtitle : ''}`,
-  description:
-    'cosSpace 是基于 Next.js (App Router)、Typescript、React 和 Tailwind 开发的个人空间，是 cos_blogs 的重构版，为用户提供同时拥有博客和个人空间的平台。',
-  keywords: 'cos, cosine, cos_blogs, 博客, 个人空间, 技术, 前端, cos-space',
-  url: 'https://space.cosine.ren/',
+  description: '聚焦美股期权与加密货币交易，分享真实、低风险、可复制的现金流投资策略，带你走进理性与纪律构建的投资世界。',
+  keywords: 'SilentXx, 寂静猎手, 期权交易, 加密货币, 现金流投资, 美股期权, 投资策略, 金融博客',
+  url: 'https://www.silentxx.com/',
 };
 
 export const defaultCoverList = [
