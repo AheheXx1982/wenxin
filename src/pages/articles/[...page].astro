@@ -10,9 +10,20 @@ import type { PaginateFunction } from 'astro';
 
 export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
   const postCollections = await getSortedPosts();
-  return paginate(postCollections, {
+  const pages = await paginate(postCollections, {
     pageSize: 10,
   });
+
+  // 为第一页添加额外的路径 /articles/1
+  if (pages.length > 0) {
+    const firstPage = pages[0];
+    pages.push({
+      params: { page: '1' },
+      props: firstPage.props,
+    });
+  }
+
+  return pages;
 }
 
 const { page } = Astro.props;

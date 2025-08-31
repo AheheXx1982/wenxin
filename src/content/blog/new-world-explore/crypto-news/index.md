@@ -1,5 +1,5 @@
 ---
-title: 加密风向标介绍
+title: 加密市场前瞻：最新动态与投资风向标
 date: 2025-08-30
 description: 提供最新的加密市场动态、项目分析和行业趋势
 categories:

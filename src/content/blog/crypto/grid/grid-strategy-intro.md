@@ -1,5 +1,5 @@
 ---
-title: 网格策略入门指南
+title: 网格交易策略全解析：震荡市场中的自动化获利方法
 date: 2025-01-06
 description: 网格交易策略的基本原理和实操方法
 categories:

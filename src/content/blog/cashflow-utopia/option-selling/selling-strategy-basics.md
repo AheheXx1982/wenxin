@@ -1,5 +1,5 @@
 ---
-title: 期权卖方策略基础
+title: 期权卖方策略详解：构建稳定现金流的投资方法
 date: 2025-01-10
 description: 期权卖方策略的核心理念和实施方法
 categories:
