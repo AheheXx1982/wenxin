@@ -107,7 +107,7 @@ export const siteConfig: SiteConfig = {
     {
       link: 'crypto/crypto-wiki',
       label: '加密百科',
-      image: '/img/crypto/crypto1.webp',
+      image: '/img/crypto/crypto2.webp',
       description: '加密货币百科全书',
     },
     {
@@ -128,6 +128,12 @@ export const siteConfig: SiteConfig = {
       image: '/img/stock/income.webp',
       description: '构建稳定现金流的投资体系',
     },
+    {
+      link: 'new-world-explore/quantum-universe',
+      label: '量子宇宙',
+      image: '/img/articles/17.webp',
+      description: '探索量子计算的前沿科技',
+    },
   ],
 };
 
@@ -135,31 +141,26 @@ export const siteConfig: SiteConfig = {
 // https://icon-sets.iconify.design/ri/
 export const socialConfig: SocialConfig = {
   github: {
-    url: 'https://github.com/ahehexx1982',
+    url: 'https://github.com/ahehexx1982/SilentXx',
     icon: 'ri:github-fill',
     color: '#191717',
   },
-  // Gate: {
-  //   url: 'https://www.gateweb.xyz/share/VLRAXQONUW',
-  //   icon: 'ri:zhihu-fill',
-  //   color: '#1e88e5',
-  // },
+  Gate: {
+    url: 'https://www.gateweb.xyz/share/VLRAXQONUW',
+    icon: 'ri:btc-fill',
+    color: '#1e88e5',
+  },
   Tiger: {
-    url: 'https://tigr.link/s/30BPgOQ',
-    icon: 'ri:stock-line', // 使用股票线性图标
+    url: 'https://www.laohu8.com/personal/3565567621777483/',
+    icon: 'ri:stock-fill', // 使用股票线性图标
     color: '#da708a',
   },
   music: {
     url: 'https://music.douyin.com/qishui/share/playlist?playlist_id=7310550250141696009',
-    icon: 'ri:music-2-line', // 使用通用音乐线性图标
+    icon: 'ri:netease-cloud-music-line', // 使用通用音乐线性图标
     color: '#e60026',
   },
-  email: {
-    url: 'mailto:wayshine.he@qq.com',
-    icon: 'ri:mail-line',
-    color: '#55acd5',
-  },
-  twitter: {
+  X: {
     url: 'https://x.com/AheheXx?s=09',
     icon: 'ri:twitter-fill',
     color: '#4b9ae4',
