@@ -181,7 +181,20 @@ export function getCategoryByLink(categories: Category[], link?: string): Catego
 
   // 将链接部分转换为分类名称
   const categoryNames = linkParts.map((part) => {
-    return Object.keys(categoryMap).find((key) => categoryMap[key] === part) || part;
+    // 首先尝试通过值查找键（英文路径到中文名称）
+    const categoryName = Object.keys(categoryMap).find((key) => categoryMap[key] === part);
+    if (categoryName) {
+      return categoryName;
+    }
+
+    // 如果找不到，检查是否是直接的分类名称
+    const directMatch = Object.keys(categoryMap).find((key) => key === part);
+    if (directMatch) {
+      return part;
+    }
+
+    // 如果都找不到，返回原始部分
+    return part;
   });
 
   if (categoryNames.length === 0) return null;

@@ -2,6 +2,7 @@
 import type { Category } from '@lib/content';
 import CategoryTitle from './CategoryTitle.astro';
 import { getCategoryLink } from '@lib/content';
+import { categoryMap } from '@constants/category';
 
 interface Props {
   category: Category;
@@ -11,12 +12,20 @@ interface Props {
 
 const { category, parentName, countMap } = Astro.props;
 
-const categoryLink = await getCategoryLink([parentName, category.name]);
+// 修复：确保使用正确的分类映射
+const parentLink = categoryMap[parentName] || parentName;
+const childLink = categoryMap[category.name] || category.name;
+const categoryLink =
+  parentLink && childLink ? `${parentLink}/${childLink}` : await getCategoryLink([parentName, category.name]);
 const grandChildLinks = await Promise.all(
   (category.children || []).map(async (grandChild) => {
+    const parentLink = categoryMap[parentName] || parentName;
+    const categoryLink = categoryMap[category.name] || category.name;
+    const grandChildLink = categoryMap[grandChild.name] || grandChild.name;
+    const fullLink = `${parentLink}/${categoryLink}/${grandChildLink}`;
     return {
       grandChild,
-      link: await getCategoryLink([parentName, category.name, grandChild.name]),
+      link: fullLink,
     };
   }),
 );
