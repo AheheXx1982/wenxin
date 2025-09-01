@@ -9,8 +9,8 @@ _基于 Astro 的现代化静态站点生成器，集成先进的组件架构_
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.0.0-38b2ac?logo=tailwind-css)](https://tailwindcss.com/)
 [![React](https://img.shields.io/badge/React-19.1.1-61dafb?logo=react)](https://reactjs.org/)
 
-[🌍 Live Demo](https://www.silentxx.com) • [📖 中文文档](#-项目前言--project-overview) • [📖 English Docs](#-project-overview) •  
-[🚀 Quick Start](#-开发命令--development-commands) • [🏗️ Architecture](#-项目结构--project-structure)
+[🌍 Live Demo](https://www.silentxx.com) • [📖 中文文档](#-项目前言--project-overview) • [📖 English Docs](./README_EN.md) •  
+[🚀 Quick Start](#-安装部署--installation--deployment) • [🏗️ Architecture](#-项目结构--project-structure)
 
 ---
 
