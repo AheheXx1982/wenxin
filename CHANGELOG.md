@@ -8,7 +8,7 @@
 
 ### 🎉 初始版本 / Initial Release
 
-这是 SilentX 项目的第一个正式版本，基于 Astro 框架构建，灵感来源于 Shoka 主题。
+这是 SilentXx 项目的第一个正式版本，基于 Astro 框架构建，灵感来源于 Shoka 主题。
 
 #### 🚀 核心特性 / Core Features
 
@@ -33,5 +33,5 @@
 - Tailwind CSS 4.0.0
 - Vercel 部署 / Vercel deployment
 
-[未发布]: https://github.com/AheheXx1982/SilentX/compare/v0.0.1...HEAD
-[0.0.1]: https://github.com/AheheXx1982/SilentX/releases/tag/v0.0.1
+[未发布]: https://github.com/AheheXx1982/SilentXx/compare/v0.0.1...HEAD
+[0.0.1]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.0.1

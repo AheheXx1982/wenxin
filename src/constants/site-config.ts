@@ -183,7 +183,7 @@ export const socialConfig: SocialConfig = {
 
 const { title, alternate, subtitle } = siteConfig;
 export const seoConfig = {
-  title: `${alternate ? alternate + ' = ' : ''}${title}${subtitle ? ' = ' + subtitle : ''}`,
+  title: `${alternate ? alternate + '｜' : ''}${title}${subtitle ? ' - ' + subtitle : ''}`,
   description: '聚焦美股期权与加密货币交易，分享真实、低风险、可复制的现金流投资策略，带你走进理性与纪律构建的投资世界。',
   keywords: 'SilentXx, 寂静猎手, 期权交易, 加密货币, 现金流投资, 美股期权, 投资策略, 金融博客',
   url: 'https://www.silentxx.com/',
