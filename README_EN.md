@@ -15,11 +15,13 @@ _Modern Static Site Generator with Component Architecture_
 
 ## 📖 Project Overview
 
-Upon first encountering this theme, I was deeply captivated. Thanks to my unique combination of nearsightedness and presbyopia, I developed a keen eye for detail. However, as the original author has been too busy with work to provide regular updates, and given my own limited technical skills, it took considerable effort to achieve modest improvements. At the very least, it now works well for my personal use. Building upon the original theme, I've made both necessary and unnecessary modifications to enhance system performance. I'd conservatively rate my innovative spirit at a full five-star level~
+When I first encountered this theme, its play of light and shadow was as dazzling as a surging galaxy, leaving me utterly enchanted. Thanks to my dual "wisdom eyes" of nearsightedness and presbyopia, I could appreciate its charm. However, since the hostess has been too busy with work to update it, and my own technical skills are rather limited, I was almost at a loss at the beginning.
 
-I extend my heartfelt gratitude to the original author and to Cosine for their valuable contributions and guidance. I'm also thankful for my own diligence and unwavering determination to learn. To be honest, just half a month ago, I didn't even know how to use GitHub or VS Code. Yet my enthusiasm has never waned. Sometimes, in my eagerness to modify the code, I would stay up until 4 AM—truly proving that age is just a number when it comes to passion and capability!
+Fortunately, I’m not too old yet and still able to tinker around. After some effort, I finally achieved a modest result. At least it works fine for my own use. Moreover, I made a few necessary and optional tweaks to the original theme to improve and enhance system performance. By my rough estimation, this spirit of innovation already deserves a five-star rating~
 
-Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its international cousin Qoder. With my affectionate care and meticulous guidance, they collaborated seamlessly to accomplish highly effective work. This collaboration even boosted my IQ from 250 to 250+ in an instant, fulfilling my reverse evolution from an advanced human to a programming primate. Perhaps this is the essence of returning to simplicity and authenticity~
+Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being diligent and so eager to learn. To be honest, just half a month ago I didn’t even know how to use GitHub or VS Code. Despite all the difficulties, my passion has never wavered. Sometimes, just to fix a piece of code, this “old fellow” could still stay up until 4:30 in the morning—truly proving that age is no barrier, and that the old ox still has plenty of strength left~
+
+Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its foreign cousin Qoder. Under my warm care and meticulous guidance, they worked together in harmony and finally managed to deliver a barely acceptable answer sheet. This even made my IQ soar instantly from 250 to 250+, marking a reverse evolution from human to (programming) ape. Perhaps this is what people mean by the true essence of “returning to simplicity.” ~
 
 ---
 
