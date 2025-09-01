@@ -11,43 +11,28 @@ description: 'SilentXx｜寂静猎手'
 
 </div>
 
-<div class="bg-card/40 rounded-2xl border border-white/20 p-6 mb-8 backdrop-blur-sm shadow-card">
+<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 mb-8 shadow-lg">
 
 ### 🎯 建站初心
 
-<div class="pl-4 border-l-4 border-primary/50">
+<div class="pl-4">
 
 > **专注于期权 · 加密 · 稳定现金流系统构建**
 
-在这里，我们坚守"系统思维 + 低风险策略"的投资理念，
+</div>
+
+<div class="mt-4">
+在这里，我们坚守<span class="font-bold text-purple-600 dark:text-purple-400">"系统思维 + 低风险策略"</span>的投资理念，
 致力于深耕美股期权与数字货币交易。
-通过博客、课程、工具和社区，
+通过博客、课程、工具和社区,
 为普通投资者打造可复制的策略框架，
 帮助你摆脱情绪化交易，建立坚实的纪律体系，
 走向真正的交易自由。
-
 </div>
 
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-
-<div class="bg-card/40 rounded-2xl border border-white/20 p-6 backdrop-blur-sm shadow-card">
-
-### 📚 输出内容
-
-- **期权知识系统**  
-  打造落地、系统化的期权学习路径，让复杂变简单。
-
-- **美股+加密轮动套利**  
-  融合双市场优势，开拓稳健的套利和现金流机会。
-
-- **实盘策略分享**  
-  包括 Covered Call（备兑看涨）、Cash-Secured Put（现金担保看跌）、网格交易等，实操为王。
-
-</div>
-
-<div class="bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl border border-white/20 p-6 backdrop-blur-sm shadow-card">
+<div class="bg-gradient-to-br from-purple-100/50 to-blue-100/50 dark:from-purple-900/30 dark:to-blue-900/30 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 mb-8 shadow-lg">
 
 ### 💡 投资理念
 
@@ -64,51 +49,66 @@ description: 'SilentXx｜寂静猎手'
 
 </div>
 
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-lg">
+
+### 📚 输出内容
+
+- **期权知识系统**  
+  打造落地、系统化的期权学习路径，让复杂变简单。
+
+- **美股+加密轮动套利**  
+  融合双市场优势，开拓稳健的套利和现金流机会。
+
+- **实盘策略分享**  
+  包括 Covered Call（备兑看涨）、Cash-Secured Put（现金担保看跌）、网格交易等，实操为王。
+
 </div>
 
-<div class="bg-card/40 rounded-2xl border border-white/20 p-6 mb-8 backdrop-blur-sm shadow-card">
+<div class="bg-gradient-to-br from-blue-100/50 to-cyan-100/50 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-lg">
 
 ### 🚀 未来规划
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+<div class="grid grid-cols-1 gap-4 mt-4">
 
 <div class="flex items-start">
-<div class="bg-primary/10 rounded-full p-2 mr-3">
-<span class="text-primary font-bold">1</span>
+<div class="bg-blue-100 dark:bg-blue-900/30 rounded-full p-2 mr-3">
+<span class="text-blue-700 dark:text-blue-300 font-bold">1</span>
 </div>
 <div>
-<h4 class="font-bold">策略体系完善</h4>
-<p class="text-muted-foreground text-sm">持续优化现有策略，开发新的交易模型</p>
-</div>
-</div>
-
-<div class="flex items-start">
-<div class="bg-primary/10 rounded-full p-2 mr-3">
-<span class="text-primary font-bold">2</span>
-</div>
-<div>
-<h4 class="font-bold">社区建设</h4>
-<p class="text-muted-foreground text-sm">打造高质量的投资者交流社区</p>
+<h4 class="font-bold text-gray-800 dark:text-white">策略体系完善</h4>
+<p class="text-gray-600 dark:text-gray-400 text-sm">持续优化现有策略，开发新的交易模型</p>
 </div>
 </div>
 
 <div class="flex items-start">
-<div class="bg-primary/10 rounded-full p-2 mr-3">
-<span class="text-primary font-bold">3</span>
+<div class="bg-blue-100 dark:bg-blue-900/30 rounded-full p-2 mr-3">
+<span class="text-blue-700 dark:text-blue-300 font-bold">2</span>
 </div>
 <div>
-<h4 class="font-bold">教育体系</h4>
-<p class="text-muted-foreground text-sm">建立完整的期权和加密货币教育课程</p>
+<h4 class="font-bold text-gray-800 dark:text-white">社区建设</h4>
+<p class="text-gray-600 dark:text-gray-400 text-sm">打造高质量的投资者交流社区</p>
 </div>
 </div>
 
 <div class="flex items-start">
-<div class="bg-primary/10 rounded-full p-2 mr-3">
-<span class="text-primary font-bold">4</span>
+<div class="bg-blue-100 dark:bg-blue-900/30 rounded-full p-2 mr-3">
+<span class="text-blue-700 dark:text-blue-300 font-bold">3</span>
 </div>
 <div>
-<h4 class="font-bold">工具开发</h4>
-<p class="text-muted-foreground text-sm">开发实用的交易辅助工具</p>
+<h4 class="font-bold text-gray-800 dark:text-white">教育体系</h4>
+<p class="text-gray-600 dark:text-gray-400 text-sm">建立完整的期权和加密货币教育课程</p>
+</div>
+</div>
+
+<div class="flex items-start">
+<div class="bg-blue-100 dark:bg-blue-900/30 rounded-full p-2 mr-3">
+<span class="text-blue-700 dark:text-blue-300 font-bold">4</span>
+</div>
+<div>
+<h4 class="font-bold text-gray-800 dark:text-white">工具开发</h4>
+<p class="text-gray-600 dark:text-gray-400 text-sm">开发实用的交易辅助工具</p>
 </div>
 </div>
 
@@ -116,7 +116,9 @@ description: 'SilentXx｜寂静猎手'
 
 </div>
 
-<div class="bg-card/40 rounded-2xl border border-white/20 p-6 mb-8 backdrop-blur-sm shadow-card">
+</div>
+
+<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 mb-8 shadow-lg">
 
 ### 👤 关于站长
 
@@ -131,16 +133,33 @@ description: 'SilentXx｜寂静猎手'
 现实中的我沉默寡言，网络上的我思维活跃、幽默风趣。
 或许正是这份反差，才成就了我独特的视角和交易哲学。
 
-<h4 class="font-bold mt-4">个人网站</h4>
-<ul class="list-disc pl-5 space-y-1">
-<li><a href="https://www.silentxx.com" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">SilentXx｜寂静猎手</a> - 主站</li>
+<div class="flex items-center my-6">
+  <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+  <div class="mx-4 text-gray-500 dark:text-gray-400">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+    </svg>
+  </div>
+  <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+</div>
+
+<ul class="list-disc pl-0 space-y-1">
+<li class="flex items-start">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="inline-block mr-2 mt-1 text-blue-600 dark:text-blue-400 flex-shrink-0">
+    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm-1 15l-5-5.299 1.399-1.439 3.574 3.736 6.572-7.007 1.455 1.403-8 8.597z"></path>
+  </svg>
+  <div class="flex items-center">
+    <span class="mr-2">SilentXx｜寂静猎手 - 主站：</span>
+    <a href="https://www.silentxx.com" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">SilentXx.com</a>
+  </div>
+</li>
 </ul>
 
 </div>
 
 <div>
 
-<h4 class="font-bold mb-2">社交媒体</h4>
+<h4 class="font-bold mb-2 text-gray-800 dark:text-white">社交媒体</h4>
 
 <div class="mt-2 grid grid-cols-3 gap-2">
   <div>
@@ -245,8 +264,6 @@ description: 'SilentXx｜寂静猎手'
       <span class="absolute inset-0 -z-10 -translate-x-full translate-y-full rounded-xl transition-transform duration-300 group-hover:translate-x-0 group-hover:translate-y-0" style="background-color: #ff6600"></span>
     </a>
   </div>
-</div>
-
 </div>
 
 </div>
