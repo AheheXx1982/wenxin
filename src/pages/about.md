@@ -145,8 +145,8 @@ description: 'SilentXx｜寂静猎手'
 
 <ul class="list-disc pl-0 space-y-1">
 <li class="flex items-start">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="inline-block mr-2 mt-1 text-blue-600 dark:text-blue-400 flex-shrink-0">
-    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm-1 15l-5-5.299 1.399-1.439 3.574 3.736 6.572-7.007 1.455 1.403-8 8.597z"></path>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 mt-1 text-blue-600 dark:text-blue-400 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm-1 6h-6v2h6v-2zm-1 4h-5v2h5v-2zm-1 4h-4v2h4v-2zm8-10h-2v10h2v-10z"></path>
   </svg>
   <div class="flex items-center">
     <span class="mr-2">SilentXx｜寂静猎手 - 主站：</span>

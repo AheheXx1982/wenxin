@@ -28,9 +28,9 @@ Fortunately, I am not yet old, still able to toss around a little. After all, in
 
 Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being so diligent and having such strong willpower to learn. To be honest, half a month ago I didn’t even know how to use GitHub or VS Code. Despite all the difficulties, my enthusiasm never waned. Sometimes, just to tweak a bit of code, this old fellow could even stay up until 4:30 in the morning. Such perseverance is enough to move even a rich lady~
 
-特别感谢 ChatGPT、Gemini，通义灵码以及他的外国小表弟 Qoder，在我的亲切关怀与悉心指导下，它们通力协作，最终还是勉强交出了一份能看的答卷，也让我的智商从 250 瞬间飙升至 250+，实现了从人类到（程序）猿类的反向进化，也许，这就是所谓“返璞归真”的内涵本质~
+特别感谢 ChatGPT、Gemini，通义灵码以及他的外国小表弟 Qoder，在我的亲切关怀与悉心指导下，它们通力协作，辛勤耕耘，最终还是勉强交出了一份能看的答卷，也让我的智商从 250 瞬间飙升至 250+，实现了从人类到（程序）猿类的反向进化，也许，这就是所谓“返璞归真”的内涵本质~
 
-Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its little foreign cousin Qoder. Under my kind care and meticulous guidance, they worked hand in hand and finally managed to produce a barely acceptable answer. This miracle even made my IQ soar from 250 to 250+, achieving a reverse evolution from human to (program) ape. Perhaps, this is the very essence of what they call “returning to simplicity.” ~
+Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its little foreign cousin Qoder. Under my kind care and meticulous guidance, they worked together tirelessly, and in the end barely managed to hand in a passable answer. This even made my IQ skyrocket from 250 to 250+, achieving a reverse evolution from human to (program) ape. Perhaps, this is the very essence of what they call “returning to simplicity.” ~
 
 ---
 
