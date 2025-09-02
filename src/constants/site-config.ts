@@ -63,22 +63,22 @@ export const siteConfig: SiteConfig = {
   site: 'https://www.silentxx.com',
   featuredCategories: [
     {
-      link: 'options',
-      label: '期权研究院',
-      image: '/img/options/options1.webp',
-      description: '期权策略研究、实战分析和课程分享',
+      link: 'options/course',
+      label: '期权课程',
+      image: '/img/options/options6.webp',
+      description: '期权课程',
     },
     {
       link: 'options/trading-journal',
       label: '实盘分享',
-      image: '/img/stock/stock1.webp',
+      image: '/img/articles/4.webp',
       description: '实盘交易记录',
     },
     {
-      link: 'options/course',
-      label: '期权课程',
-      image: '/img/options/options2.webp',
-      description: '期权课程',
+      link: 'crypto/crypto-wiki',
+      label: '加密百科',
+      image: '/img/articles/15.webp',
+      description: '加密货币百科全书',
     },
     {
       link: 'crypto/grid',
@@ -89,31 +89,14 @@ export const siteConfig: SiteConfig = {
     {
       link: 'crypto/futures',
       label: '合约交易',
-      image: '/img/crypto/crypto4.webp',
+      image: '/img/crypto/crypto3.webp',
       description: '合约交易',
     },
-    {
-      link: 'crypto/crypto-news',
-      label: '加密风向标',
-      image: '/img/crypto/crypto5.webp',
-      description: '加密货币新闻',
-    },
-    {
-      link: 'crypto',
-      label: '加密实验室',
-      image: '/img/crypto/crypto1.webp',
-      description: '加密货币研究、交易策略和市场分析',
-    },
-    {
-      link: 'crypto/crypto-wiki',
-      label: '加密百科',
-      image: '/img/crypto/crypto2.webp',
-      description: '加密货币百科全书',
-    },
+
     {
       link: 'cashflow-utopia/option-selling',
       label: '期权卖方策略',
-      image: '/img/options/options5.webp',
+      image: '/img/articles/29.webp',
       description: '期权卖方策略',
     },
     {
@@ -123,15 +106,21 @@ export const siteConfig: SiteConfig = {
       description: '全球高息股轮动',
     },
     {
-      link: 'cashflow-utopia',
-      label: '现金流乌托邦',
-      image: '/img/stock/income.webp',
-      description: '构建稳定现金流的投资体系',
+      link: 'new-world-explore/ai',
+      label: '智能进化',
+      image: '/img/articles/8.webp',
+      description: 'AI人工智能',
+    },
+    {
+      link: 'new-world-explore/crypto-news',
+      label: '加密风向标',
+      image: '/img/articles/17.webp',
+      description: '加密货币新闻',
     },
     {
       link: 'new-world-explore/quantum-universe',
       label: '量子宇宙',
-      image: '/img/articles/17.webp',
+      image: '/img/new-world-explore/quantum4.webp',
       description: '探索量子计算的前沿科技',
     },
   ],
