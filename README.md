@@ -18,19 +18,19 @@ _基于 Astro 的现代化静态站点生成器，集成先进的组件架构_
 
 初见此主题，其光影之美宛若星河涌动，令人心神皆醉，多亏了自己这双近视又老花的双重慧眼，只是由于女主人工作太忙无暇更新，而本人技术水平又十分有限，刚开始几乎无从下手。
 
-好在人还未老，尚能折腾几下，费了些功夫，终于也算有了一点小小成果，至少自己用起来是没多大问题了，并且我还在原主题的基础上进行了一些必要与非必要的修改，以完善和增强系统性能，这种创新精神粗略估算已经达到 5 颗星水平~
+好在人还未老，尚能折腾几下，再怎么说，想当年咱也是个重装高手，费了些功夫，终于也算有了一点小小成果，至少自己用起来是没多大问题了，并且我还在原主题的基础上进行了一些必要与非必要的修改，以完善和增强系统性能，创新指数粗略估计已经达到 5 颗星水平~
 
-When I first encountered this theme, its play of light and shadow was as dazzling as a surging galaxy, leaving me utterly enchanted. Thanks to my dual "wisdom eyes" of nearsightedness and presbyopia, I could appreciate its charm. However, since the hostess has been too busy with work to update it, and my own technical skills are rather limited, I was almost at a loss at the beginning.
+At first sight of this theme, its beauty of light and shadow was like the surging of the galaxy, intoxicating to the soul. Thanks to my double “wise eyes” of nearsightedness and presbyopia, I could still appreciate it. However, since the hostess has been too busy with work to update it, and my own technical level is quite limited, I was almost at a loss in the beginning.
 
-Fortunately, I’m not too old yet and still able to tinker around. After some effort, I finally achieved a modest result. At least it works fine for my own use. Moreover, I made a few necessary and optional tweaks to the original theme to improve and enhance system performance. By my rough estimation, this spirit of innovation already deserves a five-star rating~
+Fortunately, I am not yet old, still able to toss around a little. After all, in those years I was also a reinstallation expert. After some effort, I finally achieved a little result. At least for my own use, there is not much problem. Moreover, I have made some necessary and unnecessary modifications on the basis of the original theme, to improve and enhance system performance. By rough estimate, the innovation index has already reached a five-star level~
 
-感谢原作者和余弦的贡献与指导，也感谢勤劳又学习意志超强的自己，坦白讲，半个月前我还不懂怎么使用 GitHub 和 VS Code，尽管困难重重，但我的热情却从未改变，有时候为了修改代码，我老人家居然还能熬夜到凌晨四点半，真可谓是老当益壮，老牛还未老啊~
+感谢原作者和余弦的贡献与指导，也感谢勤劳又学习意志超强的自己，坦白讲，半个月前我还不懂怎么使用 GitHub 和 VS Code，尽管困难重重，但我的热情却从丝毫不减，有时候为了修改代码，我老人家居然还能熬夜到凌晨四点半，这种锲而不舍的精神足以感动富婆~
 
-Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being diligent and so eager to learn. To be honest, just half a month ago I didn’t even know how to use GitHub or VS Code. Despite all the difficulties, my passion has never wavered. Sometimes, just to fix a piece of code, this “old fellow” could still stay up until 4:30 in the morning—truly proving that age is no barrier, and that the old ox still has plenty of strength left~
+Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being so diligent and having such strong willpower to learn. To be honest, half a month ago I didn’t even know how to use GitHub or VS Code. Despite all the difficulties, my enthusiasm never waned. Sometimes, just to tweak a bit of code, this old fellow could even stay up until 4:30 in the morning. Such perseverance is enough to move even a rich lady~
 
 特别感谢 ChatGPT、Gemini，通义灵码以及他的外国小表弟 Qoder，在我的亲切关怀与悉心指导下，它们通力协作，最终还是勉强交出了一份能看的答卷，也让我的智商从 250 瞬间飙升至 250+，实现了从人类到（程序）猿类的反向进化，也许，这就是所谓“返璞归真”的内涵本质~
 
-Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its foreign cousin Qoder. Under my warm care and meticulous guidance, they worked together in harmony and finally managed to deliver a barely acceptable answer sheet. This even made my IQ soar instantly from 250 to 250+, marking a reverse evolution from human to (programming) ape. Perhaps this is what people mean by the true essence of “returning to simplicity.” ~
+Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its little foreign cousin Qoder. Under my kind care and meticulous guidance, they worked hand in hand and finally managed to produce a barely acceptable answer. This miracle even made my IQ soar from 250 to 250+, achieving a reverse evolution from human to (program) ape. Perhaps, this is the very essence of what they call “returning to simplicity.” ~
 
 ---
 

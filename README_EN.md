@@ -15,13 +15,13 @@ _Modern Static Site Generator with Component Architecture_
 
 ## 📖 Project Overview
 
-When I first encountered this theme, its play of light and shadow was as dazzling as a surging galaxy, leaving me utterly enchanted. Thanks to my dual "wisdom eyes" of nearsightedness and presbyopia, I could appreciate its charm. However, since the hostess has been too busy with work to update it, and my own technical skills are rather limited, I was almost at a loss at the beginning.
+At first sight of this theme, its beauty of light and shadow was like the surging of the galaxy, intoxicating to the soul. Thanks to my double “wise eyes” of nearsightedness and presbyopia, I could still appreciate it. However, since the hostess has been too busy with work to update it, and my own technical level is quite limited, I was almost at a loss in the beginning.
 
-Fortunately, I’m not too old yet and still able to tinker around. After some effort, I finally achieved a modest result. At least it works fine for my own use. Moreover, I made a few necessary and optional tweaks to the original theme to improve and enhance system performance. By my rough estimation, this spirit of innovation already deserves a five-star rating~
+Fortunately, I am not yet old, still able to toss around a little. After all, in those years I was also a reinstallation expert. After some effort, I finally achieved a little result. At least for my own use, there is not much problem. Moreover, I have made some necessary and unnecessary modifications on the basis of the original theme, to improve and enhance system performance. By rough estimate, the innovation index has already reached a five-star level~
 
-Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being diligent and so eager to learn. To be honest, just half a month ago I didn’t even know how to use GitHub or VS Code. Despite all the difficulties, my passion has never wavered. Sometimes, just to fix a piece of code, this “old fellow” could still stay up until 4:30 in the morning—truly proving that age is no barrier, and that the old ox still has plenty of strength left~
+Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being so diligent and having such strong willpower to learn. To be honest, half a month ago I didn’t even know how to use GitHub or VS Code. Despite all the difficulties, my enthusiasm never waned. Sometimes, just to tweak a bit of code, this old fellow could even stay up until 4:30 in the morning. Such perseverance is enough to move even a rich lady~
 
-Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its foreign cousin Qoder. Under my warm care and meticulous guidance, they worked together in harmony and finally managed to deliver a barely acceptable answer sheet. This even made my IQ soar instantly from 250 to 250+, marking a reverse evolution from human to (programming) ape. Perhaps this is what people mean by the true essence of “returning to simplicity.” ~
+Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its little foreign cousin Qoder. Under my kind care and meticulous guidance, they worked hand in hand and finally managed to produce a barely acceptable answer. This miracle even made my IQ soar from 250 to 250+, achieving a reverse evolution from human to (program) ape. Perhaps, this is the very essence of what they call “returning to simplicity.” ~
 
 ---
 

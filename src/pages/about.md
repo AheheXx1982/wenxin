@@ -49,7 +49,7 @@ description: 'SilentXx｜寂静猎手'
 
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+<div class="grid grid-cols-1 gap-6 mb-8">
 
 <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-lg">
 
@@ -122,9 +122,9 @@ description: 'SilentXx｜寂静猎手'
 
 ### 👤 关于站长
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 gap-6">
 
-<div class="md:col-span-2">
+<div>
 
 拥有十余年多市场投资经验，覆盖 A 股、美股、加密货币、外汇和黄金。
 投资路上，既有斩获也有挫折，亏钱经验同样宝贵。
@@ -159,7 +159,12 @@ description: 'SilentXx｜寂静猎手'
 
 <div>
 
-<h4 class="font-bold mb-2 text-gray-800 dark:text-white">社交媒体</h4>
+<h4 class="font-bold mb-2 text-gray-800 dark:text-white flex items-center">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.518 9.573c.015.225.015.45.015.675 0 6.885-5.235 14.82-14.85 14.82v-.015c-2.992 0-5.76-1.035-8.01-2.745 2.1.06 4.185.15 6.255-.81 1.89-.87 3.54-2.58 4.08-4.53-.855.045-1.71.06-2.58-.03-2.46-.24-4.35-1.995-4.59-4.455.36.045.72.075 1.08.075.54 0 1.065-.06 1.575-.18-1.515-.3-2.655-1.59-2.655-3.15 0-.345.09-.675.255-.975 2.79 3.42 6.96 5.67 11.625 5.85-.105-.435-.15-.885-.15-1.35 0-3.255 2.64-5.91 5.91-5.91 1.695 0 3.225.72 4.305 1.86 1.335-.27 2.61-.75 3.75-1.41-.435 1.365-1.35 2.52-2.535 3.255 1.17-.135 2.31-.45 3.345-.915-.78 1.17-1.77 2.19-2.91 3.015z"/>
+  </svg>
+  社交媒体
+</h4>
 
 <div class="mt-2 grid grid-cols-3 gap-2">
   <div>

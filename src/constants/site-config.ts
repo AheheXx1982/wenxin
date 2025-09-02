@@ -120,7 +120,7 @@ export const siteConfig: SiteConfig = {
     {
       link: 'new-world-explore/quantum-universe',
       label: '量子宇宙',
-      image: '/img/new-world-explore/quantum4.webp',
+      image: '/img/new-world-explore/quantum5.webp',
       description: '探索量子计算的前沿科技',
     },
   ],
