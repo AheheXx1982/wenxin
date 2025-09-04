@@ -5,6 +5,14 @@ description: 深入探讨量子计算的基本原理、技术发展现状和未�
 categories:
   - ['新世界探索', '量子宇宙']
 catalog: true
+tags:
+  - 量子计算
+  - 量子比特
+  - 量子纠缠
+  - 超导量子计算
+  - 离子阱量子计算
+  - 光量子计算
+  - 拓扑量子计算
 ---
 
 ![量子计算](/img/articles/quantum-computing.jpg)

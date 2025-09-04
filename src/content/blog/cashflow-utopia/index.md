@@ -5,6 +5,15 @@ description: 构建稳定现金流的投资体系，实现财务自由之路
 categories:
   - ['现金流乌托邦']
 catalog: true
+tags:
+  - 投资策略
+  - 财务自由
+  - 现金流
+  - 资产配置
+  - 期权交易
+  - 股息投资
+  - 税务优化
+  - 风险管理
 ---
 
 ![现金流投资](/img/articles/1.webp)

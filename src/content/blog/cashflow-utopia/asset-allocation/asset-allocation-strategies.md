@@ -5,6 +5,14 @@ description: 合理配置资产，优化投资组合
 categories:
   - ['现金流乌托邦', '资产配置']
 catalog: true
+tags:
+  - 资产配置
+  - 投资组合
+  - 税务规划
+  - 风险管理
+  - 资本利得税
+  - 股息税
+  - 利息税
 ---
 
 ![资产配置策略](/img/articles/9.webp)

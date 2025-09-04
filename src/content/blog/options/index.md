@@ -5,6 +5,14 @@ description: 欢迎来到期权研究院，这里是期权策略研究的核心�
 categories:
   - ['期权研究院']
 catalog: true
+tags:
+  - 期权交易
+  - 金融衍生品
+  - 投资策略
+  - 风险管理
+  - 交易策略
+  - 波动率分析
+  - Greeks指标
 ---
 
 ![期权交易](/img/articles/3.webp)

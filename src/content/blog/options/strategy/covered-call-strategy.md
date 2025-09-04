@@ -5,6 +5,12 @@ description: 备兑看涨策略的原理、应用场景和风险分析
 categories:
   - ['期权研究院', '策略分析']
 catalog: true
+tags:
+  - 期权策略
+  - 备兑看涨
+  - 收益增强
+  - 风险管理
+  - 投资策略
 ---
 
 ![备兑看涨策略](/img/articles/7.webp)

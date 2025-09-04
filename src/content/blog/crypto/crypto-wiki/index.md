@@ -5,6 +5,14 @@ description: 提供加密货币相关的基础知识、概念解释和技术文�
 categories:
   - [加密实验室, 加密百科]
 catalog: true
+tags:
+  - 加密货币
+  - 区块链
+  - 数字资产
+  - 基础知识
+  - 技术文档
+  - 安全指南
+  - 学习资源
 ---
 
 ![加密百科](/img/articles/11.webp)

@@ -5,6 +5,15 @@ description: 欢迎来到加密实验室，这里是加密货币研究和交易�
 categories:
   - ['加密实验室']
 catalog: true
+tags:
+  - 加密货币
+  - 区块链
+  - 数字资产
+  - 交易策略
+  - 市场分析
+  - 风险管理
+  - DeFi
+  - 技术分析
 ---
 
 ![加密货币投资](/img/articles/2.webp)

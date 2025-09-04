@@ -5,6 +5,13 @@ description: 最新加密货币市场动态分析和未来展望
 categories:
   - ['新世界探索', '加密风向标']
 catalog: true
+tags:
+  - 加密货币
+  - 市场分析
+  - 技术分析
+  - 监管动态
+  - 机构动向
+  - 投资策略
 ---
 
 ![加密市场动态](/img/articles/10.webp)

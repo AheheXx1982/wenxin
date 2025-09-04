@@ -5,6 +5,14 @@ description: 欢迎来到新世界探索，这里是关于前沿科技、人工�
 categories:
   - ['新世界探索']
 catalog: true
+tags:
+  - 前沿科技
+  - 人工智能
+  - 量子计算
+  - 生物技术
+  - 技术趋势
+  - 未来预测
+  - 科技伦理
 ---
 
 ![新世界探索](/img/articles/4.webp)

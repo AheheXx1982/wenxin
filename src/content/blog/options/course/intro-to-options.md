@@ -5,6 +5,13 @@ description: 期权基础知识入门，适合初学者的第一门课程
 categories:
   - ['期权研究院', '期权课程']
 catalog: true
+tags:
+  - 期权交易
+  - 基础知识
+  - 投资策略
+  - 风险管理
+  - 金融衍生品
+  - 学习课程
 ---
 
 ![期权入门课程](/img/articles/12.webp)

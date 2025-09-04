@@ -5,6 +5,14 @@ description: 网格交易策略的基本原理和实操方法
 categories:
   - ['加密实验室', '网格策略']
 catalog: true
+tags:
+  - 网格交易
+  - 加密货币
+  - 自动化交易
+  - 震荡市场
+  - 均值回归
+  - 风险管理
+  - 策略优化
 ---
 
 ![网格交易策略](/img/articles/5.webp)

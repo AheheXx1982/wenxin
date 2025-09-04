@@ -5,6 +5,14 @@ description: 期权卖方策略的核心理念和实施方法
 categories:
   - ['现金流乌托邦', '期权卖方策略']
 catalog: true
+tags:
+  - 期权交易
+  - 卖方策略
+  - 现金流
+  - 投资策略
+  - 风险管理
+  - 波动率交易
+  - 收益增强
 ---
 
 ![期权卖方策略](/img/articles/4.webp)

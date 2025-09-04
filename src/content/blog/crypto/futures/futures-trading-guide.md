@@ -5,6 +5,14 @@ description: 合约交易的基本概念和风险控制方法
 categories:
   - ['加密实验室', '合约交易']
 catalog: true
+tags:
+  - 合约交易
+  - 加密货币
+  - 杠杆交易
+  - 风险管理
+  - 技术分析
+  - 仓位控制
+  - 止损策略
 ---
 
 ![合约交易](/img/articles/11.webp)

@@ -5,6 +5,12 @@ description: 本周期权实盘交易详细记录与复盘分析
 categories:
   - ['期权研究院', '实盘分享']
 catalog: true
+tags:
+  - 期权交易
+  - 实盘记录
+  - 交易复盘
+  - 风险管理
+  - 策略分析
 ---
 
 ![2025年第1周实盘交易](/img/articles/13.webp)
