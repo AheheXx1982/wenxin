@@ -22,7 +22,7 @@ description: 'SilentXx｜寂静猎手'
 </div>
 
 <div class="mt-4">
-在这里，我们坚守<span class="font-bold text-purple-600 dark:text-purple-400">"系统思维 + 低风险策略"</span>的投资理念，
+坚守<span class="font-bold text-purple-600 dark:text-purple-400">"系统思维 + 低风险策略"</span>的投资理念，
 致力于深耕美股期权与数字货币交易。
 通过博客、课程、工具和社区,
 为普通投资者打造可复制的策略框架，
@@ -116,55 +116,20 @@ description: 'SilentXx｜寂静猎手'
 
 </div>
 
-</div>
-
 <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 mb-8 shadow-lg">
 
 ### 👤 关于站长
 
-<div class="grid grid-cols-1 gap-6">
+- **投资经验**  
+  拥有十余年多市场投资经验，覆盖 A 股、美股、加密货币、外汇和黄金。投资路上，既有斩获也有挫折，摸爬滚打多年，终于寻得一个适合自己的投资风格。
 
-<div>
+- **生活方式**  
+  生活简约佛系，宅在家中是常态。现实中的我沉默寡言，网络上的我思维活跃、幽默风趣。或许正是这份反差，才成就了我独特的视角和交易哲学。
 
-拥有十余年多市场投资经验，覆盖 A 股、美股、加密货币、外汇和黄金。
-投资路上，既有斩获也有挫折，亏钱经验同样宝贵。
-生活简约佛系，宅在家中是常态。
+- **SilentXx｜寂静猎手 - 主站**  
+  [SilentXx.com](https://www.silentxx.com)
 
-现实中的我沉默寡言，网络上的我思维活跃、幽默风趣。
-或许正是这份反差，才成就了我独特的视角和交易哲学。
-
-<div class="flex items-center my-6">
-  <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
-  <div class="mx-4 text-gray-500 dark:text-gray-400">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-    </svg>
-  </div>
-  <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
-</div>
-
-<ul class="list-disc pl-0 space-y-1">
-<li class="flex items-start">
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 mt-1 text-blue-600 dark:text-blue-400 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm-1 6h-6v2h6v-2zm-1 4h-5v2h5v-2zm-1 4h-4v2h4v-2zm8-10h-2v10h2v-10z"></path>
-  </svg>
-  <div class="flex items-center">
-    <span class="mr-2">SilentXx｜寂静猎手 - 主站：</span>
-    <a href="https://www.silentxx.com" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">SilentXx.com</a>
-  </div>
-</li>
-</ul>
-
-</div>
-
-<div>
-
-<h4 class="font-bold mb-2 text-gray-800 dark:text-white flex items-center">
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.518 9.573c.015.225.015.45.015.675 0 6.885-5.235 14.82-14.85 14.82v-.015c-2.992 0-5.76-1.035-8.01-2.745 2.1.06 4.185.15 6.255-.81 1.89-.87 3.54-2.58 4.08-4.53-.855.045-1.71.06-2.58-.03-2.46-.24-4.35-1.995-4.59-4.455.36.045.72.075 1.08.075.54 0 1.065-.06 1.575-.18-1.515-.3-2.655-1.59-2.655-3.15 0-.345.09-.675.255-.975 2.79 3.42 6.96 5.67 11.625 5.85-.105-.435-.15-.885-.15-1.35 0-3.255 2.64-5.91 5.91-5.91 1.695 0 3.225.72 4.305 1.86 1.335-.27 2.61-.75 3.75-1.41-.435 1.365-1.35 2.52-2.535 3.255 1.17-.135 2.31-.45 3.345-.915-.78 1.17-1.77 2.19-2.91 3.015z"/>
-  </svg>
-  社交媒体
-</h4>
+### 🌐 社交媒体
 
 <div class="mt-2 grid grid-cols-3 gap-2">
   <div>
@@ -180,7 +145,7 @@ description: 'SilentXx｜寂静猎手'
       data-tooltip-placement="top"
       aria-label="Github"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="inline-block size-6"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="inline-block size-6"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 1.205-.305 1.839-1.23 1.839-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
       <span class="absolute inset-0 -z-10 -translate-x-full translate-y-full rounded-xl transition-transform duration-300 group-hover:translate-x-0 group-hover:translate-y-0" style="background-color: #191717"></span>
     </a>
   </div>
@@ -269,8 +234,6 @@ description: 'SilentXx｜寂静猎手'
       <span class="absolute inset-0 -z-10 -translate-x-full translate-y-full rounded-xl transition-transform duration-300 group-hover:translate-x-0 group-hover:translate-y-0" style="background-color: #ff6600"></span>
     </a>
   </div>
-</div>
-
 </div>
 
 </div>
