@@ -126,7 +126,8 @@ description: 'SilentXx｜寂静猎手'
 - **生活方式**  
   生活简约佛系，宅在家中是常态。现实中的我沉默寡言，网络上的我思维活跃、幽默风趣。或许正是这份反差，才成就了我独特的视角和交易哲学。
 
-- **投资分享**
+### 📚 投资分享
+
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
     <div>
       <ul class="list-disc pl-5 space-y-2">

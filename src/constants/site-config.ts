@@ -123,6 +123,12 @@ export const siteConfig: SiteConfig = {
       image: '/img/new-world-explore/quantum5.webp',
       description: '探索量子计算的前沿科技',
     },
+    {
+      link: 'investment',
+      label: '投资分享',
+      image: '/img/articles/1.webp',
+      description: '分享投资经验和策略，涵盖股票、加密货币、期权等多种投资工具',
+    },
   ],
 };
 
@@ -134,7 +140,7 @@ export const socialConfig: SocialConfig = {
     icon: 'ri:github-fill',
     color: '#191717',
   },
-  Gate: {
+  bilibili: {
     url: 'https://www.gateweb.xyz/share/VLRAXQONUW',
     icon: 'ri:btc-fill',
     color: '#1e88e5',
@@ -149,7 +155,7 @@ export const socialConfig: SocialConfig = {
     icon: 'ri:netease-cloud-music-line', // 使用通用音乐线性图标
     color: '#e60026',
   },
-  X: {
+  twitter: {
     url: 'https://x.com/AheheXx?s=09',
     icon: 'ri:twitter-fill',
     color: '#4b9ae4',
