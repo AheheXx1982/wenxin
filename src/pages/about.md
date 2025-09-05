@@ -121,7 +121,7 @@ description: 'SilentXx｜寂静猎手'
 ### 👤 关于站长
 
 - **投资经验**  
-  本想拥一些恢宏的叙事，但是这既违背了基本事实，也不符合我的处世之道，总体来讲，本人拥有十余年多市场投资经验，投资路上，既有斩获也有挫折，最大的成绩，应该是摸爬滚打多年，终于寻得一条适合自己的投资道路。
+  拥有十余年多市场投资经验，投资路上，既有斩获也有挫折，最大的成绩，应该是摸爬滚打多年，终于寻得一条适合自己的投资道路。
 
 - **生活方式**  
   生活简约佛系，宅在家中是常态。现实中的我沉默寡言，网络上的我思维活跃、幽默风趣。或许正是这份反差，才成就了我独特的视角和交易哲学。
@@ -139,7 +139,7 @@ description: 'SilentXx｜寂静猎手'
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
         </svg>
-        <a href="https://www.laohu8.com/post/386438858" target="_blank" rel="noopener noreferrer" class="hover:underline">富婆看这里</a>
+        <a href="https://www.laohu8.com/post/386438858" target="_blank" rel="noopener noreferrer" class="hover:underline">何处觅知音</a>
       </h4>
       <p class="text-pink-700 dark:text-pink-300 text-sm mt-2">
       </p>
