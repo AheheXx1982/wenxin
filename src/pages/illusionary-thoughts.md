@@ -13,10 +13,12 @@ description: 'SilentXx｜寂静猎手 - 幻念集'
 
 <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 mb-8 shadow-lg">
 
-### 🌌 胡言乱语
+### 🌌 记录那些转瞬即逝的心灵火花与未曾言说的灵感碎片
 
-<div class="mt-4">
-这里是一些随意的想法和灵感碎片，没有特定的主题或结构，只是脑海中闪现的片段。
+<div class="mt-5">
+我来这个世界，不是为了繁衍后代，而是来看花怎么开，水怎么流，太阳怎么升起，夕阳何时落下，我活在世上，无非想要明白些道理，遇见些有趣的事，生命是一场偶然，我在其中寻找因果。 
+</div>
+​ <div class="text-right text-gray-500 dark:text-gray-400 text-sm">                                ——王小波
 </div>
 
 </div>
