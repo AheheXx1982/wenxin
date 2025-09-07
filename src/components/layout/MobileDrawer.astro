@@ -60,20 +60,23 @@ const { type = HomeSiderType.HOME } = Astro.props;
       this.elements = this.initElements();
       if (this.validateElements()) {
         this.bindEvents();
+        // 添加导航链接点击事件监听
+        this.bindNavigationEvents();
       }
     }
 
     private initElements(): DrawerElements {
-      return Object.entries(DRAWER_SELECTORS).reduce(
-        (acc, [key, id]) => ({
-          ...acc,
-          [key]: document.getElementById(id),
-        }),
-        {} as DrawerElements,
-      );
+      const elements = {} as DrawerElements;
+      Object.keys(DRAWER_SELECTORS).forEach((key) => {
+        const typedKey = key as keyof DrawerElements;
+        const id = DRAWER_SELECTORS[key as keyof typeof DRAWER_SELECTORS];
+        elements[typedKey] = document.getElementById(id);
+      });
+      return elements;
     }
 
     private validateElements(): boolean {
+      // 修复类型错误：正确处理Object.entries的返回类型
       return Object.entries(this.elements).every(([key, element]) => {
         const exists = !!element;
         if (!exists) {
@@ -91,8 +94,35 @@ const { type = HomeSiderType.HOME } = Astro.props;
       this.elements.overlay?.addEventListener('click', this.close);
     }
 
+    // 绑定导航链接点击事件
+    private bindNavigationEvents(): void {
+      // 等待DOM加载完成后再绑定事件
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => this.attachNavigationListeners());
+      } else {
+        this.attachNavigationListeners();
+      }
+    }
+
+    private attachNavigationListeners(): void {
+      const drawer = this.elements.drawer;
+      if (!drawer) return;
+
+      // 监听抽屉内的所有链接点击事件
+      drawer.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        // 查找被点击的链接元素
+        const link = target.closest('a');
+        if (link && link.href) {
+          // 点击链接后关闭抽屉
+          this.close();
+        }
+      });
+    }
+
     private handleToggle = (e: Event): void => {
-      const { isOpen } = (e as CustomEvent<{ isOpen: boolean }>).detail;
+      const event = e as CustomEvent<{ isOpen: boolean }>;
+      const { isOpen } = event.detail;
       isOpen ? this.open() : this.close();
     };
 
