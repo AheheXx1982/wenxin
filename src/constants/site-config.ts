@@ -123,12 +123,6 @@ export const siteConfig: SiteConfig = {
       image: '/img/new-world-explore/quantum5.webp',
       description: '探索量子计算的前沿科技',
     },
-    {
-      link: 'investment',
-      label: '投资分享',
-      image: '/img/articles/1.webp',
-      description: '分享投资经验和策略，涵盖股票、加密货币、期权等多种投资工具',
-    },
   ],
 };
 

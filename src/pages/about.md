@@ -132,7 +132,7 @@ description: 'SilentXx｜寂静猎手'
     <div>
       <ul class="list-disc pl-5 space-y-2">
         <li><a href="https://www.laohu8.com/post/331803585" target="_blank" rel="noopener noreferrer">一个普通小散户的投资之路</a></li>
-        <li><a href="https://www.laohu8.com/post/445644197998736?utm_campaign=445644197998736&utm_medium=copy&shareID=beb5b95a8d20e1f9df6a8c1c4fba00f6&invite=AN9PDL&lang=zh_CN&platform=android&utm_source=post" target="_blank" rel="noopener noreferrer">【小虎访谈】从爆仓小王子到收益率超500%，他到底做对了什么？</a></li>
+        <li><a href="https://www.laohu8.com/post/445644197998736" target="_blank" rel="noopener noreferrer">【小虎访谈】从爆仓小王子到收益率超500%，他到底做对了什么？</a></li>
       </ul>
     </div>
     <div class="bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 rounded-xl p-4 border border-pink-200 dark:border-pink-700">

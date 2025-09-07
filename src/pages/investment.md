@@ -7,7 +7,7 @@ description: 'SilentXx｜寂静猎手 - 投资分享'
 
 <div class="text-center py-8">
 
-# <iconify-icon icon="ri:exchange-funds-line" class="h-8 w-8 inline-block mr-2 text-blue-500"></iconify-icon>投资分享
+# 投资分享
 
 </div>
 

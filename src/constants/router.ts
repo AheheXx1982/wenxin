@@ -28,7 +28,7 @@ export const routers: Router[] = [
       { name: '归档', path: Routes.Archives, icon: 'ri:archive-2-fill' },
     ],
   },
-  { name: '投资分享', path: Routes.Investment, icon: 'ri:exchange-funds-line' },
+  { name: '投资分享', path: Routes.Investment, icon: 'ri:stock-line' },
   { name: '关于', path: Routes.About, icon: 'fa6-regular:circle-user' },
   // { name: '展示柜', path: Routes.Gallery },
   // { name: '仪表盘', path: Routes.Dashboard, needOwner: true },
