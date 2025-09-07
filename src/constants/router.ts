@@ -7,7 +7,6 @@ export type Router = {
 
 export enum Routes {
   Home = '/',
-  Investment = '/about',
   About = '/about',
   Categories = '/categories',
   Tags = '/tags',
