@@ -93,6 +93,7 @@ const { type = HomeSiderType.HOME } = Astro.props;
 
     private handleToggle = (e: Event): void => {
       const { isOpen } = (e as CustomEvent<{ isOpen: boolean }>).detail;
+      console.log('MobileDrawer: handleToggle called, isOpen:', isOpen);
       isOpen ? this.open() : this.close();
     };
 
