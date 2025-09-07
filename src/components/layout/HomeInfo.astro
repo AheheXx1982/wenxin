@@ -37,11 +37,6 @@ const allTags = Object.entries(tags).map(([tag, count]) => ({ tag, count }));
   <div
     class="text-muted-foreground mt-3 flex justify-center text-center text-sm/4 whitespace-nowrap select-none dark:text-white/80"
   >
-    <a href="/" class="hover:text-blue flex cursor-pointer flex-col gap-2 p-1 transition">
-      <span class="text-lg/5 font-bold">{postCount}</span>
-      文章
-    </a>
-    <div class="bg-muted-foreground mx-3 w-px"></div>
     <a href="/categories" aria-label="分类" class="hover:text-blue">
       <p class="flex cursor-pointer flex-col gap-2 p-1 transition">
         <span class="text-lg/5 font-bold">{Object.keys(countMap).length}</span>
@@ -52,6 +47,11 @@ const allTags = Object.entries(tags).map(([tag, count]) => ({ tag, count }));
     <a href="/tags" class="hover:text-blue flex cursor-pointer flex-col gap-2 p-1 transition">
       <span class="text-lg/5 font-bold">{allTags?.length ?? 0}</span>
       标签
+    </a>
+    <div class="bg-muted-foreground mx-3 w-px"></div>
+    <a href="/archives" class="hover:text-blue flex cursor-pointer flex-col gap-2 p-1 transition">
+      <span class="text-lg/5 font-bold">{postCount}</span>
+      归档
     </a>
   </div>
   <div class="mt-6 flex w-full flex-col items-center gap-2.5">

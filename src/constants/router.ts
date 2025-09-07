@@ -7,9 +7,13 @@ export type Router = {
 
 export enum Routes {
   Home = '/',
+  Articles = '/articles',
   IllusionaryThoughts = '/illusionary-thoughts',
   About = '/about',
-  // Categories = '/categories',
+  Categories = '/categories',
+  OptionsCourse = '/categories/options/course',
+  GridStrategy = '/categories/crypto/grid',
+  TradingJournal = '/categories/options/trading-journal',
   // Tags = '/tags',
   // Gallery = '/gallery',
   Post = '/article',
@@ -21,15 +25,18 @@ export const routers: Router[] = [
   { name: '首页', path: Routes.Home, icon: 'fa6-solid:house-chimney' },
   {
     name: '猎场',
+    path: Routes.Articles,
     icon: 'ri:quill-pen-ai-fill',
     children: [
-      // { name: '分类', path: Routes.Categories, icon: 'ri:grid-fill' },
       // { name: '标签', path: Routes.Tags, icon: 'fa6-solid:tags' },
-      { name: '归档', path: Routes.Archives, icon: 'ri:archive-2-fill' },
+      // { name: '分类', path: Routes.Categories, icon: 'ri:grid-fill' },
+      // { name: '归档', path: Routes.Archives, icon: 'ri:archive-2-fill' },
+      { name: '课程', path: Routes.OptionsCourse, icon: 'ri:book-read-fill' },
+      { name: '实盘', path: Routes.TradingJournal, icon: 'ri:stock-line' },
+      { name: '自述', path: Routes.About, icon: 'fa6-regular:circle-user' },
     ],
   },
   { name: '幻念集', path: Routes.IllusionaryThoughts, icon: 'ri:stock-line' },
-  { name: '关于', path: Routes.About, icon: 'fa6-regular:circle-user' },
   // { name: '展示柜', path: Routes.Gallery },
   // { name: '仪表盘', path: Routes.Dashboard, needOwner: true },
 ];
