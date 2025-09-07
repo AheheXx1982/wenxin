@@ -1,8 +1,8 @@
 ---
 layout: ../layouts/AboutLayout.astro
-title: 'About'
-date: 2025-01-03 01:01:33
-description: 'SilentXx｜寂静猎手'
+title: '关于'
+date: 2025-09-05
+description: 'SilentXx｜寂静猎手 - 关于'
 ---
 
 <div class="text-center py-8">
