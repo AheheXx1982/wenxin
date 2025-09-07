@@ -7,7 +7,7 @@ export type Router = {
 
 export enum Routes {
   Home = '/',
-  Investment = '/investment',
+  Investment = '/illusionary-thoughts',
   About = '/about',
   Categories = '/categories',
   Tags = '/tags',
@@ -28,7 +28,7 @@ export const routers: Router[] = [
       { name: '归档', path: Routes.Archives, icon: 'ri:archive-2-fill' },
     ],
   },
-  { name: '投资分享', path: Routes.Investment, icon: 'ri:stock-line' },
+  { name: '幻念集', path: Routes.Investment, icon: 'ri:chat-heart-fill' },
   { name: '关于', path: Routes.About, icon: 'fa6-regular:circle-user' },
   // { name: '展示柜', path: Routes.Gallery },
   // { name: '仪表盘', path: Routes.Dashboard, needOwner: true },
