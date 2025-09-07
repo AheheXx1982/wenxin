@@ -9,8 +9,8 @@ export enum Routes {
   Home = '/',
   IllusionaryThoughts = '/illusionary-thoughts',
   About = '/about',
-  Categories = '/categories',
-  Tags = '/tags',
+  // Categories = '/categories',
+  // Tags = '/tags',
   // Gallery = '/gallery',
   Post = '/article',
   Archives = '/archives',
@@ -20,11 +20,11 @@ export enum Routes {
 export const routers: Router[] = [
   { name: '首页', path: Routes.Home, icon: 'fa6-solid:house-chimney' },
   {
-    name: '文章',
+    name: '猎场',
     icon: 'ri:quill-pen-ai-fill',
     children: [
-      { name: '分类', path: Routes.Categories, icon: 'ri:grid-fill' },
-      { name: '标签', path: Routes.Tags, icon: 'fa6-solid:tags' },
+      // { name: '分类', path: Routes.Categories, icon: 'ri:grid-fill' },
+      // { name: '标签', path: Routes.Tags, icon: 'fa6-solid:tags' },
       { name: '归档', path: Routes.Archives, icon: 'ri:archive-2-fill' },
     ],
   },
