@@ -42,11 +42,11 @@ const categoryPosts: CategoryWithPosts[] = await Promise.all(
   {
     categoryPosts.map((category, idx) => {
       const parentCategory = category?.parentCategory;
-      const parentCategoryLink = parentCategory
-        ? Routes.Categories + '/' + (category?.link.split('/').slice(0, -1).join('/') ?? '')
-        : '';
+      // 修复父分类链接生成逻辑
+      const parentCategoryLink = parentCategory ? '/' + (category?.link.split('/').slice(1, -1).join('/') ?? '') : '';
       const categoryInfo = category?.category;
-      const categoryLink = Routes.Categories + '/' + (category?.link ?? '');
+      // 修复链接生成逻辑，直接使用 category.link，因为它已经是完整路径
+      const categoryLink = category?.link ?? '';
       const childrenLen = categoryInfo?.children?.length ?? 0;
       const posts = category?.posts?.slice(0, 6 - (childrenLen ?? 0));
       return (

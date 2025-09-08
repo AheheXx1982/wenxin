@@ -18,6 +18,11 @@ import ThemeToggle from '@components/theme/ThemeToggle.astro';
         const path = item.href || item.path;
         const { name, icon, children } = item;
 
+        // 排除"幻念集"，因为它要移动到右上角
+        if (name === '幻念集') {
+          return null;
+        }
+
         if (children?.length) {
           return <DropdownNav client:load item={item} />;
         }
@@ -43,12 +48,79 @@ import ThemeToggle from '@components/theme/ThemeToggle.astro';
   </div>
 
   <div class="tablet:gap-2 ml-auto flex items-center gap-4">
-    <a class="cursor-pointer" href="https://github.com/AheheXx1982/SilentX" target="_blank">
-      <Icon name="ri:github-fill" class="size-9 transition duration-300 hover:scale-125" onclick="backToTop()" />
+    <!-- 添加幻念集链接到右上角，使用动态旋转的风铃图标，进一步增强视觉效果 -->
+    <a
+      class="flex cursor-pointer items-center text-white transition duration-300 hover:text-blue-300"
+      href="/illusionary-thoughts"
+      title="幻念集"
+    >
+      <div class="relative">
+        <!-- 移除白色背景，直接将图标变成纯白色 -->
+        <div class="rainbow-icon h-9 w-9 transition duration-300 hover:scale-125">
+          <img src="/whirlwind.svg" alt="幻念集" class="slow-spin h-full w-full" style="filter: brightness(0) invert(1);" />
+        </div>
+        <!-- 添加多层脉冲动画效果 -->
+        <div class="absolute inset-0 animate-ping rounded-full bg-blue-500 opacity-40" style="animation-duration: 2s;"></div>
+        <div
+          class="absolute inset-0 animate-ping rounded-full bg-cyan-400 opacity-30"
+          style="animation-delay: 0.5s; animation-duration: 2.5s;"
+        >
+        </div>
+      </div>
     </a>
     <ThemeToggle />
   </div>
 </div>
+
+<style>
+  .slow-spin {
+    animation: spin 4s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .enhanced-icon {
+    filter: drop-shadow(0 0 8px #3b82f6) brightness(2) contrast(1.5);
+    /* 添加发光效果 */
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.8);
+  }
+
+  /* 添加悬停时的增强效果 */
+  .enhanced-icon:hover {
+    filter: drop-shadow(0 0 12px #3b82f6) brightness(2.5) contrast(2);
+    box-shadow: 0 0 16px rgba(59, 130, 246, 1);
+  }
+
+  /* 七彩虹效果 */
+  .rainbow-icon {
+    background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ffff, #0000ff, #8000ff);
+    background-size: 400% 400%;
+    animation: rainbow 3s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: brightness(1.5);
+  }
+
+  @keyframes rainbow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+</style>
 
 <script is:inline>
   let firstScroll = true;
