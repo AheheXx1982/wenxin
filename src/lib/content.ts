@@ -175,8 +175,8 @@ export function getCategoryByLink(categories: Category[], link?: string): Catego
   // 添加检查确保 link 是字符串
   if (!link || typeof link !== 'string' || !categories?.length) return null;
 
-  // 将链接分割为部分
-  const linkParts = link.split('/').filter((part) => part.length > 0);
+  // 将链接分割为部分，过滤掉空字符串和 "categories" 前缀
+  const linkParts = link.split('/').filter((part) => part.length > 0 && part !== 'categories');
   if (linkParts.length === 0) return null;
 
   // 将链接部分转换为分类名称
