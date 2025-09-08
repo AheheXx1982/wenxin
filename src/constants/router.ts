@@ -34,10 +34,10 @@ export const routers: Router[] = [
   //     // { name: '归档', path: Routes.Archives, icon: 'ri:archive-2-fill' },
   //     { name: '课程', path: Routes.OptionsCourse, icon: 'ri:book-read-fill' },
   //     { name: '实盘', path: Routes.TradingJournal, icon: 'ri:stock-line' },
-  //     { name: '自述', path: Routes.About, icon: 'fa6-regular:circle-user' },
+  //     { name: '关于', path: Routes.About, icon: 'fa6-regular:circle-user' },
   //   ],
   // },
-  // 将课程、实盘、自述、幻念集作为同级目录菜单
+  // 将课程、实盘、关于、幻念集作为同级目录菜单
   { name: '课程', path: Routes.OptionsCourse, icon: 'ri:book-read-fill' },
   { name: '实盘', path: Routes.TradingJournal, icon: 'ri:stock-line' },
   { name: '关于', path: Routes.About, icon: 'fa6-regular:circle-user' },
