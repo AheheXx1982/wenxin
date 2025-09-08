@@ -1,6 +1,7 @@
 ---
 import ButtonLink from '@components/control/ButtonLink.astro';
 import { routers } from '@constants/router';
+import { siteConfig } from '@constants/site-config';
 import { cn } from '@lib/utils';
 import { Icon } from 'astro-icon/components';
 import DropdownNav from './DropdownNav';
@@ -11,25 +12,30 @@ import ThemeToggle from '@components/theme/ThemeToggle.astro';
   <!-- 导航菜单 -->
   <div class="tablet:hidden flex grow items-center">
     {
-      routers.map((item) => {
-        if (item.children?.length) {
+      // 优先使用 siteConfig.navLinks，如果不存在则使用 routers
+      (siteConfig.navLinks || routers).map((item) => {
+        // 兼容 href 和 path 属性
+        const path = item.href || item.path;
+        const { name, icon, children } = item;
+
+        if (children?.length) {
           return <DropdownNav client:load item={item} />;
         }
         return (
           <ButtonLink
-            url={item.path}
-            label={item.name}
+            url={path}
+            label={name}
             variant="unstyle"
             className={cn(
               'relative text-base tracking-wider after:absolute after:bottom-1 after:left-1/2 after:block after:h-0.5 after:w-0 after:-translate-x-1/2 after:transition-all after:duration-300',
               {
                 'hover:after:w-9/12': true,
-                'after:w-9/12': item.path === Astro.url.pathname,
+                'after:w-9/12': path === Astro.url.pathname,
               },
             )}
           >
-            {item.icon && <Icon name={item.icon} class="mr-1.5" />}
-            {item.name}
+            {icon && <Icon name={icon} class="mr-1.5" />}
+            {name}
           </ButtonLink>
         );
       })

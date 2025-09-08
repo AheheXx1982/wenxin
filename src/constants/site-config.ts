@@ -17,6 +17,11 @@ type SiteConfig = {
     label?: string;
     description?: string;
   }[];
+
+  navLinks?: {
+    name: string;
+    href: string;
+  }[];
 };
 
 // 社交媒体配置类型
@@ -61,64 +66,74 @@ export const siteConfig: SiteConfig = {
 
   enableJSGridCover: false, // 是否启用 color4bg 的背景
   site: 'https://www.silentxx.com',
+
+  // 添加 navLinks 配置
+  navLinks: [
+    { name: '首页', href: '/' },
+    { name: '课程', href: '/categories/options/course' },
+    { name: '实盘', href: '/categories/options/trading-journal' },
+    { name: '自述', href: '/about' },
+    { name: '幻念集', href: '/illusionary-thoughts' },
+  ],
+
   featuredCategories: [
     {
-      link: 'options/course',
+      link: '/categories/options/course',
       label: '期权课程',
       image: '/img/options/options6.webp',
       description: '期权课程',
     },
     {
-      link: 'options/trading-journal',
+      link: '/categories/options/trading-journal',
       label: '实盘分享',
       image: '/img/articles/4.webp',
       description: '实盘交易记录',
     },
     {
-      link: 'crypto/crypto-wiki',
+      link: '/categories/crypto/crypto-wiki',
       label: '加密百科',
       image: '/img/articles/15.webp',
       description: '加密货币百科全书',
     },
     {
-      link: 'crypto/grid',
+      link: '/categories/crypto/grid',
       label: '网格策略',
       image: '/img/crypto/crypto2.webp',
       description: '网格策略',
     },
     {
-      link: 'crypto/futures',
+      link: '/categories/crypto/futures',
       label: '合约交易',
       image: '/img/crypto/crypto3.webp',
       description: '合约交易',
     },
 
     {
-      link: 'cashflow-utopia/option-selling',
+      link: '/categories/cashflow-utopia/option-selling',
       label: '期权卖方策略',
       image: '/img/articles/29.webp',
       description: '期权卖方策略',
     },
     {
-      link: 'cashflow-utopia/drip',
+      link: '/categories/cashflow-utopia/drip',
       label: '全球高息股轮动',
       image: '/img/stock/high-income.webp',
       description: '全球高息股轮动',
     },
     {
-      link: 'new-world-explore/ai',
+      link: '/categories/new-world-explore/ai',
       label: '智能进化',
       image: '/img/articles/8.webp',
       description: 'AI人工智能',
     },
     {
-      link: 'new-world-explore/crypto-news',
+      link: '/categories/new-world-explore/crypto-news',
       label: '加密风向标',
       image: '/img/articles/17.webp',
       description: '加密货币新闻',
     },
     {
-      link: 'new-world-explore/quantum-universe',
+      link: '/categories/new-world-explore/quantum-universe',
       label: '量子宇宙',
       image: '/img/new-world-explore/quantum5.webp',
       description: '探索量子计算的前沿科技',
