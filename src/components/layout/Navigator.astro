@@ -18,6 +18,11 @@ import ThemeToggle from '@components/theme/ThemeToggle.astro';
         const path = item.href || item.path;
         const { name, icon, children } = item;
 
+        // 排除"幻念集"，因为它要移动到右上角
+        if (name === '幻念集') {
+          return null;
+        }
+
         if (children?.length) {
           return <DropdownNav client:load item={item} />;
         }
@@ -43,6 +48,8 @@ import ThemeToggle from '@components/theme/ThemeToggle.astro';
   </div>
 
   <div class="tablet:gap-2 ml-auto flex items-center gap-4">
+    <!-- 添加幻念集链接到右上角 -->
+    <a class="cursor-pointer text-white transition duration-300 hover:text-blue-300" href="/illusionary-thoughts"> 幻念集 </a>
     <a class="cursor-pointer" href="https://github.com/AheheXx1982/SilentXx" target="_blank">
       <Icon name="ri:github-fill" class="size-9 transition duration-300 hover:scale-125" onclick="backToTop()" />
     </a>

@@ -64,6 +64,11 @@ const navLinks = siteConfig.navLinks || routers;
         const path = item.href || item.path;
         const { name, icon, children } = item;
 
+        // 排除"幻念集"，因为它已经移动到右上角
+        if (name === '幻念集') {
+          return null;
+        }
+
         if (children?.length) {
           return (
             <div class="bg-foreground/10 flex flex-col rounded-xl opacity-75 transition-all duration-300 hover:opacity-100">
