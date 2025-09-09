@@ -71,7 +71,7 @@ const navLinks = siteConfig.navLinks || routers;
 
         if (children?.length) {
           return (
-            <div class="bg-foreground/10 flex flex-col rounded-xl opacity-75 transition-all duration-300 hover:opacity-100">
+            <div class="bg-foreground/10 flex w-full flex-col rounded-xl opacity-75 transition-all duration-300 hover:opacity-100">
               <div class="flex-center h-12">
                 {icon && <Icon name={icon} class="mr-1.5" />}
                 {name}
@@ -86,7 +86,7 @@ const navLinks = siteConfig.navLinks || routers;
                       label={child.name}
                       variant="gradient-shoka"
                       className={cn(
-                        'shoka-button-shadow h-12 w-40 rounded-xl text-base tracking-wider transition-all duration-300',
+                        'shoka-button-shadow h-12 w-full rounded-xl text-base tracking-wider transition-all duration-300',
                         {
                           'text-muted-foreground/80 hover:bg-muted-foreground/10 bg-none shadow-none hover:shadow-none':
                             childPath !== Astro.url.pathname,
@@ -108,7 +108,7 @@ const navLinks = siteConfig.navLinks || routers;
             label={name}
             variant="gradient-shoka"
             className={cn(
-              'shoka-button-shadow h-12 w-40 rounded-xl text-base tracking-wider opacity-75 transition-all duration-300 hover:opacity-100',
+              'shoka-button-shadow h-12 w-full rounded-xl text-base tracking-wider opacity-75 transition-all duration-300 hover:opacity-100',
               {
                 'text-muted-foreground/80 hover:bg-muted-foreground/10 bg-none shadow-none hover:shadow-none':
                   path !== Astro.url.pathname,
