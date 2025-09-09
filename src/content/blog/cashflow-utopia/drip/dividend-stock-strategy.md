@@ -15,7 +15,7 @@ tags:
   - 投资组合
 ---
 
-![全球高息股投资](/img/articles/8.webp)
+![全球高息股投资](/img/cashflow-utopia/drip/1.webp)
 
 ## 策略理念
 

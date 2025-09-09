@@ -15,7 +15,7 @@ tags:
   - 止损策略
 ---
 
-![合约交易](/img/articles/11.webp)
+![合约交易](/img/crypto/futures/1.webp)
 
 ## 合约交易简介
 

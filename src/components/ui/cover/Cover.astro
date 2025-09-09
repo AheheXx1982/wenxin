@@ -17,6 +17,10 @@ const { data, title } = Astro.props as CoverProps;
 const { date, title: dataTitle } = data?.data ?? {};
 
 const readState = readingTime(data?.body ?? '');
+
+// 为文章详情页面添加封面图片逻辑
+import { getPostCoverImage } from '@lib/content';
+const coverImage = data ? getPostCoverImage(data) : '/img/banner.webp';
 ---
 
 <div class="relative flex h-[60vh] max-h-[35rem] overflow-hidden">
@@ -52,7 +56,7 @@ const readState = readingTime(data?.body ?? '');
     }
   </div>
   <div class="relative -z-10 h-full min-h-[15rem] w-full" transition:persist="page-cover-banner" id="banner-box">
-    <img src="/img/banner.webp" alt="cover" class="h-full w-full object-cover" />
+    <img src={coverImage} alt="cover" class="h-full w-full object-cover" />
   </div>
   <WaveSvg />
 </div>

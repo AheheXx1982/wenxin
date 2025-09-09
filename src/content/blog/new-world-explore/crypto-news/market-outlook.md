@@ -14,7 +14,7 @@ tags:
   - 投资策略
 ---
 
-![加密市场动态](/img/articles/10.webp)
+![加密市场动态](/img/crypto/2.webp)
 
 ## 市场概况
 

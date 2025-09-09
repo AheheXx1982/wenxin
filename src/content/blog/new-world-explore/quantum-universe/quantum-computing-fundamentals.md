@@ -15,7 +15,7 @@ tags:
   - 拓扑量子计算
 ---
 
-![量子计算](/img/articles/quantum-computing.jpg)
+![量子计算](/img/new-world-explore/quantum-universe/2.webp)
 
 # 量子计算基础与发展前沿
 

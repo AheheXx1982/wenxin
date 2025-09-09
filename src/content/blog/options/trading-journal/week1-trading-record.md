@@ -13,7 +13,7 @@ tags:
   - 策略分析
 ---
 
-![2025年第1周实盘交易](/img/articles/13.webp)
+![2025年第1周实盘交易](/img/options/trading-journal/1.webp)
 
 ## 交易概况
 

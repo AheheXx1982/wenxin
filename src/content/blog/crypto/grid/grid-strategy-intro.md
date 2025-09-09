@@ -15,7 +15,7 @@ tags:
   - 策略优化
 ---
 
-![网格交易策略](/img/articles/5.webp)
+![网格交易策略](/img/crypto/grid/1.webp)
 
 ## 策略概述
 

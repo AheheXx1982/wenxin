@@ -15,7 +15,7 @@ tags:
   - 利息税
 ---
 
-![资产配置策略](/img/articles/9.webp)
+![资产配置策略](/img/cashflow-utopia/asset-allocation/1.webp)
 
 ## 资产配置的重要性
 
