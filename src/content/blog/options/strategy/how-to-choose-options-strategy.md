@@ -11,7 +11,7 @@ tags:
 catalog: true
 ---
 
-![期权策略选择](/img/articles/14.webp)
+![期权策略选择](/img/options/strategy/3.webp)
 
 ## 引言
 

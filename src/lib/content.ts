@@ -1,5 +1,6 @@
 import { categoryMap } from '@constants/category';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { getRandomCoverForPath } from '@lib/cover';
 
 import type { BlogPost } from 'types/blog';
 
@@ -17,6 +18,27 @@ export async function getSortedPosts(): Promise<CollectionEntry<'blog'>[]> {
   });
 
   return sortedPosts;
+}
+
+// 为文章获取对应分类的随机封面图片
+export function getPostCoverImage(post: BlogPost): string {
+  const { categories } = post.data;
+
+  if (categories && Array.isArray(categories) && categories.length > 0) {
+    // 处理嵌套分类格式
+    if (Array.isArray(categories[0])) {
+      // 例如: ['新世界探索', '智能进化']
+      const categoryPath = categories[0].join('/');
+      return getRandomCoverForPath(`/categories/${categoryPath}`);
+    } else {
+      // 处理单级分类格式
+      // 例如: '期权研究院'
+      return getRandomCoverForPath(`/categories/${categories[0]}`);
+    }
+  }
+
+  // 如果没有分类信息，返回默认图片
+  return '/img/options/1.webp';
 }
 
 export const getAllTags = (posts: BlogPost[]) => {

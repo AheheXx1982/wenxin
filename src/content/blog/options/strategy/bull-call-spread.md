@@ -12,7 +12,7 @@ tags:
 catalog: true
 ---
 
-![牛市价差策略](/img/articles/6.webp)
+![牛市价差策略](/img/options/strategy/1.webp)
 
 ## 策略概述
 

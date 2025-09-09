@@ -14,7 +14,7 @@ tags:
   - 学习课程
 ---
 
-![期权入门课程](/img/articles/12.webp)
+![期权入门课程](/img/options/course/1.webp)
 
 ## 课程介绍
 

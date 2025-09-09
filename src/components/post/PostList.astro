@@ -2,6 +2,7 @@
 import EmptySvg from '@components/svg/EmptySvg';
 import Divider from '@components/ui/divider';
 import { defaultCoverList } from '@constants/site-config';
+import { getRandomCoverForPath } from '@lib/cover';
 import type { Page } from 'astro';
 import { shuffle } from 'es-toolkit';
 import type { BlogPost } from 'types/blog';
@@ -16,7 +17,27 @@ interface Props {
 }
 
 const { posts, page, showPaginator = true } = Astro.props;
-const covers = shuffle(defaultCoverList).slice(0, 10);
+// 为每篇文章生成对应分类的随机封面图片
+const covers =
+  posts?.map((post) => {
+    // 获取文章的分类路径
+    const categories = post.data.categories;
+    if (categories && Array.isArray(categories) && categories.length > 0) {
+      // 处理嵌套分类格式
+      if (Array.isArray(categories[0])) {
+        // 例如: ['新世界探索', '智能进化']
+        const categoryPath = categories[0].join('/');
+        return getRandomCoverForPath(`/categories/${categoryPath}`);
+      } else {
+        // 处理单级分类格式
+        // 例如: '期权研究院'
+        return getRandomCoverForPath(`/categories/${categories[0]}`);
+      }
+    }
+    // 如果没有分类信息，使用默认的随机图片
+    const shuffled = shuffle(defaultCoverList);
+    return shuffled[0];
+  }) || [];
 ---
 
 <Divider>文章列表</Divider>

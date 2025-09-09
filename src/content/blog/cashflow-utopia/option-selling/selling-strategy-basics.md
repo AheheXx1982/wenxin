@@ -15,7 +15,7 @@ tags:
   - 收益增强
 ---
 
-![期权卖方策略](/img/articles/4.webp)
+![期权卖方策略](/img/cashflow-utopia/option-selling/1.webp)
 
 ## 策略概述
 
