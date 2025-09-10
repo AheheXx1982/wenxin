@@ -24,7 +24,7 @@ description: 'SilentXx｜寂静猎手'
 <div class="mt-4">
 坚守<span class="font-bold text-purple-600 dark:text-purple-400">"系统思维 + 低风险策略"</span>的投资理念，
 致力于深耕美股期权与数字货币交易。
-通过博客、课程、工具和社区,
+通过博客、课程，工具和社区,
 为普通投资者打造可复制的策略框架，
 帮助你摆脱情绪化交易，建立坚实的纪律体系，
 走向真正的交易自由。
