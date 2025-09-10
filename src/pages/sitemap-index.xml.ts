@@ -57,7 +57,7 @@ export async function GET(context: APIContext) {
       loc: pageUrl,
       lastmod: new Date().toISOString().split('T')[0],
       changefreq: 'daily',
-      priority: page === '' ? 1.0 : 0.5,
+      priority: page === '' ? 1.0 : page === 'about' ? 0.7 : 0.5,
     };
   });
 

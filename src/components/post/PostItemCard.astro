@@ -24,6 +24,7 @@ const { cover, date, catalog, categories, title, description } = data?.data ?? {
 const { body } = data ?? {};
 
 const readState = readingTime(body ?? '');
+// 优先使用文章frontmatter中定义的cover图片，否则使用随机生成的分类图片
 const finalCover = cover ?? randomCover ?? defaultCoverList[0];
 const href = routeBuilder(Routes.Post, data as BlogPost);
 
