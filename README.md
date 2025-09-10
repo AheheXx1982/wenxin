@@ -26,11 +26,11 @@ Fortunately, I am not yet old, still able to toss around a little. After all, in
 
 感谢原作者和余弦的贡献与指导，也感谢勤劳又学习意志超强的自己，坦白讲，半个月前我还不懂怎么使用 GitHub 和 VS Code，尽管困难重重，但我的热情却从丝毫不减，有时候为了修改代码，我老人家居然还能熬夜到凌晨四点半，这种锲而不舍的精神足以感动富婆~
 
-Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being so diligent and having such strong willpower to learn. To be honest, half a month ago I didn’t even know how to use GitHub or VS Code. Despite all the difficulties, my enthusiasm never waned. Sometimes, just to tweak a bit of code, this old fellow could even stay up until 4:30 in the morning. Such perseverance is enough to move even a rich lady~
+Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being so diligent and having such strong willpower to learn. To be honest, half a month ago I didn't even know how to use GitHub or VS Code. Despite all the difficulties, my enthusiasm never waned. Sometimes, just to tweak a bit of code, this old fellow could even stay up until 4:30 in the morning. Such perseverance is enough to move even a rich lady~
 
-特别感谢 ChatGPT、Gemini，通义灵码以及他的外国小表弟 Qoder，在我的亲切关怀与悉心指导下，它们通力协作，辛勤耕耘，最终还是勉强交出了一份能看的答卷，也让我的智商从 250 瞬间飙升至 250+，实现了从人类到（程序）猿类的反向进化，也许，这就是所谓“返璞归真”的内涵本质~
+特别感谢 ChatGPT、Gemini，通义灵码以及他的外国小表弟 Qoder，在我的亲切关怀与悉心指导下，它们通力协作，辛勤耕耘，最终还是勉强交出了一份能看的答卷，也让我的智商从 250 瞬间飙升至 250+，实现了从人类到（程序）猿类的反向进化，也许，这就是所谓"返璞归真"的内涵本质~
 
-Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its little foreign cousin Qoder. Under my kind care and meticulous guidance, they worked together tirelessly, and in the end barely managed to hand in a passable answer. This even made my IQ skyrocket from 250 to 250+, achieving a reverse evolution from human to (program) ape. Perhaps, this is the very essence of what they call “returning to simplicity.” ~
+Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its little foreign cousin Qoder. Under my kind care and meticulous guidance, they worked together tirelessly, and in the end barely managed to hand in a passable answer. This even made my IQ skyrocket from 250 to 250+, achieving a reverse evolution from human to (program) ape. Perhaps, this is the very essence of what they call "returning to simplicity." ~
 
 ---
 
@@ -69,6 +69,8 @@ SilentXx/
 │   │   └── blog/           # 博客文章 / Blog posts
 │   ├── layouts/            # 布局模板 / Layout templates
 │   ├── pages/              # 页面路由 / Page routes
+│   │   ├── rss.xml.ts      # RSS订阅 / RSS feed
+│   │   └── sitemap-index.xml.ts  # 站点地图 / Sitemap
 │   └── styles/             # 样式文件 / Style files
 ├── public/                 # 静态资源 / Static assets
 │   ├── fonts/              # 字体文件 / Font files
@@ -167,17 +169,24 @@ tags: ['标签 1 / Tag1', '标签 2 / Tag2']
 
 ---
 
+## 📡 RSS 与 站点地图 / RSS & Sitemap
+
+本项目支持 RSS 订阅和站点地图功能：
+
+- RSS 订阅地址: [https://yourdomain.com/rss.xml](https://yourdomain.com/rss.xml)
+- 站点地图地址: [https://yourdomain.com/sitemap-index.xml](https://yourdomain.com/sitemap-index.xml)
+
+这些功能有助于搜索引擎更好地索引您的网站内容，并为读者提供内容订阅功能。
+
+---
+
 ## 📈 更新日志 / Changelog
 
-🎯 最新版本 / Latest: v0.0.1 (2025-08-29)
+🎯 最新版本 / Latest: v0.1.0 (2025-09-11)
 
-✨ **全新发布** / **Initial Release**
+✨ **版本更新** / **Version Update**
 
-✅ Astro 5.13.2 核心框架 / Astro 5.13.2 Core Framework
-✅ shadcn/ui 现代化组件库 / Modern UI Component Library
-✅ 响应式设计 / Responsive Design
-✅ SEO 优化 / SEO Optimization
-✅ 404 页面外星人主题 / Alien-themed 404 Page
+✅ 版本号从 v0.0.1 升级到 v0.1.0 / Version upgraded from v0.0.1 to v0.1.0
 
 [📋 查看完整更新历史 → CHANGELOG.md](CHANGELOG.md)
 

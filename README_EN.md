@@ -15,13 +15,13 @@ _Modern Static Site Generator with Component Architecture_
 
 ## 📖 Project Overview
 
-At first sight of this theme, its beauty of light and shadow was like the surging of the galaxy, intoxicating to the soul. Thanks to my double “wise eyes” of nearsightedness and presbyopia, I could still appreciate it. However, since the hostess has been too busy with work to update it, and my own technical level is quite limited, I was almost at a loss in the beginning.
+At first sight of this theme, its beauty of light and shadow was like the surging of the galaxy, intoxicating to the soul. Thanks to my double "wise eyes" of nearsightedness and presbyopia, I could still appreciate it. However, since the hostess has been too busy with work to update it, and my own technical level is quite limited, I was almost at a loss in the beginning.
 
 Fortunately, I am not yet old, still able to toss around a little. After all, in those years I was also a reinstallation expert. After some effort, I finally achieved a little result. At least for my own use, there is not much problem. Moreover, I have made some necessary and unnecessary modifications on the basis of the original theme, to improve and enhance system performance. By rough estimate, the innovation index has already reached a five-star level~
 
-Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being so diligent and having such strong willpower to learn. To be honest, half a month ago I didn’t even know how to use GitHub or VS Code. Despite all the difficulties, my enthusiasm never waned. Sometimes, just to tweak a bit of code, this old fellow could even stay up until 4:30 in the morning. Such perseverance is enough to move even a rich lady~
+Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being so diligent and having such strong willpower to learn. To be honest, half a month ago I didn't even know how to use GitHub or VS Code. Despite all the difficulties, my enthusiasm never waned. Sometimes, just to tweak a bit of code, this old fellow could even stay up until 4:30 in the morning. Such perseverance is enough to move even a rich lady~
 
-Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its little foreign cousin Qoder. Under my kind care and meticulous guidance, they worked together tirelessly, and in the end barely managed to hand in a passable answer. This even made my IQ skyrocket from 250 to 250+, achieving a reverse evolution from human to (program) ape. Perhaps, this is the very essence of what they call “returning to simplicity.” ~
+Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its little foreign cousin Qoder. Under my kind care and meticulous guidance, they worked together tirelessly, and in the end barely managed to hand in a passable answer. This even made my IQ skyrocket from 250 to 250+, achieving a reverse evolution from human to (program) ape. Perhaps, this is the very essence of what they call "returning to simplicity." ~
 
 ---
 
@@ -60,6 +60,8 @@ SilentXx/
 │   │   └── blog/           # Blog posts
 │   ├── layouts/            # Layout templates
 │   ├── pages/              # Page routes
+│   │   ├── rss.xml.ts      # RSS feed
+│   │   └── sitemap-index.xml.ts  # Sitemap
 │   └── styles/             # Style files
 ├── public/                 # Static assets
 │   ├── fonts/              # Font files
@@ -158,17 +160,24 @@ Your Markdown content...
 
 ---
 
+## 📡 RSS & Sitemap
+
+This project supports RSS feeds and sitemap functionality:
+
+- RSS feed URL: [https://yourdomain.com/rss.xml](https://yourdomain.com/rss.xml)
+- Sitemap URL: [https://yourdomain.com/sitemap-index.xml](https://yourdomain.com/sitemap-index.xml)
+
+These features help search engines better index your website content and provide content subscription functionality for readers.
+
+---
+
 ## 📈 Changelog
 
-🎯 Latest: v0.0.1 (2025-08-29)
+🎯 Latest: v0.1.0 (2025-09-11)
 
-✨ **Initial Release**
+✨ **Version Update**
 
-✅ Astro 5.13.2 Core Framework
-✅ shadcn/ui Modern UI Component Library
-✅ Responsive Design
-✅ SEO Optimization
-✅ Alien-themed 404 Page
+✅ Version upgraded from v0.0.1 to v0.1.0
 
 [📋 View full changelog → CHANGELOG.md](CHANGELOG.md)
 

@@ -27,11 +27,17 @@ const covers =
       if (Array.isArray(categories[0])) {
         // 例如: ['新世界探索', '智能进化']
         const categoryPath = categories[0].join('/');
-        return getRandomCoverForPath(`/categories/${categoryPath}`);
+        const cover = getRandomCoverForPath(categoryPath);
+        // 调试信息
+        console.log(`Nested category path: ${categoryPath}, Cover: ${cover}`);
+        return cover;
       } else {
         // 处理单级分类格式
         // 例如: '期权研究院'
-        return getRandomCoverForPath(`/categories/${categories[0]}`);
+        const cover = getRandomCoverForPath(categories[0]);
+        // 调试信息
+        console.log(`Single category: ${categories[0]}, Cover: ${cover}`);
+        return cover;
       }
     }
     // 如果没有分类信息，使用默认的随机图片
