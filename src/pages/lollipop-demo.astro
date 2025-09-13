@@ -11,9 +11,9 @@ import { seoConfig } from '../constants/site-config';
     <div class="mb-12">
       <h2 class="mb-4 text-2xl font-semibold">电影《功夫》同款棒棒糖</h2>
       <div class="flex flex-col items-center">
-        <Lollipop size="lg" client:load />
+        <Lollipop size="lg" />
         <p class="mt-4 text-center text-lg">
-          这是根据您提供的PNG图片制作的电影《功夫》同款棒棒糖，完美还原了电影中的经典形象。
+          这是根据您提供的分割图片制作的电影《功夫》同款棒棒糖，完美还原了电影中的经典形象。
         </p>
       </div>
     </div>
@@ -24,7 +24,7 @@ import { seoConfig } from '../constants/site-config';
         {
           (['sm', 'md', 'lg'] as const).map((size) => (
             <div class="flex flex-col items-center">
-              <Lollipop size={size} client:load />
+              <Lollipop size={size} />
               <span class="mt-2 text-sm uppercase">{size}</span>
             </div>
           ))
@@ -35,7 +35,7 @@ import { seoConfig } from '../constants/site-config';
     <div class="mb-12">
       <h2 class="mb-4 text-2xl font-semibold">无动画效果</h2>
       <div class="flex flex-wrap justify-center gap-6">
-        <Lollipop animated={false} size="md" client:load />
+        <Lollipop animated={false} size="md" />
         <span class="ml-4 flex items-end">静止的棒棒糖</span>
       </div>
     </div>
@@ -44,7 +44,7 @@ import { seoConfig } from '../constants/site-config';
       <h2 class="mb-4 text-2xl font-semibold">电影经典场景重现</h2>
       <div class="my-8 flex justify-center">
         <div class="relative">
-          <Lollipop size="lg" client:load />
+          <Lollipop size="lg" />
           <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 transform text-sm italic">"我想要这个糖..."</div>
         </div>
       </div>
