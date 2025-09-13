@@ -20,6 +20,81 @@ export async function getSortedPosts(): Promise<CollectionEntry<'blog'>[]> {
   return sortedPosts;
 }
 
+// 新增函数：从所有文章中随机获取指定数量的文章
+export async function getRandomPosts(count: number): Promise<CollectionEntry<'blog'>[]> {
+  const posts = await getSortedPosts();
+
+  // Fisher-Yates 洗牌算法随机打乱文章顺序
+  const shuffled = [...posts];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  // 返回指定数量的文章
+  return shuffled.slice(0, count);
+}
+
+// 新增函数：获取每个分类下的最新文章
+export async function getLatestPostsByCategory(): Promise<CollectionEntry<'blog'>[]> {
+  const posts = await getSortedPosts();
+
+  // 按分类分组文章
+  const categoryMap: Record<string, CollectionEntry<'blog'>[]> = {};
+
+  posts.forEach((post) => {
+    const { categories } = post.data;
+    if (!categories || !Array.isArray(categories) || categories.length === 0) {
+      // 无分类文章归为默认分类
+      const key = 'uncategorized';
+      if (!categoryMap[key]) categoryMap[key] = [];
+      categoryMap[key].push(post);
+      return;
+    }
+
+    // 处理嵌套分类格式，如 ['现金流乌托邦', '期权卖方策略']
+    let categoryKey: string;
+    if (Array.isArray(categories[0])) {
+      categoryKey = categories[0].join('/');
+    } else {
+      // 处理单级分类格式
+      categoryKey = categories[0] as string;
+    }
+
+    if (!categoryMap[categoryKey]) categoryMap[categoryKey] = [];
+    categoryMap[categoryKey].push(post);
+  });
+
+  // 从每个分类中选取最新的文章
+  const latestPosts: CollectionEntry<'blog'>[] = [];
+  Object.values(categoryMap).forEach((categoryPosts) => {
+    if (categoryPosts.length > 0) {
+      // 取该分类下最新的文章
+      latestPosts.push(categoryPosts[0]);
+    }
+  });
+
+  // 按日期排序，确保最新的文章在前面
+  return latestPosts.sort((a, b) => {
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+  });
+}
+
+// 新增函数：从每个分类的最新文章中随机选择指定数量的文章
+export async function getRandomLatestPosts(count: number): Promise<CollectionEntry<'blog'>[]> {
+  const latestPosts = await getLatestPostsByCategory();
+
+  // Fisher-Yates 洗牌算法随机打乱文章顺序
+  const shuffled = [...latestPosts];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  // 返回指定数量的文章
+  return shuffled.slice(0, count);
+}
+
 // 为文章获取对应分类的随机封面图片
 export function getPostCoverImage(post: BlogPost): string {
   const { categories } = post.data;
@@ -29,16 +104,35 @@ export function getPostCoverImage(post: BlogPost): string {
     if (Array.isArray(categories[0])) {
       // 例如: ['新世界探索', '智能进化']
       const categoryPath = categories[0].join('/');
-      return getRandomCoverForPath(`/categories/${categoryPath}`);
+      const path = `/categories/${categoryPath}`;
+      console.log(`获取嵌套分类图片: ${path}`);
+      console.log(`分类详情:`, categories[0]);
+
+      // 特殊处理加密风向标分类
+      if (categoryPath === '新世界探索/加密风向标') {
+        console.log('特殊处理加密风向标分类');
+        const result = getRandomCoverForPath('/categories/crypto-news');
+        console.log(`获取到的图片: ${result}`);
+        return result;
+      }
+
+      const result = getRandomCoverForPath(path);
+      console.log(`获取到的图片: ${result}`);
+      return result;
     } else {
       // 处理单级分类格式
       // 例如: '期权研究院'
-      return getRandomCoverForPath(`/categories/${categories[0]}`);
+      const path = `/categories/${categories[0]}`;
+      console.log(`获取单级分类图片: ${path}`);
+      const result = getRandomCoverForPath(path);
+      console.log(`获取到的图片: ${result}`);
+      return result;
     }
   }
 
   // 如果没有分类信息，返回默认图片
-  return '/img/options/1.webp';
+  console.log('没有分类信息，返回默认图片');
+  return '/img/banner.webp';
 }
 
 export const getAllTags = (posts: BlogPost[]) => {

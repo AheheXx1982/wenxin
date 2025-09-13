@@ -1,0 +1,43 @@
+name: Update Cover Images Configuration
+
+on:
+  push:
+    paths:
+      - 'public/img/**'
+  workflow_dispatch:
+
+jobs:
+  update-covers:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm install
+    
+    - name: Run update covers script
+      run: npm run update-covers
+    
+    - name: Check for changes
+      id: git-check
+      run: |
+        git diff --exit-code src/lib/cover.ts docs/cover-images.md src/constants/site-config.ts || echo "changed=true" >> $GITHUB_OUTPUT
+    
+    - name: Commit and push changes
+      if: steps.git-check.outputs.changed == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add src/lib/cover.ts docs/cover-images.md src/constants/site-config.ts
+        git commit -m "Auto-update cover images configuration"
+        git push
