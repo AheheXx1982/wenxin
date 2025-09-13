@@ -33,3 +33,23 @@
     transform: rotate(0deg);
   }
 }
+
+/* 棒棒糖摇摆动画 */
+@keyframes lollipop-wiggle {
+  0%, 100% { 
+    transform: rotate(-5deg); 
+  }
+  50% { 
+    transform: rotate(5deg); 
+  }
+}
+
+/* 棒棒糖弹跳动画 */
+@keyframes lollipop-bounce {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}

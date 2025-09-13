@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Lollipop from '../components/fun/Lollipop.astro';
+import { seoConfig } from '../constants/site-config';
+
+const colors = ['pink', 'blue', 'green', 'yellow', 'purple', 'red'];
+const sizes = ['sm', 'md', 'lg'] as const;
+---
+
+<Layout title={`${seoConfig.title} - 棒棒糖演示`}>
+  <div class="mx-auto max-w-4xl px-4 py-8">
+    <h1 class="mb-8 text-center text-3xl font-bold">棒棒糖演示</h1>
+
+    <div class="mb-12">
+      <h2 class="mb-4 text-2xl font-semibold">不同颜色的棒棒糖</h2>
+      <div class="flex flex-wrap justify-center gap-6">
+        {
+          colors.map((color) => (
+            <div class="flex flex-col items-center">
+              <Lollipop color={color} client:load />
+              <span class="mt-2 text-sm capitalize">{color}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mb-12">
+      <h2 class="mb-4 text-2xl font-semibold">不同尺寸的棒棒糖</h2>
+      <div class="flex flex-wrap items-end justify-center gap-6">
+        {
+          sizes.map((size) => (
+            <div class="flex flex-col items-center">
+              <Lollipop size={size} client:load />
+              <span class="mt-2 text-sm uppercase">{size}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mb-12">
+      <h2 class="mb-4 text-2xl font-semibold">无动画效果</h2>
+      <div class="flex flex-wrap justify-center gap-6">
+        <Lollipop animated={false} client:load />
+        <span class="flex items-end">静止的棒棒糖</span>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <h2 class="mb-4 text-2xl font-semibold">电影《功夫》中的经典棒棒糖</h2>
+      <div class="flex justify-center">
+        <Lollipop size="lg" color="pink" client:load />
+      </div>
+      <p class="mt-4 text-lg">就像周星驰电影《功夫》中的那个经典棒棒糖一样，甜蜜而美好。</p>
+    </div>
+  </div>
+</Layout>
