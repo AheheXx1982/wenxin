@@ -4,7 +4,6 @@ import Lollipop from '../components/fun/Lollipop.astro';
 import { seoConfig } from '../constants/site-config';
 
 const colors = ['pink', 'blue', 'green', 'yellow', 'purple', 'red'];
-const sizes = ['sm', 'md', 'lg'] as const;
 ---
 
 <Layout title={`${seoConfig.title} - 棒棒糖演示`}>
@@ -12,12 +11,20 @@ const sizes = ['sm', 'md', 'lg'] as const;
     <h1 class="mb-8 text-center text-3xl font-bold">棒棒糖演示</h1>
 
     <div class="mb-12">
+      <h2 class="mb-4 text-2xl font-semibold">电影《功夫》经典款</h2>
+      <div class="flex flex-col items-center">
+        <Lollipop size="lg" color="pink" client:load />
+        <p class="mt-4 text-center text-lg">这是更贴近周星驰电影《功夫》中的经典棒棒糖，带有标志性的"M"字母。</p>
+      </div>
+    </div>
+
+    <div class="mb-12">
       <h2 class="mb-4 text-2xl font-semibold">不同颜色的棒棒糖</h2>
       <div class="flex flex-wrap justify-center gap-6">
         {
           colors.map((color) => (
             <div class="flex flex-col items-center">
-              <Lollipop color={color} client:load />
+              <Lollipop color={color} size="md" client:load />
               <span class="mt-2 text-sm capitalize">{color}</span>
             </div>
           ))
@@ -29,9 +36,9 @@ const sizes = ['sm', 'md', 'lg'] as const;
       <h2 class="mb-4 text-2xl font-semibold">不同尺寸的棒棒糖</h2>
       <div class="flex flex-wrap items-end justify-center gap-6">
         {
-          sizes.map((size) => (
+          (['sm', 'md', 'lg'] as const).map((size) => (
             <div class="flex flex-col items-center">
-              <Lollipop size={size} client:load />
+              <Lollipop size={size} color="pink" client:load />
               <span class="mt-2 text-sm uppercase">{size}</span>
             </div>
           ))
@@ -42,17 +49,20 @@ const sizes = ['sm', 'md', 'lg'] as const;
     <div class="mb-12">
       <h2 class="mb-4 text-2xl font-semibold">无动画效果</h2>
       <div class="flex flex-wrap justify-center gap-6">
-        <Lollipop animated={false} client:load />
-        <span class="flex items-end">静止的棒棒糖</span>
+        <Lollipop animated={false} size="md" color="pink" client:load />
+        <span class="ml-4 flex items-end">静止的棒棒糖</span>
       </div>
     </div>
 
     <div class="text-center">
-      <h2 class="mb-4 text-2xl font-semibold">电影《功夫》中的经典棒棒糖</h2>
-      <div class="flex justify-center">
-        <Lollipop size="lg" color="pink" client:load />
+      <h2 class="mb-4 text-2xl font-semibold">电影场景重现</h2>
+      <div class="my-8 flex justify-center">
+        <div class="relative">
+          <Lollipop size="lg" color="pink" client:load />
+          <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 transform text-sm italic">"我想要这个糖..."</div>
+        </div>
       </div>
-      <p class="mt-4 text-lg">就像周星驰电影《功夫》中的那个经典棒棒糖一样，甜蜜而美好。</p>
+      <p class="mt-4 text-lg">就像周星驰电影《功夫》中的那个经典场景一样，甜蜜而令人难忘。</p>
     </div>
   </div>
 </Layout>

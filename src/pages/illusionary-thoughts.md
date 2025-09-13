@@ -21,14 +21,18 @@ description: 收录一些有趣的创意和想法，就像周星驰电影里的�
 
 下面是我在网站上制作的一个类似效果的棒棒糖：
 
-<Lollipop client:load />
+<Lollipop size="lg" color="pink" client:load />
 
 这个棒棒糖具有以下特点：
 
-1. **多种颜色**：支持粉红、蓝色、绿色、黄色、紫色和红色等多种颜色
-2. **三种尺寸**：小号、中号和大号三种尺寸可选
-3. **动画效果**：具有弹跳和摇摆的动画效果，就像电影中的一样
-4. **细节设计**：包含高光和条纹效果，让棒棒糖看起来更加真实
+1. **经典设计**：更贴近电影中棒棒糖的外观，带有标志性的"M"字母
+2. **多种颜色**：支持粉红、蓝色、绿色、黄色、紫色和红色等多种颜色
+3. **三种尺寸**：小号、中号和大号三种尺寸可选
+4. **动画效果**：具有弹跳和摇摆的动画效果，就像电影中的一样
+5. **细节设计**：
+   - 糖果上的高光效果
+   - 棍子上的木质纹理
+   - 边缘光泽效果
 
 ### 使用方法
 
@@ -39,14 +43,14 @@ description: 收录一些有趣的创意和想法，就像周星驰电影里的�
 import Lollipop from '../components/fun/Lollipop.astro';
 ---
 
-<!-- 默认粉红色中号棒棒糖 -->
-<Lollipop />
+<!-- 电影《功夫》经典款棒棒糖 -->
+<Lollipop size="lg" color="pink" client:load />
 
-<!-- 蓝色大号棒棒糖 -->
-<Lollipop color="blue" size="lg" />
+<!-- 蓝色中号棒棒糖 -->
+<Lollipop color="blue" size="md" client:load />
 
 <!-- 无动画效果的绿色小号棒棒糖 -->
-<Lollipop color="green" size="sm" animated={false} />
+<Lollipop color="green" size="sm" animated={false} client:load />
 ```
 
-希望这个小小的棒棒糖能为您的网站增添一些趣味和甜蜜！
+希望这个小小的棒棒糖能为您的网站增添一些趣味和甜蜜！就像电影中那个经典场景一样，让人回味无穷。
