@@ -36,7 +36,7 @@ export async function GET(context: APIContext) {
   const validPosts = posts && Array.isArray(posts) ? posts : [];
 
   // 获取所有静态页面
-  const staticPages = ['', 'about', 'rss.xml'];
+  const staticPages = ['', 'about', 'investment', 'illusionary-thoughts', 'rss.xml'];
 
   // 生成文章URL列表
   const postUrls = validPosts.map((post) => {
@@ -57,7 +57,7 @@ export async function GET(context: APIContext) {
       loc: pageUrl,
       lastmod: new Date().toISOString().split('T')[0],
       changefreq: 'daily',
-      priority: page === '' ? 1.0 : page === 'about' ? 0.7 : 0.5,
+      priority: page === '' ? 1.0 : page === 'about' ? 0.7 : page === 'investment' ? 0.6 : 0.5,
     };
   });
 

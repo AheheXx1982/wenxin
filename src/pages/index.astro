@@ -7,11 +7,10 @@ import { HomeSiderType } from '@constants/enum';
 import { seoConfig } from '@constants/site-config';
 import Layout from '@layouts/Layout.astro';
 import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
-import { getSortedPosts } from '@lib/content';
+import { getRandomLatestPosts } from '@lib/content';
 import { Icon } from 'astro-icon/components';
 
-const postCollections = await getSortedPosts();
-const posts = postCollections.slice(0, 5);
+const posts = await getRandomLatestPosts(5);
 ---
 
 <Layout title={seoConfig.title}>

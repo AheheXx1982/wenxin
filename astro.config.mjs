@@ -57,4 +57,5 @@ export default defineConfig({
     plugins: [svgr(), tailwindcss()],
   },
   trailingSlash: 'never',
+  output: 'static',
 });

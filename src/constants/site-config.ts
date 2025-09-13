@@ -80,44 +80,44 @@ export const siteConfig: SiteConfig = {
     {
       link: '/categories/options/course',
       label: '期权课程',
-      image: '/img/options/6.webp',
+      image: '/img/options/1.webp',
       description: '期权课程',
     },
     {
       link: '/categories/options/trading-journal',
       label: '实盘分享',
-      image: '/img/options/1.webp',
+      image: '/img/options/2.webp',
       description: '实盘交易记录',
     },
     {
       link: '/categories/crypto/crypto-wiki',
       label: '加密百科',
-      image: '/img/crypto/12.webp',
+      image: '/img/crypto/1.webp',
       description: '加密货币百科全书',
     },
     {
       link: '/categories/crypto/grid',
       label: '网格策略',
-      image: '/img/crypto/2.webp',
+      image: '/img/crypto/grid/1.webp',
       description: '网格策略',
     },
     {
       link: '/categories/crypto/futures',
       label: '合约交易',
-      image: '/img/crypto/11.webp',
+      image: '/img/crypto/7.webp',
       description: '合约交易',
     },
 
     {
-      link: '/categories/cashflow-utopia/option-selling',
+      link: '/categories/options/option-selling',
       label: '期权卖方策略',
-      image: '/img/cashflow-utopia/option-selling/1.webp',
+      image: '/img/options/3.webp', // 更新图片路径到新的位置
       description: '期权卖方策略',
     },
     {
       link: '/categories/cashflow-utopia/drip',
       label: '全球高息股轮动',
-      image: '/img/cashflow-utopia/drip/1.webp',
+      image: '/img/cashflow-utopia/4.webp',
       description: '全球高息股轮动',
     },
     {
@@ -129,7 +129,7 @@ export const siteConfig: SiteConfig = {
     {
       link: '/categories/new-world-explore/crypto-news',
       label: '加密风向标',
-      image: '/img/crypto/10.webp',
+      image: '/img/crypto/crypto-news/1.webp',
       description: '加密货币新闻',
     },
     {
@@ -195,36 +195,19 @@ export const seoConfig = {
 
 // 注意：此列表作为默认的随机图片列表使用
 // 对于特定分类的文章，系统会根据分类路径从对应的图片目录获取随机图片
+// 图片获取优先级：子目录 -> 一级目录 -> articles目录
+// 一级目录的图片正在更新中，以确保与各主题的相关性并避免与其他目录重复
 // 请参见 src/lib/cover.ts 中的 getDefaultCoversForPath 和 getRandomCoverForPath 函数
 export const defaultCoverList = [
-  '/img/options/1.webp',
-  '/img/crypto/1.webp',
-  '/img/new-world-explore/1.webp',
-  '/img/crypto/grid/1.webp',
-  '/img/options/strategy/1.webp',
-  '/img/cashflow-utopia/drip/1.webp',
-  '/img/cashflow-utopia/asset-allocation/1.webp',
-  '/img/stock/1.webp',
-  '/img/options/2.webp',
-  '/img/crypto/2.webp',
-  '/img/options/3.webp',
-  '/img/crypto/3.webp',
-  '/img/options/4.webp',
-  '/img/crypto/4.webp',
-  '/img/options/5.webp',
-  '/img/crypto/5.webp',
-  '/img/options/6.webp',
-  '/img/crypto/6.webp',
-  '/img/options/7.webp',
-  '/img/crypto/7.webp',
-  '/img/options/8.webp',
-  '/img/crypto/8.webp',
-  '/img/options/9.webp',
-  '/img/crypto/9.webp',
-  '/img/options/10.webp',
-  '/img/crypto/10.webp',
-  '/img/stock/2.webp',
-  '/img/stock/3.webp',
-  '/img/stock/4.webp',
-  '/img/stock/5.webp',
+  '/img/articles/1.webp',
+  '/img/articles/2.webp',
+  '/img/articles/3.webp',
+  '/img/articles/4.webp',
+  '/img/articles/5.webp',
+  '/img/articles/6.webp',
+  '/img/articles/7.webp',
+  '/img/articles/8.webp',
+  '/img/articles/9.webp',
+  '/img/articles/10.webp',
+  '/img/articles/11.webp',
 ];
