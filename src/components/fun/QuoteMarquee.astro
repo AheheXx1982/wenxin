@@ -1,0 +1,93 @@
+---
+interface Props {
+  speed?: number; // 滚动速度，单位：秒
+}
+
+const { speed = 25 } = Astro.props;
+
+// 定义金融领域大咖名言（周一到周五）
+const financialQuotes = [
+  '投资成功与否并非取决于你了解的东西，而在于你能否老老实实地承认你所不知道的东西。——沃伦·巴菲特',
+  '风险来自于你不知道自己在做什么。——沃伦·巴菲特',
+  '时间是优秀企业的朋友，平庸企业的敌人。——沃伦·巴菲特',
+  '投资最重要的不是买好的，而是买得好。——查理·芒格',
+  '在别人贪婪时恐惧，在别人恐惧时贪婪。——沃伦·巴菲特',
+  '市场就像电梯，总是在你最意想不到的时候到达顶楼或地下室。——彼得·林奇',
+  '投资是一场马拉松，而不是短跑。——约翰·博格',
+  '不要把所有鸡蛋放在一个篮子里。——詹姆斯·托宾',
+  '成功的投资需要投资者具备四种能力：分析能力、选择能力、忍耐能力和自知能力。——本杰明·格雷厄姆',
+  '价格是你付出的，价值是你得到的。——沃伦·巴菲特',
+  '投资中最重要的是控制风险，而不是追求高收益。——索罗斯',
+  '市场总是在变化，投资策略也应随之调整。——乔治·索罗斯',
+  '投资的关键在于找到那些被市场低估的资产。——本杰明·格雷厄姆',
+  '长期投资胜过短期投机。——约翰·邓普顿',
+  '投资决策应该基于深入的研究和分析，而不是情绪或猜测。——菲利普·费雪',
+];
+
+// 定义王小波及其他名言（周六周日）
+const otherQuotes = [
+  '一个人只拥有此生此世是不够的，他还应该拥有诗意的世界。——王小波',
+  '我活在世上，无非想要明白些道理，遇见些有趣的事。——王小波',
+  '人的一切痛苦，本质上都是对自己无能的愤怒。——王小波',
+  '人生唯一有把握不会落空的等待是那必然到来的死亡。——王小波',
+  '智慧本身就是好的。有一天我们都会死去，追求智慧的道路还会有人走着。——王小波',
+  '一个人想象自己不懂得的事很容易浪漫。——王小波',
+  '生活是天籁，需要静神倾听。——王小波',
+  '人应该有所信仰，有所敬畏。——王小波',
+  '正确的看法是，这是对一个人的打击，给他带来了痛苦，但是也使他成长。——王小波',
+  '一个人快乐或悲伤，只要不是装出来的，就必有其道理。——王小波',
+  '读书多了，容颜自然改变。许多时候，自己可能以为看过的书籍都成过眼烟云，不复记忆，其实他们仍是潜在的。在气质里，在谈吐上，在胸襟的无涯。——三毛',
+  '人生最好的境界是丰富的安静。——周国平',
+  '人生的意义在于承担。——鲁迅',
+  '生活最大的危险就是一个空虚的心。——罗曼·罗兰',
+  '世界上只有一种真正的英雄主义，那就是在认清生活的真相后依然热爱生活。——罗曼·罗兰',
+  '人生而自由，却无往不在枷锁之中。——卢梭',
+  '人生的价值，并不是用时间，而是用深度去衡量的。——列夫·托尔斯泰',
+  '生活的理想，就是为了理想的生活。——张闻天',
+  '人生应该如蜡烛一样，从顶燃到底，一直都是光明的。——萧楚女',
+  '人的一生可能燃烧也可能腐朽，我不能腐朽，我愿意燃烧起来！——奥斯特洛夫斯基',
+];
+
+// 根据当前星期几选择名言列表
+const today = new Date().getDay(); // 0表示周日，1-5表示周一到周五，6表示周六
+const quotes = today >= 1 && today <= 5 ? financialQuotes : otherQuotes;
+
+// 随机选择一条名言
+const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+---
+
+<div
+  class="w-full overflow-hidden rounded-lg border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 py-3 shadow-sm"
+  style="flex: 0 0 auto;"
+>
+  <div class="relative flex whitespace-nowrap">
+    <style is:global>
+      @keyframes marquee {
+        0% {
+          transform: translateX(100%);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+
+      .marquee-content {
+        display: inline-block;
+        padding-left: 100%;
+        animation: marquee linear infinite;
+      }
+
+      .marquee-content:hover {
+        animation-play-state: paused;
+      }
+    </style>
+
+    <div class="marquee-content" style={`animation-duration: ${speed}s;`}>
+      <span class="mx-4 text-sm font-medium text-blue-800">"{randomQuote}"</span>
+    </div>
+
+    <div class="marquee-content" style={`animation-duration: ${speed}s;`}>
+      <span class="mx-4 text-sm font-medium text-blue-800">"{randomQuote}"</span>
+    </div>
+  </div>
+</div>
