@@ -1,5 +1,5 @@
 ---
-layout: ../layouts/PostLayout.astro
+layout: ../layouts/Layout.astro
 title: 幻念集
 date: 2025-09-13
 cover: /img/banner.webp
