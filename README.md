@@ -184,11 +184,12 @@ tags: ['标签 1 / Tag1', '标签 2 / Tag2']
 
 ## 📈 更新日志 / Changelog
 
-🎯 最新版本 / Latest: v0.1.0 (2025-09-11)
+🎯 最新版本 / Latest: v0.2.0 (2025-09-14)
 
 ✨ **版本更新** / **Version Update**
 
-✅ 版本号从 v0.0.1 升级到 v0.1.0 / Version upgraded from v0.0.1 to v0.1.0
+✅ 版本号从 v0.1.0 升级到 v0.2.0 / Version upgraded from v0.1.0 to v0.2.0
+✅ 幻念集页面优化：实现随机展示内容功能，每次打开页面显示50%随机内容，确保展示数量为偶数以保持页面对齐美观
 
 [📋 查看完整更新历史 → CHANGELOG.md](CHANGELOG.md)
 

@@ -173,11 +173,12 @@ These features help search engines better index your website content and provide
 
 ## 📈 Changelog
 
-🎯 Latest: v0.1.0 (2025-09-11)
+🎯 Latest: v0.2.0 (2025-09-14)
 
 ✨ **Version Update**
 
-✅ Version upgraded from v0.0.1 to v0.1.0
+✅ Version upgraded from v0.1.0 to v0.2.0
+✅ Illusionary Thoughts page optimization: Implemented random content display feature, showing 50% random content each time the page is opened, ensuring an even number of displays to maintain page alignment and aesthetics
 
 [📋 View full changelog → CHANGELOG.md](CHANGELOG.md)
 

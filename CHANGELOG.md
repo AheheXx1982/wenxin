@@ -4,6 +4,15 @@
 
 <!-- 由 git-cliff 生成、 gpt 翻译润色 -->
 
+## [0.2.0] - 2025-09-14
+
+### 🎉 版本更新 / Version Update
+
+#### 🚀 核心更新 / Core Updates
+
+- **版本号升级** - 从 v0.1.0 升级到 v0.2.0 / Version upgraded from v0.1.0 to v0.2.0
+- **幻念集页面优化** - 实现随机展示内容功能，每次打开页面显示 50%随机内容，确保展示数量为偶数以保持页面对齐美观
+
 ## [0.1.0] - 2025-09-11
 
 ### 🎉 版本更新 / Version Update
@@ -41,6 +50,7 @@
 - Tailwind CSS 4.0.0
 - Vercel 部署 / Vercel deployment
 
-[未发布]: https://github.com/AheheXx1982/SilentXx/compare/v0.1.0...HEAD
+[未发布]: https://github.com/AheheXx1982/SilentXx/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.2.0
 [0.1.0]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.1.0
 [0.0.1]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.0.1
