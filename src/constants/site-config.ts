@@ -129,7 +129,7 @@ export const siteConfig: SiteConfig = {
     {
       link: '/categories/new-world-explore/crypto-news',
       label: '加密风向标',
-      image: '/img/crypto/crypto-news/1.webp',
+      image: '/img/crypto/crypto-news/2.webp',
       description: '加密货币新闻',
     },
     {
