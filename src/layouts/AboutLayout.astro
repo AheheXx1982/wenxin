@@ -5,6 +5,7 @@ import { seoConfig } from '@constants/site-config';
 import Layout from './Layout.astro';
 import TwoColumnLayout from './TwoColumnLayout.astro';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
+import IllusionaryThoughtsContent from '@components/fun/IllusionaryThoughtsContent.astro';
 
 export interface Props {
   frontmatter: {
@@ -25,9 +26,15 @@ const isIllusionaryThoughts = frontmatter.title === '幻念集';
     <HomeSider slot="sider" />
     <QuoteMarquee alwaysShowCultural={isIllusionaryThoughts} />
     <div class="shadow-box bg-gradient-start mx-0 flex w-full flex-col gap-8 p-4 pt-6 md:px-3 md:py-2">
-      <div class="prose dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl">
-        <slot />
-      </div>
+      {
+        isIllusionaryThoughts ? (
+          <IllusionaryThoughtsContent />
+        ) : (
+          <div class="prose dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl">
+            <slot />
+          </div>
+        )
+      }
     </div>
   </TwoColumnLayout>
 </Layout>
