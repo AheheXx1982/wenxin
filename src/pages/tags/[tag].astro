@@ -6,6 +6,7 @@ import Layout from '@layouts/Layout.astro';
 import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
 import { getPostLastCategory, getSortedPosts } from '@lib/content';
 import { parseDate } from '@lib/datetime';
+import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
 export async function getStaticPaths() {
   const posts = await getSortedPosts();
@@ -32,6 +33,7 @@ const { tag, posts } = Astro.props;
   <TwoColumnLayout>
     <Cover slot="cover" title={`包含标签"${tag}"的文章`} />
     <HomeSider slot="sider" />
+    <QuoteMarquee />
     <div class="shadow-box bg-gradient-start mx-0 flex w-full flex-col px-6 py-4 md:px-3 md:py-2">
       <h2 class="shoka-decoration-circle has-children group relative h-19 px-7.5 py-5 text-2xl/9 font-bold">
         <a

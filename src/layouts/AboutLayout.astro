@@ -4,6 +4,7 @@ import Cover from '@components/ui/cover/Cover.astro';
 import { seoConfig } from '@constants/site-config';
 import Layout from './Layout.astro';
 import TwoColumnLayout from './TwoColumnLayout.astro';
+import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
 export interface Props {
   frontmatter: {
@@ -19,6 +20,7 @@ const { frontmatter } = Astro.props;
   <TwoColumnLayout>
     <Cover slot="cover" />
     <HomeSider slot="sider" />
+    <QuoteMarquee />
     <div class="shadow-box bg-gradient-start mx-0 flex w-full flex-col gap-8 p-4 pt-8 md:px-3 md:py-2">
       <div class="prose dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl">
         <slot />

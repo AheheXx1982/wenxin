@@ -6,6 +6,7 @@ import { seoConfig } from '@constants/site-config';
 import Layout from '@layouts/Layout.astro';
 import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
 import { getCategoryLinks, getCategoryList } from '@lib/content';
+import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
 const { categories, countMap } = await getCategoryList();
 const links = getCategoryLinks(categories, '');
@@ -15,6 +16,7 @@ const links = getCategoryLinks(categories, '');
   <TwoColumnLayout>
     <Cover slot="cover" title="全部分类" />
     <HomeSider slot="sider" />
+    <QuoteMarquee />
     <CategoryList categories={categories} countMap={countMap} totalCount={links.length ?? 0} />
   </TwoColumnLayout>
 </Layout>
