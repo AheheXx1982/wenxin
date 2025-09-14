@@ -1,52 +1,24 @@
 ---
-layout: ../layouts/Layout.astro
-title: 幻念集
-date: 2025-09-13
-cover: /img/banner.webp
-categories:
-  - ['幻念集']
-tags:
-  - 生活
-  - 趣味
-description: 收录一些有趣的创意和想法，就像周星驰电影里的棒棒糖一样甜蜜。
+layout: ../layouts/AboutLayout.astro
+title: '幻念集'
+date: 2025-09-05
+description: 'SilentXx｜寂静猎手 - 幻念集'
 ---
+
+<div class="text-center py-8">
 
 # 幻念集
 
-欢迎来到我的幻念集，在这里我会分享一些有趣的想法和创意。
+</div>
 
-## 功夫里的棒棒糖
+<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 mb-8 shadow-lg">
 
-在周星驰的电影《功夫》中，有一个非常经典的棒棒糖场景。那颗粉红色的棒棒糖不仅是一个糖果，更象征着童真、甜蜜和美好。
+### 🌌 记录那些转瞬即逝的心灵火花与未曾言说的灵感碎片
 
-下面是我在网站上制作的一个类似效果的棒棒糖：
+<div class="mt-5">
+我来这个世界，不是为了繁衍后代，而是来看花怎么开，水怎么流，太阳怎么升起，夕阳何时落下，我活在世上，无非想要明白些道理，遇见些有趣的事，生命是一场偶然，我在其中寻找因果。 
+</div>
+​ <div class="text-right text-gray-500 dark:text-gray-400 text-sm">                                ——王小波
+</div>
 
-<Lollipop size="lg" />
-
-这个棒棒糖具有以下特点：
-
-1. **电影同款设计**：根据您提供的分割图片制作，完美还原了电影《功夫》中棒棒糖的外观
-2. **真实质感**：使用实际的分割图片作为糖果和手柄，而不是简单的颜色填充
-3. **三种尺寸**：小号、中号和大号三种尺寸可选
-4. **动画效果**：糖果部分旋转，手柄部分保持静止，就像电影中的一样
-
-### 使用方法
-
-您可以在任何 Astro 组件中使用这个棒棒糖组件：
-
-```astro
----
-import Lollipop from '../components/fun/Lollipop.astro';
----
-
-<!-- 电影《功夫》同款棒棒糖 -->
-<Lollipop size="lg" />
-
-<!-- 中号棒棒糖 -->
-<Lollipop size="md" />
-
-<!-- 无动画效果的小号棒棒糖 -->
-<Lollipop size="sm" animated={false} />
-```
-
-希望这个小小的棒棒糖能为您的网站增添一些趣味和甜蜜！就像电影中那个经典场景一样，让人回味无穷。
+</div>
