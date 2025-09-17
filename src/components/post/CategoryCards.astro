@@ -3,13 +3,24 @@ import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { categoryMap } from '@constants/category';
 import { Routes } from '@constants/router';
-import { siteConfig } from '@constants/site-config';
-import { getCategoryByLink, getCategoryList, getParentCategory, getPostsByCategory, type Category } from '@lib/content';
+import {
+  getCategoryByLink,
+  getCategoryList,
+  getParentCategory,
+  getPostsByCategory,
+  getPostsByCategoryPath,
+  type Category,
+} from '@lib/content';
+import { getLanguageFromAstroUrl, getUIText, getSiteConfig } from '@lib/i18n';
 import { routeBuilder } from '@lib/route';
 import { cn } from '@lib/utils';
 import type { CollectionEntry } from 'astro:content';
 import FlippedCard from './FlippedCard.astro';
 import { Icon } from 'astro-icon/components';
+
+interface Props {
+  lang?: string;
+}
 
 interface CategoryWithPosts {
   link: string;
@@ -20,16 +31,49 @@ interface CategoryWithPosts {
   parentCategory: Category | null;
 }
 
+const { lang } = Astro.props;
+const currentLang = (lang || getLanguageFromAstroUrl(Astro.url)) as 'zh' | 'en';
+const uiText = getUIText(currentLang);
+const siteConfig = getSiteConfig(currentLang);
+
 const { categories } = await getCategoryList();
 
 const categoryPosts: CategoryWithPosts[] = await Promise.all(
   siteConfig.featuredCategories?.map(async (category) => {
-    const categoryInfo = getCategoryByLink(categories, category?.link);
-    const posts = await getPostsByCategory(categoryInfo?.name ?? '');
+    // 处理英文版链接，去除语言前缀
+    let categoryLink = category?.link;
+    if (categoryLink?.startsWith('/en/')) {
+      categoryLink = categoryLink.replace('/en', '') as typeof categoryLink;
+    }
+
+    const categoryInfo = getCategoryByLink(categories, categoryLink);
+
+    let posts: CollectionEntry<'blog'>[] = [];
+
+    if (categoryInfo) {
+      // 首先尝试通过分类路径获取文章（用于嵌套分类）
+      const categoryPath = [];
+
+      // 检查是否有父分类
+      const parentCategory = getParentCategory(categoryInfo, categories);
+      if (parentCategory) {
+        categoryPath.push(parentCategory.name);
+      }
+      categoryPath.push(categoryInfo.name);
+
+      if (categoryPath.length > 1) {
+        // 嵌套分类，使用路径查找
+        posts = await getPostsByCategoryPath(categoryPath, currentLang);
+      } else {
+        // 单级分类，使用名称查找
+        posts = await getPostsByCategory(categoryInfo.name, currentLang);
+      }
+    }
+
     return {
       link: category.link,
       label: category?.label,
-      image: category.image,
+      image: (category as any).image,
       category: categoryInfo,
       parentCategory: getParentCategory(categoryInfo, categories),
       posts: posts,
@@ -53,8 +97,8 @@ const categoryPosts: CategoryWithPosts[] = await Promise.all(
         <FlippedCard>
           <div slot="front" class="flex-center relative h-full rounded-md px-2 py-4">
             <img
-              src={category.image}
-              alt={category.label}
+              src={category.image!}
+              alt={category.label || categoryInfo?.name || ''}
               class="absolute inset-0 -z-10 h-full w-full rounded-md object-cover"
             />
             <div class="bg-shoka-card-mask absolute inset-0 -z-10 h-full w-full rounded-md opacity-25" />
@@ -90,7 +134,7 @@ const categoryPosts: CategoryWithPosts[] = await Promise.all(
                 : null}
               {posts.map((post) => (
                 <a
-                  href={routeBuilder(Routes.Post, post)}
+                  href={routeBuilder(Routes.Post, post, currentLang)}
                   class="text-primary hover:text-blue truncate text-left transition-colors duration-300"
                 >
                   {post.data.title}
@@ -109,8 +153,8 @@ const categoryPosts: CategoryWithPosts[] = await Promise.all(
               ) : null}
               <Fragment>
                 <Icon name="gg:loadbar-doc" class="mr-0.5 text-base" />
-                {categoryInfo?.children?.length ? `${categoryInfo.children.length} 个子分类，` : ''}
-                {category.posts?.length} 篇文章
+                {categoryInfo?.children?.length ? `${categoryInfo.children.length} ${uiText.subcategoriesCount}，` : ''}
+                {category.posts?.length} {uiText.articlesCount}
               </Fragment>
             </p>
             <a href={categoryLink} aria-label="more info" class="absolute right-0 bottom-0">
@@ -119,7 +163,7 @@ const categoryPosts: CategoryWithPosts[] = await Promise.all(
                   'bg-gradient-shoka-button rounded-2xl rounded-se-none rounded-es-none transition-all hover:translate-x-1 hover:translate-y-1 hover:scale-105 md:h-7 md:px-2 md:py-1 md:text-xs',
                 )}
               >
-                more...
+                {uiText.moreInfo}
               </Button>
             </a>
           </div>

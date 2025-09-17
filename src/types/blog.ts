@@ -20,4 +20,5 @@ export interface BlogSchema {
   categories?: string[] | string[][];
   subtitle?: string; // 文章副标题
   catalog?: boolean; // 是否分离
+  lang?: 'zh' | 'en'; // 语言标识
 }

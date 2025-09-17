@@ -1,8 +1,8 @@
 // edit https://github.com/lawvs/lawvs.github.io/blob/dba2e51e312765f8322ee87755b4e9c22b520048/src/pages/rss.xml.ts
 import rss from '@astrojs/rss';
-import { siteConfig } from '@constants/site-config';
 import { getSortedPosts } from '@lib/content';
 import { getSanitizeHtml } from '@lib/utils';
+import { getSiteConfig } from '@lib/i18n';
 import type { APIContext } from 'astro';
 import sanitizeHtml from 'sanitize-html';
 import type { BlogPost } from 'types/blog';
@@ -42,7 +42,8 @@ const generateTextSummary = (html?: string, length: number = 150): string => {
 };
 
 export async function GET(context: APIContext) {
-  const posts = await getSortedPosts();
+  // 获取中文版文章（默认语言）
+  const posts = await getSortedPosts('zh');
   const { site } = context;
 
   if (!site) {
@@ -51,6 +52,9 @@ export async function GET(context: APIContext) {
 
   // 确保 posts 存在且为数组
   const validPosts = posts && Array.isArray(posts) ? posts : [];
+
+  // 获取中文站点配置
+  const siteConfig = getSiteConfig('zh');
 
   return rss({
     title: escapeXml(siteConfig.title),

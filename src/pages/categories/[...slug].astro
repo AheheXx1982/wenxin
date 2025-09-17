@@ -2,10 +2,10 @@
 import CategoryPostList from '@components/category/CategoryPostList.astro';
 import HomeSider from '@components/layout/HomeSider.astro';
 import Cover from '@components/ui/cover/Cover.astro';
-import { seoConfig } from '@constants/site-config';
 import Layout from '@layouts/Layout.astro';
 import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
 import { getCategoryByLink, getCategoryLinks, getCategoryList } from '@lib/content';
+import { getSeoConfig, getUIText } from '@lib/i18n';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
 // 获取分类页面
@@ -30,6 +30,8 @@ export async function getStaticPaths() {
 
 const { category } = Astro.props;
 const { categories: allCategories, countMap } = await getCategoryList();
+const seoConfig = getSeoConfig('zh');
+const uiText = getUIText('zh');
 
 // 如果请求的路径不对应任何实际分类，则返回404
 if (!category) {
@@ -49,11 +51,11 @@ if (!category) {
 const displayCategories = category ? [category] : allCategories;
 ---
 
-<Layout title={`分类 - ${category?.name} | ${seoConfig.title}`}>
+<Layout title={`${uiText.categoriesTitle} - ${category?.name} | ${seoConfig.title}`}>
   <TwoColumnLayout>
-    <Cover slot="cover" title={`分类于"${category?.name}"的文章`} />
-    <HomeSider slot="sider" />
+    <Cover slot="cover" title={`${uiText.categoriesTitle}于"${category?.name}"的文章`} />
+    <HomeSider slot="sider" lang="zh" />
     <QuoteMarquee />
-    <CategoryPostList rootCategory={category} categories={displayCategories} countMap={countMap} />
+    <CategoryPostList rootCategory={category} categories={displayCategories} countMap={countMap} lang="zh" />
   </TwoColumnLayout>
 </Layout>

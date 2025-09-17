@@ -32,7 +32,7 @@ const { tag, posts } = Astro.props;
 <Layout title={`标签:${tag} | ${siteConfig.title}`} description={`标签 ${tag} 下的所有文章`}>
   <TwoColumnLayout>
     <Cover slot="cover" title={`包含标签"${tag}"的文章`} />
-    <HomeSider slot="sider" />
+    <HomeSider slot="sider" lang="zh" />
     <QuoteMarquee />
     <div class="shadow-box bg-gradient-start mx-0 flex w-full flex-col px-6 py-4 md:px-3 md:py-2">
       <h2 class="shoka-decoration-circle has-children group relative h-19 px-7.5 py-5 text-2xl/9 font-bold">

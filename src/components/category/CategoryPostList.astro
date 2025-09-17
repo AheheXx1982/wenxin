@@ -1,6 +1,7 @@
 ---
 import { categoryMap } from '@constants/category';
 import { getPostsByCategory, getPostsByCategoryPath, type Category } from '@lib/content';
+import { getLanguageFromAstroUrl, getUIText } from '@lib/i18n';
 import SubCategory from './SubCategory.astro';
 import { cn } from '@lib/utils';
 import { parseDate } from '@lib/datetime';
@@ -13,9 +14,24 @@ interface Props {
   countMap: Record<string, number>;
   // category page
   rootCategory: Category | null;
+  lang?: string;
 }
 
-const { categories, countMap, rootCategory } = Astro.props;
+const { categories, countMap, rootCategory, lang } = Astro.props;
+const currentLang = (lang || getLanguageFromAstroUrl(Astro.url)) as 'zh' | 'en';
+const uiText = getUIText(currentLang);
+
+// 分类名称翻译函数
+const translateCategoryName = (categoryName: string): string => {
+  if (currentLang === 'en' && uiText.categoryNames) {
+    const translated = (uiText.categoryNames as Record<string, string>)[categoryName];
+    return translated || categoryName;
+  }
+  return categoryName;
+};
+
+// 翻译根分类名称
+const translatedRootCategoryName = rootCategory ? translateCategoryName(rootCategory.name) : '';
 
 // 构建分类路径
 let posts: BlogPost[] = [];
@@ -31,11 +47,11 @@ if (rootCategory) {
   }
 
   // 如果是嵌套分类，使用路径查找文章
-  posts = await getPostsByCategoryPath(categoryPath);
+  posts = await getPostsByCategoryPath(categoryPath, currentLang);
 
   // 如果没有找到文章，尝试使用简单的分类名称查找
   if (posts.length === 0) {
-    posts = await getPostsByCategory(rootCategory.name);
+    posts = await getPostsByCategory(rootCategory.name, currentLang);
   }
 } else {
   posts = [];
@@ -48,10 +64,12 @@ if (rootCategory) {
       'has-children': posts?.length || rootCategory?.children?.length,
     })}
   >
-    <a href="/" class="dashed-border text-muted-foreground hover:text-blue border-b"> 首页 </a>
+    <a href={currentLang === 'en' ? '/en' : '/'} class="dashed-border text-muted-foreground hover:text-blue border-b">
+      {currentLang === 'en' ? 'Home' : '首页'}
+    </a>
     <span class="text-muted-foreground mx-2 text-xl">/</span>
-    <span class="text-muted-foreground">{rootCategory?.name}</span>
-    <span class="text-muted-foreground mx-2 text-xl">分类</span>
+    <span class="text-muted-foreground">{translatedRootCategoryName}</span>
+    <span class="text-muted-foreground mx-2 text-xl">{uiText.categoriesTitle}</span>
   </h2>
 
   <div class="flex w-full flex-col">
@@ -62,7 +80,7 @@ if (rootCategory) {
             <div class="category-first-level-container flex flex-col">
               {category?.children?.length &&
                 category.children.map((child) => (
-                  <SubCategory category={child} parentName={category.name} countMap={countMap} />
+                  <SubCategory category={child} parentName={category.name} countMap={countMap} lang={currentLang} />
                 ))}
             </div>
           ),
@@ -74,7 +92,7 @@ if (rootCategory) {
           {posts.map((post) => (
             <p class="shoka-decoration-circle group text-primary hover:text-blue relative px-7.5 py-2 text-base/9">
               <span class="text-muted-foreground mr-2 text-xs">{parseDate(post?.data?.date, 'YY-MM-DD')}</span>
-              <a href={routeBuilder(Routes.Post, post as BlogPost)} class="dashed-border">
+              <a href={routeBuilder(Routes.Post, post as BlogPost, currentLang)} class="dashed-border">
                 {post?.data?.title}
               </a>
             </p>

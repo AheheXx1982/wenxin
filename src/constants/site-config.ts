@@ -107,11 +107,10 @@ export const siteConfig: SiteConfig = {
       image: '/img/crypto/7.webp',
       description: '合约交易',
     },
-
     {
-      link: '/categories/options/option-selling',
+      link: '/categories/cashflow-utopia/option-selling',
       label: '期权卖方策略',
-      image: '/img/options/3.webp', // 更新图片路径到新的位置
+      image: '/img/options/3.webp',
       description: '期权卖方策略',
     },
     {

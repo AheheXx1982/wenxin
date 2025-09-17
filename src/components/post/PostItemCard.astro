@@ -16,9 +16,10 @@ export interface PostItemCardProps {
   data: BlogPost;
   leftClip?: boolean;
   randomCover: string;
+  lang?: string;
 }
 
-const { randomCover, data, leftClip = true } = Astro.props as PostItemCardProps;
+const { randomCover, data, leftClip = true, lang } = Astro.props as PostItemCardProps;
 
 const { cover, date, catalog, categories, title, description } = data?.data ?? {};
 const { body } = data ?? {};
@@ -26,7 +27,7 @@ const { body } = data ?? {};
 const readState = readingTime(body ?? '');
 // 优先使用文章frontmatter中定义的cover图片，否则使用随机生成的分类图片
 const finalCover = cover ?? randomCover ?? defaultCoverList[0];
-const href = routeBuilder(Routes.Post, data as BlogPost);
+const href = routeBuilder(Routes.Post, data as BlogPost, lang as 'zh' | 'en');
 
 const categoryArr = getCategoryArr(categories?.[0]);
 // 修复分类链接生成逻辑，确保添加/categories/前缀
