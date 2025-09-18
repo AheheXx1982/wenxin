@@ -1,49 +1,51 @@
 ---
 import ButtonLink from '@components/control/ButtonLink.astro';
 import { routers } from '@constants/router';
-import { siteConfig } from '@constants/site-config';
 import { cn } from '@lib/utils';
 import { Icon } from 'astro-icon/components';
 import DropdownNav from './DropdownNav';
 import ThemeToggle from '@components/theme/ThemeToggle.astro';
+import { getLanguageFromAstroUrl, getSiteConfig, getUIText } from '@lib/i18n';
+import LanguageSwitcherPopup from '@components/theme/LanguageSwitcherPopup.astro';
+
+// 获取当前语言和配置
+const currentLang = getLanguageFromAstroUrl(Astro.url);
+const siteConfig = getSiteConfig(currentLang);
+const uiText = getUIText(currentLang);
+
+// 获取对应语言的幻念集链接
+const thoughtsLink = currentLang === 'en' ? '/en/illusionary-thoughts' : '/illusionary-thoughts';
+const thoughtsText = currentLang === 'en' ? 'Thoughts' : '幻念集';
 ---
 
 <div class="tablet:grow-0 flex grow items-center">
   <!-- 导航菜单 -->
   <div class="tablet:hidden flex grow items-center">
     {
-      // 优先使用 siteConfig.navLinks，如果不存在则使用 routers
-      (siteConfig.navLinks || routers).map((item) => {
-        // 兼容 href 和 path 属性
-        const path = item.href || item.path;
-        const { name, icon, children } = item;
+      // 使用 siteConfig.navLinks 进行导航
+      siteConfig.navLinks
+        ?.filter((item) => item.name !== '幻念集' && item.name !== 'Thoughts')
+        .map((item) => {
+          const path = item.href;
+          const { name } = item;
 
-        // 排除"幻念集"，因为它要移动到右上角
-        if (name === '幻念集') {
-          return null;
-        }
-
-        if (children?.length) {
-          return <DropdownNav client:load item={item} />;
-        }
-        return (
-          <ButtonLink
-            url={path}
-            label={name}
-            variant="unstyle"
-            className={cn(
-              'relative text-base tracking-wider after:absolute after:bottom-1 after:left-1/2 after:block after:h-0.5 after:w-0 after:-translate-x-1/2 after:transition-all after:duration-300',
-              {
-                'hover:after:w-9/12': true,
-                'after:w-9/12': path === Astro.url.pathname,
-              },
-            )}
-          >
-            {icon && <Icon name={icon} class="mr-1.5" />}
-            {name}
-          </ButtonLink>
-        );
-      })
+          return (
+            <ButtonLink
+              url={path}
+              label={name}
+              variant="unstyle"
+              className={cn(
+                'relative text-base tracking-wider after:absolute after:bottom-1 after:left-1/2 after:block after:h-0.5 after:w-0 after:-translate-x-1/2 after:transition-all after:duration-300',
+                {
+                  'hover:after:w-9/12': true,
+                  'after:w-9/12': path === Astro.url.pathname,
+                },
+              )}
+            >
+              {name}
+            </ButtonLink>
+          );
+        })
     }
   </div>
 
@@ -51,13 +53,18 @@ import ThemeToggle from '@components/theme/ThemeToggle.astro';
     <!-- 添加幻念集链接到右上角，使用动态旋转的风铃图标，进一步增强视觉效果 -->
     <a
       class="flex cursor-pointer items-center text-white transition duration-300 hover:text-blue-300"
-      href="/illusionary-thoughts"
-      title="幻念集"
+      href={thoughtsLink}
+      title={thoughtsText}
     >
       <div class="relative">
         <!-- 移除白色背景，直接将图标变成纯白色 -->
         <div class="rainbow-icon h-9 w-9 transition duration-300 hover:scale-125">
-          <img src="/whirlwind.svg" alt="幻念集" class="slow-spin h-full w-full" style="filter: brightness(0) invert(1);" />
+          <img
+            src="/whirlwind.svg"
+            alt={thoughtsText}
+            class="slow-spin h-full w-full"
+            style="filter: brightness(0) invert(1);"
+          />
         </div>
         <!-- 添加多层脉冲动画效果 -->
         <div class="absolute inset-0 animate-ping rounded-full bg-blue-500 opacity-40" style="animation-duration: 2s;"></div>
@@ -68,6 +75,10 @@ import ThemeToggle from '@components/theme/ThemeToggle.astro';
         </div>
       </div>
     </a>
+
+    <!-- 语言切换器 -->
+    <LanguageSwitcherPopup />
+
     <ThemeToggle />
   </div>
 </div>

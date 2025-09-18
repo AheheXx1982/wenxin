@@ -1,0 +1,53 @@
+---
+import HomeSider from '@components/layout/HomeSider.astro';
+import Cover from '@components/ui/cover/Cover.astro';
+import CustomContent from '@components/common/CustomContent.astro';
+import { HomeSiderType } from '@constants/enum';
+import Layout from '@layouts/Layout.astro';
+import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
+import { getSortedPosts } from '@lib/content';
+import { getSiteConfig } from '@lib/i18n';
+import { Icon } from 'astro-icon/components';
+import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts('en');
+
+  return posts.map((post) => {
+    // 使用文件名作为 slug，不包含路径
+    const slug = post.slug.split('/').pop() || post.slug;
+    return {
+      params: { slug },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const { title, description } = post.data;
+const siteConfig = getSiteConfig('en');
+---
+
+<Layout title={`${title} | ${siteConfig.title}`} description={description} siderType={HomeSiderType.POST}>
+  <TwoColumnLayout>
+    <Cover slot="cover" data={post} />
+    <HomeSider slot="sider" type={HomeSiderType.POST} lang="en" />
+    <QuoteMarquee />
+    <div class="shadow-box bg-gradient-start flex flex-col gap-2 p-4 pt-6 md:px-5 md:py-4">
+      <nav class="text-muted-foreground flex items-center gap-2 text-sm">
+        <div class="flex items-center gap-1">
+          <Icon name="fa6-solid:house-chimney" class="h-4 w-4" />
+          <a href="/en" aria-label="Back to Home">
+            <span class="hover:text-blue transition-colors duration-300">Home</span>
+          </a>
+        </div>
+      </nav>
+      <article
+        class="prose md:prose-sm dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl"
+      >
+        <CustomContent Content={Content} />
+      </article>
+    </div>
+  </TwoColumnLayout>
+</Layout>

@@ -7,23 +7,30 @@ import { getAllTags, getCategoryList, getPostCount, getSortedPosts } from '@lib/
 import { cn } from '@lib/utils';
 import { Icon } from 'astro-icon/components';
 import Social from './Social.astro';
+import { getLanguageFromAstroUrl, getUIText, getSiteConfig } from '@lib/i18n';
 
 interface Props {
   type?: HomeSiderType;
   className?: string;
   isDrawer?: boolean;
   frontmatter?: any; // 添加frontmatter属性用于传递文章数据
+  lang?: 'zh' | 'en'; // 🔑 必须添加
 }
+
+const { lang } = Astro.props;
+const currentLang = (lang || getLanguageFromAstroUrl(Astro.url)) as 'zh' | 'en';
+const uiText = getUIText(currentLang);
+const i18nSiteConfig = getSiteConfig(currentLang);
 
 const postCount = await getPostCount();
 const { countMap } = await getCategoryList();
-const posts = await getSortedPosts();
+const posts = await getSortedPosts(currentLang); // 根据语言筛选文章
 const tags = getAllTags(posts);
 
 const allTags = Object.entries(tags).map(([tag, count]) => ({ tag, count }));
 
-// 优先使用 siteConfig.navLinks，如果不存在则使用 routers
-const navLinks = siteConfig.navLinks || routers;
+// 🔑 优先使用国际化配置
+const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ? i18nSiteConfig.navLinks : routers;
 ---
 
 <div class="flex flex-col items-center">
@@ -35,37 +42,49 @@ const navLinks = siteConfig.navLinks || routers;
   />
 
   <p class="mt-2">{siteConfig?.name}</p>
-  <p class="text-muted-foreground mt-3">{siteConfig?.description}</p>
+  <p class="text-muted-foreground mt-3">{i18nSiteConfig?.description}</p>
   <Social />
   <div
     class="text-muted-foreground mt-3 flex justify-center text-center text-sm/4 whitespace-nowrap select-none dark:text-white/80"
   >
-    <a href="/categories" aria-label="分类" class="hover:text-blue">
+    <a
+      href={currentLang === 'en' ? '/en/categories' : '/categories'}
+      aria-label={uiText.categoriesTitle}
+      class="hover:text-blue"
+    >
       <p class="flex cursor-pointer flex-col gap-2 p-1 transition">
         <span class="text-lg/5 font-bold">{Object.keys(countMap).length}</span>
-        分类
+        {uiText.categoriesTitle}
       </p>
     </a>
     <div class="bg-muted-foreground mx-3 w-px"></div>
-    <a href="/tags" class="hover:text-blue flex cursor-pointer flex-col gap-2 p-1 transition">
+    <a
+      href={currentLang === 'en' ? '/en/tags' : '/tags'}
+      aria-label={uiText.tags}
+      class="hover:text-blue flex cursor-pointer flex-col gap-2 p-1 transition"
+    >
       <span class="text-lg/5 font-bold">{allTags?.length ?? 0}</span>
-      标签
+      {uiText.tags}
     </a>
     <div class="bg-muted-foreground mx-3 w-px"></div>
-    <a href="/archives" class="hover:text-blue flex cursor-pointer flex-col gap-2 p-1 transition">
-      <span class="text-lg/5 font-bold">{postCount}</span>
-      归档
+    <a
+      href={currentLang === 'en' ? '/en/archives' : '/archives'}
+      aria-label={uiText.archives}
+      class="hover:text-blue flex cursor-pointer flex-col gap-2 p-1 transition"
+    >
+      <span class="text-lg/5 font-bold">{posts.length}</span>
+      {uiText.archives}
     </a>
   </div>
   <div class="mt-6 flex w-full flex-col items-center gap-2.5">
     {
       navLinks.map((item) => {
-        // 兼容 href 和 path 属性
-        const path = item.href || item.path;
-        const { name, icon, children } = item;
+        // 🔑 类型安全处理
+        const path = (item as any).href || (item as any).path;
+        const { name, icon, children } = item as any;
 
-        // 排除"幻念集"，因为它已经移动到右上角
-        if (name === '幻念集') {
+        // 排除已移到右上角的链接
+        if (name === '幻念集' || name === 'Thoughts') {
           return null;
         }
 
@@ -77,7 +96,7 @@ const navLinks = siteConfig.navLinks || routers;
                 {name}
               </div>
               <div class="flex flex-col gap-2.5">
-                {children.map((child) => {
+                {children.map((child: any) => {
                   // 兼容 href 和 path 属性
                   const childPath = child.href || child.path;
                   return (

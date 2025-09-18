@@ -2,6 +2,7 @@
 title: 期权交易零基础入门：从概念到策略的完整指南
 date: 2025-01-02
 description: 期权基础知识入门，适合初学者的第一门课程
+lang: zh
 categories:
   - ['期权研究院', '期权课程']
 catalog: true

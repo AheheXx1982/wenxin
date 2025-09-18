@@ -11,6 +11,13 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 // https://astro.build/config
 export default defineConfig({
   site: siteConfig.site,
+  i18n: {
+    defaultLocale: 'zh',
+    locales: ['zh', 'en'],
+    routing: {
+      prefixDefaultLocale: false
+    }
+  },
   markdown: {
     // Enable GitHub Flavored Markdown
     gfm: true,

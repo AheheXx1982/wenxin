@@ -1,7 +1,7 @@
 ---
 import HomeSider from '@components/layout/HomeSider.astro';
 import Cover from '@components/ui/cover/Cover.astro';
-import { siteConfig } from '@constants/site-config';
+import { getSeoConfig, getUIText } from '@lib/i18n';
 import Layout from '@layouts/Layout.astro';
 import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
 import { getAllTags, getSortedPosts } from '@lib/content';
@@ -14,23 +14,29 @@ const TAG_COLORS = [
   'from-sky-400/10 to-blue-300/10 hover:from-sky-400/80 hover:to-blue-300/80 text-sky-400/70 hover:text-sky-50',
 ];
 
-const posts = await getSortedPosts();
+const posts = await getSortedPosts('zh');
+const seoConfig = getSeoConfig('zh');
+const uiText = getUIText('zh');
 const tags = getAllTags(posts);
 const sortedTags = Object.entries(tags)
   .sort(([, a], [, b]) => b - a)
   .map(([tag, count]) => ({ tag, count }));
 ---
 
-<Layout title={`标签 | ${siteConfig.title}`} description="所有文章标签">
+<Layout title={`${uiText.tags} | ${seoConfig.title}`} description={uiText.tagsDescription}>
   <TwoColumnLayout>
-    <Cover slot="cover" title="全部标签" />
-    <HomeSider slot="sider" />
+    <Cover slot="cover" title={uiText.allTags} />
+    <HomeSider slot="sider" lang="zh" />
     <QuoteMarquee />
     <div class="shadow-box bg-gradient-start mx-0 flex w-full flex-col px-6 py-4 md:px-3 md:py-2">
       <h2 class="shoka-decoration-circle group relative h-19 px-7.5 py-5 text-2xl/9 font-bold">
-        <a href="/" class="dashed-border text-muted-foreground group-hover:border-blue group-hover:text-blue border-b">首页</a>
+        <a href="/" class="dashed-border text-muted-foreground group-hover:border-blue group-hover:text-blue border-b"
+          >{uiText.home}</a
+        >
         <span class="text-muted-foreground text-lg"> / </span>
-        目前共计 {sortedTags.length} 个标签
+        {uiText.totalTagsCount}
+        {sortedTags.length}
+        {uiText.tagsUnit}
       </h2>
       <div class="flex flex-wrap gap-3 p-4">
         {

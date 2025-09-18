@@ -4,11 +4,13 @@ import type { Category } from '@lib/content';
 import CategoryTitle from './CategoryTitle.astro';
 import SubCategory from './SubCategory.astro';
 import { getCategoryLinks, getCategoryList } from '@lib/content';
+import { getLanguageFromAstroUrl, getUIText } from '@lib/i18n';
 
 interface Props {
   categories: Category[];
   countMap: Record<string, number>;
   totalCount: number;
+  lang?: 'zh' | 'en';
 }
 
 interface CategoryLink {
@@ -16,12 +18,30 @@ interface CategoryLink {
   link: string;
 }
 
-const { categories, countMap, totalCount } = Astro.props;
+const { categories, countMap, totalCount, lang } = Astro.props;
+
+// 获取当前语言
+const currentLang = lang || getLanguageFromAstroUrl(Astro.url);
+const uiText = getUIText(currentLang);
+
+// 根据语言生成首页链接
+const homeLink = currentLang === 'en' ? '/en' : '/';
+const categoryLinkPrefix = currentLang === 'en' ? '/en/categories' : '/categories';
+
+// 分类名称翻译函数
+const translateCategoryName = (categoryName: string): string => {
+  if (currentLang === 'en' && uiText.categoryNames) {
+    const translated = (uiText.categoryNames as Record<string, string>)[categoryName];
+    return translated || categoryName;
+  }
+  return categoryName;
+};
 
 const categoryLinks: CategoryLink[] = categories.map((category: Category) => {
   const links = getCategoryLinks([category]);
+  const translatedName = translateCategoryName(category.name);
   return {
-    category,
+    category: { ...category, name: translatedName },
     link: links.length > 0 ? links[0] : categoryMap[category.name] || category.name,
   };
 });
@@ -29,8 +49,13 @@ const categoryLinks: CategoryLink[] = categories.map((category: Category) => {
 
 <div class="shadow-box bg-gradient-start mx-0 flex w-full flex-col px-6 py-4 md:px-3 md:py-2">
   <h2 class="shoka-decoration-circle group relative px-7.5 py-5 text-2xl/9 font-bold">
-    <a href="/" class="dashed-border text-muted-foreground group-hover:border-blue group-hover:text-blue border-b"> 首页 </a>
-    <span class="text-muted-foreground text-xl">/</span> 目前共计 {totalCount} 个分类
+    <a href={homeLink} class="dashed-border text-muted-foreground group-hover:border-blue group-hover:text-blue border-b">
+      {uiText.home}
+    </a>
+    <span class="text-muted-foreground text-xl">/</span>
+    {uiText.totalCategoriesCount}
+    {totalCount}
+    {uiText.categoriesUnit}
   </h2>
 
   <div class="flex w-full flex-col">
@@ -40,14 +65,14 @@ const categoryLinks: CategoryLink[] = categories.map((category: Category) => {
           <CategoryTitle
             title={category.name}
             count={countMap[category.name]}
-            href={`/categories${link ? '/' + link : ''}`}
+            href={`${categoryLinkPrefix}${link ? '/' + link : ''}`}
             className={category?.children?.length ? 'has-children' : ''}
           />
           {category?.children?.length && (
             <div class="category-first-level-container flex flex-col">
               {category?.children?.length &&
                 category.children.map((child: Category) => (
-                  <SubCategory category={child} parentName={category.name} countMap={countMap} />
+                  <SubCategory category={child} parentName={category.name} countMap={countMap} lang={currentLang} />
                 ))}
             </div>
           )}

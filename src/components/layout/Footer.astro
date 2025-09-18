@@ -1,11 +1,18 @@
 ---
 import { siteConfig } from '@constants/site-config';
+import { getLanguageFromAstroUrl, getUIText } from '@lib/i18n';
 
 interface Props {
   since?: number;
+  lang?: 'zh' | 'en';
 }
 
-const { since = new Date().getFullYear() } = Astro.props;
+const { since = new Date().getFullYear(), lang } = Astro.props;
+
+// 获取当前语言
+const currentLang = lang || getLanguageFromAstroUrl(Astro.url);
+const uiText = getUIText(currentLang);
+
 const currentYear = new Date().getFullYear();
 const { name: author } = siteConfig;
 
@@ -36,7 +43,7 @@ const currentIcon = svgIcons[currentIconIndex];
 <footer
   class="mt-8 border-t border-gray-200 py-6 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400"
   role="contentinfo"
-  aria-label="网站页脚"
+  aria-label={uiText.footerLabel || '网站页脚'}
 >
   <div class="container mx-auto px-4">
     <div class="flex flex-col items-center justify-center space-y-3">
@@ -63,7 +70,7 @@ const currentIcon = svgIcons[currentIconIndex];
           class="hover:text-primary dark:hover:text-primary focus:ring-primary/20 inline-flex items-center gap-1 rounded text-gray-600 transition-colors focus:ring-2 focus:outline-none dark:text-gray-400"
           aria-label="订阅RSS源（在新窗口打开）"
         >
-          <span>订阅 RSS</span>
+          <span>{uiText.subscribeRSS || '订阅 RSS'}</span>
         </a>
         <span class="text-gray-400 dark:text-gray-600">|</span>
         <a
@@ -83,7 +90,7 @@ const currentIcon = svgIcons[currentIconIndex];
           class="hover:text-primary dark:hover:text-primary focus:ring-primary/20 inline-flex items-center gap-1 rounded text-gray-600 transition-colors focus:ring-2 focus:outline-none dark:text-gray-400"
           aria-label="查看网站统计（在新窗口打开）"
         >
-          <span>网站统计</span>
+          <span>{uiText.siteStatistics || '网站统计'}</span>
         </a>
       </div>
 
@@ -93,7 +100,8 @@ const currentIcon = svgIcons[currentIconIndex];
           <img src={currentIcon} alt="Rotating Icon" class="h-3 w-3" style="animation: spin 3s linear infinite;" />
           {/* 在图标和"基于"文字之间增加空格 */}
           <span> </span>
-          基于 <a
+          {uiText.basedOn || '基于'}
+          <a
             href="https://astro.build/"
             target="_blank"
             rel="noopener noreferrer"

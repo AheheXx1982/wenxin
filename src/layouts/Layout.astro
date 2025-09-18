@@ -1,10 +1,12 @@
 ---
 import { HomeSiderType } from '@constants/enum';
+import { getLanguageFromAstroUrl, getSeoConfig, getSiteConfig } from '@lib/i18n';
 
 interface Props {
   title: string;
   description?: string;
   siderType?: HomeSiderType;
+  lang?: 'zh' | 'en';
 }
 
 import '@fontsource/poppins';
@@ -15,17 +17,21 @@ import LoadingIndicator from 'astro-loading-indicator/component';
 import Header from '@components/layout/Header.astro';
 import Footer from '@components/layout/Footer.astro';
 import '@styles/index.css';
-import { seoConfig, siteConfig } from '@constants/site-config';
 import { Tooltips } from 'astro-tooltips';
 import FloatingGroup from '@components/layout/FloatingGroup.astro';
 import MobileDrawer from '@components/layout/MobileDrawer.astro';
 
-const { title = seoConfig.title, description = seoConfig.description, siderType } = Astro.props;
+// 获取当前语言
+const currentLang = getLanguageFromAstroUrl(Astro.url);
+const seoConfig = getSeoConfig(currentLang);
+const siteConfig = getSiteConfig(currentLang);
+
+const { title = seoConfig.title, description = seoConfig.description, siderType, lang = currentLang } = Astro.props;
 // TODO: siderType should be custom in router file, not in layout
 ---
 
 <!doctype html>
-<html transition:name="root" lang="zh-CN">
+<html transition:name="root" lang={lang === 'en' ? 'en' : 'zh-CN'}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -45,7 +51,7 @@ const { title = seoConfig.title, description = seoConfig.description, siderType 
     <meta name="author" content={siteConfig.author} />
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:site_name" content={siteConfig.alternate || siteConfig.title} />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -94,9 +100,9 @@ const { title = seoConfig.title, description = seoConfig.description, siderType 
     <div class="flex min-h-screen flex-col text-black dark:text-white">
       <Header />
       <main class="relative flex grow flex-col">{(<slot />)}</main>
-      <Footer since={2020} />
+      <Footer since={2020} lang={currentLang} />
       <FloatingGroup />
-      <MobileDrawer type={siderType} />
+      <MobileDrawer type={siderType} lang={currentLang} />
     </div>
   </body>
 </html>

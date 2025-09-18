@@ -1,10 +1,11 @@
 import { categoryMap } from '@constants/category';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { getRandomCoverForPath } from '@lib/cover';
+import type { Language } from '@constants/i18n';
 
 import type { BlogPost } from 'types/blog';
 
-export async function getSortedPosts(): Promise<CollectionEntry<'blog'>[]> {
+export async function getSortedPosts(lang?: Language): Promise<CollectionEntry<'blog'>[]> {
   const posts = await getCollection('blog');
 
   // 确保始终返回数组，即使没有文章
@@ -12,8 +13,19 @@ export async function getSortedPosts(): Promise<CollectionEntry<'blog'>[]> {
     return [];
   }
 
+  // 根据语言筛选文章
+  const filteredPosts = lang
+    ? posts.filter((post) => {
+        const postLang = post.data.lang || 'zh';
+        return postLang === lang;
+      })
+    : posts.filter((post) => {
+        const postLang = post.data.lang || 'zh';
+        return postLang === 'zh'; // 默认显示中文文章
+      });
+
   // 按日期排序
-  const sortedPosts = posts.sort((a: BlogPost, b: BlogPost) => {
+  const sortedPosts = filteredPosts.sort((a: BlogPost, b: BlogPost) => {
     return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
   });
 
@@ -21,8 +33,8 @@ export async function getSortedPosts(): Promise<CollectionEntry<'blog'>[]> {
 }
 
 // 新增函数：从所有文章中随机获取指定数量的文章
-export async function getRandomPosts(count: number): Promise<CollectionEntry<'blog'>[]> {
-  const posts = await getSortedPosts();
+export async function getRandomPosts(count: number, lang?: Language): Promise<CollectionEntry<'blog'>[]> {
+  const posts = await getSortedPosts(lang);
 
   // Fisher-Yates 洗牌算法随机打乱文章顺序
   const shuffled = [...posts];
@@ -36,8 +48,8 @@ export async function getRandomPosts(count: number): Promise<CollectionEntry<'bl
 }
 
 // 新增函数：获取每个分类下的最新文章
-export async function getLatestPostsByCategory(): Promise<CollectionEntry<'blog'>[]> {
-  const posts = await getSortedPosts();
+export async function getLatestPostsByCategory(lang?: Language): Promise<CollectionEntry<'blog'>[]> {
+  const posts = await getSortedPosts(lang);
 
   // 按分类分组文章
   const categoryMap: Record<string, CollectionEntry<'blog'>[]> = {};
@@ -81,8 +93,8 @@ export async function getLatestPostsByCategory(): Promise<CollectionEntry<'blog'
 }
 
 // 新增函数：从每个分类的最新文章中随机选择指定数量的文章
-export async function getRandomLatestPosts(count: number): Promise<CollectionEntry<'blog'>[]> {
-  const latestPosts = await getLatestPostsByCategory();
+export async function getRandomLatestPosts(count: number, lang?: Language): Promise<CollectionEntry<'blog'>[]> {
+  const latestPosts = await getLatestPostsByCategory(lang);
 
   // Fisher-Yates 洗牌算法随机打乱文章顺序
   const shuffled = [...latestPosts];
@@ -343,8 +355,8 @@ export function getCategoryByLink(categories: Category[], link?: string): Catego
  * @param categoryName 分类名
  * @returns 文章列表
  */
-export async function getPostsByCategory(categoryName: string): Promise<BlogPost[]> {
-  const posts = await getSortedPosts();
+export async function getPostsByCategory(categoryName: string, lang?: Language): Promise<BlogPost[]> {
+  const posts = await getSortedPosts(lang);
 
   // 确保 posts 存在且为数组
   if (!posts || !Array.isArray(posts)) {
@@ -371,8 +383,8 @@ export async function getPostsByCategory(categoryName: string): Promise<BlogPost
  * @param categoryPath 分类路径，例如 ['现金流乌托邦', '期权卖方策略']
  * @returns 文章列表
  */
-export async function getPostsByCategoryPath(categoryPath: string[]): Promise<BlogPost[]> {
-  const posts = await getSortedPosts();
+export async function getPostsByCategoryPath(categoryPath: string[], lang?: Language): Promise<BlogPost[]> {
+  const posts = await getSortedPosts(lang);
 
   // 确保 posts 存在且为数组
   if (!posts || !Array.isArray(posts)) {
