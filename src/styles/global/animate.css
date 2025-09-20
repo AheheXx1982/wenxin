@@ -372,7 +372,7 @@
   transform-origin: center center;
 }
 
-/* 悬停特效 - 星光闪烁 */
+/* 星光闪烁效果 */
 @keyframes star-twinkle {
   0%, 100% {
     opacity: 0;
@@ -389,7 +389,7 @@
   transform-origin: center center;
 }
 
-/* 悬停特效 - 彩带飞舞 */
+/* 彩带飞舞效果 */
 @keyframes ribbon-dance {
   0% {
     transform: rotate(0deg) scale(1);
@@ -413,7 +413,7 @@
   transform-origin: center center;
 }
 
-/* 悬停特效 - 光环扩散 */
+/* 光环扩散效果 */
 @keyframes halo-expand {
   0% {
     transform: scale(1);
@@ -430,7 +430,7 @@
   transform-origin: center center;
 }
 
-/* 悬停特效 - 粒子环绕 */
+/* 粒子环绕效果 */
 @keyframes particle-orbit {
   0% {
     transform: rotate(0deg) translateX(30px) rotate(0deg);
@@ -442,6 +442,140 @@
 
 .particle-orbit {
   animation: particle-orbit 3s linear infinite;
+  transform-origin: center center;
+}
+
+/* 霓虹灯效果 */
+@keyframes neon-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de;
+  }
+  50% {
+    box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de;
+  }
+}
+
+.neon-glow {
+  animation: neon-glow 2s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+/* 时空扭曲效果 */
+@keyframes warp-effect {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: blur(0px);
+  }
+  50% {
+    transform: scale(1.5) rotate(180deg);
+    filter: blur(2px);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    filter: blur(0px);
+  }
+}
+
+.warp-effect {
+  animation: warp-effect 3s cubic-bezier(0.17, 0.67, 0.83, 0.67) infinite;
+  transform-origin: center center;
+}
+
+/* 万花筒效果 */
+@keyframes kaleidoscope {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.2) rotate(90deg);
+  }
+  50% {
+    transform: scale(1) rotate(180deg);
+  }
+  75% {
+    transform: scale(1.2) rotate(270deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+.kaleidoscope {
+  animation: kaleidoscope 4s linear infinite;
+  transform-origin: center center;
+}
+
+/* 闪电效果 */
+@keyframes lightning {
+  0%, 90% {
+    opacity: 0;
+  }
+  91% {
+    opacity: 1;
+    box-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff;
+  }
+  92% {
+    opacity: 0;
+  }
+  93% {
+    opacity: 1;
+    box-shadow: 0 0 15px #ffffff, 0 0 30px #ffffff;
+  }
+  94% {
+    opacity: 0;
+  }
+  95% {
+    opacity: 1;
+    box-shadow: 0 0 20px #ffffff, 0 0 40px #ffffff, 0 0 60px #ffffff;
+  }
+  96%, 100% {
+    opacity: 0;
+  }
+}
+
+.lightning {
+  animation: lightning 3s linear infinite;
+  transform-origin: center center;
+}
+
+/* 黑洞吸入效果 */
+@keyframes black-hole {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.black-hole {
+  animation: black-hole 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  transform-origin: center center;
+}
+
+/* 时空隧道效果 */
+@keyframes time-tunnel {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(0.8) rotate(90deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+  }
+  75% {
+    transform: scale(0.8) rotate(270deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+.time-tunnel {
+  animation: time-tunnel 3s ease-in-out infinite;
   transform-origin: center center;
 }
 

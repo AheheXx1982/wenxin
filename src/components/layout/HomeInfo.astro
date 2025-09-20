@@ -177,7 +177,7 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
     '#85C1E9'  // 淡蓝色
   ];
   
-  // 定义点击旋转后的特效数组
+  // 定义丰富的点击特效数组
   const clickEffects = [
     'explode',        // 爆炸效果
     'fade-in-out',    // 淡入淡出
@@ -187,15 +187,16 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
     'flicker',        // 闪烁
     'swing',          // 摇摆
     'pulse-scale',    // 脉冲缩放
-    'dragon-fly-out'  // 巨龙飞出
-  ];
-  
-  // 定义悬停特效数组
-  const hoverEffects = [
+    'dragon-fly-out', // 巨龙飞出
     'star-twinkle',   // 星光闪烁
     'ribbon-dance',   // 彩带飞舞
     'halo-expand',    // 光环扩散
-    'particle-orbit'  // 粒子环绕
+    'particle-orbit', // 粒子环绕
+    'neon-glow',      // 霓虹灯效果
+    'warp-effect',    // 时空扭曲
+    'kaleidoscope',   // 万花筒效果
+    'lightning',      // 闪电效果
+    'time-tunnel'     // 时空隧道
   ];
   
   // 生成随机颜色
@@ -208,9 +209,69 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
     return clickEffects[Math.floor(Math.random() * clickEffects.length)];
   }
   
-  // 获取随机悬停效果
-  function getRandomHoverEffect() {
-    return hoverEffects[Math.floor(Math.random() * hoverEffects.length)];
+  // 创建特效元素的函数
+  function createEffectElement(container, effectType) {
+    const effectElement = document.createElement('div');
+    effectElement.style.position = 'absolute';
+    effectElement.style.pointerEvents = 'none';
+    effectElement.style.zIndex = '999';
+    
+    switch(effectType) {
+      case 'halo-expand':
+        effectElement.style.top = '-20px';
+        effectElement.style.left = '-20px';
+        effectElement.style.width = 'calc(100% + 40px)';
+        effectElement.style.height = 'calc(100% + 40px)';
+        effectElement.style.border = '2px solid ' + getRandomColor();
+        effectElement.style.borderRadius = '50%';
+        effectElement.classList.add('halo-expand');
+        break;
+        
+      case 'particle-orbit':
+        // 创建多个粒子
+        for (let i = 0; i < 5; i++) {
+          const particle = document.createElement('div');
+          particle.style.width = '8px';
+          particle.style.height = '8px';
+          particle.style.backgroundColor = getRandomColor();
+          particle.style.borderRadius = '50%';
+          particle.style.position = 'absolute';
+          particle.style.top = '50%';
+          particle.style.left = '50%';
+          particle.style.transform = 'translate(-50%, -50%)';
+          particle.classList.add('particle-orbit');
+          particle.style.animationDelay = (i * 0.2) + 's';
+          effectElement.appendChild(particle);
+        }
+        break;
+        
+      case 'star-twinkle':
+        // 创建多个星星
+        for (let i = 0; i < 8; i++) {
+          const star = document.createElement('div');
+          star.style.width = (Math.random() * 6 + 2) + 'px';
+          star.style.height = star.style.width;
+          star.style.backgroundColor = '#ffffff';
+          star.style.borderRadius = '50%';
+          star.style.position = 'absolute';
+          star.style.top = (Math.random() * 100) + '%';
+          star.style.left = (Math.random() * 100) + '%';
+          star.classList.add('star-twinkle');
+          star.style.animationDelay = (Math.random() * 2) + 's';
+          effectElement.appendChild(star);
+        }
+        break;
+        
+      case 'lightning':
+        effectElement.style.top = '0';
+        effectElement.style.left = '0';
+        effectElement.style.width = '100%';
+        effectElement.style.height = '100%';
+        effectElement.classList.add('lightning');
+        break;
+    }
+    
+    return effectElement;
   }
   
   function toggleAvatarAnimation(container) {
@@ -241,6 +302,13 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
         // 应用点击特效
         const clickEffect = getRandomClickEffect();
         container.classList.add(clickEffect);
+        
+        // 创建特殊特效元素
+        let effectElement = null;
+        if (['halo-expand', 'particle-orbit', 'star-twinkle', 'lightning'].includes(clickEffect)) {
+          effectElement = createEffectElement(container, clickEffect);
+          container.appendChild(effectElement);
+        }
         
         // 如果是巨龙飞出特效，创建龙元素
         if (clickEffect === 'dragon-fly-out') {
@@ -274,10 +342,33 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
           }, 2000);
         }
         
-        // 2秒后移除点击特效
+        // 根据特效类型设置不同的持续时间
+        let duration = 2000;
+        switch(clickEffect) {
+          case 'warp-effect':
+            duration = 3000;
+            break;
+          case 'kaleidoscope':
+            duration = 4000;
+            break;
+          case 'time-tunnel':
+            duration = 3000;
+            break;
+          case 'halo-expand':
+            duration = 1500;
+            break;
+          case 'particle-orbit':
+            duration = 3000;
+            break;
+        }
+        
+        // 持续时间后移除特效
         setTimeout(() => {
           container.classList.remove(clickEffect);
-        }, 2000);
+          if (effectElement && effectElement.parentNode) {
+            effectElement.parentNode.removeChild(effectElement);
+          }
+        }, duration);
       }, 5000);
     }
   }
@@ -300,59 +391,12 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
     // 应用滤镜增强效果
     const hueRotation = Math.floor(Math.random() * 60) - 30; // -30到30度的hue旋转
     container.style.filter = `hue-rotate(${hueRotation}deg) saturate(1.2)`;
-    
-    // 3秒后应用悬停特效
-    container.hoverTimeout = setTimeout(() => {
-      const hoverEffect = getRandomHoverEffect();
-      container.classList.add(hoverEffect);
-      
-      // 创建悬停特效元素（如光环、粒子等）
-      if (hoverEffect === 'halo-expand') {
-        // 创建光环元素
-        const halo = document.createElement('div');
-        halo.style.position = 'absolute';
-        halo.style.top = '-20px';
-        halo.style.left = '-20px';
-        halo.style.width = 'calc(100% + 40px)';
-        halo.style.height = 'calc(100% + 40px)';
-        halo.style.border = '2px solid ' + getRandomColor();
-        halo.style.borderRadius = '50%';
-        halo.style.pointerEvents = 'none';
-        halo.style.zIndex = '999';
-        halo.classList.add('halo-expand');
-        
-        container.appendChild(halo);
-        
-        // 1.5秒后移除光环
-        setTimeout(() => {
-          if (halo.parentNode) {
-            halo.parentNode.removeChild(halo);
-          }
-        }, 1500);
-      }
-      
-      // 3秒后移除悬停特效
-      setTimeout(() => {
-        container.classList.remove(hoverEffect);
-      }, 3000);
-    }, 3000);
   }
   
   function stopHoverEffects(container) {
     // 移除所有动态效果
     container.classList.remove('super-bounce');
     container.classList.remove('pulse-scale');
-    
-    // 清除悬停特效定时器
-    if (container.hoverTimeout) {
-      clearTimeout(container.hoverTimeout);
-      delete container.hoverTimeout;
-    }
-    
-    // 移除所有可能的悬停特效
-    hoverEffects.forEach(effect => {
-      container.classList.remove(effect);
-    });
     
     const overlay = container.querySelector('div:nth-child(3)');
     overlay.classList.remove('opacity-100');
