@@ -2,6 +2,7 @@
 title: 牛市价差策略深度解析：有限风险下的收益优化之道
 date: 2025-01-05
 description: 深入解析牛市价差策略的构建、盈亏特点和适用场景
+lang: zh
 categories:
   - ['期权研究院', '策略分析']
 tags:

@@ -65,4 +65,9 @@ const localizedPageTitle = currentLang === 'en' ? {
       console.log('Illusionary Thoughts page loaded, waiting for component to update content');
     }
   });
+  
+  // 监听路由切换事件
+  document.addEventListener('astro:after-swap', () => {
+    console.log('Route changed, triggering content update if needed');
+  });
 </script>

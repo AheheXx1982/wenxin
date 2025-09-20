@@ -1,10 +1,10 @@
 ---
-title: 加密市场最新动态与展望
-date: 2025-01-08
-description: 最新加密货币市场动态分析和未来展望
+title: 加密市场展望：技术分析与监管动态
+date: 2025-08-31
+description: 分析加密市场最新动态、技术发展趋势和监管政策变化
+lang: zh
 categories:
   - ['新世界探索', '加密风向标']
-catalog: true
 tags:
   - 加密货币
   - 市场分析
@@ -12,6 +12,7 @@ tags:
   - 监管动态
   - 机构动向
   - 投资策略
+catalog: true
 ---
 
 ![加密市场动态](/img/crypto/crypto-news/1.webp)

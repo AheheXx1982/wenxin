@@ -1,18 +1,16 @@
 ---
-title: 网格交易策略全解析：震荡市场中的自动化获利方法
+title: 加密货币网格交易策略入门指南
 date: 2025-01-06
-description: 网格交易策略的基本原理和实操方法
+description: 学习加密货币网格交易的基本原理和实施方法
+lang: zh
 categories:
   - ['加密实验室', '网格策略']
-catalog: true
 tags:
-  - 网格交易
   - 加密货币
-  - 自动化交易
-  - 震荡市场
-  - 均值回归
+  - 网格交易
+  - 交易策略
   - 风险管理
-  - 策略优化
+catalog: true
 ---
 
 ![网格交易策略](/img/crypto/grid/1.webp)

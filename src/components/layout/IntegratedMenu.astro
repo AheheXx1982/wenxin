@@ -9,7 +9,7 @@ const currentLang = getLanguageFromAstroUrl(Astro.url);
 
 // 获取对应语言的幻念集链接和文本
 const thoughtsLink = currentLang === 'en' ? '/en/illusionary-thoughts' : '/illusionary-thoughts';
-const thoughtsText = currentLang === 'en' ? 'Thoughts' : '幻念集';
+const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集';
 ---
 
 <div class="integrated-menu group relative">
@@ -36,11 +36,9 @@ const thoughtsText = currentLang === 'en' ? 'Thoughts' : '幻念集';
         <div class="flex items-center space-x-3">
           <!-- 使用本地的幻念集图标 -->
           <img src="/ri--ghost-line.svg" alt="幻念集图标" class="h-7 w-7" />
-          <div class="flex flex-col items-center">
-            {thoughtsText.split('').map((char: string) => (
-              <span class="font-medium leading-none">{char}</span>
-            ))}
-          </div>
+          <span class="font-medium">
+            {thoughtsText}
+          </span>
         </div>
       </a>
 

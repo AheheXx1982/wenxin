@@ -1,18 +1,19 @@
 ---
-title: 量子计算核心原理与前沿技术深度解析
+title: 量子计算基础：未来计算技术的革命性突破
 date: 2025-08-31
-description: 深入探讨量子计算的基本原理、技术发展现状和未来应用前景
+description: 深入了解量子计算的基本原理、技术发展和应用前景
+lang: zh
 categories:
   - ['新世界探索', '量子宇宙']
-catalog: true
 tags:
   - 量子计算
   - 量子比特
   - 量子纠缠
   - 超导量子计算
   - 离子阱量子计算
-  - 光量子计算
+  - 光子量子计算
   - 拓扑量子计算
+catalog: true
 ---
 
 ![量子计算](/img/new-world-explore/quantum-universe/2.webp)
