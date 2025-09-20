@@ -4,18 +4,13 @@ import { routers } from '@constants/router';
 import { cn } from '@lib/utils';
 import { Icon } from 'astro-icon/components';
 import DropdownNav from './DropdownNav';
-import ThemeToggle from '@components/theme/ThemeToggle.astro';
+import IntegratedMenu from './IntegratedMenu.astro';
 import { getLanguageFromAstroUrl, getSiteConfig, getUIText } from '@lib/i18n';
-import LanguageSwitcherPopup from '@components/theme/LanguageSwitcherPopup.astro';
 
 // 获取当前语言和配置
 const currentLang = getLanguageFromAstroUrl(Astro.url);
 const siteConfig = getSiteConfig(currentLang);
 const uiText = getUIText(currentLang);
-
-// 获取对应语言的幻念集链接
-const thoughtsLink = currentLang === 'en' ? '/en/illusionary-thoughts' : '/illusionary-thoughts';
-const thoughtsText = currentLang === 'en' ? 'Thoughts' : '幻念集';
 ---
 
 <div class="tablet:grow-0 flex grow items-center">
@@ -24,8 +19,8 @@ const thoughtsText = currentLang === 'en' ? 'Thoughts' : '幻念集';
     {
       // 使用 siteConfig.navLinks 进行导航
       siteConfig.navLinks
-        ?.filter((item) => item.name !== '幻念集' && item.name !== 'Thoughts')
-        .map((item) => {
+        ?.filter((item: { name: string; href: string }) => item.name !== '幻念集' && item.name !== 'Thoughts')
+        .map((item: { name: string; href: string }) => {
           const path = item.href;
           const { name } = item;
 
@@ -50,40 +45,13 @@ const thoughtsText = currentLang === 'en' ? 'Thoughts' : '幻念集';
   </div>
 
   <div class="tablet:gap-2 ml-auto flex items-center gap-4">
-    <!-- 添加幻念集链接到右上角，使用动态旋转的风铃图标，进一步增强视觉效果 -->
-    <a
-      class="flex cursor-pointer items-center text-white transition duration-300 hover:text-blue-300"
-      href={thoughtsLink}
-      title={thoughtsText}
-    >
-      <div class="relative">
-        <!-- 移除白色背景，直接将图标变成纯白色 -->
-        <div class="rainbow-icon h-9 w-9 transition duration-300 hover:scale-125">
-          <img
-            src="/whirlwind.svg"
-            alt={thoughtsText}
-            class="slow-spin h-full w-full"
-            style="filter: brightness(0) invert(1);"
-          />
-        </div>
-        <!-- 添加多层脉冲动画效果 -->
-        <div class="absolute inset-0 animate-ping rounded-full bg-blue-500 opacity-40" style="animation-duration: 2s;"></div>
-        <div
-          class="absolute inset-0 animate-ping rounded-full bg-cyan-400 opacity-30"
-          style="animation-delay: 0.5s; animation-duration: 2.5s;"
-        >
-        </div>
-      </div>
-    </a>
-
-    <!-- 语言切换器 -->
-    <LanguageSwitcherPopup />
-
-    <ThemeToggle />
+    <!-- 集成菜单 - 包含幻念集、语言切换器和主题切换器 -->
+    <IntegratedMenu />
   </div>
 </div>
 
-<style>
+<!-- 移除原来的独立图标样式 -->
+<style is:global>
   .slow-spin {
     animation: spin 4s linear infinite;
   }

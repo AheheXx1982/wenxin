@@ -1,11 +1,31 @@
 ---
 import WaterfallFlow from './WaterfallFlow.astro';
+
+// 定义多语言内容
+const content = {
+  zh: {
+    title: '幻念集',
+    description: '记录那些转瞬即逝的心灵火花与未曾言说的灵感碎片。'
+  },
+  en: {
+    title: 'Illusionary Thoughts',
+    description: 'Recording those fleeting sparks of the soul and unspoken fragments of inspiration.'
+  }
+};
+
+// 获取传递的语言参数，默认为中文
+const { lang = 'zh' } = Astro.props;
+// 修复TypeScript类型错误
+const currentContent = content[lang as keyof typeof content] || content.zh;
 ---
 
 <div class="illusionary-thoughts-content">
   <div class="mb-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800">
-    <h2 class="mb-4 text-2xl font-bold text-gray-800 dark:text-white">💭 <span id="illusionary-title">幻念集</span></h2>
-    <p class="mb-4 text-gray-600 dark:text-gray-300" id="illusionary-description">记录那些转瞬即逝的心灵火花与未曾言说的灵感碎片。</p>
+    <h2 class="mb-4 text-2xl font-bold text-gray-800 dark:text-white">
+      <img src="/whirlwind.svg" alt={currentContent.title} class="inline-block h-8 w-8 mr-2 reverse-spin" />
+      <span id="illusionary-title">{currentContent.title}</span>
+    </h2>
+    <p class="mb-4 text-gray-600 dark:text-gray-300" id="illusionary-description">{currentContent.description}</p>
   </div>
 
   <WaterfallFlow
@@ -220,7 +240,7 @@ import WaterfallFlow from './WaterfallFlow.astro';
           id: 26,
           title: '知行合一的投资之道',
           content:
-            'Invest中最难的不是知道，而是做到。知道价值投资的道理并不难，难的是在市场恐慌时敢于买入，在市场狂热时敢于卖出。知行合一需要的不仅是知识，更是勇气和纪律。每一次违背原则的操作，都是对自身能力的削弱。真正的投资高手，是那些能够始终坚持自己原则的人。',
+            'Invest中最难的 not knowing,而是做到。知道价值投资的道理并不难，难的是在市场恐慌时敢于买入，在市场狂热时敢于卖出。知行合一需要的不仅是知识，更是勇气和纪律。每一次违背原则的操作，都是对自身能力的削弱。真正的投资高手，是那些能够始终坚持自己原则的人。',
           date: '2025-04-15',
           category: '投资哲学',
         },
@@ -228,7 +248,7 @@ import WaterfallFlow from './WaterfallFlow.astro';
           id: 27,
           title: '时间的复利效应',
           content:
-            'Time is投资者最好的朋友， also the投机er最大的 enemy. In investment的世界, the power of compound interest can only be fully realized with the加持 of time. Those who can remain patient amid market fluctuations will ultimately receive the generous rewards that time offers. Every day of persistence adds another brick to the foundation of future wealth growth.',
+            'Time is investors best friend, also the投机er greatest enemy. In the world of investing, the power of compound interest can only be fully realized with the support of time. Those who can remain patient amid market fluctuations will ultimately receive the generous rewards that time offers. Every day of persistence adds another brick to the foundation of future wealth growth.',
           date: '2025-04-10',
           category: '投资理念',
         },
@@ -236,25 +256,25 @@ import WaterfallFlow from './WaterfallFlow.astro';
           id: 28,
           title: '逆向思维的力量',
           content:
-            'In investment, when most people are in panic, it\'s often the best time to buy; when most people are greedy, it\'s often the best time to sell. Contrarian thinking requires great courage, as it means going against the crowd. But it\'s precisely this courage that allows contrarian investors to find the best investment opportunities amid extreme market emotions.',
+            'In investing, when most people are panicking, it\'s often the best time to buy; when most people are greedy, it\'s often the best time to sell. Contrarian thinking requires tremendous courage, as it means going against the crowd. But it\'s precisely this courage that allows contrarian investors to find the best investment opportunities amid extreme market emotions.',
           date: '2025-04-05',
           category: '投资策略',
         },
         {
           id: 29,
-          title: 'Investment中的心理学',
+          title: '投资中的心理学',
           content:
-            'Investment is essentially a battle against human nature. Greed, fear, herd mentality, overconfidence and other human weaknesses are all exposed during the investment process. Successful investors are not those without these weaknesses, but those who can recognize and control them. Understanding behavioral finance and mastering investment psychology are required courses for every investor.',
+            'Investing is essentially a battle against human nature. Greed, fear, herd mentality, overconfidence and other human weaknesses are all exposed during the investment process. Successful investors are not those without these weaknesses, but those who can recognize and control them. Understanding behavioral finance and mastering investment psychology are required courses for every investor.',
           date: '2025-03-30',
           category: '心理建设',
         },
         {
           id: 30,
-          title: '简单即是美',
+          title: 'Simple is Beauty',
           content:
-            'The most effective investment strategies are often the simplest. Complex strategies don\'t necessarily bring better returns, but may instead increase risk and costs. Buy and hold quality assets, rebalance regularly, and control expenses - these simple principles, if adhered to consistently, can bring considerable returns. The wisdom of investment lies in simplifying complexity.',
+            'The most effective investment strategies are often the simplest. Complex strategies don\'t necessarily bring better returns, but may instead increase risk and costs. Buy and hold quality assets, rebalance regularly, and control expenses - these simple principles, if adhered to consistently, can bring considerable returns. The wisdom of investing lies in simplifying complexity.',
           date: '2025-03-25',
-          category: '投资哲学',
+          category: 'Investment Philosophy',
         },
       ],
       en: [
@@ -470,7 +490,7 @@ import WaterfallFlow from './WaterfallFlow.astro';
           id: 27,
           title: 'The Compound Effect of Time',
           content:
-            'Time is an investor\'s best friend and a speculator\'s greatest enemy. In the world of investing, the power of compound interest can only be fully realized with the加持 of time. Those investors who can remain patient amid market fluctuations will ultimately receive the generous rewards that time offers. Every day of persistence adds another brick to the foundation of future wealth growth.',
+            'Time is an investor\'s best friend and a speculator\'s greatest enemy. In the world of investing, the power of compound interest can only be fully realized with the support of time. Those investors who can remain patient amid market fluctuations will ultimately receive the generous rewards that time offers. Every day of persistence adds another brick to the foundation of future wealth growth.',
           date: '2025-04-10',
           category: 'Investment Philosophy',
         },
@@ -501,10 +521,36 @@ import WaterfallFlow from './WaterfallFlow.astro';
       ]
     };
 
-    const updateLanguage = () => {
-      if (typeof window !== 'undefined') {
-        const path = window.location.pathname;
-        const isEnglish = path.startsWith('/en/');
+    // 使用项目中已有的语言判断函数
+    const getLanguageFromPath = (path: string) => {
+      const segments = path.split('/').filter(Boolean);
+      const firstSegment = segments[0];
+      
+      if (firstSegment && ['en'].includes(firstSegment)) {
+        return 'en';
+      }
+      
+      return 'zh';
+    };
+
+    // 确保只注册一次事件监听器
+    if (typeof window !== 'undefined' && !window.hasOwnProperty('illusionaryThoughtsInitialized')) {
+      // 标记已初始化
+      // @ts-ignore
+      window.illusionaryThoughtsInitialized = true;
+      
+      const updateLanguage = () => {
+        const currentPath = window.location.pathname;
+        
+        // 添加调试日志
+        console.log('IllusionaryThoughtsContent: Current path:', currentPath);
+        
+        // 使用项目统一的语言判断逻辑
+        const currentLang = getLanguageFromPath(currentPath);
+        const isEnglish = currentLang === 'en';
+        
+        // 添加调试日志
+        console.log('IllusionaryThoughtsContent: Detected language:', currentLang);
         
         const titleElement = document.getElementById('illusionary-title');
         const descriptionElement = document.getElementById('illusionary-description');
@@ -519,8 +565,11 @@ import WaterfallFlow from './WaterfallFlow.astro';
           }
         }
 
-        // 更新瀑布流内容
+        // 更新瀑布流内容 - 每次都重新计算
         const items = isEnglish ? contentData.en : contentData.zh;
+        
+        // 添加调试日志
+        console.log('IllusionaryThoughtsContent: Loading', items.length, 'items for', isEnglish ? 'English' : 'Chinese');
         
         // 固定显示20篇文章，确保每行4篇文章，共5行
         const shuffled = [...items].sort(() => 0.5 - Math.random());
@@ -533,11 +582,9 @@ import WaterfallFlow from './WaterfallFlow.astro';
           detail: { items: displayItems } 
         });
         window.dispatchEvent(event);
-      }
-    };
+      };
 
-    // 页面加载时更新语言
-    if (typeof window !== 'undefined') {
+      // 页面加载时更新语言
       // 等待DOM加载完成
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', updateLanguage);
@@ -547,6 +594,25 @@ import WaterfallFlow from './WaterfallFlow.astro';
       
       // 监听路由变化
       window.addEventListener('popstate', updateLanguage);
+      
+      // 监听Astro的页面加载事件，确保在客户端路由切换时也能更新内容
+      document.addEventListener('astro:page-load', updateLanguage);
     }
   </script>
-</```
+</div>
+
+<style>
+  @keyframes reverse-spin {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  .reverse-spin {
+    animation: reverse-spin 4s linear infinite;
+    transform-origin: center center;
+  }
+</style>

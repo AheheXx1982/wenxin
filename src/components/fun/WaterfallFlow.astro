@@ -163,12 +163,15 @@ const { items = [], initialDisplayCount = 6 } = Astro.props;
       const items = event.detail.items;
       const grid = document.getElementById('waterfall-grid');
       
+      // 添加调试日志
+      console.log('WaterfallFlow: Received updateWaterfall event with', items ? items.length : 0, 'items');
+      
       if (grid && items) {
         // 清空现有内容
         grid.innerHTML = '';
         
         // 生成新的瀑布流内容
-        items.forEach((item: WaterfallItem, index: number) => {
+        items.forEach(function(item: any, index: number) {
           const colorClass = 
             index % 10 === 0 ? 'bg-white dark:bg-gray-800' :
             index % 10 === 1 ? 'bg-gray-50 dark:bg-gray-700' :
@@ -185,6 +188,12 @@ const { items = [], initialDisplayCount = 6 } = Astro.props;
           itemElement.className = `waterfall-item ${colorClass}`;
           itemElement.dataset.key = item.id;
           
+          // 添加调试日志，检查文章标题语言
+          const isEnglishTitle = item.title.includes('The') || item.title.includes('Investment') || 
+                                item.title.includes('Risk') || item.title.includes('Market');
+          console.log('WaterfallFlow: Rendering item', item.id, 'title language check:', 
+            isEnglishTitle ? 'English' : 'Likely Chinese', 'Title:', item.title.substring(0, 30) + '...');
+          
           itemElement.innerHTML = `
             <div class="waterfall-card">
               <h3 class="waterfall-title">${item.title}</h3>
@@ -197,6 +206,16 @@ const { items = [], initialDisplayCount = 6 } = Astro.props;
           
           grid.appendChild(itemElement);
         });
+      }
+    });
+    
+    // 确保在Astro页面加载时也能正确初始化
+    document.addEventListener('astro:page-load', function() {
+      // 如果grid存在但没有子元素，不主动触发更新
+      // 而是等待IllusionaryThoughtsContent组件来触发
+      const grid = document.getElementById('waterfall-grid');
+      if (grid && grid.children.length === 0) {
+        console.log('WaterfallFlow: astro:page-load event received, grid is empty, waiting for content');
       }
     });
   </script>

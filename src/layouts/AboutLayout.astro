@@ -41,7 +41,7 @@ const localizedPageTitle = currentLang === 'en' ? {
     <div class="shadow-box bg-gradient-start mx-0 flex w-full flex-col gap-8 p-4 pt-6 md:px-3 md:py-2">
       {
         isIllusionaryThoughts ? (
-          <IllusionaryThoughtsContent />
+          <IllusionaryThoughtsContent lang={currentLang} />
         ) : (
           <div class="prose dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl">
             <slot />
@@ -49,5 +49,20 @@ const localizedPageTitle = currentLang === 'en' ? {
         )
       }
     </div>
+
   </TwoColumnLayout>
 </Layout>
+
+<script>
+  // 监听Astro页面加载事件，确保在客户端路由切换时能正确更新内容
+  document.addEventListener('astro:page-load', () => {
+    // 如果是幻念集页面，触发一次更新
+    const path = window.location.pathname;
+    const isIllusionaryThoughts = path.includes('illusionary-thoughts');
+    
+    if (isIllusionaryThoughts) {
+      // 不再触发空的更新事件，让IllusionaryThoughtsContent组件自己处理更新
+      console.log('Illusionary Thoughts page loaded, waiting for component to update content');
+    }
+  });
+</script>

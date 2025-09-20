@@ -35,3 +35,8 @@ description: 'SilentXx｜寂静猎手 - 幻念集'
 <div id="waterfall-data" style="display: none;">
   <!-- 内容将在JavaScript中处理 -->
 </div>
+
+<script>
+  // 页面加载完成后不需要主动触发更新，让组件自己处理
+  console.log('Illusionary Thoughts page loaded');
+</script>
