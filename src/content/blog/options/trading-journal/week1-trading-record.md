@@ -1,16 +1,17 @@
 ---
-title: 2025年第1周实盘交易记录
-date: 2025-01-04
-description: 本周期权实盘交易详细记录与复盘分析
+title: 第一周期权交易记录与复盘分析
+date: 2025-01-07
+description: 分享期权实盘交易记录和详细复盘分析
+lang: zh
 categories:
   - ['期权研究院', '实盘分享']
-catalog: true
 tags:
   - 期权交易
   - 实盘记录
   - 交易复盘
   - 风险管理
   - 策略分析
+catalog: true
 ---
 
 ![2025年第1周实盘交易](/img/options/trading-journal/1.webp)

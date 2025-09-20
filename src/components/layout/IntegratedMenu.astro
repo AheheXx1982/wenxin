@@ -1,0 +1,273 @@
+---
+import ThemeToggle from '@components/theme/ThemeToggle.astro';
+import LanguageSwitcherPopup from '@components/theme/LanguageSwitcherPopup.astro';
+import { getLanguageFromAstroUrl } from '@lib/i18n';
+import { Icon } from 'astro-icon/components';
+
+// 获取当前语言
+const currentLang = getLanguageFromAstroUrl(Astro.url);
+
+// 获取对应语言的幻念集链接和文本
+const thoughtsLink = currentLang === 'en' ? '/en/illusionary-thoughts' : '/illusionary-thoughts';
+const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集';
+---
+
+<div class="integrated-menu group relative">
+  <!-- 集成菜单触发按钮 - 使用whirlwind图标 -->
+  <button
+    class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/60 bg-white/30 text-white backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-white/40 focus:ring-2 focus:ring-white/50 focus:outline-none shadow-lg z-20 relative"
+  >
+    <div class="h-8 w-8 flex items-center justify-center">
+      <!-- 使用本地whirlwind图标并保持旋转效果，增强视觉效果和可见性 -->
+      <img src="/whirlwind.svg" alt="幻念集" class="integrated-menu-icon slow-spin w-full h-full object-contain drop-shadow-[0_0_4px_rgba(255,255,255,0.8)]" loading="eager" />
+    </div>
+  </button>
+
+  <!-- 弹出菜单 -->
+  <div
+    class="invisible absolute top-12 right-0 z-50 w-56 scale-95 transform rounded-xl border border-gray-200 bg-white opacity-0 shadow-xl transition-all duration-300 group-hover:visible group-hover:scale-100 group-hover:opacity-100 dark:border-gray-700 dark:bg-gray-800"
+  >
+    <div class="py-2">
+      <!-- 幻念集链接 -->
+      <a
+        href={thoughtsLink}
+        class="flex items-center px-4 py-3 text-sm text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+      >
+        <div class="flex items-center space-x-3">
+          <!-- 使用本地的ghost图标，静态显示 -->
+          <img src="/ghost.svg" alt="幻念集图标" class="h-7 w-7" />
+          <span class="font-medium">
+            {thoughtsText}
+          </span>
+        </div>
+      </a>
+
+      <!-- 分割线 -->
+      <div class="my-2 border-t border-gray-200 dark:border-gray-700"></div>
+
+      <!-- 主题切换器 -->
+      <div class="px-4 py-3">
+        <div class="flex items-center justify-between">
+          <div class="text-xs font-medium tracking-wider text-gray-700 dark:text-gray-200 uppercase">
+            {currentLang === 'en' ? 'Theme' : '主题'}
+          </div>
+          <div class="theme-toggle-container p-1 rounded-full bg-gray-100 dark:bg-gray-700">
+            <ThemeToggle />
+          </div>
+        </div>
+      </div>
+
+      <!-- 语言切换器 -->
+      <div class="px-4 py-3">
+        <div class="flex items-center justify-between">
+          <div class="text-xs font-medium tracking-wider text-gray-700 dark:text-gray-200 uppercase">
+            {currentLang === 'en' ? 'Language' : '语言'}
+          </div>
+          <LanguageSwitcherPopup />
+        </div>
+      </div>
+    </div>
+
+    <!-- 三角箭头 -->
+    <div
+      class="absolute -top-2 right-4 h-4 w-4 rotate-45 transform border-t border-l border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+    >
+    </div>
+  </div>
+</div>
+
+<style>
+  /* 确保SVG路径始终可见 */
+  .integrated-menu svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .integrated-menu svg .svg-path {
+    vector-effect: non-scaling-stroke;
+    paint-order: stroke fill markers;
+  }
+
+  /* 确保图标始终可见，不受父元素隐藏影响 */
+  .integrated-menu-icon {
+    display: block !important;
+    visibility: visible !important;
+    /* 确保图标围绕中心旋转 */
+    transform-origin: center center;
+    /* 增强图标可见性 */
+    opacity: 1 !important;
+  }
+
+  /* 增强旋转动画效果 */
+  @keyframes enhanced-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* 逆时针旋转动画 */
+  @keyframes reverse-spin {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  .slow-spin {
+    animation: enhanced-spin 4s linear infinite;
+    transform-origin: center center;
+    /* 确保动画在所有状态下都运行 */
+    animation-play-state: running !important;
+  }
+
+  .reverse-slow-spin {
+    animation: reverse-spin 4s linear infinite;
+    transform-origin: center center;
+    /* 确保动画在所有状态下都运行 */
+    animation-play-state: running !important;
+  }
+
+  .integrated-menu:hover button {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+
+  /* 子菜单项样式 */
+  .integrated-menu .menu-item {
+    transition: all 0.2s ease;
+  }
+
+  .integrated-menu .menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .integrated-menu .menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    .integrated-menu > div:last-child {
+      right: -20px;
+      width: 200px;
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function () {
+    const menu = document.querySelector('.integrated-menu');
+    if (!menu) return;
+
+    // 确保一级菜单图标始终可见
+    const menuIcon = menu.querySelector('.integrated-menu-icon');
+    const toggleButton = menu.querySelector('button');
+    
+    if (menuIcon) {
+      // 强制设置图标可见性
+      menuIcon.style.opacity = '1';
+      menuIcon.style.display = 'block';
+      menuIcon.style.visibility = 'visible';
+      
+      // 确保动画始终运行
+      menuIcon.style.animationPlayState = 'running';
+    }
+
+    if (toggleButton) {
+      // 确保按钮始终可见
+      toggleButton.style.opacity = '1';
+      toggleButton.style.visibility = 'visible';
+      
+      // 确保按钮背景和边框始终显示
+      toggleButton.style.backgroundColor = '';
+      toggleButton.style.borderColor = '';
+    }
+
+    let timeout;
+
+    // 鼠标进入时显示菜单
+    menu.addEventListener('mouseenter', () => {
+      clearTimeout(timeout);
+      const dropdown = menu.querySelector('div:last-child');
+      if (dropdown) {
+        dropdown.style.opacity = '1';
+        dropdown.style.visibility = 'visible';
+        dropdown.style.transform = 'scale(1)';
+      }
+    });
+
+    // 鼠标离开时隐藏菜单
+    menu.addEventListener('mouseleave', () => {
+      timeout = window.setTimeout(() => {
+        const dropdown = menu.querySelector('div:last-child');
+        if (dropdown) {
+          dropdown.style.opacity = '0';
+          dropdown.style.visibility = 'hidden';
+          dropdown.style.transform = 'scale(0.95)';
+        }
+      }, 150);
+    });
+
+    // 键盘导航支持
+    if (toggleButton) {
+      toggleButton.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const dropdown = menu.querySelector('div:last-child');
+          if (dropdown) {
+            const isVisible = dropdown.style.opacity === '1';
+            if (isVisible) {
+              dropdown.style.opacity = '0';
+              dropdown.style.visibility = 'hidden';
+              dropdown.style.transform = 'scale(0.95)';
+            } else {
+              dropdown.style.opacity = '1';
+              dropdown.style.visibility = 'visible';
+              dropdown.style.transform = 'scale(1)';
+            }
+          }
+        }
+      });
+    }
+
+    // 修复：点击外部区域时，只隐藏菜单，不隐藏图标
+    document.addEventListener('click', (e) => {
+      // 检查点击的元素是否在菜单内部
+      if (menu && !menu.contains(e.target)) {
+        const dropdown = menu.querySelector('div:last-child');
+        if (dropdown) {
+          // 只隐藏下拉菜单，不隐藏触发按钮
+          dropdown.style.opacity = '0';
+          dropdown.style.visibility = 'hidden';
+          dropdown.style.transform = 'scale(0.95)';
+        }
+      }
+    });
+    
+    // 定期检查并确保图标和按钮可见
+    setInterval(() => {
+      if (menuIcon) {
+        menuIcon.style.opacity = '1';
+        menuIcon.style.display = 'block';
+        menuIcon.style.visibility = 'visible';
+        menuIcon.style.animationPlayState = 'running';
+      }
+      
+      if (toggleButton) {
+        toggleButton.style.opacity = '1';
+        toggleButton.style.visibility = 'visible';
+        // 确保按钮的背景和边框样式不被覆盖
+        if (!toggleButton.style.backgroundColor || toggleButton.style.backgroundColor === 'initial') {
+          toggleButton.style.backgroundColor = '';
+        }
+        if (!toggleButton.style.borderColor || toggleButton.style.borderColor === 'initial') {
+          toggleButton.style.borderColor = '';
+        }
+      }
+    }, 1000);
+  });
+</script>

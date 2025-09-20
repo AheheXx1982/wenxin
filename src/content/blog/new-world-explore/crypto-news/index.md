@@ -1,10 +1,10 @@
 ---
-title: 加密市场前瞻：最新动态与投资风向标
+title: 加密风向标：市场动态与投资洞察
 date: 2025-08-30
 description: 提供最新的加密市场动态、项目分析和行业趋势
+lang: zh
 categories:
   - ['新世界探索', '加密风向标']
-catalog: true
 tags:
   - 加密货币
   - 市场动态
@@ -13,6 +13,7 @@ tags:
   - 投资风向
   - 风险管理
   - 投资者教育
+catalog: true
 ---
 
 ![加密风向标](/img/crypto/crypto-news/1.webp)

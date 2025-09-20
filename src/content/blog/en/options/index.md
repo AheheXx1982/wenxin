@@ -8,7 +8,12 @@ categories:
 catalog: true
 tags:
   - Options Trading
+  - Financial Derivatives
   - Investment Strategy
+  - Risk Management
+  - Trading Strategies
+  - Volatility Analysis
+  - Greeks Indicators
 ---
 
 # Options Trading Essentials

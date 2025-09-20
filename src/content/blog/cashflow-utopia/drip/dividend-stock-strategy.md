@@ -1,10 +1,10 @@
 ---
-title: 全球高息股投资全攻略：构建稳定现金流的策略与实践
-date: 2025-01-11
-description: 通过投资全球高息股构建稳定的现金流
+title: 全球高息股投资策略：构建稳定股息收入组合
+date: 2025-01-12
+description: 学习如何通过全球高息股投资构建稳定的股息收入组合
+lang: zh
 categories:
   - ['现金流乌托邦', '全球高息股轮动']
-catalog: true
 tags:
   - 股息投资
   - 全球投资
@@ -13,6 +13,7 @@ tags:
   - 风险管理
   - 财务分析
   - 投资组合
+catalog: true
 ---
 
 ![全球高息股投资](/img/cashflow-utopia/drip/1.webp)

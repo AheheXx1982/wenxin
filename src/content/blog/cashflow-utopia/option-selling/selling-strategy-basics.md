@@ -1,7 +1,8 @@
 ---
-title: 期权卖方策略详解：构建稳定现金流的投资方法
+title: 期权卖方基础：稳定收入的构建方法
 date: 2025-01-10
-description: 期权卖方策略的核心理念和实施方法
+description: 学习期权卖方的基础知识和风险管理方法
+lang: zh
 categories:
   - ['现金流乌托邦', '期权卖方策略']
 tags:

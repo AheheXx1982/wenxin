@@ -2,6 +2,7 @@
 title: 前沿科技洞察：探索未来世界的无限可能
 date: 2025-08-30
 description: 欢迎来到新世界探索，这里是关于前沿科技、人工智能和未来趋势的资讯专区
+lang: zh
 categories:
   - ['新世界探索']
 catalog: true

@@ -7,8 +7,8 @@ categories:
   - ['加密实验室', '合约交易']
 catalog: true
 tags:
-  - Futures Trading
   - Cryptocurrency
+  - Futures Trading
   - Leverage Trading
   - Risk Management
   - Technical Analysis

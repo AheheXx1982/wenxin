@@ -1,18 +1,19 @@
 ---
-title: 加密货币合约交易全攻略：从入门到风险控制
+title: 加密货币合约交易指南：杠杆交易的风险与机遇
 date: 2025-01-07
-description: 合约交易的基本概念和风险控制方法
+description: 深入了解加密货币合约交易的特点、技巧和风险控制方法
+lang: zh
 categories:
   - ['加密实验室', '合约交易']
-catalog: true
 tags:
-  - 合约交易
   - 加密货币
+  - 合约交易
   - 杠杆交易
   - 风险管理
   - 技术分析
   - 仓位控制
   - 止损策略
+catalog: true
 ---
 
 ![合约交易](/img/crypto/futures/1.webp)

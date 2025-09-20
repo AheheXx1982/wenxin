@@ -1,10 +1,10 @@
 ---
-title: 人工智能演进：从机器学习到通用智能的未来
+title: 人工智能进化：改变金融市场的智能浪潮
 date: 2025-08-30
-description: 深入探讨人工智能的发展历程、当前状态和未来趋势
+description: 深入探讨人工智能在金融交易领域的应用和未来发展
+lang: zh
 categories:
   - ['新世界探索', '智能进化']
-catalog: true
 tags:
   - 人工智能
   - 机器学习
@@ -13,6 +13,7 @@ tags:
   - 技术发展
   - 应用案例
   - 未来趋势
+catalog: true
 ---
 
 ![智能进化](/img/new-world-explore/ai/1.webp)

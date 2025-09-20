@@ -11,9 +11,9 @@ tags:
   - Investment Portfolio
   - Tax Planning
   - Risk Management
-  - Capital Gains Tax
-  - Dividend Tax
-  - Interest Tax
+  - Capital Gains
+  - Dividend Strategy
+  - Interest Strategy
 ---
 
 ![Asset Allocation Strategies](/img/cashflow-utopia/asset-allocation/1.webp)

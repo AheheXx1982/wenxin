@@ -35,3 +35,8 @@ I came to this world not to reproduce, but to see how flowers bloom, how water f
 <div id="waterfall-data" style="display: none;">
   <!-- Content will be processed in JavaScript -->
 </div>
+
+<script>
+  // 页面加载完成后不需要主动触发更新，让组件自己处理
+  console.log('Illusionary Thoughts page loaded');
+</script>

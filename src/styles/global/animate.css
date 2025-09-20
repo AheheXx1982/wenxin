@@ -49,6 +49,21 @@
   transform-origin: center center;
 }
 
+/* 逆时针旋转动画 */
+@keyframes reverse-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.reverse-slow-spin {
+  animation: reverse-spin 2s linear infinite;
+  transform-origin: center center;
+}
+
 /* 发光脉冲动画 */
 @keyframes glow-pulse {
   0% {

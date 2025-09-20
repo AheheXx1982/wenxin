@@ -119,40 +119,48 @@ const { items = [], initialDisplayCount = 6 } = Astro.props;
 
   <div class="waterfall-grid" id="waterfall-grid">
     {
-      items.map((item, index) => (
-        <div
-          class={`waterfall-item ${
-            index % 10 === 0
-              ? 'bg-white dark:bg-gray-800'
-              : index % 10 === 1
-                ? 'bg-gray-50 dark:bg-gray-700'
-                : index % 10 === 2
-                  ? 'bg-blue-50 dark:bg-blue-900/30'
-                  : index % 10 === 3
-                    ? 'bg-green-50 dark:bg-green-900/30'
-                    : index % 10 === 4
-                      ? 'bg-yellow-50 dark:bg-yellow-900/30'
-                      : index % 10 === 5
-                        ? 'bg-red-50 dark:bg-red-900/30'
-                        : index % 10 === 6
-                          ? 'bg-purple-50 dark:bg-purple-900/30'
-                          : index % 10 === 7
-                            ? 'bg-pink-50 dark:bg-pink-900/30'
-                            : index % 10 === 8
-                              ? 'bg-indigo-50 dark:bg-indigo-900/30'
-                              : 'bg-teal-50 dark:bg-teal-900/30'
-          }`}
-          data-key={item.id}
-        >
-          <div class="waterfall-card">
-            <h3 class="waterfall-title">{item.title}</h3>
-            <div class="waterfall-content">{item.content}</div>
-            <div class="waterfall-footer">
-              <span class="waterfall-date">{item.date}</span>
+      // 如果有初始items数据，直接渲染
+      items.length > 0 ? (
+        items.map((item, index) => (
+          <div
+            class={`waterfall-item ${
+              index % 10 === 0
+                ? 'bg-white dark:bg-gray-800'
+                : index % 10 === 1
+                  ? 'bg-gray-50 dark:bg-gray-700'
+                  : index % 10 === 2
+                    ? 'bg-blue-50 dark:bg-blue-900/30'
+                    : index % 10 === 3
+                      ? 'bg-green-50 dark:bg-green-900/30'
+                      : index % 10 === 4
+                        ? 'bg-yellow-50 dark:bg-yellow-900/30'
+                        : index % 10 === 5
+                          ? 'bg-red-50 dark:bg-red-900/30'
+                          : index % 10 === 6
+                            ? 'bg-purple-50 dark:bg-purple-900/30'
+                            : index % 10 === 7
+                              ? 'bg-pink-50 dark:bg-pink-900/30'
+                              : index % 10 === 8
+                                ? 'bg-indigo-50 dark:bg-indigo-900/30'
+                                : 'bg-teal-50 dark:bg-teal-900/30'
+            }`}
+            data-key={item.id}
+          >
+            <div class="waterfall-card">
+              <h3 class="waterfall-title">{item.title}</h3>
+              <div class="waterfall-content">{item.content}</div>
+              <div class="waterfall-footer">
+                <span class="waterfall-date">{item.date}</span>
+              </div>
             </div>
           </div>
+        ))
+      ) : (
+        // 如果没有初始数据，显示加载提示
+        <div class="col-span-full text-center py-8 text-gray-500 dark:text-gray-400">
+          加载中...
         </div>
-      ))
+      )
     }
   </div>
 
@@ -163,12 +171,21 @@ const { items = [], initialDisplayCount = 6 } = Astro.props;
       const items = event.detail.items;
       const grid = document.getElementById('waterfall-grid');
       
+      // 添加调试日志
+      console.log('WaterfallFlow: Received updateWaterfall event with', items ? items.length : 0, 'items');
+      
       if (grid && items) {
         // 清空现有内容
         grid.innerHTML = '';
         
+        // 如果没有items，显示加载提示
+        if (items.length === 0) {
+          grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500 dark:text-gray-400">暂无内容</div>';
+          return;
+        }
+        
         // 生成新的瀑布流内容
-        items.forEach((item: WaterfallItem, index: number) => {
+        items.forEach(function(item: any, index: number) {
           const colorClass = 
             index % 10 === 0 ? 'bg-white dark:bg-gray-800' :
             index % 10 === 1 ? 'bg-gray-50 dark:bg-gray-700' :
@@ -197,6 +214,16 @@ const { items = [], initialDisplayCount = 6 } = Astro.props;
           
           grid.appendChild(itemElement);
         });
+      }
+    });
+    
+    // 确保在Astro页面加载时也能正确初始化
+    document.addEventListener('astro:page-load', function() {
+      // 如果grid存在但没有子元素，不主动触发更新
+      // 而是等待IllusionaryThoughtsContent组件来触发
+      const grid = document.getElementById('waterfall-grid');
+      if (grid && grid.children.length === 0) {
+        console.log('WaterfallFlow: astro:page-load event received, grid is empty, waiting for content');
       }
     });
   </script>

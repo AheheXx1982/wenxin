@@ -10,6 +10,11 @@ tags:
   - Investment Strategy
   - Financial Freedom
   - Cash Flow
+  - Asset Allocation
+  - Options Trading
+  - Dividend Investment
+  - Tax Optimization
+  - Risk Management
 ---
 
 # Building Stable Cash Flow Investment System

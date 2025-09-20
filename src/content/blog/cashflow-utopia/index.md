@@ -2,6 +2,7 @@
 title: 构建稳定现金流的投资体系：实现财务自由之路
 date: 2025-01-09
 description: 构建稳定现金流的投资体系，实现财务自由之路
+lang: zh
 categories:
   - ['现金流乌托邦']
 catalog: true

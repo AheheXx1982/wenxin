@@ -109,7 +109,8 @@
 
 <style>
   :root {
-    --theme-toggle-color: currentColor;
+    --theme-toggle-color: #ffbb52;
+    --theme-background-color: #17181c;
   }
   .theme-toggle {
     z-index: 10;
@@ -130,7 +131,7 @@
     width: 36px;
     height: 36px;
     position: relative;
-    box-shadow: inset 16px -16px 0 0 var(--theme-toggle-color, #ffbb52);
+    box-shadow: inset 16px -16px 0 0 var(--theme-toggle-color);
     transform: scale(1) rotate(-2deg);
     transition:
       box-shadow 0.5s ease 0s,
@@ -159,21 +160,21 @@
     top: 50%;
     left: 50%;
     box-shadow:
-      0 -23px 0 var(--theme-toggle-color, #ffbb52),
-      0 23px 0 var(--theme-toggle-color, #ffbb52),
-      23px 0 0 var(--theme-toggle-color, #ffbb52),
-      -23px 0 0 var(--theme-toggle-color, #ffbb52),
-      15px 15px 0 var(--theme-toggle-color, #ffbb52),
-      -15px 15px 0 var(--theme-toggle-color, #ffbb52),
-      15px -15px 0 var(--theme-toggle-color, #ffbb52),
-      -15px -15px 0 var(--theme-toggle-color, #ffbb52);
+      0 -23px 0 var(--theme-toggle-color),
+      0 23px 0 var(--theme-toggle-color),
+      23px 0 0 var(--theme-toggle-color),
+      -23px 0 0 var(--theme-toggle-color),
+      15px 15px 0 var(--theme-toggle-color),
+      -15px 15px 0 var(--theme-toggle-color),
+      15px -15px 0 var(--theme-toggle-color),
+      -15px -15px 0 var(--theme-toggle-color);
     transform: scale(0);
     transition: all 0.3s ease;
   }
 
   /* 选中状态（深色模式）：月亮 */
   .toggle input:checked + div {
-    box-shadow: inset 32px -32px 0 0 var(--theme-background-color, #17181c);
+    box-shadow: inset 32px -32px 0 0 var(--theme-background-color);
     transform: scale(0.5) rotate(0deg);
     transition:
       transform 0.3s ease 0.1s,
@@ -181,7 +182,7 @@
   }
 
   .toggle input:checked + div:before {
-    background: var(--theme-toggle-color, #ffbb52);
+    background: var(--theme-toggle-color);
     transition: background 0.3s ease 0.1s;
   }
 
