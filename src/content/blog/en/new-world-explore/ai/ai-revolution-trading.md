@@ -4,8 +4,13 @@ description: 'Explore how artificial intelligence is revolutionizing trading str
 date: 2024-03-15
 pubDate: 2024-03-15
 categories:
-  - ['新世界探索']
-tags: ['AI', 'trading', 'fintech', 'machine-learning', 'algorithmic-trading']
+  - ['新世界探索', '智能进化']
+tags: 
+  - Artificial Intelligence
+  - algorithmic-trading
+  - fintech
+  - Machine Learning
+  - AI
 lang: en
 ---
 

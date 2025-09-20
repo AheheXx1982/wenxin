@@ -9,6 +9,10 @@ catalog: true
 tags:
   - Cryptocurrency
   - Blockchain
+  - Digital Assets
+  - Technical Documentation
+  - Basic Knowledge
+  - Concept Explanation
 ---
 
 # Cryptocurrency Encyclopedia

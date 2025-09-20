@@ -9,6 +9,11 @@ catalog: true
 tags:
   - Artificial Intelligence
   - Machine Learning
+  - Deep Learning
+  - Large Language Models
+  - Technology Development
+  - Application Cases
+  - Future Trends
 ---
 
 # Artificial Intelligence Evolution

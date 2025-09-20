@@ -7,12 +7,12 @@ categories:
   - ['加密实验室', '网格策略']
 catalog: true
 tags:
-  - Grid Trading
   - Cryptocurrency
+  - Grid Trading
+  - Trading Strategies
+  - Risk Management
   - Automated Trading
   - Market Volatility
-  - Trading Strategy
-  - Risk Management
 ---
 
 ![Grid Trading Strategy](/img/crypto/grid/1.webp)
@@ -34,7 +34,7 @@ Grid trading involves:
 
 ### Visual Example
 
-```plain
+``plain
 Price Level    Action       Quantity    Status
 $52,000       SELL         0.1 BTC     Pending
 $51,000       SELL         0.1 BTC     Pending
@@ -182,7 +182,7 @@ $48,000       BUY          0.1 BTC     Pending
 
 **Grid Structure**:
 
-```plain
+``plain
 Sell Orders:
 $55,000: Sell 0.1 BTC
 $54,000: Sell 0.1 BTC

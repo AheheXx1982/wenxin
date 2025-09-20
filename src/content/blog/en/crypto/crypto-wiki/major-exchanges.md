@@ -6,9 +6,11 @@ lang: en
 categories:
   - ['加密实验室', '加密百科']
 tags:
-  - Exchanges
   - Cryptocurrency
-  - Trading Platforms
+  - Exchanges
+  - Platform Comparison
+  - Fee Analysis
+  - Security
 ---
 
 ![Cryptocurrency Exchanges](/img/crypto/crypto-wiki/1.webp)

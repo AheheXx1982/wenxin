@@ -7,11 +7,11 @@ categories:
   - ['期权研究院', '策略分析']
 catalog: true
 tags:
+  - Options Strategy
   - Covered Call
   - Income Strategy
-  - Options Trading
   - Risk Management
-  - Stock Holdings
+  - Investment Strategy
 ---
 
 ![Covered Call Strategy](/img/options/strategy/1.webp)

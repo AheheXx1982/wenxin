@@ -8,8 +8,8 @@ categories:
 catalog: true
 tags:
   - Options Trading
-  - Investment Strategy
   - Financial Derivatives
+  - Investment Strategy
   - Risk Management
   - Trading Strategies
   - Volatility Analysis

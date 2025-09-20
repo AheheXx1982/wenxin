@@ -34,8 +34,8 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
         class="flex items-center px-4 py-3 text-sm text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
       >
         <div class="flex items-center space-x-3">
-          <!-- 使用本地的幻念集图标 -->
-          <img src="/ri--ghost-line.svg" alt="幻念集图标" class="h-7 w-7" />
+          <!-- 使用本地的ghost图标，静态显示 -->
+          <img src="/ghost.svg" alt="幻念集图标" class="h-7 w-7" />
           <span class="font-medium">
             {thoughtsText}
           </span>
@@ -109,8 +109,25 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
     }
   }
 
+  /* 逆时针旋转动画 */
+  @keyframes reverse-spin {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
   .slow-spin {
     animation: enhanced-spin 4s linear infinite;
+    transform-origin: center center;
+    /* 确保动画在所有状态下都运行 */
+    animation-play-state: running !important;
+  }
+
+  .reverse-slow-spin {
+    animation: reverse-spin 4s linear infinite;
     transform-origin: center center;
     /* 确保动画在所有状态下都运行 */
     animation-play-state: running !important;
