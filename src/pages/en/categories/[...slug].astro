@@ -40,11 +40,14 @@ if (!category) {
 }
 
 const displayCategories = category ? [category] : allCategories;
+
+// 获取本地化的分类名称
+const localizedCategoryName = uiText.categoryNames[category?.name as keyof typeof uiText.categoryNames] || category?.name;
 ---
 
-<Layout title={`${uiText.categoriesTitle} - ${category?.name} | ${seoConfig.title}`}>
+<Layout title={`${uiText.categoriesTitle} - ${localizedCategoryName} | ${seoConfig.title}`}>
   <TwoColumnLayout>
-    <Cover slot="cover" title={`${uiText.categoriesTitle} for "${category?.name}"`} />
+    <Cover slot="cover" title={`${uiText.categoriesTitle} for "${localizedCategoryName}"`} lang="en" />
     <HomeSider slot="sider" lang="en" />
     <QuoteMarquee />
     <CategoryPostList rootCategory={category} categories={displayCategories} countMap={countMap} lang="en" />

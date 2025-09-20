@@ -17,9 +17,9 @@ const seoConfig = getSeoConfig('zh');
 
 <Layout title={seoConfig.title}>
   <TwoColumnLayout>
-    <Cover slot="cover" />
+    <Cover slot="cover" lang="zh" />
     <HomeSider slot="sider" lang="zh" />
-    <QuoteMarquee />
+    <QuoteMarquee lang="zh" />
     <div class="shadow-box bg-gradient-start tablet:shadow-none flex flex-col gap-4 overflow-hidden p-4 pt-6 md:px-1 md:py-2">
       <PostList posts={posts} showPaginator={false} />
     </div>

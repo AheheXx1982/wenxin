@@ -6,7 +6,7 @@ import Layout from './Layout.astro';
 import TwoColumnLayout from './TwoColumnLayout.astro';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 import IllusionaryThoughtsContent from '@components/fun/IllusionaryThoughtsContent.astro';
-import { getLanguageFromAstroUrl } from '@lib/i18n';
+import { getLanguageFromAstroUrl, getSeoConfig, getUIText } from '@lib/i18n';
 
 export interface Props {
   frontmatter: {
@@ -19,16 +19,25 @@ const { frontmatter } = Astro.props;
 
 // 获取当前语言
 const currentLang = getLanguageFromAstroUrl(Astro.url);
+const localizedSeoConfig = getSeoConfig(currentLang as any);
+const uiText = getUIText(currentLang as any);
 
 // 判断是否为幻念集页面
-const isIllusionaryThoughts = frontmatter.title === '幻念集' || frontmatter.title === 'Illusionary Thoughts';
+const isIllusionaryThoughts = frontmatter.title === '幻念集' || frontmatter.title === 'Thoughts';
+
+// 获取本地化的页面标题
+const localizedPageTitle = currentLang === 'en' ? {
+  'About': 'About',
+  '幻念集': 'Illusionary Thoughts',
+  'Thoughts': 'Illusionary Thoughts'
+}[frontmatter.title] || frontmatter.title : frontmatter.title;
 ---
 
-<Layout title={`${frontmatter.title} | ${seoConfig.title}`}>
+<Layout title={`${localizedPageTitle} | ${localizedSeoConfig.title}`}>
   <TwoColumnLayout>
-    <Cover slot="cover" />
+    <Cover slot="cover" title={localizedPageTitle} lang={currentLang} showSiteInfo={true} />
     <HomeSider slot="sider" lang={currentLang} />
-    <QuoteMarquee alwaysShowCultural={isIllusionaryThoughts} />
+    <QuoteMarquee alwaysShowCultural={isIllusionaryThoughts} lang={currentLang} />
     <div class="shadow-box bg-gradient-start mx-0 flex w-full flex-col gap-8 p-4 pt-6 md:px-3 md:py-2">
       {
         isIllusionaryThoughts ? (

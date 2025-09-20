@@ -19,7 +19,7 @@ const { items = [], initialDisplayCount = 6 } = Astro.props;
   <style is:global>
     .waterfall-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(4, 1fr); /* 固定每行4列 */
       gap: 1.5rem;
       margin-top: 1.5rem;
     }
@@ -95,15 +95,29 @@ const { items = [], initialDisplayCount = 6 } = Astro.props;
       color: #9ca3af;
     }
 
+    @media (max-width: 1200px) {
+      .waterfall-grid {
+        grid-template-columns: repeat(3, 1fr); /* 中等屏幕每行3列 */
+        gap: 1.25rem;
+      }
+    }
+    
+    @media (max-width: 992px) {
+      .waterfall-grid {
+        grid-template-columns: repeat(2, 1fr); /* 小屏幕每行2列 */
+        gap: 1rem;
+      }
+    }
+
     @media (max-width: 768px) {
       .waterfall-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* 移动端每行1列 */
         gap: 1rem;
       }
     }
   </style>
 
-  <div class="waterfall-grid">
+  <div class="waterfall-grid" id="waterfall-grid">
     {
       items.map((item, index) => (
         <div
@@ -141,4 +155,49 @@ const { items = [], initialDisplayCount = 6 } = Astro.props;
       ))
     }
   </div>
+
+  <script>
+    {/* @ts-ignore */ }
+    window.addEventListener('updateWaterfall', function(event) {
+      // @ts-ignore
+      const items = event.detail.items;
+      const grid = document.getElementById('waterfall-grid');
+      
+      if (grid && items) {
+        // 清空现有内容
+        grid.innerHTML = '';
+        
+        // 生成新的瀑布流内容
+        items.forEach((item: WaterfallItem, index: number) => {
+          const colorClass = 
+            index % 10 === 0 ? 'bg-white dark:bg-gray-800' :
+            index % 10 === 1 ? 'bg-gray-50 dark:bg-gray-700' :
+            index % 10 === 2 ? 'bg-blue-50 dark:bg-blue-900/30' :
+            index % 10 === 3 ? 'bg-green-50 dark:bg-green-900/30' :
+            index % 10 === 4 ? 'bg-yellow-50 dark:bg-yellow-900/30' :
+            index % 10 === 5 ? 'bg-red-50 dark:bg-red-900/30' :
+            index % 10 === 6 ? 'bg-purple-50 dark:bg-purple-900/30' :
+            index % 10 === 7 ? 'bg-pink-50 dark:bg-pink-900/30' :
+            index % 10 === 8 ? 'bg-indigo-50 dark:bg-indigo-900/30' :
+            'bg-teal-50 dark:bg-teal-900/30';
+          
+          const itemElement = document.createElement('div');
+          itemElement.className = `waterfall-item ${colorClass}`;
+          itemElement.dataset.key = item.id;
+          
+          itemElement.innerHTML = `
+            <div class="waterfall-card">
+              <h3 class="waterfall-title">${item.title}</h3>
+              <div class="waterfall-content">${item.content}</div>
+              <div class="waterfall-footer">
+                <span class="waterfall-date">${item.date}</span>
+              </div>
+            </div>
+          `;
+          
+          grid.appendChild(itemElement);
+        });
+      }
+    });
+  </script>
 </div>

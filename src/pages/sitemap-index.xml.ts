@@ -75,7 +75,7 @@ export async function GET(context: APIContext) {
       loc: pageUrl,
       lastmod: new Date().toISOString().split('T')[0],
       changefreq: 'daily',
-      priority: page === '' ? 1.0 : page === 'about' ? 0.7 : page === 'investment' ? 0.6 : 0.5,
+      priority: page === '' ? 1.0 : page === 'about' ? 0.7 : page === 'investment' ? 0.6 : page === 'illusionary-thoughts' ? 0.5 : 0.4,
     };
   });
 
@@ -86,7 +86,7 @@ export async function GET(context: APIContext) {
       loc: pageUrl,
       lastmod: new Date().toISOString().split('T')[0],
       changefreq: 'daily',
-      priority: page === 'en' ? 0.9 : page === 'en/about' ? 0.7 : page === 'en/investment' ? 0.6 : 0.5,
+      priority: page === 'en' ? 0.9 : page === 'en/about' ? 0.7 : page === 'en/investment' ? 0.6 : page === 'en/illusionary-thoughts' ? 0.5 : 0.4,
     };
   });
 

@@ -79,6 +79,7 @@ SilentXx/
 - Node.js >= 18.x
 - pnpm >= 10.x
 - Git
+- Docker (Optional, for containerized development)
 
 ---
 
@@ -113,6 +114,25 @@ pnpm build
 # 5. Preview build
 pnpm preview
 ```
+
+---
+
+## 🐳 Docker Development Environment
+
+The project has integrated Docker development environment. You can choose to use Docker for development:
+
+```bash
+# Start development environment using Docker Compose
+docker-compose up
+
+# Access the application: http://localhost:5173/
+```
+
+Docker environment features:
+- Automatic hot reload
+- File synchronization
+- Consistent development environment
+- No local Node.js environment required
 
 ---
 
@@ -173,12 +193,14 @@ These features help search engines better index your website content and provide
 
 ## 📈 Changelog
 
-🎯 Latest: v0.2.0 (2025-09-14)
+🎯 Latest: v0.2.5 (2025-09-20)
 
 ✨ **Version Update**
 
-✅ Version upgraded from v0.1.0 to v0.2.0
+✅ Version upgraded from v0.2.0 to v0.2.5
 ✅ Illusionary Thoughts page optimization: Implemented random content display feature, showing 50% random content each time the page is opened, ensuring an even number of displays to maintain page alignment and aesthetics
+✅ Quote module enhancement: Added cryptocurrency-related quotes, improved Chinese-English translation
+✅ RSS and Sitemap optimization: Enhanced multilingual support to ensure search engines better index website content
 
 [📋 View full changelog → CHANGELOG.md](CHANGELOG.md)
 
