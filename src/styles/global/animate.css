@@ -34,22 +34,425 @@
   }
 }
 
-/* 棒棒糖摇摆动画 */
-@keyframes lollipop-wiggle {
-  0%, 100% { 
-    transform: rotate(-5deg); 
+/* 旋转动画 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
-  50% { 
-    transform: rotate(5deg); 
+  to {
+    transform: rotate(360deg);
   }
 }
 
-/* 棒棒糖弹跳动画 */
-@keyframes lollipop-bounce {
-  0%, 100% { 
-    transform: translateY(0); 
+.animate-spin {
+  animation: spin 1s linear infinite;
+  transform-origin: center center;
+}
+
+/* 发光脉冲动画 */
+@keyframes glow-pulse {
+  0% {
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #e60073, 0 0 20px #e60073;
   }
-  50% { 
-    transform: translateY(-10px); 
+  50% {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6;
   }
+  100% {
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #e60073, 0 0 20px #e60073;
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 2s infinite;
+}
+
+/* 彩虹边框动画 */
+@keyframes rainbow-border {
+  0% { border-color: #ff0000; }
+  14% { border-color: #ff8000; }
+  28% { border-color: #ffff00; }
+  42% { border-color: #00ff00; }
+  57% { border-color: #0000ff; }
+  71% { border-color: #4b0082; }
+  85% { border-color: #8f00ff; }
+  100% { border-color: #ff0000; }
+}
+
+.rainbow-border {
+  border-width: 4px;
+  animation: rainbow-border 3s linear infinite;
+  transition: opacity 0.3s ease;
+  transform-origin: center center;
+}
+
+/* 随机彩虹颜色动画 */
+@keyframes random-rainbow {
+  0% { filter: hue-rotate(0deg); }
+  10% { filter: hue-rotate(36deg); }
+  20% { filter: hue-rotate(72deg); }
+  30% { filter: hue-rotate(108deg); }
+  40% { filter: hue-rotate(144deg); }
+  50% { filter: hue-rotate(180deg); }
+  60% { filter: hue-rotate(216deg); }
+  70% { filter: hue-rotate(252deg); }
+  80% { filter: hue-rotate(288deg); }
+  90% { filter: hue-rotate(324deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+.random-rainbow {
+  animation: random-rainbow 5s infinite;
+  transform-origin: center center;
+}
+
+/* 平滑跳动动画 */
+@keyframes smooth-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.smooth-bounce {
+  animation: smooth-bounce 2s infinite;
+  transform-origin: center center;
+}
+
+/* 明显跳动动画 */
+@keyframes prominent-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.prominent-bounce {
+  animation: prominent-bounce 1s infinite;
+  transform-origin: center center;
+}
+
+/* 超级跳动动画 - 更大幅度 */
+@keyframes super-bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(-30px) scale(1.1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.05);
+  }
+  75% {
+    transform: translateY(-25px) scale(1.08);
+  }
+}
+
+.super-bounce {
+  animation: super-bounce 1.5s infinite;
+  transform-origin: center center;
+}
+
+/* 3D翻转动效 */
+@keyframes flip-3d {
+  0% {
+    transform: perspective(400px) rotateY(0);
+  }
+  50% {
+    transform: perspective(400px) rotateY(180deg);
+  }
+  100% {
+    transform: perspective(400px) rotateY(360deg);
+  }
+}
+
+.flip-3d {
+  animation: flip-3d 3s infinite;
+  transform-origin: center center;
+}
+
+/* 摇摆动画 */
+@keyframes swing {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(15deg);
+  }
+  75% {
+    transform: rotate(-15deg);
+  }
+}
+
+.swing {
+  animation: swing 1s infinite;
+  transform-origin: top center;
+}
+
+/* 脉冲缩放 */
+@keyframes pulse-scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.pulse-scale {
+  animation: pulse-scale 1s infinite;
+  transform-origin: center center;
+}
+
+/* 跳动动画 */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+  transform-origin: center center;
+}
+
+/* 爆炸效果 */
+@keyframes explode {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.explode {
+  animation: explode 0.5s ease-in-out;
+  transform-origin: center center;
+}
+
+/* 淡入淡出效果 */
+@keyframes fade-in-out {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.fade-in-out {
+  animation: fade-in-out 2s infinite;
+  transform-origin: center center;
+}
+
+/* 跑马灯效果 */
+@keyframes marquee {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(20px) rotate(10deg);
+  }
+  50% {
+    transform: translateX(0) rotate(0deg);
+  }
+  75% {
+    transform: translateX(-20px) rotate(-10deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+.marquee {
+  animation: marquee 3s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+/* 飞天效果 */
+@keyframes fly-up {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-50px) scale(1.2);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fly-up {
+  animation: fly-up 2s ease-in-out;
+  transform-origin: center center;
+}
+
+/* 遁地效果 */
+@keyframes dive-down {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(50px) scale(0.8);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dive-down {
+  animation: dive-down 2s ease-in-out;
+  transform-origin: center center;
+}
+
+/* 闪烁效果 */
+@keyframes flicker {
+  0%, 100% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.5;
+  }
+}
+
+.flicker {
+  animation: flicker 1s ease-in-out;
+  transform-origin: center center;
+}
+
+/* 巨龙飞出效果 */
+@keyframes dragon-fly-out {
+  0% {
+    transform: scale(1) translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  20% {
+    transform: scale(1.5) translate(10px, -10px) rotate(10deg);
+    opacity: 0.9;
+  }
+  40% {
+    transform: scale(2) translate(30px, -30px) rotate(20deg);
+    opacity: 0.8;
+  }
+  60% {
+    transform: scale(2.5) translate(60px, -60px) rotate(30deg);
+    opacity: 0.6;
+  }
+  80% {
+    transform: scale(3) translate(100px, -100px) rotate(45deg);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(4) translate(150px, -150px) rotate(90deg);
+    opacity: 0;
+  }
+}
+
+.dragon-fly-out {
+  animation: dragon-fly-out 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-origin: center center;
+}
+
+/* 悬停特效 - 星光闪烁 */
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.star-twinkle {
+  animation: star-twinkle 1s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+/* 悬停特效 - 彩带飞舞 */
+@keyframes ribbon-dance {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(10deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(-10deg) scale(0.9);
+  }
+  75% {
+    transform: rotate(5deg) scale(1.05);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+.ribbon-dance {
+  animation: ribbon-dance 2s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+/* 悬停特效 - 光环扩散 */
+@keyframes halo-expand {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.halo-expand {
+  animation: halo-expand 1.5s ease-out infinite;
+  transform-origin: center center;
+}
+
+/* 悬停特效 - 粒子环绕 */
+@keyframes particle-orbit {
+  0% {
+    transform: rotate(0deg) translateX(30px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(30px) rotate(-360deg);
+  }
+}
+
+.particle-orbit {
+  animation: particle-orbit 3s linear infinite;
+  transform-origin: center center;
+}
+
+/* 缩放变换 */
+.scale-110 {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+}
+
+/* 淡入淡出过渡 */
+.transition-opacity {
+  transition: opacity 0.3s ease;
 }
