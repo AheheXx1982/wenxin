@@ -54,9 +54,9 @@ const localizedSiteConfig = getSiteConfig(lang as any);
         </>
       ) : (
         <>
-          <h2 class="shadow-text font-fg text-5.5xl/[1.2]">{localizedSiteConfig?.alternate}</h2>
-          <h1 class="shadow-text font-noto text-4.5xl/[1.2] mt-3 font-bold tracking-widest">{localizedSiteConfig?.title}</h1>
-          <p class="shadow-text mt-5 text-sm">= {localizedSiteConfig?.subtitle} =</p>
+          <h2 class="shadow-text font-fg text-5.5xl/[1.2] xs:text-4xl">{localizedSiteConfig?.alternate}</h2>
+          <h1 class="shadow-text font-noto text-4.5xl/[1.2] mt-3 font-bold tracking-widest xs:text-2xl">{localizedSiteConfig?.title}</h1>
+          <p class="shadow-text mt-5 text-sm xs:text-xs">= {localizedSiteConfig?.subtitle} =</p>
         </>
       )
     }
