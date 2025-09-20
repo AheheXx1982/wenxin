@@ -109,7 +109,12 @@ export async function getRandomLatestPosts(count: number, lang?: Language): Prom
 
 // 为文章获取对应分类的随机封面图片
 export function getPostCoverImage(post: BlogPost): string {
-  const { categories } = post.data;
+  const { categories, cover } = post.data;
+
+  // 优先使用文章 frontmatter 中指定的 cover 图片
+  if (cover) {
+    return cover;
+  }
 
   if (categories && Array.isArray(categories) && categories.length > 0) {
     // 处理嵌套分类格式

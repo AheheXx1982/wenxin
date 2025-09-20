@@ -1,4 +1,3 @@
-// RSS feed for English version
 import rss from '@astrojs/rss';
 import { getSortedPosts } from '@lib/content';
 import { getSanitizeHtml } from '@lib/utils';
@@ -58,10 +57,10 @@ export async function GET(context: APIContext) {
 
   return rss({
     title: escapeXml(siteConfig.title),
-    description: escapeXml(siteConfig.subtitle || 'No description'),
-    site,
+    description: escapeXml(siteConfig.description || 'No description'),
+    site: `${site}en/`,
     trailingSlash: false,
-    stylesheet: '/rss/cos-feed.xsl', // https://docs.astro.build/en/recipes/rss/#adding-a-stylesheet
+    stylesheet: '/rss/cos-feed.xsl',
     items: validPosts
       .map((post: BlogPost) => {
         // 确保 post 和 post.data 存在
@@ -86,10 +85,8 @@ export async function GET(context: APIContext) {
           // 验证日期
           const pubDate = post.data.date && !isNaN(new Date(post.data.date).getTime()) ? post.data.date : new Date();
 
-          // 生成英文链接
-          const postLink = post.data.link
-            ? `/en/article/${post.data.link}`
-            : `/en/article/${post.slug.split('/').pop() ?? 'post'}`;
+          // 生成链接，确保不会出现 undefined
+          const postLink = post.data.link ? `/en/article/${post.data.link}` : `/en/article/${post.slug.replace('en/', '').split('/').pop() ?? 'post'}`;
 
           return {
             title: title,

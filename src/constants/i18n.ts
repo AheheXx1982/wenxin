@@ -43,7 +43,7 @@ export const removeLanguagePrefix = (path: string): string => {
 // 多语言站点配置
 export const i18nSiteConfig = {
   zh: {
-    title: '寂静猎手',
+    title: 'SilentXx｜寂静猎手',
     alternate: 'SilentXx',
     subtitle: '期权加密实战 · 理性现金流系统',
     description: '聚焦美股期权与加密货币交易，分享真实、低风险、可复制的现金流投资策略，带你走进理性与纪律构建的投资世界。',
@@ -119,7 +119,7 @@ export const i18nSiteConfig = {
     ],
   },
   en: {
-    title: 'Silent Hunter',
+    title: 'SilentXx｜寂静猎手',
     alternate: 'SilentXx',
     subtitle: 'Options & Crypto Trading · Rational Cash Flow System',
     description:

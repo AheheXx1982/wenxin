@@ -1,0 +1,21 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    environment:
+      # Windows/WSL 文件系统下，轮询能更稳地触发热更新
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      # 挂载你的源码目录，实现热更新
+      - .:/app
+      # 避免宿主机的 node_modules 覆盖容器里的依赖（使用匿名卷）
+      - /app/node_modules
+      # Astro 构建缓存目录，放容器里更干净
+      - /app/.astro
+    extra_hosts:
+      # 方便容器访问宿主机（有些开发代理/后端在本机）
+      - "host.docker.internal:host-gateway"

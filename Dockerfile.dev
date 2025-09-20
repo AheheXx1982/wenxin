@@ -1,0 +1,17 @@
+# 开发镜像：带 pnpm、适配 Astro/Vite
+FROM node:20
+
+WORKDIR /app
+
+# 启用 corepack 并固定 pnpm 版本（可改成你需要的版本）
+RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
+
+# 先装依赖（利用缓存）
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install --frozen-lockfile
+
+# 拷贝源码（第一次构建会用，后续开发主要依赖挂载的卷）
+COPY . .
+
+EXPOSE 5173
+CMD ["pnpm", "dev", "--host", "0.0.0.0", "--port", "5173"]

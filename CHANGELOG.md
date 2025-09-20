@@ -4,6 +4,16 @@
 
 <!-- 由 git-cliff 生成、 gpt 翻译润色 -->
 
+## [0.2.5] - 2025-09-20
+
+### 🎉 版本更新 / Version Update
+
+#### 🚀 核心更新 / Core Updates
+
+- **版本号升级** - 从 v0.2.0 升级到 v0.2.5 / Version upgraded from v0.2.0 to v0.2.5
+- **名人名言模块增强** - 新增加密货币领域名言，完善中英文对照 / Enhanced quote module with cryptocurrency-related quotes and improved Chinese-English translation
+- **RSS和Sitemap优化** - 完善多语言支持，确保搜索引擎更好地索引网站内容 / Optimized RSS and Sitemap for better multilingual support and search engine indexing
+
 ## [0.2.0] - 2025-09-14
 
 ### 🎉 版本更新 / Version Update
@@ -50,7 +60,8 @@
 - Tailwind CSS 4.0.0
 - Vercel 部署 / Vercel deployment
 
-[未发布]: https://github.com/AheheXx1982/SilentXx/compare/v0.2.0...HEAD
+[未发布]: https://github.com/AheheXx1982/SilentXx/compare/v0.2.5...HEAD
+[0.2.5]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.2.5
 [0.2.0]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.2.0
 [0.1.0]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.1.0
 [0.0.1]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.0.1
