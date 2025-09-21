@@ -2,12 +2,12 @@
 layout: ../../layouts/AboutLayout.astro
 title: 'About'
 date: 2025-01-03 01:01:33
-description: 'SilentXx｜Silent Hunter'
+description: 'SilentXx｜寂静猎手'
 ---
 
 <div class="text-center py-8">
 
-# About SilentXx｜Silent Hunter
+# About SilentXx｜寂静猎手
 
 </div>
 

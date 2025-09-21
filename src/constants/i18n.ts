@@ -205,11 +205,11 @@ export const i18nSeoConfig = {
     keywords: 'SilentXx, 寂静猎手, 期权交易, 加密货币, 现金流投资, 美股期权, 投资策略, 金融博客',
   },
   en: {
-    title: 'SilentXx｜Silent Hunter - Options & Crypto Trading · Rational Cash Flow System',
+    title: 'SilentXx｜寂静猎手 - Options & Crypto Trading · Rational Cash Flow System',
     description:
       'Focus on US stock options and cryptocurrency trading, sharing real, low-risk, replicable cash flow investment strategies, leading you into the investment world built by rationality and discipline.',
     keywords:
-      'SilentXx, Silent Hunter, Options Trading, Cryptocurrency, Cash Flow Investment, US Stock Options, Investment Strategy, Financial Blog',
+      'SilentXx, 寂静猎手, Options Trading, Cryptocurrency, Cash Flow Investment, US Stock Options, Investment Strategy, Financial Blog',
   },
 } as const;
 

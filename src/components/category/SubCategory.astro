@@ -31,14 +31,13 @@ const categoryLinkPrefix = lang === 'en' ? '/en/categories' : '/categories';
 // 修复：确保使用正确的分类映射
 const parentLink = categoryMap[parentName] || parentName;
 const childLink = categoryMap[category.name] || category.name;
-const categoryLink =
-  parentLink && childLink ? `${parentLink}/${childLink}` : await getCategoryLink([parentName, category.name]);
+const categoryLink = `${parentLink}/${childLink}`;
 const grandChildLinks = await Promise.all(
   (category.children || []).map(async (grandChild) => {
     const parentLink = categoryMap[parentName] || parentName;
-    const categoryLink = categoryMap[category.name] || category.name;
+    const childLink = categoryMap[category.name] || category.name;
     const grandChildLink = categoryMap[grandChild.name] || grandChild.name;
-    const fullLink = `${parentLink}/${categoryLink}/${grandChildLink}`;
+    const fullLink = `${parentLink}/${childLink}/${grandChildLink}`;
     return {
       grandChild,
       link: fullLink,

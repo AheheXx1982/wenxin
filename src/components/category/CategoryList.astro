@@ -15,6 +15,7 @@ interface Props {
 
 interface CategoryLink {
   category: Category;
+  originalName: string;
   link: string;
 }
 
@@ -42,6 +43,7 @@ const categoryLinks: CategoryLink[] = categories.map((category: Category) => {
   const translatedName = translateCategoryName(category.name);
   return {
     category: { ...category, name: translatedName },
+    originalName: category.name, // 保存原始分类名称用于SubCategory
     link: links.length > 0 ? links[0] : categoryMap[category.name] || category.name,
   };
 });
@@ -60,11 +62,11 @@ const categoryLinks: CategoryLink[] = categories.map((category: Category) => {
 
   <div class="flex w-full flex-col">
     {
-      categoryLinks.map(({ category, link }: CategoryLink) => (
+      categoryLinks.map(({ category, originalName, link }: CategoryLink) => (
         <>
           <CategoryTitle
             title={category.name}
-            count={countMap[category.name]}
+            count={countMap[originalName]}
             href={`${categoryLinkPrefix}${link ? '/' + link : ''}`}
             className={category?.children?.length ? 'has-children' : ''}
           />
@@ -72,7 +74,7 @@ const categoryLinks: CategoryLink[] = categories.map((category: Category) => {
             <div class="category-first-level-container flex flex-col">
               {category?.children?.length &&
                 category.children.map((child: Category) => (
-                  <SubCategory category={child} parentName={category.name} countMap={countMap} lang={currentLang} />
+                  <SubCategory category={child} parentName={originalName} countMap={countMap} lang={currentLang} />
                 ))}
             </div>
           )}
