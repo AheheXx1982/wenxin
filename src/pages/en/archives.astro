@@ -8,8 +8,8 @@ import HomeSider from '../../components/layout/HomeSider.astro';
 import QuoteMarquee from '../../components/fun/QuoteMarquee.astro';
 import { getSortedPosts } from '../../lib/content';
 
-// 获取英文文章
-const posts = await getSortedPosts('en');
+// 获取英文文章，排除介绍文章
+const posts = await getSortedPosts('en', true);
 const seoConfig = getSeoConfig('en');
 const uiText = getUIText('en');
 

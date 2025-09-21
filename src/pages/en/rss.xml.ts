@@ -42,7 +42,7 @@ const generateTextSummary = (html?: string, length: number = 150): string => {
 
 export async function GET(context: APIContext) {
   // 获取英文版文章
-  const posts = await getSortedPosts('en');
+  const posts = await getSortedPosts('en', true);
   const { site } = context;
 
   if (!site) {

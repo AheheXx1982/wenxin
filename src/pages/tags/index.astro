@@ -14,7 +14,7 @@ const TAG_COLORS = [
   'from-sky-400/10 to-blue-300/10 hover:from-sky-400/80 hover:to-blue-300/80 text-sky-400/70 hover:text-sky-50',
 ];
 
-const posts = await getSortedPosts('zh');
+const posts = await getSortedPosts('zh', true);
 const seoConfig = getSeoConfig('zh');
 const uiText = getUIText('zh');
 const tags = getAllTags(posts);

@@ -9,8 +9,8 @@ import HomeSider from '@components/layout/HomeSider.astro';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 import { getSortedPosts } from '@lib/content';
 
-// 获取中文文章
-const posts = await getSortedPosts('zh');
+// 获取中文文章，排除介绍文章
+const posts = await getSortedPosts('zh', true);
 const seoConfig = getSeoConfig('zh');
 const uiText = getUIText('zh');
 

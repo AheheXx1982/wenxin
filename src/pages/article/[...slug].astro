@@ -13,7 +13,7 @@ import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 import { getLanguageFromAstroUrl } from '@lib/i18n';
 
 export async function getStaticPaths() {
-  const postCollections = await getSortedPosts();
+  const postCollections = await getSortedPosts('zh', true);
 
   // 确保 postCollections 存在且为数组
   if (!postCollections || !Array.isArray(postCollections)) {

@@ -5,7 +5,7 @@ import type { Language } from '@constants/i18n';
 
 import type { BlogPost } from 'types/blog';
 
-export async function getSortedPosts(lang?: Language): Promise<CollectionEntry<'blog'>[]> {
+export async function getSortedPosts(lang?: Language, excludeIntro: boolean = false): Promise<CollectionEntry<'blog'>[]> {
   const posts = await getCollection('blog');
 
   // 确保始终返回数组，即使没有文章
@@ -24,8 +24,16 @@ export async function getSortedPosts(lang?: Language): Promise<CollectionEntry<'
         return postLang === 'zh'; // 默认显示中文文章
       });
 
+  // 排除介绍文章（如果需要）
+  const finalPosts = excludeIntro 
+    ? filteredPosts.filter((post) => {
+        const isIntroArticle = post.slug.endsWith('/index') || post.slug.includes('/index');
+        return !isIntroArticle;
+      })
+    : filteredPosts;
+
   // 按日期排序
-  const sortedPosts = filteredPosts.sort((a: BlogPost, b: BlogPost) => {
+  const sortedPosts = finalPosts.sort((a: BlogPost, b: BlogPost) => {
     return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
   });
 
@@ -34,7 +42,7 @@ export async function getSortedPosts(lang?: Language): Promise<CollectionEntry<'
 
 // 新增函数：从所有文章中随机获取指定数量的文章
 export async function getRandomPosts(count: number, lang?: Language): Promise<CollectionEntry<'blog'>[]> {
-  const posts = await getSortedPosts(lang);
+  const posts = await getSortedPosts(lang, true);
 
   // Fisher-Yates 洗牌算法随机打乱文章顺序
   const shuffled = [...posts];
@@ -49,7 +57,7 @@ export async function getRandomPosts(count: number, lang?: Language): Promise<Co
 
 // 新增函数：获取每个分类下的最新文章
 export async function getLatestPostsByCategory(lang?: Language): Promise<CollectionEntry<'blog'>[]> {
-  const posts = await getSortedPosts(lang);
+  const posts = await getSortedPosts(lang, true);
 
   // 按分类分组文章
   const categoryMap: Record<string, CollectionEntry<'blog'>[]> = {};
@@ -166,7 +174,7 @@ export const getAllTags = (posts: BlogPost[]) => {
 };
 
 export const getPostCount = async () => {
-  const posts = await getCollection('blog');
+  const posts = await getSortedPosts(undefined, true);
   return posts && Array.isArray(posts) ? posts.length : 0;
 };
 
@@ -175,8 +183,9 @@ export type Category = {
   children?: Category[];
 };
 
-export async function getCategoryList(): Promise<{ categories: Category[]; countMap: { [key: string]: number } }> {
-  const allBlogPosts = await getCollection('blog');
+export async function getCategoryList(lang?: Language): Promise<{ categories: Category[]; countMap: { [key: string]: number } }> {
+  // 获取指定语言的文章，默认为中文
+  const allBlogPosts = await getSortedPosts(lang, false);
 
   // 确保始终有数组进行处理
   if (!allBlogPosts || !Array.isArray(allBlogPosts)) {
@@ -186,7 +195,7 @@ export async function getCategoryList(): Promise<{ categories: Category[]; count
   const countMap: { [key: string]: number } = {};
   const resCategories: Category[] = [];
 
-  // 统计每个分类的直接文章数量
+  // 统计每个分类的文章数量，排除介绍文章
   for (let i = 0; i < allBlogPosts.length; ++i) {
     const post = allBlogPosts[i];
     const { catalog, categories } = post.data;
@@ -194,11 +203,38 @@ export async function getCategoryList(): Promise<{ categories: Category[]; count
       continue;
     }
 
+    // 排除介绍文章（通常是index.md文件）
+    // 判断逻辑：如果slug的最后一部分与分类的最后一部分相同，则为介绍文章
+    let isIntroArticle = false;
+    if (Array.isArray(categories[0]) && categories[0].length > 0) {
+      // 对于嵌套分类，检查slug的最后一部分是否与分类的最后一部分相同
+      const deepestCategory = categories[0][categories[0].length - 1];
+      const slugParts = post.slug.split('/');
+      const lastSlugPart = slugParts[slugParts.length - 1];
+      
+      // 如果slug的最后一部分与分类名称相同，则为介绍文章
+      isIntroArticle = lastSlugPart === deepestCategory;
+    } else if (typeof categories[0] === 'string') {
+      // 对于简单分类，检查slug的最后一部分是否与分类名称相同
+      const slugParts = post.slug.split('/');
+      const lastSlugPart = slugParts[slugParts.length - 1];
+      isIntroArticle = lastSlugPart === categories[0];
+    }
+
     if (Array.isArray(categories[0]) && categories[0].length) {
-      // categories[0] = ['笔记', '算法']
+      // 对于嵌套分类，只统计最深层的分类
+      // categories[0] = ['期权研究院', '实盘分享'] 只统计 '实盘分享'
+      const deepestCategory = categories[0][categories[0].length - 1];
+      
+      // 只有非介绍文章才计入统计
+      if (!isIntroArticle) {
+        countMap[deepestCategory] = (countMap[deepestCategory] || 0) + 1;
+      }
+      
+      // 为所有层级的分类创建结构
       for (let j = 0; j < categories[0].length; ++j) {
         const name = categories[0][j];
-        countMap[name] = (countMap[name] || 0) + 1;
+        
         if (j === 0) {
           addCategoryRecursively(resCategories, [], name);
         } else {
@@ -209,11 +245,15 @@ export async function getCategoryList(): Promise<{ categories: Category[]; count
     } else {
       // categories[0] = '工具'
       const name = categories[0] as string;
-      countMap[name] = (countMap[name] || 0) + 1;
+      
+      // 只有非介绍文章才计入统计
+      if (!isIntroArticle) {
+        countMap[name] = (countMap[name] || 0) + 1;
+      }
+      
       addCategoryRecursively(resCategories, [], name);
     }
   }
-  // console.log('first countMap', JSON.stringify(countMap));
 
   // 根据 categoryMap 中的顺序对 resCategories 进行排序
   const orderedCategoryNames = Object.keys(categoryMap);
@@ -361,7 +401,8 @@ export function getCategoryByLink(categories: Category[], link?: string): Catego
  * @returns 文章列表
  */
 export async function getPostsByCategory(categoryName: string, lang?: Language): Promise<BlogPost[]> {
-  const posts = await getSortedPosts(lang);
+  // 使用 false 参数来包含介绍文章，然后在过滤时排除
+  const posts = await getSortedPosts(lang, false);
 
   // 确保 posts 存在且为数组
   if (!posts || !Array.isArray(posts)) {
@@ -371,6 +412,10 @@ export async function getPostsByCategory(categoryName: string, lang?: Language):
   return posts.filter((post) => {
     const { categories } = post.data;
     if (!categories?.length) return false;
+
+    // 排除介绍文章（通常是index.md文件）
+    const isIntroArticle = post.slug.endsWith('/index') || post.slug.includes('/index');
+    if (isIntroArticle) return false;
 
     // 处理两种分类格式
     if (Array.isArray(categories[0])) {
@@ -389,7 +434,8 @@ export async function getPostsByCategory(categoryName: string, lang?: Language):
  * @returns 文章列表
  */
 export async function getPostsByCategoryPath(categoryPath: string[], lang?: Language): Promise<BlogPost[]> {
-  const posts = await getSortedPosts(lang);
+  // 使用 false 参数来包含介绍文章，然后在过滤时排除
+  const posts = await getSortedPosts(lang, false);
 
   // 确保 posts 存在且为数组
   if (!posts || !Array.isArray(posts)) {
@@ -399,6 +445,10 @@ export async function getPostsByCategoryPath(categoryPath: string[], lang?: Lang
   return posts.filter((post) => {
     const { categories } = post.data;
     if (!categories?.length) return false;
+
+    // 排除介绍文章（通常是index.md文件）
+    const isIntroArticle = post.slug.endsWith('/index') || post.slug.includes('/index');
+    if (isIntroArticle) return false;
 
     // 只处理嵌套分类格式
     if (Array.isArray(categories[0])) {

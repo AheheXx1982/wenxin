@@ -24,7 +24,7 @@ const i18nSiteConfig = getSiteConfig(currentLang);
 
 const postCount = await getPostCount();
 const { countMap } = await getCategoryList();
-const posts = await getSortedPosts(currentLang); // 根据语言筛选文章
+const posts = await getSortedPosts(currentLang, true); // 根据语言筛选文章，排除介绍文章
 const tags = getAllTags(posts);
 
 const allTags = Object.entries(tags).map(([tag, count]) => ({ tag, count }));

@@ -10,7 +10,7 @@ import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
 // 获取分类页面
 export async function getStaticPaths() {
-  const { categories } = await getCategoryList();
+  const { categories } = await getCategoryList('zh');
   const links = getCategoryLinks(categories, '');
   return links
     .map((link) => {
@@ -29,7 +29,7 @@ export async function getStaticPaths() {
 }
 
 const { category } = Astro.props;
-const { categories: allCategories, countMap } = await getCategoryList();
+const { categories: allCategories, countMap } = await getCategoryList('zh');
 const seoConfig = getSeoConfig('zh');
 const uiText = getUIText('zh');
 

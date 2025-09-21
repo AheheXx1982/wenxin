@@ -44,7 +44,7 @@ const generateTextSummary = (html?: string, length: number = 150): string => {
 // 生成中文RSS
 async function generateZhRSS(context: APIContext) {
   // 获取中文版文章（默认语言）
-  const posts = await getSortedPosts('zh');
+  const posts = await getSortedPosts('zh', true);
   const { site } = context;
 
   if (!site) {
@@ -110,7 +110,7 @@ async function generateZhRSS(context: APIContext) {
 // 生成英文RSS
 async function generateEnRSS(context: APIContext) {
   // 获取英文版文章
-  const posts = await getSortedPosts('en');
+  const posts = await getSortedPosts('en', true);
   const { site } = context;
 
   if (!site) {
