@@ -19,17 +19,105 @@
   --grey-4: 0 0% 80%;
   --color-pink: #ed6ea0;
   --color-pink-a3: rgba(237, 110, 160, 0.3);
+  
+  /* 字体变量 */
+  --font-family-base: Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  
+  /* 主题颜色变量 */
+  --primary: 351 77% 62%;
+  --primary-foreground: 355.7 100% 97.3%;
+}
+
+/* 主题颜色系统 */
+[data-theme-color="pink"] {
+  --primary: 351 77% 62%;
+  --primary-foreground: 355.7 100% 97.3%;
+  --accent: 351 77% 62%;
+  --accent-foreground: 355.7 100% 97.3%;
+  --theme-color: #ed6ea0;
+  --theme-color-light: #f18bb3;
+  --theme-color-dark: #d85a8b;
+}
+
+[data-theme-color="blue"] {
+  --primary: 221 83% 53%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 221 83% 53%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #3b82f6;
+  --theme-color-light: #60a5fa;
+  --theme-color-dark: #2563eb;
+}
+
+[data-theme-color="green"] {
+  --primary: 142 76% 36%;
+  --primary-foreground: 355.7 100% 97.3%;
+  --accent: 142 76% 36%;
+  --accent-foreground: 355.7 100% 97.3%;
+  --theme-color: #22c55e;
+  --theme-color-light: #4ade80;
+  --theme-color-dark: #16a34a;
+}
+
+[data-theme-color="purple"] {
+  --primary: 262 83% 58%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 262 83% 58%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #8b5cf6;
+  --theme-color-light: #a78bfa;
+  --theme-color-dark: #7c3aed;
+}
+
+[data-theme-color="orange"] {
+  --primary: 24 95% 53%;
+  --primary-foreground: 60 9% 98%;
+  --accent: 24 95% 53%;
+  --accent-foreground: 60 9% 98%;
+  --theme-color: #f97316;
+  --theme-color-light: #fb923c;
+  --theme-color-dark: #ea580c;
+}
+
+[data-theme-color="cyan"] {
+  --primary: 188 94% 42%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 188 94% 42%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #06b6d4;
+  --theme-color-light: #22d3ee;
+  --theme-color-dark: #0891b2;
+}
+
+[data-theme-color="red"] {
+  --primary: 0 84% 60%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 0 84% 60%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #ef4444;
+  --theme-color-light: #f87171;
+  --theme-color-dark: #dc2626;
+}
+
+[data-theme-color="indigo"] {
+  --primary: 239 84% 67%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 239 84% 67%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #6366f1;
+  --theme-color-light: #818cf8;
+  --theme-color-dark: #4f46e5;
 }
 .dark {
-  --gradient-bg-start: #21252b;
-  --gradient-bg-end: #373c38;
+  --gradient-bg-start: #1f2937;
+  --gradient-bg-end: #374151;
   --gradient-bg: linear-gradient(180deg, var(--gradient-bg-start) 10%, var(--gradient-bg-end) 100%);
   --gradient-pink: linear-gradient(279deg, #f96676 0%, #e91e63 100%);
-  --gradient-header: linear-gradient(-225deg, #2d3230 0, #322d31 100%);
+  --gradient-header: linear-gradient(-225deg, #1f2937 0, #374151 100%);
 
   /* shoka migrate */
-  --box-bg-shadow: #000;
-  --grey-1-a5: rgba(34, 34, 34, 0.5);
+  --box-bg-shadow: rgba(31, 41, 55, 0.8);
+  --grey-1-a5: rgba(31, 41, 55, 0.8);
 
   --gradient-shoka-button-start: #f18bb3cc;
   --gradient-shoka-button-end: #f0a387cc;
@@ -42,4 +130,391 @@
   --grey-4: 0 0% 40%;
   --color-pink: rgba(241, 139, 179, 0.8);
   --color-pink-a3: rgba(237, 110, 160, 0.3);
+  
+  /* 主题颜色变量 */
+  --primary: 351 77% 62%;
+  --primary-foreground: 355.7 100% 97.3%;
+}
+
+/* 暗色模式下的主题颜色系统 */
+.dark[data-theme-color="pink"] {
+  --primary: 351 77% 62%;
+  --primary-foreground: 355.7 100% 97.3%;
+  --accent: 351 77% 62%;
+  --accent-foreground: 355.7 100% 97.3%;
+  --theme-color: #ed6ea0;
+  --theme-color-light: #f18bb3;
+  --theme-color-dark: #d85a8b;
+}
+
+.dark[data-theme-color="blue"] {
+  --primary: 221 83% 53%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 221 83% 53%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #3b82f6;
+  --theme-color-light: #60a5fa;
+  --theme-color-dark: #2563eb;
+}
+
+.dark[data-theme-color="green"] {
+  --primary: 142 76% 36%;
+  --primary-foreground: 355.7 100% 97.3%;
+  --accent: 142 76% 36%;
+  --accent-foreground: 355.7 100% 97.3%;
+  --theme-color: #22c55e;
+  --theme-color-light: #4ade80;
+  --theme-color-dark: #16a34a;
+}
+
+.dark[data-theme-color="purple"] {
+  --primary: 262 83% 58%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 262 83% 58%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #8b5cf6;
+  --theme-color-light: #a78bfa;
+  --theme-color-dark: #7c3aed;
+}
+
+.dark[data-theme-color="orange"] {
+  --primary: 24 95% 53%;
+  --primary-foreground: 60 9% 98%;
+  --accent: 24 95% 53%;
+  --accent-foreground: 60 9% 98%;
+  --theme-color: #f97316;
+  --theme-color-light: #fb923c;
+  --theme-color-dark: #ea580c;
+}
+
+.dark[data-theme-color="cyan"] {
+  --primary: 188 94% 42%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 188 94% 42%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #06b6d4;
+  --theme-color-light: #22d3ee;
+  --theme-color-dark: #0891b2;
+}
+
+.dark[data-theme-color="red"] {
+  --primary: 0 84% 60%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 0 84% 60%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #ef4444;
+  --theme-color-light: #f87171;
+  --theme-color-dark: #dc2626;
+}
+
+.dark[data-theme-color="indigo"] {
+  --primary: 239 84% 67%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 239 84% 67%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #6366f1;
+  --theme-color-light: #818cf8;
+  --theme-color-dark: #4f46e5;
+}
+
+/* 扩展色系 - 15种新颜色 */
+[data-theme-color="yellow"] {
+  --primary: 45 93% 47%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 45 93% 47%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #eab308;
+  --theme-color-light: #fbbf24;
+  --theme-color-dark: #d97706;
+}
+
+[data-theme-color="violet"] {
+  --primary: 262 83% 58%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 262 83% 58%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #7c3aed;
+  --theme-color-light: #8b5cf6;
+  --theme-color-dark: #6d28d9;
+}
+
+[data-theme-color="emerald"] {
+  --primary: 160 84% 39%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 160 84% 39%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #10b981;
+  --theme-color-light: #34d399;
+  --theme-color-dark: #059669;
+}
+
+[data-theme-color="coral"] {
+  --primary: 4 86% 73%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 4 86% 73%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #ff7875;
+  --theme-color-light: #ff9999;
+  --theme-color-dark: #ff5555;
+}
+
+[data-theme-color="sky"] {
+  --primary: 199 89% 48%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 199 89% 48%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #0ea5e9;
+  --theme-color-light: #38bdf8;
+  --theme-color-dark: #0284c7;
+}
+
+[data-theme-color="lavender"] {
+  --primary: 262 83% 74%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 262 83% 74%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #a78bfa;
+  --theme-color-light: #c4b5fd;
+  --theme-color-dark: #8b5cf6;
+}
+
+[data-theme-color="peach"] {
+  --primary: 351 81% 75%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 351 81% 75%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #fb7185;
+  --theme-color-light: #fda4af;
+  --theme-color-dark: #f43f5e;
+}
+
+[data-theme-color="jade"] {
+  --primary: 177 70% 41%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 177 70% 41%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #20B2AA;
+  --theme-color-light: #48CCCC;
+  --theme-color-dark: #008B8B;
+}
+
+[data-theme-color="gold"] {
+  --primary: 32 95% 44%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 32 95% 44%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #d97706;
+  --theme-color-light: #f59e0b;
+  --theme-color-dark: #b45309;
+}
+
+[data-theme-color="rose-gold"] {
+  --primary: 346 77% 49%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 346 77% 49%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #e11d48;
+  --theme-color-light: #f43f5e;
+  --theme-color-dark: #be123c;
+}
+
+[data-theme-color="teal"] {
+  --primary: 180 100% 44%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 180 100% 44%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #40E0D0;
+  --theme-color-light: #66E6D6;
+  --theme-color-dark: #20B2AA;
+}
+
+[data-theme-color="wine"] {
+  --primary: 348 83% 47%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 348 83% 47%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #DC143C;
+  --theme-color-light: #E6476B;
+  --theme-color-dark: #B91C3C;
+}
+
+[data-theme-color="olive"] {
+  --primary: 80 61% 50%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 80 61% 50%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #9ACD32;
+  --theme-color-light: #B8E356;
+  --theme-color-dark: #7CB342;
+}
+
+[data-theme-color="slate"] {
+  --primary: 197 71% 73%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 197 71% 73%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #87CEEB;
+  --theme-color-light: #A4D8F0;
+  --theme-color-dark: #6BB6E6;
+}
+
+[data-theme-color="amber"] {
+  --primary: 45 93% 47%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 45 93% 47%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #f59e0b;
+  --theme-color-light: #fbbf24;
+  --theme-color-dark: #d97706;
+}
+
+/* 暗色模式下的扩展色系 */
+.dark[data-theme-color="yellow"] {
+  --primary: 45 93% 47%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 45 93% 47%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #eab308;
+  --theme-color-light: #fbbf24;
+  --theme-color-dark: #d97706;
+}
+
+.dark[data-theme-color="violet"] {
+  --primary: 262 83% 58%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 262 83% 58%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #7c3aed;
+  --theme-color-light: #8b5cf6;
+  --theme-color-dark: #6d28d9;
+}
+
+.dark[data-theme-color="emerald"] {
+  --primary: 160 84% 39%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 160 84% 39%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #10b981;
+  --theme-color-light: #34d399;
+  --theme-color-dark: #059669;
+}
+
+.dark[data-theme-color="coral"] {
+  --primary: 4 86% 73%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 4 86% 73%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #ff7875;
+  --theme-color-light: #ff9999;
+  --theme-color-dark: #ff5555;
+}
+
+.dark[data-theme-color="sky"] {
+  --primary: 199 89% 48%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 199 89% 48%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #0ea5e9;
+  --theme-color-light: #38bdf8;
+  --theme-color-dark: #0284c7;
+}
+
+.dark[data-theme-color="lavender"] {
+  --primary: 262 83% 74%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 262 83% 74%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #a78bfa;
+  --theme-color-light: #c4b5fd;
+  --theme-color-dark: #8b5cf6;
+}
+
+.dark[data-theme-color="peach"] {
+  --primary: 351 81% 75%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 351 81% 75%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #fb7185;
+  --theme-color-light: #fda4af;
+  --theme-color-dark: #f43f5e;
+}
+
+.dark[data-theme-color="jade"] {
+  --primary: 177 70% 41%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 177 70% 41%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #20B2AA;
+  --theme-color-light: #48CCCC;
+  --theme-color-dark: #008B8B;
+}
+
+.dark[data-theme-color="gold"] {
+  --primary: 32 95% 44%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 32 95% 44%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #d97706;
+  --theme-color-light: #f59e0b;
+  --theme-color-dark: #b45309;
+}
+
+.dark[data-theme-color="rose-gold"] {
+  --primary: 346 77% 49%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 346 77% 49%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #e11d48;
+  --theme-color-light: #f43f5e;
+  --theme-color-dark: #be123c;
+}
+
+.dark[data-theme-color="teal"] {
+  --primary: 180 100% 44%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 180 100% 44%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #40E0D0;
+  --theme-color-light: #66E6D6;
+  --theme-color-dark: #20B2AA;
+}
+
+.dark[data-theme-color="wine"] {
+  --primary: 348 83% 47%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 348 83% 47%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #DC143C;
+  --theme-color-light: #E6476B;
+  --theme-color-dark: #B91C3C;
+}
+
+.dark[data-theme-color="olive"] {
+  --primary: 80 61% 50%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 80 61% 50%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #9ACD32;
+  --theme-color-light: #B8E356;
+  --theme-color-dark: #7CB342;
+}
+
+.dark[data-theme-color="slate"] {
+  --primary: 197 71% 73%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 197 71% 73%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #87CEEB;
+  --theme-color-light: #A4D8F0;
+  --theme-color-dark: #6BB6E6;
+}
+
+.dark[data-theme-color="amber"] {
+  --primary: 45 93% 47%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 45 93% 47%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #f59e0b;
+  --theme-color-light: #fbbf24;
+  --theme-color-dark: #d97706;
 }

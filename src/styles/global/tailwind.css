@@ -21,15 +21,22 @@
   button {
     @apply cursor-pointer;
   }
+  body {
+    font-family: var(--font-family-base);
+  }
+}
+
+/* 抽屉式菜单样式 */
+.drawer-open {
+  overflow: hidden;
 }
 
 @utility font-default {
-  font-family:
-    'Poppins',
-    -apple-system,
-    'PingFang SC',
-    'Microsoft YaHei',
-    sans-serif;
+  font-family: var(--font-family-base);
+}
+
+@utility theme-drawer-transition {
+  transition: all 0.3s ease-in-out;
 }
 @utility flex-center {
   @apply flex items-center justify-center;
@@ -82,7 +89,7 @@
   }
   body {
     overscroll-behavior-y: none;
-    background: linear-gradient(to top, var(--box-bg-shadow) 0, var(--gradient-bg-start) 30%) no-repeat bottom;
+    background: var(--gradient-bg);
     scroll-behavior: smooth;
     @apply tablet:bg-gradient-start tablet:bg-none;
   }
