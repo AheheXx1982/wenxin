@@ -29,6 +29,11 @@ const uiText = getUIText(currentLang);
 const homeLink = currentLang === 'en' ? '/en' : '/';
 const categoryLinkPrefix = currentLang === 'en' ? '/en/categories' : '/categories';
 
+// 计算子分类总数
+const subCategoryCount = categories.reduce((total, category) => {
+  return total + (category?.children?.length || 0);
+}, 0);
+
 // 分类名称翻译函数
 const translateCategoryName = (categoryName: string): string => {
   if (currentLang === 'en' && uiText.categoryNames) {
@@ -58,6 +63,9 @@ const categoryLinks: CategoryLink[] = categories.map((category: Category) => {
     {uiText.totalCategoriesCount}
     {totalCount}
     {uiText.categoriesUnit}
+    {subCategoryCount > 0 && (
+      <span>, {subCategoryCount}{uiText.subcategoriesCount}</span>
+    )}
   </h2>
 
   <div class="flex w-full flex-col">

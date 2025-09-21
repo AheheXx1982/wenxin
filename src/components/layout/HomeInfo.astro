@@ -4,6 +4,7 @@ import { HomeSiderType } from '@constants/enum';
 import { routers } from '@constants/router';
 import { siteConfig } from '@constants/site-config';
 import { getAllTags, getCategoryList, getPostCount, getSortedPosts } from '@lib/content';
+import { categoryMap } from '@constants/category';
 import { cn } from '@lib/utils';
 import { Icon } from 'astro-icon/components';
 import Social from './Social.astro';
@@ -28,6 +29,9 @@ const posts = await getSortedPosts(currentLang, true); // 根据语言筛选文�
 const tags = getAllTags(posts);
 
 const allTags = Object.entries(tags).map(([tag, count]) => ({ tag, count }));
+
+// 计算所有分类的数量（包括没有文章的分类）
+const allCategoriesCount = Object.keys(categoryMap).length;
 
 // 🔑 优先使用国际化配置
 const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ? i18nSiteConfig.navLinks : routers;
@@ -68,7 +72,7 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
       class="hover:text-blue"
     >
       <p class="flex cursor-pointer flex-col gap-2 p-1 transition">
-        <span class="text-lg/5 font-bold">{Object.keys(countMap).length}</span>
+        <span class="text-lg/5 font-bold">{allCategoriesCount}</span>
         {uiText.categoriesTitle}
       </p>
     </a>
@@ -238,7 +242,6 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
           particle.style.position = 'absolute';
           particle.style.top = '50%';
           particle.style.left = '50%';
-          particle.style.transform = 'translate(-50%, -50%)';
           particle.classList.add('particle-orbit');
           particle.style.animationDelay = (i * 0.2) + 's';
           effectElement.appendChild(particle);
