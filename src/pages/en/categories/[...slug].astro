@@ -9,7 +9,7 @@ import { getSeoConfig, getUIText } from '@lib/i18n';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
 export async function getStaticPaths() {
-  const { categories } = await getCategoryList();
+  const { categories } = await getCategoryList('en');
   const links = getCategoryLinks(categories, '');
   return links
     .map((link) => {
@@ -25,7 +25,7 @@ export async function getStaticPaths() {
 }
 
 const { category } = Astro.props;
-const { categories: allCategories, countMap } = await getCategoryList();
+const { categories: allCategories, countMap } = await getCategoryList('en');
 const seoConfig = getSeoConfig('en');
 const uiText = getUIText('en');
 

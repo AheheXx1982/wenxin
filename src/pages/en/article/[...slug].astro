@@ -11,7 +11,7 @@ import { Icon } from 'astro-icon/components';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
 export async function getStaticPaths() {
-  const posts = await getSortedPosts('en');
+  const posts = await getSortedPosts('en', true);
 
   return posts.map((post) => {
     // 使用文件名作为 slug，不包含路径

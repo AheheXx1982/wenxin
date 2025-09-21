@@ -10,7 +10,7 @@ import type { PaginateFunction } from 'astro';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
 export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
-  const postCollections = await getSortedPosts();
+  const postCollections = await getSortedPosts('zh', true);
   const pages = await paginate(postCollections, {
     pageSize: 10,
   });

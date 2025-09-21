@@ -8,7 +8,7 @@ import { getCategoryLinks, getCategoryList } from '@lib/content';
 import { getSeoConfig, getUIText } from '@lib/i18n';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
-const { categories, countMap } = await getCategoryList();
+const { categories, countMap } = await getCategoryList('zh');
 const links = getCategoryLinks(categories, '');
 const seoConfig = getSeoConfig('zh');
 const uiText = getUIText('zh');

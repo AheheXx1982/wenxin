@@ -101,123 +101,89 @@ export function getDefaultCoversForPath(path: string): string[] {
   // 特殊处理：如果分类是数组格式 ['新世界探索', '加密风向标']，提取具体的子分类
   if (mappedPath.includes('新世界探索') && mappedPath.includes('加密风向标')) {
     mappedPath = 'crypto-news'; // 直接映射到crypto-news
-    console.log('检测到加密风向标分类，转换为:', mappedPath);
   }
 
   // 特殊处理：直接处理加密风向标分类
   if (mappedPath === '加密风向标') {
     mappedPath = 'crypto-news';
-    console.log('加密风向标直接映射为:', mappedPath);
   }
 
   // 特殊处理：处理加密风向标分类
   if (mappedPath === 'crypto-news') {
-    console.log('加密风向标最终映射为:', mappedPath);
+    // No special handling needed
   } else if (mappedPath.includes('crypto-news') && mappedPath !== 'crypto-news') {
     mappedPath = 'crypto-news';
-    console.log('加密风向标包含crypto-news，重新映射为:', mappedPath);
-  } else {
-    console.log('映射后的路径不是crypto-news:', mappedPath);
   }
 
   // 特殊处理：确保加密风向标正确映射
   if (mappedPath.includes('加密风向标') || mappedPath.includes('crypto-news')) {
     mappedPath = 'crypto-news';
-    console.log('确保加密风向标映射为:', mappedPath);
   }
 
   // 特殊处理：处理新世界探索/加密风向标路径
   if (mappedPath === 'new-world-explore/加密风向标') {
     mappedPath = 'crypto-news';
-    console.log('处理新世界探索/加密风向标路径，映射为:', mappedPath);
   }
 
   // 特殊处理：处理new-world-explore/crypto-news路径
   if (mappedPath === 'new-world-explore/crypto-news') {
     mappedPath = 'crypto-news';
-    console.log('处理new-world-explore/crypto-news路径，映射为:', mappedPath);
   }
 
   // 特殊处理：处理包含加密风向标的路径
   if (mappedPath.includes('加密风向标')) {
     mappedPath = 'crypto-news';
-    console.log('处理包含加密风向标的路径，映射为:', mappedPath);
   }
 
   // 特殊处理：处理包含new-world-explore和crypto-news的路径
   if (mappedPath.includes('new-world-explore') && mappedPath.includes('crypto-news')) {
     mappedPath = 'crypto-news';
-    console.log('处理包含new-world-explore和crypto-news的路径，映射为:', mappedPath);
   }
 
   // 特殊处理：处理包含new-world-explor和crypto-news的路径（处理可能的拼写错误）
   if (mappedPath.includes('new-world-explor') && mappedPath.includes('crypto-news')) {
     mappedPath = 'crypto-news';
-    console.log('处理包含new-world-explor和crypto-news的路径，映射为:', mappedPath);
   }
 
   // 特殊处理：处理包含new-world和crypto-news的路径
   if (mappedPath.includes('new-world') && mappedPath.includes('crypto-news')) {
     mappedPath = 'crypto-news';
-    console.log('处理包含new-world和crypto-news的路径，映射为:', mappedPath);
   }
 
   // 特殊处理：处理包含explor和crypto-news的路径
   if (mappedPath.includes('explor') && mappedPath.includes('crypto-news')) {
     mappedPath = 'crypto-news';
-    console.log('处理包含explor和crypto-news的路径，映射为:', mappedPath);
   }
 
   // 特殊处理：处理包含world和crypto-news的路径
   if (mappedPath.includes('world') && mappedPath.includes('crypto-news')) {
     mappedPath = 'crypto-news';
-    console.log('处理包含world和crypto-news的路径，映射为:', mappedPath);
   }
 
   // 特殊处理：处理包含crypto和news的路径
   if (mappedPath.includes('crypto') && mappedPath.includes('news') && !mappedPath.includes('crypto-news')) {
     mappedPath = 'crypto-news';
-    console.log('处理包含crypto和news的路径，映射为:', mappedPath);
   }
 
   // 特殊处理：处理包含crypt和news的路径
   if (mappedPath.includes('crypt') && mappedPath.includes('news')) {
     mappedPath = 'crypto-news';
-    console.log('处理包含crypt和news的路径，映射为:', mappedPath);
   }
-
-  // 调试信息
-  console.log(`Processing path: ${path}`);
-  console.log(`Clean path: ${cleanPath}`);
-  console.log(`Mapped path: ${mappedPath}`);
-  console.log(`Category image map keys:`, Object.keys(categoryImageMap));
 
   // 对于文章列表，只从子目录获取图片
   const subDirImageDir = categoryImageMap[mappedPath];
-  console.log(`Subdir image dir: ${subDirImageDir}`);
   if (subDirImageDir) {
     const subDirImages = getImagesForDirectory(subDirImageDir);
-    console.log(`Subdir images: ${subDirImages.length}`);
-    console.log(`Subdir images content:`, subDirImages);
     if (subDirImages.length > 0) {
       // 去除重复项，保持顺序
       const uniqueImages = [...new Set(subDirImages)];
-      console.log(`Final images: ${uniqueImages.length}`);
-      console.log(`Returning images:`, uniqueImages);
       return uniqueImages;
-    } else {
-      console.log(`No images found in directory: ${subDirImageDir}`);
     }
-  } else {
-    console.log(`No mapping found for path: ${mappedPath}`);
   }
 
   // 如果没有找到子目录图片，则回退到默认图片列表（用于无分类文章）
-  console.log(`Default images: ${defaultCoverList.length}`);
   // 去除重复项，保持顺序
   const uniqueImages = [...new Set(defaultCoverList)];
-  console.log(`Final images: ${uniqueImages.length}`);
-  console.log(`Returning default images:`, uniqueImages);
   return uniqueImages;
 }
 
@@ -280,10 +246,8 @@ export function getFeaturedCoversForPath(path: string): string[] {
 
   // 1. 首先尝试获取子目录的图片
   const subDirImageDir = categoryImageMap[mappedPath];
-  console.log(`Subdir image dir: ${subDirImageDir}`);
   if (subDirImageDir) {
     const subDirImages = getImagesForDirectory(subDirImageDir);
-    console.log(`Subdir images: ${subDirImages.length}`);
     if (subDirImages.length > 0) {
       imageLists.push(subDirImages);
     }
@@ -293,11 +257,8 @@ export function getFeaturedCoversForPath(path: string): string[] {
   // 提取一级目录路径
   const firstLevelPath = mappedPath.split('/')[0];
   const firstLevelImageDir = categoryImageMap[firstLevelPath];
-  console.log(`First level path: ${firstLevelPath}`);
-  console.log(`First level image dir: ${firstLevelImageDir}`);
   if (firstLevelImageDir && firstLevelImageDir !== subDirImageDir) {
     const firstLevelImages = getImagesForDirectory(firstLevelImageDir);
-    console.log(`First level images: ${firstLevelImages.length}`);
     if (firstLevelImages.length > 0) {
       imageLists.push(firstLevelImages);
     }
@@ -305,7 +266,6 @@ export function getFeaturedCoversForPath(path: string): string[] {
 
   // 3. 最后回退到默认图片列表
   imageLists.push(defaultCoverList);
-  console.log(`Default images: ${defaultCoverList.length}`);
 
   // 合并所有图片列表，保持优先级顺序
   const allImages: string[] = [];
@@ -315,7 +275,6 @@ export function getFeaturedCoversForPath(path: string): string[] {
 
   // 去除重复项，保持顺序
   const uniqueImages = [...new Set(allImages)];
-  console.log(`Final images: ${uniqueImages.length}`);
   return uniqueImages;
 }
 
@@ -485,10 +444,6 @@ export function getRandomCoverForPath(path: string): string {
   const covers = getDefaultCoversForPath(path);
   const randomIndex = Math.floor(Math.random() * covers.length);
   const cover = covers[randomIndex];
-
-  // 调试信息
-  // console.log(`Random cover for path "${path}": ${cover}`);
-
   return cover;
 }
 
@@ -497,9 +452,5 @@ export function getRandomFeaturedCoverForPath(path: string): string {
   const covers = getFeaturedCoversForPath(path);
   const randomIndex = Math.floor(Math.random() * covers.length);
   const cover = covers[randomIndex];
-
-  // 调试信息
-  // console.log(`Random featured cover for path "${path}": ${cover}`);
-
   return cover;
 }

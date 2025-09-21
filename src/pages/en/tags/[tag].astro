@@ -9,7 +9,7 @@ import { parseDate } from '../../../lib/datetime';
 import QuoteMarquee from '../../../components/fun/QuoteMarquee.astro';
 
 export async function getStaticPaths() {
-  const posts = await getSortedPosts('en');
+  const posts = await getSortedPosts('en', true);
   const tags = new Set<string>();
 
   posts.forEach((post) => {
