@@ -1,0 +1,1438 @@
+---
+// 超炫酷23种主题颜色球组件 - 18种动态效果版本
+const themeColors = [
+  // 基础色系 (8个)
+  { name: '粉色', value: 'pink', color: '#ed6ea0' },
+  { name: '蓝色', value: 'blue', color: '#3b82f6' },
+  { name: '绿色', value: 'green', color: '#22c55e' },
+  { name: '紫色', value: 'purple', color: '#8b5cf6' },
+  { name: '橙色', value: 'orange', color: '#f97316' },
+  { name: '青色', value: 'cyan', color: '#06b6d4' },
+  { name: '红色', value: 'red', color: '#ef4444' },
+  { name: '靛蓝', value: 'indigo', color: '#6366f1' },
+  
+  // 扩展色系 (15个)
+  { name: '黄色', value: 'yellow', color: '#eab308' },
+  { name: '深紫色', value: 'violet', color: '#7c3aed' },
+  { name: '薄荷绿', value: 'emerald', color: '#10b981' },
+  { name: '珊瑚色', value: 'coral', color: '#ff7875' },
+  { name: '天蓝色', value: 'sky', color: '#0ea5e9' },
+  { name: '薰衣草', value: 'lavender', color: '#a78bfa' },
+  { name: '桃色', value: 'peach', color: '#fb7185' },
+  { name: '翡翠绿', value: 'jade', color: '#20B2AA' },
+  { name: '金色', value: 'gold', color: '#d97706' },
+  { name: '玫瑰金', value: 'rose-gold', color: '#e11d48' },
+  { name: '深青色', value: 'teal', color: '#40E0D0' },
+  { name: '酒红色', value: 'wine', color: '#DC143C' },
+  { name: '橄榄绿', value: 'olive', color: '#9ACD32' },
+  { name: '石板蓝', value: 'slate', color: '#87CEEB' },
+  { name: '琥珀色', value: 'amber', color: '#f59e0b' }
+];
+
+// 高级渐变颜色系统 - 避免黑色，创造丰富视觉效果
+function createAdvancedGradient(color) {
+  const num = parseInt(color.replace("#", ""), 16);
+  const R = (num >> 16);
+  const G = (num >> 8 & 0x00FF);
+  const B = (num & 0x0000FF);
+  
+  // 计算颜色的亮度和饱和度
+  const brightness = (R * 299 + G * 587 + B * 114) / 1000;
+  const max = Math.max(R, G, B);
+  const min = Math.min(R, G, B);
+  const saturation = max === 0 ? 0 : (max - min) / max;
+  
+  // 创建多种渐变变体
+  const variants = [];
+  
+  // 1. 亮度渐变 - 从亮到稍暗，但不会变黑
+  const lighterColor = adjustBrightness(R, G, B, 1.3);
+  const darkerColor = adjustBrightness(R, G, B, 0.7);
+  variants.push({
+    type: 'brightness',
+    gradient: `linear-gradient(135deg, ${lighterColor}, ${color}, ${darkerColor})`
+  });
+  
+  // 2. 饱和度渐变 - 从饱和到柔和
+  const saturatedColor = adjustSaturation(R, G, B, 1.4);
+  const desaturatedColor = adjustSaturation(R, G, B, 0.6);
+  variants.push({
+    type: 'saturation',
+    gradient: `linear-gradient(45deg, ${saturatedColor}, ${color}, ${desaturatedColor})`
+  });
+  
+  // 3. 色相偏移渐变 - 创造彩虹效果
+  const hueShift1 = adjustHue(R, G, B, 30);
+  const hueShift2 = adjustHue(R, G, B, -30);
+  variants.push({
+    type: 'hue',
+    gradient: `linear-gradient(90deg, ${hueShift1}, ${color}, ${hueShift2})`
+  });
+  
+  // 4. 径向渐变 - 中心发光效果
+  const glowColor = adjustBrightness(R, G, B, 1.5);
+  variants.push({
+    type: 'radial',
+    gradient: `radial-gradient(circle at center, ${glowColor}, ${color}, ${darkerColor})`
+  });
+  
+  // 5. 多色渐变 - 丰富的色彩过渡
+  const complementary = getComplementaryColor(R, G, B);
+  const analogous = getAnalogousColor(R, G, B);
+  variants.push({
+    type: 'multicolor',
+    gradient: `linear-gradient(120deg, ${color}, ${analogous}, ${complementary})`
+  });
+  
+  // 随机选择一种渐变类型
+  return variants[Math.floor(Math.random() * variants.length)].gradient;
+}
+
+// 调整亮度，确保不会变成黑色
+function adjustBrightness(r, g, b, factor) {
+  const newR = Math.min(255, Math.max(40, Math.round(r * factor)));
+  const newG = Math.min(255, Math.max(40, Math.round(g * factor)));
+  const newB = Math.min(255, Math.max(40, Math.round(b * factor)));
+  return `rgb(${newR}, ${newG}, ${newB})`;
+}
+
+// 调整饱和度
+function adjustSaturation(r, g, b, factor) {
+  const gray = (r + g + b) / 3;
+  const newR = Math.min(255, Math.max(40, Math.round(gray + (r - gray) * factor)));
+  const newG = Math.min(255, Math.max(40, Math.round(gray + (g - gray) * factor)));
+  const newB = Math.min(255, Math.max(40, Math.round(gray + (b - gray) * factor)));
+  return `rgb(${newR}, ${newG}, ${newB})`;
+}
+
+// 调整色相
+function adjustHue(r, g, b, degrees) {
+  // 转换为HSL
+  const [h, s, l] = rgbToHsl(r, g, b);
+  const newH = (h + degrees + 360) % 360;
+  const [newR, newG, newB] = hslToRgb(newH, s, l);
+  return `rgb(${Math.round(newR)}, ${Math.round(newG)}, ${Math.round(newB)})`;
+}
+
+// 获取补色
+function getComplementaryColor(r, g, b) {
+  const [h, s, l] = rgbToHsl(r, g, b);
+  const compH = (h + 180) % 360;
+  const [newR, newG, newB] = hslToRgb(compH, s, l);
+  return `rgb(${Math.round(newR)}, ${Math.round(newG)}, ${Math.round(newB)})`;
+}
+
+// 获取类似色
+function getAnalogousColor(r, g, b) {
+  const [h, s, l] = rgbToHsl(r, g, b);
+  const analogH = (h + 60) % 360;
+  const [newR, newG, newB] = hslToRgb(analogH, s, l);
+  return `rgb(${Math.round(newR)}, ${Math.round(newG)}, ${Math.round(newB)})`;
+}
+
+// RGB转HSL
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+  
+  if (max === min) {
+    h = s = 0;
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+    h /= 6;
+  }
+  return [h * 360, s, l];
+}
+
+// HSL转RGB
+function hslToRgb(h, s, l) {
+  h /= 360;
+  const hue2rgb = (p, q, t) => {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1/6) return p + (q - p) * 6 * t;
+    if (t < 1/2) return q;
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+  };
+  
+  if (s === 0) {
+    return [l * 255, l * 255, l * 255];
+  } else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    const r = hue2rgb(p, q, h + 1/3);
+    const g = hue2rgb(p, q, h);
+    const b = hue2rgb(p, q, h - 1/3);
+    return [r * 255, g * 255, b * 255];
+  }
+}
+
+// 保留原有函数作为备用
+function darkenColor(color, percent) {
+  const num = parseInt(color.replace("#", ""), 16);
+  const R = (num >> 16);
+  const G = (num >> 8 & 0x00FF);
+  const B = (num & 0x0000FF);
+  
+  // 计算颜色的亮度 (0-255)
+  const brightness = (R * 299 + G * 587 + B * 114) / 1000;
+  
+  // 对于较暗的颜色，减少加深程度，避免变成黑色
+  let adjustedPercent = percent;
+  if (brightness < 100) {
+    adjustedPercent = percent * 0.3; // 深色只加深30%
+  } else if (brightness < 150) {
+    adjustedPercent = percent * 0.6; // 中等深度加深60%
+  }
+  
+  const amt = Math.round(2.55 * adjustedPercent);
+  const newR = Math.max(30, R - amt); // 确保R值不低于30
+  const newG = Math.max(30, G - amt); // 确保G值不低于30
+  const newB = Math.max(30, B - amt); // 确保B值不低于30
+  
+  return "#" + (0x1000000 + newR * 0x10000 + newG * 0x100 + newB).toString(16).slice(1);
+}
+
+// 颜色相近检测函数 - 使用HSL色彩空间计算相似度
+function hexToHsl(hex) {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+
+  if (max === min) {
+    h = s = 0;
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+    h /= 6;
+  }
+
+  return [h * 360, s * 100, l * 100];
+}
+
+function areColorsSimilar(color1, color2, threshold = 30) {
+  const [h1, s1, l1] = hexToHsl(color1);
+  const [h2, s2, l2] = hexToHsl(color2);
+  
+  // 色相差异（考虑环形特性）
+  let hueDiff = Math.abs(h1 - h2);
+  if (hueDiff > 180) hueDiff = 360 - hueDiff;
+  
+  // 饱和度和亮度差异
+  const satDiff = Math.abs(s1 - s2);
+  const lightDiff = Math.abs(l1 - l2);
+  
+  // 综合相似度评分
+  const similarity = hueDiff + satDiff * 0.5 + lightDiff * 0.3;
+  return similarity < threshold;
+}
+
+// 智能选择12个颜色球，避免相近颜色同时出现
+function selectDiverseColors(colors, count = 12) {
+  const selected = [];
+  const shuffled = [...colors].sort(() => Math.random() - 0.5);
+  
+  for (const color of shuffled) {
+    if (selected.length >= count) break;
+    
+    // 检查与已选颜色的相似度
+    const similarCount = selected.filter(selectedColor => 
+      areColorsSimilar(color.color, selectedColor.color)
+    ).length;
+    
+    // 相近颜色最多允许2个
+    if (similarCount < 2) {
+      selected.push(color);
+    }
+  }
+  
+  // 如果选择的颜色不够12个，补充剩余的
+  if (selected.length < count) {
+    const remaining = shuffled.filter(color => !selected.includes(color));
+    selected.push(...remaining.slice(0, count - selected.length));
+  }
+  
+  return selected;
+}
+
+// 选择12个多样化的颜色球显示
+const visibleColors = selectDiverseColors(themeColors, 12);
+
+// 生成无序位置布局 - 增强版，增大活动范围并控制字体区域
+function generateRandomPositions(count) {
+  const positions = [];
+  const containerWidth = 100; // 百分比
+  const containerHeight = 100; // 百分比
+  const ballSize = 6; // 减小球的占用空间百分比
+  
+  // 字体区域：更精确的定义，严格控制
+  const fontArea = { left: 15, right: 85, top: 25, bottom: 75 };
+  let fontAreaCount = 0; // 字体区域球计数器
+  
+  for (let i = 0; i < count; i++) {
+    let position;
+    let attempts = 0;
+    
+    do {
+      // 增大活动范围，允许负值和超出100%的值
+      position = {
+        left: (Math.random() - 0.1) * (containerWidth + 20) - 10, // 可以从-10%到110%
+        top: (Math.random() - 0.05) * (containerHeight + 30) - 15  // 可以从-15%到115%
+      };
+      attempts++;
+    } while (
+      attempts < 100 && // 增加尝试次数
+      (isInFontArea(position, fontArea, ballSize) && fontAreaCount >= 3) ||
+      isTooClose(position, positions, ballSize * 1.2) // 减小最小间距
+    );
+    
+    // 如果球在字体区域，增加计数
+    if (isInFontArea(position, fontArea, ballSize)) {
+      fontAreaCount++;
+    }
+    
+    positions.push(position);
+  }
+  
+  return positions;
+}
+
+function isInFontArea(pos, fontArea, ballSize) {
+  return pos.left + ballSize > fontArea.left && 
+         pos.left < fontArea.right && 
+         pos.top + ballSize > fontArea.top && 
+         pos.top < fontArea.bottom;
+}
+
+function isTooClose(pos, existingPositions, minDistance) {
+  return existingPositions.some(existing => {
+    const distance = Math.sqrt(
+      Math.pow(pos.left - existing.left, 2) + 
+      Math.pow(pos.top - existing.top, 2)
+    );
+    return distance < minDistance;
+  });
+}
+
+const ballPositions = generateRandomPositions(12);
+---
+
+<div class="color-balls-container">
+  {visibleColors.map((colorData, index) => {
+    // 使用纯色背景，避免渐变产生黑色
+    const position = ballPositions[index];
+    
+    return (
+      <div 
+        class="color-ball"
+        data-color={colorData.color}
+        data-value={colorData.value}
+        data-index={index}
+        title={colorData.name}
+        style={`
+          background: ${colorData.color}; 
+          animation-delay: ${index * 0.1}s;
+          left: ${position.left}%;
+          top: ${position.top}%;
+        `}
+      >
+        <div class="ball-shine"></div>
+        <div class="ball-particles"></div>
+      </div>
+    );
+  })}
+</div>
+
+<style>
+  .color-balls-container {
+    width: 100%;
+    height: 420px; /* 增加高度从320px到420px */
+    position: relative;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.1) 0%, 
+      rgba(255, 255, 255, 0.05) 100%);
+    border-radius: 20px;
+    overflow: visible; /* 允许球超出容器边界 */
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    margin-bottom: 20px; /* 增加底部边距，为动画留出空间 */
+    padding: 10px;
+  }
+
+  .dark .color-balls-container {
+    background: linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.2) 0%, 
+      rgba(0, 0, 0, 0.1) 100%);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .color-ball {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute; /* 改为绝对定位 */
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 
+      0 6px 16px rgba(0, 0, 0, 0.25),
+      inset 0 2px 0 rgba(255, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: floatBase 3s ease-in-out infinite;
+    z-index: 1;
+  }
+
+  .ball-shine {
+    position: absolute;
+    top: 20%;
+    left: 25%;
+    width: 35%;
+    height: 35%;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    filter: blur(2px);
+    pointer-events: none;
+  }
+
+  .ball-particles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  /* 高级特效系统 - 18种随机特效 */
+  .color-ball.effect-1 { animation: magneticBounce 3s ease-in-out infinite; }
+  .color-ball.effect-2 { animation: cosmicSpin 2.5s linear infinite; }
+  .color-ball.effect-3 { animation: quantumJump 2.8s ease-in-out infinite; }
+  .color-ball.effect-4 { animation: etherealFloat 4s ease-in-out infinite; }
+  .color-ball.effect-5 { animation: stellarExplode 3s ease-in-out infinite; }
+  .color-ball.effect-6 { animation: dimensionFusion 2.8s ease-in-out infinite; }
+  .color-ball.effect-7 { animation: atomicFission 3.2s ease-in-out infinite; }
+  .color-ball.effect-8 { animation: phantomBlink 1.5s ease-in-out infinite; }
+  .color-ball.effect-9 { animation: galaxyVortex 4s linear infinite; }
+  .color-ball.effect-10 { animation: energyPopcorn 2.2s ease-in-out infinite; }
+  .color-ball.effect-11 { animation: liquidSnake 5s ease-in-out infinite; }
+  .color-ball.effect-12 { animation: plasmaTornado 3.5s linear infinite; }
+  .color-ball.effect-13 { animation: crystalPulse 2s ease-in-out infinite; }
+  .color-ball.effect-14 { animation: nebulaWave 3.8s ease-in-out infinite; }
+  .color-ball.effect-15 { animation: prismShift 2.6s ease-in-out infinite; }
+  .color-ball.effect-16 { animation: auroraFlow 4.2s ease-in-out infinite; }
+  .color-ball.effect-17 { animation: quantumTeleport 3.4s ease-in-out infinite; }
+  .color-ball.effect-18 { animation: cosmicBreathing 5s ease-in-out infinite; }
+
+  /* 聚合与分散特效 */
+  .color-ball.converging { animation: convergeEffect 2s ease-in-out forwards; }
+  .color-ball.dispersing { animation: disperseEffect 2s ease-in-out forwards; }
+  .color-ball.group-effect { animation: groupHarmony 3s ease-in-out infinite; }
+
+  /* 18种全新炫酷特效关键帧 */
+  @keyframes magneticBounce {
+    0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 0 20px rgba(255, 100, 150, 0.6); }
+    25% { transform: translateY(-40px) scale(1.3); box-shadow: 0 0 40px rgba(255, 100, 150, 0.8); }
+    50% { transform: translateY(-60px) scale(1.5); box-shadow: 0 0 60px rgba(255, 100, 150, 1); }
+    75% { transform: translateY(-25px) scale(1.2); box-shadow: 0 0 30px rgba(255, 100, 150, 0.7); }
+  }
+
+  @keyframes cosmicSpin {
+    0% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg) brightness(1); }
+    25% { transform: rotate(90deg) scale(1.4); filter: hue-rotate(90deg) brightness(1.5); }
+    50% { transform: rotate(180deg) scale(1.6); filter: hue-rotate(180deg) brightness(2); }
+    75% { transform: rotate(270deg) scale(1.4); filter: hue-rotate(270deg) brightness(1.5); }
+    100% { transform: rotate(360deg) scale(1); filter: hue-rotate(360deg) brightness(1); }
+  }
+
+  @keyframes quantumJump {
+    0%, 100% { transform: translateY(0) scaleY(1) scaleX(1); opacity: 1; }
+    15% { transform: translateY(-50px) scaleY(0.6) scaleX(1.4); opacity: 0.8; }
+    30% { transform: translateY(-70px) scaleY(0.4) scaleX(1.6); opacity: 0.6; }
+    45% { transform: translateY(-40px) scaleY(0.7) scaleX(1.3); opacity: 0.9; }
+    60% { transform: translateY(20px) scaleY(1.5) scaleX(0.8); opacity: 1; }
+    80% { transform: translateY(-15px) scaleY(1.1) scaleX(1.1); opacity: 1; }
+  }
+
+  @keyframes etherealFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg) translateX(0); filter: blur(0px) brightness(1); }
+    20% { transform: translateY(-30px) rotate(15deg) translateX(20px); filter: blur(1px) brightness(1.3); }
+    40% { transform: translateY(-45px) rotate(-10deg) translateX(-15px); filter: blur(2px) brightness(1.6); }
+    60% { transform: translateY(30px) rotate(-20deg) translateX(25px); filter: blur(1px) brightness(1.4); }
+    80% { transform: translateY(35px) rotate(12deg) translateX(-20px); filter: blur(0.5px) brightness(1.2); }
+  }
+
+  @keyframes stellarExplode {
+    0%, 80% { transform: scale(1); box-shadow: 0 0 10px currentColor; filter: brightness(1); }
+    85% { transform: scale(2.5); box-shadow: 0 0 80px currentColor, 0 0 120px rgba(255, 255, 255, 0.5); filter: brightness(3); }
+    90% { transform: scale(3); box-shadow: 0 0 100px currentColor, 0 0 150px rgba(255, 255, 255, 0.7); filter: brightness(4); }
+    95% { transform: scale(2.2); box-shadow: 0 0 60px currentColor, 0 0 100px rgba(255, 255, 255, 0.4); filter: brightness(2.5); }
+    100% { transform: scale(1); box-shadow: 0 0 10px currentColor; filter: brightness(1); }
+  }
+
+  @keyframes dimensionFusion {
+    0%, 100% { transform: scale(1) rotate(0deg); filter: brightness(1) blur(0) saturate(1); }
+    25% { transform: scale(0.3) rotate(120deg); filter: brightness(3) blur(4px) saturate(2); }
+    50% { transform: scale(0.1) rotate(240deg); filter: brightness(5) blur(8px) saturate(3); }
+    75% { transform: scale(0.5) rotate(360deg); filter: brightness(2.5) blur(2px) saturate(1.5); }
+  }
+
+  @keyframes atomicFission {
+    0%, 100% { transform: scale(1) translateX(0); filter: brightness(1) contrast(1) saturate(1); }
+    20% { transform: scale(2.2) translateX(-15px); filter: brightness(0.2) contrast(4) saturate(3); }
+    40% { transform: scale(2.8) translateX(20px); filter: brightness(0.1) contrast(5) saturate(4); }
+    60% { transform: scale(2.4) translateX(-12px); filter: brightness(0.3) contrast(3.5) saturate(2.5); }
+    80% { transform: scale(1.6) translateX(8px); filter: brightness(0.6) contrast(2) saturate(1.5); }
+  }
+
+  @keyframes phantomBlink {
+    0%, 100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+    25% { opacity: 0.05; transform: scale(0.5); filter: brightness(3); }
+    50% { opacity: 0.01; transform: scale(0.3); filter: brightness(5); }
+    75% { opacity: 0.2; transform: scale(0.7); filter: brightness(2); }
+  }
+
+  @keyframes galaxyVortex {
+    0% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg) brightness(1) blur(0); }
+    25% { transform: rotate(90deg) scale(1.2); filter: hue-rotate(120deg) brightness(1.5) blur(1px); }
+    50% { transform: rotate(180deg) scale(0.8); filter: hue-rotate(240deg) brightness(2) blur(2px); }
+    75% { transform: rotate(270deg) scale(1.3); filter: hue-rotate(300deg) brightness(1.7) blur(1px); }
+    100% { transform: rotate(360deg) scale(1); filter: hue-rotate(360deg) brightness(1) blur(0); }
+  }
+
+  @keyframes energyPopcorn {
+    0%, 70% { transform: scale(1) translateY(0) rotate(0deg); filter: brightness(1); }
+    75% { transform: scale(1.8) translateY(-35px) rotate(20deg); filter: brightness(2); }
+    80% { transform: scale(2.2) translateY(-50px) rotate(-15deg); filter: brightness(3); }
+    85% { transform: scale(0.6) translateY(15px) rotate(30deg); filter: brightness(1.5); }
+    90% { transform: scale(1.4) translateY(-20px) rotate(-10deg); filter: brightness(2); }
+    100% { transform: scale(1) translateY(0) rotate(0deg); filter: brightness(1); }
+  }
+
+  @keyframes liquidSnake {
+    0% { transform: translateX(0) scaleX(1) translateY(0); border-radius: 50%; }
+    20% { transform: translateX(35px) scaleX(1.8) translateY(-15px); border-radius: 20% 80% 20% 80%; }
+    40% { transform: translateX(15px) scaleX(0.4) translateY(25px); border-radius: 80% 20% 80% 20%; }
+    60% { transform: translateX(-30px) scaleX(2) translateY(-12px); border-radius: 30% 70% 30% 70%; }
+    80% { transform: translateX(-40px) scaleX(0.5) translateY(18px); border-radius: 70% 30% 70% 30%; }
+    100% { transform: translateX(0) scaleX(1) translateY(0); border-radius: 50%; }
+  }
+
+  @keyframes plasmaTornado {
+    0% { transform: rotate(0deg) scale(1) translateY(0); border-radius: 50%; filter: brightness(1); }
+    20% { transform: rotate(90deg) scale(1.6) translateY(-20px); border-radius: 15%; filter: brightness(2); }
+    40% { transform: rotate(180deg) scale(0.4) translateY(30px); border-radius: 85%; filter: brightness(3); }
+    60% { transform: rotate(270deg) scale(1.8) translateY(-35px); border-radius: 5%; filter: brightness(2.5); }
+    80% { transform: rotate(360deg) scale(0.7) translateY(15px); border-radius: 95%; filter: brightness(1.5); }
+    100% { transform: rotate(450deg) scale(1) translateY(0); border-radius: 50%; filter: brightness(1); }
+  }
+
+  @keyframes crystalPulse {
+    0%, 100% { transform: scale(1); filter: brightness(1) saturate(1); box-shadow: 0 0 15px currentColor; }
+    50% { transform: scale(1.4); filter: brightness(2.5) saturate(2); box-shadow: 0 0 40px currentColor, 0 0 60px rgba(255, 255, 255, 0.5); }
+  }
+
+  @keyframes nebulaWave {
+    0%, 100% { transform: translateY(0) scaleX(1) skewX(0deg); filter: hue-rotate(0deg); }
+    25% { transform: translateY(-20px) scaleX(1.3) skewX(15deg); filter: hue-rotate(90deg); }
+    50% { transform: translateY(0) scaleX(0.7) skewX(-20deg); filter: hue-rotate(180deg); }
+    75% { transform: translateY(20px) scaleX(1.2) skewX(10deg); filter: hue-rotate(270deg); }
+  }
+
+  @keyframes prismShift {
+    0%, 100% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg) saturate(1) brightness(1); }
+    16% { transform: rotate(60deg) scale(1.1); filter: hue-rotate(60deg) saturate(1.5) brightness(1.3); }
+    33% { transform: rotate(120deg) scale(0.9); filter: hue-rotate(120deg) saturate(2) brightness(1.6); }
+    50% { transform: rotate(180deg) scale(1.2); filter: hue-rotate(180deg) saturate(2.5) brightness(2); }
+    66% { transform: rotate(240deg) scale(0.8); filter: hue-rotate(240deg) saturate(2) brightness(1.6); }
+    83% { transform: rotate(300deg) scale(1.1); filter: hue-rotate(300deg) saturate(1.5) brightness(1.3); }
+  }
+
+  @keyframes auroraFlow {
+    0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); filter: hue-rotate(0deg) brightness(1); }
+    25% { transform: translateX(25px) translateY(-15px) rotate(90deg); filter: hue-rotate(120deg) brightness(1.5); }
+    50% { transform: translateX(0) translateY(-30px) rotate(180deg); filter: hue-rotate(240deg) brightness(2); }
+    75% { transform: translateX(-25px) translateY(-15px) rotate(270deg); filter: hue-rotate(300deg) brightness(1.5); }
+  }
+
+  @keyframes quantumTeleport {
+    0%, 100% { transform: scale(1) translateX(0); opacity: 1; filter: blur(0); }
+    25% { transform: scale(0.1) translateX(50px); opacity: 0.3; filter: blur(5px); }
+    50% { transform: scale(0.05) translateX(0); opacity: 0.1; filter: blur(10px); }
+    75% { transform: scale(0.1) translateX(-50px); opacity: 0.3; filter: blur(5px); }
+  }
+
+  @keyframes cosmicBreathing {
+    0%, 100% { transform: scale(1); filter: brightness(1) saturate(1); }
+    50% { transform: scale(1.3); filter: brightness(1.8) saturate(1.5); }
+  }
+
+  /* 聚合与分散特效关键帧 */
+  @keyframes convergeEffect {
+    0% { transform: translateX(var(--original-x, 0)) translateY(var(--original-y, 0)) scale(1); }
+    50% { transform: translateX(calc(var(--center-x, 0) - var(--original-x, 0))) translateY(calc(var(--center-y, 0) - var(--original-y, 0))) scale(0.8); }
+    100% { transform: translateX(calc(var(--center-x, 0) - var(--original-x, 0))) translateY(calc(var(--center-y, 0) - var(--original-y, 0))) scale(1.2); }
+  }
+
+  @keyframes disperseEffect {
+    0% { transform: translateX(0) translateY(0) scale(1.2); }
+    100% { transform: translateX(var(--disperse-x, 0)) translateY(var(--disperse-y, 0)) scale(1); }
+  }
+
+  @keyframes groupHarmony {
+    0%, 100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+    33% { transform: scale(1.1) rotate(120deg); filter: brightness(1.3); }
+    66% { transform: scale(0.9) rotate(240deg); filter: brightness(1.6); }
+  }
+
+
+
+  /* 悬停效果 */
+  .color-ball:hover {
+    transform: scale(1.6) !important;
+    box-shadow: 
+      0 12px 35px rgba(0, 0, 0, 0.4),
+      0 0 30px currentColor,
+      inset 0 3px 0 rgba(255, 255, 255, 0.7);
+    border-color: rgba(255, 255, 255, 0.9);
+    z-index: 100;
+    animation-play-state: paused;
+  }
+
+  .color-ball.selected {
+    transform: scale(1.2);
+    box-shadow: 
+      0 0 0 4px rgba(255, 255, 255, 0.9),
+      0 8px 30px rgba(0, 0, 0, 0.4),
+      0 0 25px currentColor;
+    border-color: rgba(255, 255, 255, 1);
+    z-index: 50;
+  }
+
+  /* 点击特效 */
+  .color-ball.clicked {
+    animation: clickEffect 0.6s ease-out;
+  }
+
+  @keyframes clickEffect {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.6); box-shadow: 0 0 50px currentColor; }
+    100% { transform: scale(1.2); }
+  }
+
+  /* 粒子爆炸效果 */
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particleExplode 1s ease-out forwards;
+  }
+
+  @keyframes particleExplode {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--dx), var(--dy)) scale(0);
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  // 将Astro变量传递到JavaScript作用域
+  const themeColors = [
+    // 基础色系 (8个)
+    { name: '粉色', value: 'pink', color: '#ed6ea0' },
+    { name: '蓝色', value: 'blue', color: '#3b82f6' },
+    { name: '绿色', value: 'green', color: '#22c55e' },
+    { name: '紫色', value: 'purple', color: '#8b5cf6' },
+    { name: '橙色', value: 'orange', color: '#f97316' },
+    { name: '青色', value: 'cyan', color: '#06b6d4' },
+    { name: '红色', value: 'red', color: '#ef4444' },
+    { name: '靛蓝', value: 'indigo', color: '#6366f1' },
+    
+    // 扩展色系 (15个)
+    { name: '黄色', value: 'yellow', color: '#eab308' },
+    { name: '深紫色', value: 'violet', color: '#7c3aed' },
+    { name: '薄荷绿', value: 'emerald', color: '#10b981' },
+    { name: '珊瑚色', value: 'coral', color: '#ff7875' },
+    { name: '天蓝色', value: 'sky', color: '#0ea5e9' },
+    { name: '薰衣草', value: 'lavender', color: '#a78bfa' },
+    { name: '桃色', value: 'peach', color: '#fb7185' },
+    { name: '翡翠绿', value: 'jade', color: '#20B2AA' },
+    { name: '金色', value: 'gold', color: '#d97706' },
+    { name: '玫瑰金', value: 'rose-gold', color: '#e11d48' },
+    { name: '深青色', value: 'teal', color: '#40E0D0' },
+    { name: '酒红色', value: 'wine', color: '#DC143C' },
+    { name: '橄榄绿', value: 'olive', color: '#9ACD32' },
+    { name: '天蓝色', value: 'slate', color: '#87CEEB' },
+    { name: '琥珀色', value: 'amber', color: '#f59e0b' }
+  ];
+
+  // 颜色相近检测函数 - 使用HSL色彩空间计算相似度
+  function hexToHsl(hex) {
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+
+    if (max === min) {
+      h = s = 0;
+    } else {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+    }
+
+    return [h * 360, s * 100, l * 100];
+  }
+
+  // 判断两个颜色是否相近
+  function areColorsSimilar(color1, color2, threshold = 30) {
+    const [h1, s1, l1] = hexToHsl(color1);
+    const [h2, s2, l2] = hexToHsl(color2);
+    
+    // 计算色相差异（考虑360度环形）
+    let hueDiff = Math.abs(h1 - h2);
+    if (hueDiff > 180) hueDiff = 360 - hueDiff;
+    
+    // 计算饱和度和亮度差异
+    const satDiff = Math.abs(s1 - s2);
+    const lightDiff = Math.abs(l1 - l2);
+    
+    // 综合判断相似度
+    return hueDiff < threshold && satDiff < 20 && lightDiff < 25;
+  }
+
+  // 智能选择多样化颜色
+  function selectDiverseColors(colors, count) {
+    if (colors.length <= count) return colors;
+    
+    const selected = [];
+    const remaining = [...colors];
+    
+    // 随机选择第一个颜色
+    const firstIndex = Math.floor(Math.random() * remaining.length);
+    selected.push(remaining.splice(firstIndex, 1)[0]);
+    
+    // 依次选择与已选颜色差异最大的颜色
+    while (selected.length < count && remaining.length > 0) {
+      let bestColor = null;
+      let bestIndex = -1;
+      let maxMinDistance = -1;
+      
+      for (let i = 0; i < remaining.length; i++) {
+        const candidate = remaining[i];
+        let minDistance = Infinity;
+        
+        // 计算与所有已选颜色的最小距离
+        for (const selectedColor of selected) {
+          if (areColorsSimilar(candidate.color, selectedColor.color, 50)) {
+            minDistance = 0;
+            break;
+          }
+          const [h1, s1, l1] = hexToHsl(candidate.color);
+          const [h2, s2, l2] = hexToHsl(selectedColor.color);
+          let hueDiff = Math.abs(h1 - h2);
+          if (hueDiff > 180) hueDiff = 360 - hueDiff;
+          const distance = hueDiff + Math.abs(s1 - s2) * 0.5 + Math.abs(l1 - l2) * 0.3;
+          minDistance = Math.min(minDistance, distance);
+        }
+        
+        // 选择最小距离最大的颜色（即与已选颜色差异最大的）
+        if (minDistance > maxMinDistance) {
+          maxMinDistance = minDistance;
+          bestColor = candidate;
+          bestIndex = i;
+        }
+      }
+      
+      if (bestColor) {
+        selected.push(bestColor);
+        remaining.splice(bestIndex, 1);
+      } else {
+        // 如果没有找到合适的颜色，随机选择一个
+        const randomIndex = Math.floor(Math.random() * remaining.length);
+        selected.push(remaining.splice(randomIndex, 1)[0]);
+      }
+    }
+    
+    return selected;
+  }
+
+  // 智能选择12个多样化的颜色
+  const visibleColors = selectDiverseColors(themeColors, 12);
+
+  // 18种炫酷特效系统
+  class AdvancedEffectSystem {
+    constructor() {
+      this.effects = [
+        'magneticBounce', 'cosmicSpin', 'quantumJump', 'etherealFloat',
+        'stellarExplode', 'dimensionFusion', 'atomicFission', 'phantomBlink',
+        'galaxyVortex', 'energyPopcorn', 'liquidSnake', 'plasmaTornado',
+        'crystalPulse', 'nebulaWave', 'prismShift', 'auroraFlow',
+        'quantumTeleport', 'cosmicBreathing'
+      ];
+      this.specialEffects = ['converging', 'dispersing', 'groupHarmony'];
+      this.activeEffects = new Map(); // 跟踪每个球的当前特效
+      this.effectGroups = new Map(); // 跟踪特效组合
+    }
+
+    // 随机选择特效模式：单个、小组、全体
+    getRandomEffectMode() {
+      const modes = [
+        { type: 'single', weight: 25 },    // 25% 单个球特效
+        { type: 'group', weight: 45 },     // 45% 小组特效 (2-4个球)
+        { type: 'multiple', weight: 20 },  // 20% 多个球不同特效
+        { type: 'converge', weight: 6 },   // 6% 聚合特效
+        { type: 'disperse', weight: 4 }    // 4% 分散特效
+      ];
+      
+      const totalWeight = modes.reduce((sum, mode) => sum + mode.weight, 0);
+      let random = Math.random() * totalWeight;
+      
+      for (const mode of modes) {
+        random -= mode.weight;
+        if (random <= 0) return mode.type;
+      }
+      return 'single';
+    }
+
+    // 随机选择特效
+    getRandomEffect() {
+      return this.effects[Math.floor(Math.random() * this.effects.length)];
+    }
+
+    // 应用单个球特效
+    applySingleEffect(balls) {
+      const ball = balls[Math.floor(Math.random() * balls.length)];
+      const effect = this.getRandomEffect();
+      this.applyEffectToBall(ball, effect);
+    }
+
+    // 应用小组特效
+    applyGroupEffect(balls) {
+      const groupSize = Math.floor(Math.random() * 3) + 2; // 2-4个球
+      const selectedBalls = this.getRandomBalls(balls, groupSize);
+      const effect = this.getRandomEffect();
+      
+      selectedBalls.forEach(ball => {
+        this.applyEffectToBall(ball, effect);
+      });
+    }
+
+    // 应用多个不同特效
+    applyMultipleEffects(balls) {
+      const effectCount = Math.floor(Math.random() * 4) + 2; // 2-5个特效
+      const selectedBalls = this.getRandomBalls(balls, effectCount);
+      
+      selectedBalls.forEach(ball => {
+        const effect = this.getRandomEffect();
+        this.applyEffectToBall(ball, effect);
+      });
+    }
+
+    // 应用聚合特效
+    applyConvergeEffect(balls) {
+      const participantCount = Math.floor(Math.random() * 6) + 4; // 4-9个球
+      const selectedBalls = this.getRandomBalls(balls, participantCount);
+      
+      // 计算聚合中心点
+      const centerX = 50; // 容器中心
+      const centerY = 50;
+      
+      selectedBalls.forEach(ball => {
+        const rect = ball.getBoundingClientRect();
+        const container = ball.parentElement.getBoundingClientRect();
+        const currentX = ((rect.left - container.left) / container.width) * 100;
+        const currentY = ((rect.top - container.top) / container.height) * 100;
+        
+        // 设置CSS变量用于动画
+        ball.style.setProperty('--original-x', `${currentX}%`);
+        ball.style.setProperty('--original-y', `${currentY}%`);
+        ball.style.setProperty('--center-x', `${centerX}%`);
+        ball.style.setProperty('--center-y', `${centerY}%`);
+        
+        this.applyEffectToBall(ball, 'converging');
+      });
+    }
+
+    // 应用分散特效
+    applyDisperseEffect(balls) {
+      const participantCount = Math.floor(Math.random() * 8) + 3; // 3-10个球
+      const selectedBalls = this.getRandomBalls(balls, participantCount);
+      
+      selectedBalls.forEach(ball => {
+        // 生成随机分散方向
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 100 + 50; // 50-150px
+        const disperseX = Math.cos(angle) * distance;
+        const disperseY = Math.sin(angle) * distance;
+        
+        ball.style.setProperty('--disperse-x', `${disperseX}px`);
+        ball.style.setProperty('--disperse-y', `${disperseY}px`);
+        
+        this.applyEffectToBall(ball, 'dispersing');
+      });
+    }
+
+    // 随机选择指定数量的球
+    getRandomBalls(balls, count) {
+      const shuffled = [...balls].sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, Math.min(count, balls.length));
+    }
+
+    // 为球应用特效
+    applyEffectToBall(ball, effectName) {
+      // 清除之前的特效
+      this.clearBallEffects(ball);
+      
+      // 应用新特效
+      if (this.effects.includes(effectName)) {
+        const effectIndex = this.effects.indexOf(effectName) + 1;
+        ball.classList.add(`effect-${effectIndex}`);
+      } else if (this.specialEffects.includes(effectName)) {
+        ball.classList.add(effectName);
+      }
+      
+      // 记录当前特效
+      this.activeEffects.set(ball, effectName);
+      
+      // 设置特效持续时间
+      const duration = this.getEffectDuration(effectName);
+      setTimeout(() => {
+        this.clearBallEffects(ball);
+      }, duration);
+    }
+
+    // 清除球的所有特效
+    clearBallEffects(ball) {
+      // 清除数字特效类
+      for (let i = 1; i <= 18; i++) {
+        ball.classList.remove(`effect-${i}`);
+      }
+      // 清除特殊特效类
+      this.specialEffects.forEach(effect => {
+        ball.classList.remove(effect);
+      });
+      this.activeEffects.delete(ball);
+    }
+
+    // 获取特效持续时间
+    getEffectDuration(effectName) {
+      const durations = {
+        'magneticBounce': 3000, 'cosmicSpin': 2500, 'quantumJump': 2800,
+        'etherealFloat': 4000, 'stellarExplode': 3000, 'dimensionFusion': 2800,
+        'atomicFission': 3200, 'phantomBlink': 1500, 'galaxyVortex': 4000,
+        'energyPopcorn': 2200, 'liquidSnake': 5000, 'plasmaTornado': 3500,
+        'crystalPulse': 2000, 'nebulaWave': 3800, 'prismShift': 2600,
+        'auroraFlow': 4200, 'quantumTeleport': 3400, 'cosmicBreathing': 5000,
+        'converging': 2000, 'dispersing': 2000, 'groupHarmony': 3000
+      };
+      return durations[effectName] || 3000;
+    }
+
+    // 启动随机特效系统
+    startRandomEffects(balls) {
+      const triggerEffect = () => {
+        const mode = this.getRandomEffectMode();
+        
+        switch (mode) {
+          case 'single':
+            this.applySingleEffect(balls);
+            break;
+          case 'group':
+            this.applyGroupEffect(balls);
+            break;
+          case 'multiple':
+            this.applyMultipleEffects(balls);
+            break;
+          case 'converge':
+            this.applyConvergeEffect(balls);
+            break;
+          case 'disperse':
+            this.applyDisperseEffect(balls);
+            break;
+        }
+        
+        // 随机间隔触发下一个特效 (2-8秒)
+        const nextInterval = Math.random() * 6000 + 2000;
+        setTimeout(triggerEffect, nextInterval);
+      };
+      
+      // 初始延迟1秒后开始
+      setTimeout(triggerEffect, 1000);
+    }
+  }
+
+  // 粒子爆炸效果
+  function createParticleExplosion(ball) {
+    const rect = ball.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    for (let i = 0; i < 12; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      
+      const angle = (i / 12) * Math.PI * 2;
+      const distance = 50 + Math.random() * 30;
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance;
+      
+      particle.style.cssText = `
+        left: ${centerX}px;
+        top: ${centerY}px;
+        --dx: ${dx}px;
+        --dy: ${dy}px;
+        background: ${getComputedStyle(ball).background};
+      `;
+      
+      document.body.appendChild(particle);
+      
+      setTimeout(() => {
+        particle.remove();
+      }, 1000);
+    }
+  }
+
+  // 悦耳音效系统
+  class BeautifulAudioSystem {
+    constructor() {
+      this.audioContext = null;
+      this.enabled = localStorage.getItem('audio-enabled') !== 'false';
+      this.initAudioContext();
+    }
+    
+    // 初始化音频上下文
+    initAudioContext() {
+      try {
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      } catch (e) {
+        console.warn('Web Audio API not supported');
+      }
+    }
+    
+    // 创建悦耳的点击音效
+    playClickSound(frequency = 800) {
+      if (!this.enabled || !this.audioContext) return;
+      
+      const oscillator = this.audioContext.createOscillator();
+      const gainNode = this.audioContext.createGain();
+      
+      // 连接音频节点
+      oscillator.connect(gainNode);
+      gainNode.connect(this.audioContext.destination);
+      
+      // 设置音效参数 - 清脆悦耳的音调
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(frequency * 1.5, this.audioContext.currentTime + 0.1);
+      oscillator.frequency.exponentialRampToValueAtTime(frequency * 0.8, this.audioContext.currentTime + 0.2);
+      
+      // 音量包络 - 快速攻击，平滑衰减
+      gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.3, this.audioContext.currentTime + 0.01);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.3);
+      
+      // 播放音效
+      oscillator.start(this.audioContext.currentTime);
+      oscillator.stop(this.audioContext.currentTime + 0.3);
+    }
+    
+    // 创建选中音效 - 更加优美的和弦
+    playSelectSound(baseFreq = 523.25) { // C5音符
+      if (!this.enabled || !this.audioContext) return;
+      
+      // 创建和弦音效 (大三和弦)
+      const frequencies = [
+        baseFreq,           // 根音
+        baseFreq * 1.25,    // 大三度
+        baseFreq * 1.5,     // 完全五度
+        baseFreq * 2        // 八度
+      ];
+      
+      frequencies.forEach((freq, index) => {
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        // 不同音符使用不同波形
+        oscillator.type = index === 0 ? 'sine' : index === 1 ? 'triangle' : 'sine';
+        oscillator.frequency.setValueAtTime(freq, this.audioContext.currentTime);
+        
+        // 音量设置 - 根音最响，其他音符较轻
+        const volume = index === 0 ? 0.2 : 0.1;
+        gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+        gainNode.gain.linearRampToValueAtTime(volume, this.audioContext.currentTime + 0.05);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.8);
+        
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + 0.8);
+      });
+    }
+    
+    // 创建颜色球轮换音效 - 轻柔的提示音
+    playRotationSound() {
+      if (!this.enabled || !this.audioContext) return;
+      
+      const oscillator = this.audioContext.createOscillator();
+      const gainNode = this.audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(this.audioContext.destination);
+      
+      // 轻柔的铃声效果
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(1047, this.audioContext.currentTime); // C6
+      oscillator.frequency.exponentialRampToValueAtTime(1319, this.audioContext.currentTime + 0.1); // E6
+      oscillator.frequency.exponentialRampToValueAtTime(1047, this.audioContext.currentTime + 0.2); // C6
+      
+      // 非常轻柔的音量
+      gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.05, this.audioContext.currentTime + 0.02);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.4);
+      
+      oscillator.start(this.audioContext.currentTime);
+      oscillator.stop(this.audioContext.currentTime + 0.4);
+    }
+    
+    // 根据颜色生成对应的音频频率
+    getFrequencyFromColor(color) {
+      // 将颜色转换为音符频率
+      const colorMap = {
+        '#ed6ea0': 523.25, // C5 - 粉色
+        '#3b82f6': 587.33, // D5 - 蓝色
+        '#10b981': 659.25, // E5 - 绿色
+        '#f59e0b': 698.46, // F5 - 橙色
+        '#ef4444': 783.99, // G5 - 红色
+        '#8b5cf6': 880.00, // A5 - 紫色
+        '#06b6d4': 987.77, // B5 - 青色
+        '#84cc16': 1046.50, // C6 - 黄绿色
+      };
+      
+      // 如果颜色不在映射中，根据颜色值计算频率
+      if (colorMap[color]) {
+        return colorMap[color];
+      }
+      
+      // 根据颜色的RGB值计算频率
+      const hex = color.replace('#', '');
+      const r = parseInt(hex.substr(0, 2), 16);
+      const g = parseInt(hex.substr(2, 2), 16);
+      const b = parseInt(hex.substr(4, 2), 16);
+      
+      // 将RGB值映射到音符频率范围 (261.63Hz - 1046.50Hz)
+      const brightness = (r + g + b) / 3;
+      return 261.63 + (brightness / 255) * (1046.50 - 261.63);
+    }
+    
+    // 设置音效开关
+    setEnabled(enabled) {
+      this.enabled = enabled;
+      localStorage.setItem('audio-enabled', enabled.toString());
+    }
+  }
+
+  // 随机交替显示系统
+  class ColorBallRotationSystem {
+    constructor(audioSystem) {
+      this.allColors = themeColors;
+      this.currentVisibleColors = visibleColors;
+      this.rotationInterval = null;
+      this.rotationEnabled = true;
+      this.audioSystem = audioSystem;
+    }
+    
+    // 获取未显示的颜色
+    getHiddenColors() {
+      return this.allColors.filter(color => 
+        !this.currentVisibleColors.some(visible => visible.color === color.color)
+      );
+    }
+    
+    // 智能替换颜色球
+    rotateColorBall() {
+      if (!this.rotationEnabled) return;
+      
+      const hiddenColors = this.getHiddenColors();
+      if (hiddenColors.length === 0) return;
+      
+      const balls = document.querySelectorAll('.color-ball');
+      if (balls.length === 0) return;
+      
+      // 随机选择一个要替换的球（避免替换当前选中的球）
+      const selectedBall = document.querySelector('.color-ball.selected');
+      const availableBalls = Array.from(balls).filter(ball => ball !== selectedBall);
+      
+      if (availableBalls.length === 0) return;
+      
+      const ballToReplace = availableBalls[Math.floor(Math.random() * availableBalls.length)];
+      const oldColorIndex = this.currentVisibleColors.findIndex(color => 
+        color.color === ballToReplace.getAttribute('data-color')
+      );
+      
+      // 选择新颜色，确保不与当前显示的颜色太相似
+      let newColor;
+      let attempts = 0;
+      do {
+        newColor = hiddenColors[Math.floor(Math.random() * hiddenColors.length)];
+        attempts++;
+      } while (attempts < 10 && this.isTooSimilarToVisible(newColor));
+      
+      // 更新颜色球
+      this.updateBallColor(ballToReplace, newColor);
+      
+      // 更新内部状态
+      if (oldColorIndex !== -1) {
+        this.currentVisibleColors[oldColorIndex] = newColor;
+      }
+    }
+    
+    // 检查新颜色是否与当前显示的颜色太相似
+    isTooSimilarToVisible(newColor) {
+      return this.currentVisibleColors.some(visibleColor => {
+        if (visibleColor.color === newColor.color) return false;
+        return this.areColorsSimilar(newColor.color, visibleColor.color, 25);
+      });
+    }
+    
+    // 颜色相似度检测（复用之前的函数）
+    areColorsSimilar(color1, color2, threshold = 30) {
+      const hexToHsl = (hex) => {
+        const r = parseInt(hex.slice(1, 3), 16) / 255;
+        const g = parseInt(hex.slice(3, 5), 16) / 255;
+        const b = parseInt(hex.slice(5, 7), 16) / 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        if (max === min) {
+          h = s = 0;
+        } else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+          }
+          h /= 6;
+        }
+        return [h * 360, s * 100, l * 100];
+      };
+      
+      const [h1, s1, l1] = hexToHsl(color1);
+      const [h2, s2, l2] = hexToHsl(color2);
+      let hueDiff = Math.abs(h1 - h2);
+      if (hueDiff > 180) hueDiff = 360 - hueDiff;
+      const satDiff = Math.abs(s1 - s2);
+      const lightDiff = Math.abs(l1 - l2);
+      const similarity = hueDiff + satDiff * 0.5 + lightDiff * 0.3;
+      return similarity < threshold;
+    }
+    
+    // 更新球的颜色
+    updateBallColor(ball, newColor) {
+      // 使用纯色背景，避免渐变产生黑色
+      
+      ball.setAttribute('data-color', newColor.color);
+      ball.setAttribute('title', newColor.name);
+      ball.style.background = newColor.color;
+      
+      // 播放轮换音效
+      if (this.audioSystem) {
+        this.audioSystem.playRotationSound();
+      }
+      
+      // 添加平滑过渡效果
+      ball.style.transform = 'scale(0.8)';
+      ball.style.opacity = '0.7';
+      
+      setTimeout(() => {
+        ball.style.transform = '';
+        ball.style.opacity = '';
+      }, 300);
+    }
+    
+    // 颜色加深函数（复用之前的逻辑）
+    darkenColor(color, factor = 0.3) {
+      const hex = color.replace('#', '');
+      const r = parseInt(hex.substr(0, 2), 16);
+      const g = parseInt(hex.substr(2, 2), 16);
+      const b = parseInt(hex.substr(4, 2), 16);
+      
+      const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+      const adjustedFactor = brightness < 100 ? 0.3 : brightness < 150 ? 0.6 : factor;
+      
+      const newR = Math.max(30, Math.floor(r * (1 - adjustedFactor)));
+      const newG = Math.max(30, Math.floor(g * (1 - adjustedFactor)));
+      const newB = Math.max(30, Math.floor(b * (1 - adjustedFactor)));
+      
+      return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+    }
+    
+    // 启动随机交替显示
+    startRotation() {
+      this.rotationEnabled = true;
+      this.rotationInterval = setInterval(() => {
+        this.rotateColorBall();
+      }, 8000 + Math.random() * 4000); // 8-12秒随机间隔
+    }
+    
+    // 停止随机交替显示
+    stopRotation() {
+      this.rotationEnabled = false;
+      if (this.rotationInterval) {
+        clearInterval(this.rotationInterval);
+        this.rotationInterval = null;
+      }
+    }
+  }
+
+  // 主初始化函数
+  function initColorBalls() {
+    const balls = document.querySelectorAll('.color-ball');
+    const currentTheme = localStorage.getItem('theme-color') || 'pink';
+    
+    // 控制状态
+    let animationEnabled = localStorage.getItem('animation-enabled') !== 'false';
+    
+    // 初始化音效系统
+    const audioSystem = new BeautifulAudioSystem();
+    
+    // 初始化颜色球轮换系统
+    const rotationSystem = new ColorBallRotationSystem(audioSystem);
+    
+    // 设置初始选中状态
+    balls.forEach(ball => {
+      const themeValue = ball.getAttribute('data-value');
+      if (themeValue === currentTheme) {
+        ball.classList.add('selected');
+      }
+      
+
+      
+      // 点击事件
+      ball.addEventListener('click', function() {
+        // 播放点击音效
+        const colorValue = ball.getAttribute('data-color');
+        const frequency = audioSystem.getFrequencyFromColor(colorValue);
+        audioSystem.playClickSound(frequency);
+        
+        // 添加点击特效
+        ball.classList.add('clicked');
+        setTimeout(() => ball.classList.remove('clicked'), 600);
+        
+        // 创建粒子爆炸
+        createParticleExplosion(ball);
+        // 移除所有选中状态
+        balls.forEach(b => b.classList.remove('selected'));
+        // 添加当前选中状态
+        ball.classList.add('selected');
+        
+        // 播放选中音效
+        setTimeout(() => {
+          audioSystem.playSelectSound(frequency);
+        }, 150);
+        
+        // 更新主题颜色
+        const themeValue = ball.getAttribute('data-value');
+        document.documentElement.setAttribute('data-theme-color', themeValue);
+        localStorage.setItem('theme-color', themeValue);
+        
+        // 触发主题颜色变更事件
+        document.dispatchEvent(new CustomEvent('theme-color-changed', {
+          detail: { 
+            color: themeValue,
+            colorHex: colorValue,
+            colorName: ball.getAttribute('title'),
+            colorData: themeColors.find(c => c.value === themeValue)
+          }
+        }));
+        
+        console.log(`🎨 切换到主题颜色: ${ball.getAttribute('title')} (${colorValue})`);
+      });
+    });
+    
+    // 动画控制函数
+    function toggleAnimations(enabled) {
+      balls.forEach(ball => {
+        if (enabled) {
+          ball.style.animationPlayState = 'running';
+        } else {
+          ball.style.animationPlayState = 'paused';
+        }
+      });
+    }
+    
+    // 初始化动画状态
+    toggleAnimations(animationEnabled);
+    
+    // 监听动画状态变化
+    window.addEventListener('animationStateChanged', function(e) {
+      animationEnabled = e.detail.enabled;
+      toggleAnimations(animationEnabled);
+      console.log('动画状态更新:', animationEnabled ? '开启' : '关闭');
+    });
+    
+    // 监听音效状态变化
+    window.addEventListener('audioStateChanged', function(e) {
+      audioSystem.setEnabled(e.detail.enabled);
+      console.log('音效状态更新:', e.detail.enabled ? '开启' : '关闭');
+    });
+    
+    // 启动颜色球轮换系统
+    rotationSystem.startRotation();
+    
+    // 启动18种炫酷特效系统
+    const effectSystem = new AdvancedEffectSystem();
+    effectSystem.startRandomEffects(balls);
+    
+    console.log(`🎉 初始化了 ${balls.length} 个超炫酷颜色球！`);
+    console.log(`🌈 高级渐变颜色系统已启动！避免黑色，丰富视觉效果！`);
+    console.log(`✨ 18种随机特效系统已启动！支持单个/多个/聚合/分散特效！`);
+    console.log(`🔄 随机交替显示系统已启动！`);
+  }
+
+  // 页面加载时初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initColorBalls);
+  } else {
+    initColorBalls();
+  }
+
+  // Astro页面切换时重新初始化
+  document.addEventListener('astro:page-load', initColorBalls);
+</script>

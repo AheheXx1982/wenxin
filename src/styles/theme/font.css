@@ -17,3 +17,17 @@
   font-style: normal;
   src: local('方正悠宋 简 509R'), url('/fonts/方正悠宋 简 509R.ttf');
 }
+
+/* Google Fonts - Mrs Saint Delafield 手写体 */
+@import url('https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&display=swap');
+
+/* Google Fonts - Tirra 艺术体 */
+@import url('https://fonts.googleapis.com/css2?family=Tirra:wght@400;500;600;700&display=swap');
+
+/* 自由理想字体 - 手写风格中文字体 */
+@font-face {
+  font-display: block;
+  font-family: '自由理想体';
+  font-style: normal;
+  src: local('自由理想体'), url('/fonts/自由理想体.ttf');
+}

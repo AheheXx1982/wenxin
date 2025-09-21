@@ -163,8 +163,10 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
 </div>
 
 <script is:inline>
-  // 定义更符合大众审美的颜色数组
-  const beautifulColors = [
+  // 避免重复声明全局变量
+  if (typeof window.homeInfoBeautifulColors === 'undefined') {
+    // 定义更符合大众审美的颜色数组
+    window.homeInfoBeautifulColors = [
     '#FF6B6B', // 活力红
     '#4ECDC4', // 清新蓝绿
     '#45B7D1', // 天空蓝
@@ -182,7 +184,7 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
   ];
   
   // 定义丰富的点击特效数组
-  const clickEffects = [
+  window.homeInfoClickEffects = [
     'explode',        // 爆炸效果
     'fade-in-out',    // 淡入淡出
     'marquee',        // 跑马灯
@@ -202,15 +204,16 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
     'lightning',      // 闪电效果
     'time-tunnel'     // 时空隧道
   ];
+  }
   
   // 生成随机颜色
   function getRandomColor() {
-    return beautifulColors[Math.floor(Math.random() * beautifulColors.length)];
+    return window.homeInfoBeautifulColors[Math.floor(Math.random() * window.homeInfoBeautifulColors.length)];
   }
   
   // 获取随机点击效果
   function getRandomClickEffect() {
-    return clickEffects[Math.floor(Math.random() * clickEffects.length)];
+    return window.homeInfoClickEffects[Math.floor(Math.random() * window.homeInfoClickEffects.length)];
   }
   
   // 创建特效元素的函数

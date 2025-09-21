@@ -12,6 +12,10 @@ interface Props {
 import '@fontsource/poppins';
 import '@fontsource/noto-serif-sc';
 import '@fontsource/noto-serif-jp';
+import '@fontsource/open-sans';
+import '@fontsource/playfair-display';
+import '@fontsource/noto-sans';
+import 'font-smiley-sans/style.css';
 import { ClientRouter } from 'astro:transitions';
 import LoadingIndicator from 'astro-loading-indicator/component';
 import Header from '@components/layout/Header.astro';
@@ -78,6 +82,10 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
       }
+      
+      // 立即执行主题颜色检查
+      const savedColor = localStorage.getItem('theme-color') || 'pink';
+      document.documentElement.setAttribute('data-theme-color', savedColor);
     </script>
     <script>
       function checkTheme() {
@@ -91,9 +99,24 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
           document.documentElement.classList.remove('dark');
           document.documentElement.classList.add('light');
         }
+        
+        // 检查并应用主题颜色
+        const savedColor = localStorage.getItem('theme-color') || 'pink';
+        document.documentElement.setAttribute('data-theme-color', savedColor);
       }
       // 在每次页面加载时检查
       document.addEventListener('astro:page-load', checkTheme);
+      
+      // 监听主题颜色变更事件
+      document.addEventListener('theme-color-changed', function(event) {
+        const { color, colorHex, colorName, colorData } = event.detail;
+        if (color) {
+          // 应用主题颜色
+          document.documentElement.setAttribute('data-theme-color', color);
+          localStorage.setItem('theme-color', color);
+          console.log('主题颜色已更新:', color, colorName, colorHex);
+        }
+      });
     </script>
   </head>
   <body>

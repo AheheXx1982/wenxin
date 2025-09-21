@@ -1,8 +1,6 @@
 ---
-import ThemeToggle from '@components/theme/ThemeToggle.astro';
-import LanguageSwitcherPopup from '@components/theme/LanguageSwitcherPopup.astro';
 import { getLanguageFromAstroUrl } from '@lib/i18n';
-import { Icon } from 'astro-icon/components';
+import FloatingColorBalls from '@components/fun/FloatingColorBalls.astro';
 
 // 获取当前语言
 const currentLang = getLanguageFromAstroUrl(Astro.url);
@@ -25,7 +23,7 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
 
   <!-- 弹出菜单 -->
   <div
-    class="invisible absolute top-12 right-0 z-50 w-56 scale-95 transform rounded-xl border border-gray-200 bg-white opacity-0 shadow-xl transition-all duration-300 group-hover:visible group-hover:scale-100 group-hover:opacity-100 dark:border-gray-700 dark:bg-gray-800"
+    class="invisible absolute top-12 right-0 z-50 w-56 scale-95 transform rounded-xl bg-white opacity-0 shadow-xl transition-all duration-300 group-hover:visible group-hover:scale-100 group-hover:opacity-100 dark:bg-gray-800"
   >
     <div class="py-2">
       <!-- 幻念集链接 -->
@@ -34,51 +32,489 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
         class="flex items-center px-4 py-3 text-sm text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
       >
         <div class="flex items-center space-x-3">
-          <!-- 使用本地的ghost图标，静态显示 -->
-          <img src="/ghost.svg" alt="幻念集图标" class="h-7 w-7" />
+          <!-- 使用本地的ghost图标，添加幽灵特效 -->
+          <img src="/ghost.svg" alt="幻念集图标" class="h-6 w-6 ghost-icon" id="ghost-icon" />
           <span class="font-medium">
             {thoughtsText}
           </span>
         </div>
       </a>
 
-      <!-- 分割线 -->
-      <div class="my-2 border-t border-gray-200 dark:border-gray-700"></div>
+      <!-- 主题样式模块 -->
+      <div class="theme-style-module relative flex items-center px-4 py-3 text-sm text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+        <div class="flex items-center space-x-3">
+          <!-- 使用调色板图标 -->
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 3H5a2 2 0 00-2 2v12a4 4 0 004 4h2M9 3h2a2 2 0 012 2v12a4 4 0 01-2 2H9m6 0a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4z"></path>
+          </svg>
+          <span class="font-medium">
+            {currentLang === 'en' ? 'Theme Style' : '主题样式'}
+          </span>
+        </div>
 
-      <!-- 主题切换器 -->
-      <div class="px-4 py-3">
-        <div class="flex items-center justify-between">
-          <div class="text-xs font-medium tracking-wider text-gray-700 dark:text-gray-200 uppercase">
-            {currentLang === 'en' ? 'Theme' : '主题'}
+        <!-- 向左弹出的主题样式控制面板 -->
+        <div class="theme-style-panel invisible absolute top-0 right-0 z-50 w-[480px] scale-95 transform rounded-xl bg-white opacity-0 shadow-xl transition-all duration-300 dark:bg-gray-800" style="transform: translateX(-100%) scale(0.95);">
+          <div class="p-5">
+            <!-- 两列布局 -->
+            <div class="grid grid-cols-2 gap-6">
+              <!-- 左列：主题颜色选择器 -->
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="text-sm font-medium text-gray-700 dark:text-gray-200">
+                    {currentLang === 'en' ? 'Colors' : '颜色'}
+                  </h3>
+                  <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                </div>
+                
+                <!-- 23种主题颜色球 -->
+                <FloatingColorBalls />
+              </div>
+
+              <!-- 右列：字体、模式和音效控制 -->
+              <div class="space-y-4">
+                <!-- 字体模块 -->
+                <div>
+                  <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-sm font-medium text-gray-700 dark:text-gray-200">
+                      {currentLang === 'en' ? 'Fonts' : '字体'}
+                    </h3>
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  </div>
+                  
+                  <div class="font-grid p-3 rounded-lg bg-gray-50 dark:bg-gray-700 space-y-2">
+                    <!-- 字体选项 -->
+                    <button
+                      class="font-option w-full p-2 rounded-md transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-600 text-left relative group border-2 border-transparent"
+                      data-font="system"
+                      title="系统默认字体"
+                    >
+                      <div class="text-xs text-gray-600 dark:text-gray-400">系统字体</div>
+                      <div class="text-sm font-medium" style="font-family: system-ui, -apple-system, sans-serif;">Aa 字体预览</div>
+                      <div class="selected-indicator absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full opacity-0 scale-0 transition-all duration-300"></div>
+                    </button>
+                    
+                    <button
+                      class="font-option w-full p-2 rounded-md transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-600 text-left relative group border-2 border-transparent"
+                      data-font="serif"
+                      title="衬线字体"
+                    >
+                      <div class="text-xs text-gray-600 dark:text-gray-400">衬线字体</div>
+                      <div class="text-sm font-medium" style="font-family: Georgia, serif;">Aa 字体预览</div>
+                      <div class="selected-indicator absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full opacity-0 scale-0 transition-all duration-300"></div>
+                    </button>
+                    
+                    <button
+                      class="font-option w-full p-2 rounded-md transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-600 text-left relative group border-2 border-transparent"
+                      data-font="mono"
+                      title="等宽字体"
+                    >
+                      <div class="text-xs text-gray-600 dark:text-gray-400">等宽字体</div>
+                      <div class="text-sm font-medium" style="font-family: 'Courier New', monospace;">Aa 字体预览</div>
+                      <div class="selected-indicator absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full opacity-0 scale-0 transition-all duration-300"></div>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 模式选择器 -->
+                <div>
+                  <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-sm font-medium text-gray-700 dark:text-gray-200">
+                      {currentLang === 'en' ? 'Mode' : '模式'}
+                    </h3>
+                    <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                  </div>
+                  
+                  <div class="flex justify-center space-x-3">
+                    <button
+                      class="theme-mode-btn w-10 h-10 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 relative group overflow-hidden flex items-center justify-center border-2 border-transparent"
+                      data-theme="light"
+                      title="浅色模式"
+                    >
+                      <span class="text-xl">☀️</span>
+                      <div class="selected-indicator absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full opacity-0 scale-0 transition-all duration-300"></div>
+                    </button>
+                    
+                    <button
+                      class="theme-mode-btn w-10 h-10 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 relative group overflow-hidden flex items-center justify-center border-2 border-transparent"
+                      data-theme="dark"
+                      title="深色模式"
+                    >
+                      <span class="text-xl">🌙</span>
+                      <div class="selected-indicator absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full opacity-0 scale-0 transition-all duration-300"></div>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 音效和动画开关 -->
+                <div>
+                  <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-sm font-medium text-gray-700 dark:text-gray-200">
+                      {currentLang === 'en' ? 'Audio & Animation' : '音效和动画'}
+                    </h3>
+                    <div class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                  </div>
+                  
+                  <div class="audio-controls p-3 rounded-lg bg-gray-50 dark:bg-gray-700 space-y-3">
+                    <!-- 音效开关 -->
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center space-x-2">
+                        <span class="text-lg">🔊</span>
+                        <span class="text-sm text-gray-700 dark:text-gray-200">音效</span>
+                      </div>
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="audio-toggle" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+
+                    <!-- 动画控制 -->
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center space-x-2">
+                        <span class="text-lg">✨</span>
+                        <span class="text-sm text-gray-700 dark:text-gray-200">动画</span>
+                      </div>
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="animation-toggle" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="theme-toggle-container p-1 rounded-full bg-gray-100 dark:bg-gray-700">
-            <ThemeToggle />
-          </div>
+
+          <!-- 三角箭头 - 指向主题样式按钮 -->
+          <div class="absolute top-6 right-0 h-4 w-4 rotate-45 transform bg-white dark:bg-gray-800" style="transform: translateX(50%) rotate(45deg);"></div>
         </div>
       </div>
 
-      <!-- 语言切换器 -->
-      <div class="px-4 py-3">
-        <div class="flex items-center justify-between">
-          <div class="text-xs font-medium tracking-wider text-gray-700 dark:text-gray-200 uppercase">
-            {currentLang === 'en' ? 'Language' : '语言'}
+      <!-- 语言切换器模块 -->
+      <div class="language-switcher-module">
+        <div class="language-switcher-trigger">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span>语言</span>
+        </div>
+        
+        <!-- 语言选择控制面板 -->
+        <div class="language-switcher-panel">
+          <div class="language-options">
+            <button class="language-option" data-lang="zh-CN">
+              <span class="language-flag">🇨🇳</span>
+              <span class="language-name">中文</span>
+              <div class="selected-indicator">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20,6 9,17 4,12"/>
+                </svg>
+              </div>
+            </button>
+            
+            <button class="language-option" data-lang="en">
+              <span class="language-flag">🇺🇸</span>
+              <span class="language-name">English</span>
+              <div class="selected-indicator">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20,6 9,17 4,12"/>
+                </svg>
+              </div>
+            </button>
           </div>
-          <LanguageSwitcherPopup />
         </div>
       </div>
     </div>
 
     <!-- 三角箭头 -->
     <div
-      class="absolute -top-2 right-4 h-4 w-4 rotate-45 transform border-t border-l border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+      class="absolute -top-2 right-4 h-4 w-4 rotate-45 transform bg-white dark:bg-gray-800"
     >
     </div>
   </div>
 </div>
 
 <style>
-  /* 确保SVG路径始终可见 */
-  .integrated-menu svg {
+  /* 幽灵图标特效样式 */
+  .ghost-icon {
+    transition: all 0.3s ease;
+    transform-origin: center center;
+  }
+
+  /* 幽灵飞出动画 - 左上方向 */
+  @keyframes ghost-fly-out-top-left {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    30% {
+      transform: translate(-20px, -30px) scale(1.2) rotate(-15deg);
+      opacity: 0.8;
+    }
+    60% {
+      transform: translate(-40px, -60px) scale(0.8) rotate(-30deg);
+      opacity: 0.4;
+    }
+    100% {
+      transform: translate(-60px, -90px) scale(0.3) rotate(-45deg);
+      opacity: 0;
+    }
+  }
+
+  /* 幽灵飞出动画 - 右上方向 */
+  @keyframes ghost-fly-out-top-right {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    30% {
+      transform: translate(20px, -30px) scale(1.2) rotate(15deg);
+      opacity: 0.8;
+    }
+    60% {
+      transform: translate(40px, -60px) scale(0.8) rotate(30deg);
+      opacity: 0.4;
+    }
+    100% {
+      transform: translate(60px, -90px) scale(0.3) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  /* 幽灵飞出动画 - 左下方向 */
+  @keyframes ghost-fly-out-bottom-left {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    30% {
+      transform: translate(-20px, 20px) scale(1.2) rotate(-15deg);
+      opacity: 0.8;
+    }
+    60% {
+      transform: translate(-40px, 40px) scale(0.8) rotate(-30deg);
+      opacity: 0.4;
+    }
+    100% {
+      transform: translate(-60px, 60px) scale(0.3) rotate(-45deg);
+      opacity: 0;
+    }
+  }
+
+  /* 幽灵飞出动画 - 右下方向 */
+  @keyframes ghost-fly-out-bottom-right {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    30% {
+      transform: translate(20px, 20px) scale(1.2) rotate(15deg);
+      opacity: 0.8;
+    }
+    60% {
+      transform: translate(40px, 40px) scale(0.8) rotate(30deg);
+      opacity: 0.4;
+    }
+    100% {
+      transform: translate(60px, 60px) scale(0.3) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  /* 幽灵飞出动画 - 正上方向 */
+  @keyframes ghost-fly-out-top {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    30% {
+      transform: translate(0, -30px) scale(1.2) rotate(0deg);
+      opacity: 0.8;
+    }
+    60% {
+      transform: translate(0, -60px) scale(0.8) rotate(0deg);
+      opacity: 0.4;
+    }
+    100% {
+      transform: translate(0, -90px) scale(0.3) rotate(0deg);
+      opacity: 0;
+    }
+  }
+
+  /* 幽灵飞出动画 - 正左方向 */
+  @keyframes ghost-fly-out-left {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    30% {
+      transform: translate(-30px, 0) scale(1.2) rotate(-20deg);
+      opacity: 0.8;
+    }
+    60% {
+      transform: translate(-60px, 0) scale(0.8) rotate(-40deg);
+      opacity: 0.4;
+    }
+    100% {
+      transform: translate(-90px, 0) scale(0.3) rotate(-60deg);
+      opacity: 0;
+    }
+  }
+
+  /* 幽灵飞出动画 - 正右方向 */
+  @keyframes ghost-fly-out-right {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    30% {
+      transform: translate(30px, 0) scale(1.2) rotate(20deg);
+      opacity: 0.8;
+    }
+    60% {
+      transform: translate(60px, 0) scale(0.8) rotate(40deg);
+      opacity: 0.4;
+    }
+    100% {
+      transform: translate(90px, 0) scale(0.3) rotate(60deg);
+      opacity: 0;
+    }
+  }
+
+  /* 幽灵飞出动画 - 螺旋上升 */
+  @keyframes ghost-fly-out-spiral {
+    0% {
+      transform: translate(0, 0) scale(1) rotate(0deg);
+      opacity: 1;
+    }
+    25% {
+      transform: translate(-15px, -20px) scale(1.1) rotate(90deg);
+      opacity: 0.9;
+    }
+    50% {
+      transform: translate(15px, -40px) scale(0.9) rotate(180deg);
+      opacity: 0.6;
+    }
+    75% {
+      transform: translate(-30px, -60px) scale(0.6) rotate(270deg);
+      opacity: 0.3;
+    }
+    100% {
+      transform: translate(0, -80px) scale(0.2) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* 幽灵飞出动画 - 放大消失 */
+  @keyframes ghost-fly-out-scale-disappear {
+    0% {
+      transform: translate(0, 0) scale(1) rotate(0deg);
+      opacity: 1;
+    }
+    20% {
+      transform: translate(-10px, -15px) scale(1.3) rotate(-10deg);
+      opacity: 0.9;
+    }
+    40% {
+      transform: translate(-20px, -30px) scale(1.8) rotate(-20deg);
+      opacity: 0.7;
+    }
+    60% {
+      transform: translate(-30px, -45px) scale(2.5) rotate(-30deg);
+      opacity: 0.5;
+    }
+    80% {
+      transform: translate(-40px, -60px) scale(3.5) rotate(-40deg);
+      opacity: 0.2;
+    }
+    100% {
+      transform: translate(-50px, -75px) scale(5) rotate(-50deg);
+      opacity: 0;
+    }
+  }
+
+  /* 幽灵重新出现动画 */
+  @keyframes ghost-fade-in {
+    0% {
+      transform: translate(0, 0) scale(0.3);
+      opacity: 0;
+    }
+    30% {
+      transform: translate(0, 0) scale(0.6);
+      opacity: 0.3;
+    }
+    60% {
+      transform: translate(0, 0) scale(0.9);
+      opacity: 0.7;
+    }
+    100% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* 幽灵悬浮效果 */
+  @keyframes ghost-float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+
+  /* 应用动画类 - 各个方向 */
+  .ghost-flying-out-top-left {
+    animation: ghost-fly-out-top-left 1.5s ease-in-out forwards;
+  }
+
+  .ghost-flying-out-top-right {
+    animation: ghost-fly-out-top-right 1.5s ease-in-out forwards;
+  }
+
+  .ghost-flying-out-bottom-left {
+    animation: ghost-fly-out-bottom-left 1.5s ease-in-out forwards;
+  }
+
+  .ghost-flying-out-bottom-right {
+    animation: ghost-fly-out-bottom-right 1.5s ease-in-out forwards;
+  }
+
+  .ghost-flying-out-top {
+    animation: ghost-fly-out-top 1.5s ease-in-out forwards;
+  }
+
+  .ghost-flying-out-left {
+    animation: ghost-fly-out-left 1.5s ease-in-out forwards;
+  }
+
+  .ghost-flying-out-right {
+    animation: ghost-fly-out-right 1.5s ease-in-out forwards;
+  }
+
+  .ghost-flying-out-spiral {
+    animation: ghost-fly-out-spiral 2s ease-in-out forwards;
+  }
+
+  .ghost-flying-out-scale-disappear {
+    animation: ghost-fly-out-scale-disappear 2.5s ease-out forwards;
+  }
+
+  .ghost-fading-in {
+    animation: ghost-fade-in 2s ease-out forwards;
+  }
+
+  .ghost-floating {
+    animation: ghost-float 3s ease-in-out infinite;
+  }
+
+  /* 幽灵发光效果 */
+  .ghost-glow {
+    filter: drop-shadow(0 0 8px rgba(147, 197, 253, 0.6));
+  }
+  /* 确保SVG路径始终可见 - 只应用于主按钮图标，不影响菜单项图标 */
+  .integrated-menu > button svg {
     display: block;
     width: 100%;
     height: 100%;
@@ -89,70 +525,251 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
     paint-order: stroke fill markers;
   }
 
-  /* 确保图标始终可见，不受父元素隐藏影响 */
-  .integrated-menu-icon {
-    display: block !important;
-    visibility: visible !important;
-    /* 确保图标围绕中心旋转 */
-    transform-origin: center center;
-    /* 增强图标可见性 */
-    opacity: 1 !important;
+  /* 确保菜单项中的SVG图标能正确应用Tailwind大小类 */
+  .integrated-menu .flex.items-center svg {
+    width: auto !important;
+    height: auto !important;
   }
 
-  /* 增强旋转动画效果 */
-  @keyframes enhanced-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* 逆时针旋转动画 */
-  @keyframes reverse-spin {
-    from {
-      transform: rotate(360deg);
-    }
-    to {
-      transform: rotate(0deg);
-    }
-  }
-
+  /* 旋转动画 */
   .slow-spin {
-    animation: enhanced-spin 4s linear infinite;
-    transform-origin: center center;
-    /* 确保动画在所有状态下都运行 */
-    animation-play-state: running !important;
+    animation: slow-spin 8s linear infinite;
   }
 
-  .reverse-slow-spin {
-    animation: reverse-spin 4s linear infinite;
-    transform-origin: center center;
-    /* 确保动画在所有状态下都运行 */
-    animation-play-state: running !important;
+  @keyframes slow-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
-  .integrated-menu:hover button {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  /* 菜单显示动画 */
+  .integrated-menu:hover .invisible {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1);
   }
 
-  /* 子菜单项样式 */
-  .integrated-menu .menu-item {
+  /* 主题样式模块悬停效果 - 通过JavaScript控制 */
+  .theme-style-panel.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-100%) scale(1);
+  }
+
+  /* 颜色泡泡样式 */
+  .color-bubble {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    box-shadow: 
+      0 3px 8px rgba(0, 0, 0, 0.15),
+      0 1px 3px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .color-bubble:hover {
+    transform: scale(1.15) translateY(-2px);
+    box-shadow: 
+      0 6px 16px rgba(0, 0, 0, 0.2),
+      0 3px 6px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .color-bubble.selected {
+    transform: scale(1.2);
+    box-shadow: 
+      0 0 0 3px rgba(255, 255, 255, 0.8),
+      0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .color-bubble.selected .selected-indicator {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* 主题模式按钮样式 */
+  .theme-mode-btn {
+    cursor: pointer;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+  
+  .theme-mode-btn.selected {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.1));
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  }
+
+  .theme-mode-btn.selected .selected-indicator {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* 语言切换器模块样式 */
+  .language-switcher-module {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #374151;
     transition: all 0.2s ease;
+    cursor: pointer;
   }
 
-  .integrated-menu .menu-item:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+  .language-switcher-module:hover {
+    background-color: #f3f4f6;
   }
 
-  .dark .integrated-menu .menu-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+  .dark .language-switcher-module {
+    color: #d1d5db;
   }
 
-  @media (max-width: 768px) {
-    .integrated-menu > div:last-child {
-      right: -20px;
+  .dark .language-switcher-module:hover {
+    background-color: #374151;
+  }
+
+  .language-switcher-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .language-switcher-trigger svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0.7;
+  }
+
+  .language-switcher-trigger span {
+    font-weight: 500;
+  }
+
+  /* 语言控制面板样式 */
+  .language-control-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 50;
+    width: 240px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.95);
+    transition: all 0.3s ease;
+    margin-top: 8px;
+  }
+
+  .dark .language-control-panel {
+    background: #1f2937;
+    border: 1px solid #374151;
+  }
+
+  .language-switcher-module.active .language-switcher-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  .language-options {
+    padding: 8px;
+  }
+
+  .language-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  .language-option:hover {
+    background-color: #f3f4f6;
+  }
+
+  .dark .language-option:hover {
+    background-color: #374151;
+  }
+
+  .language-option.selected {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  .dark .language-option.selected {
+    background-color: #1e3a8a;
+    color: #93c5fd;
+  }
+
+  .language-flag {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .language-name {
+    font-weight: 500;
+    font-size: 14px;
+    flex: 1;
+    text-align: left;
+  }
+
+  .language-option .selected-indicator {
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s ease;
+  }
+
+  .language-option.selected .selected-indicator {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .language-option .selected-indicator svg {
+    width: 12px;
+    height: 12px;
+    stroke: currentColor;
+  }
+
+  /* 响应式设计 */
+  @media (max-width: 640px) {
+    .integrated-menu {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .theme-style-panel {
+      width: 280px;
+      max-width: calc(100vw - 40px);
+    }
+
+    .language-control-panel {
       width: 200px;
     }
   }
@@ -168,23 +785,15 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
     const toggleButton = menu.querySelector('button');
     
     if (menuIcon) {
-      // 强制设置图标可见性
       menuIcon.style.opacity = '1';
       menuIcon.style.display = 'block';
       menuIcon.style.visibility = 'visible';
-      
-      // 确保动画始终运行
       menuIcon.style.animationPlayState = 'running';
     }
 
     if (toggleButton) {
-      // 确保按钮始终可见
       toggleButton.style.opacity = '1';
       toggleButton.style.visibility = 'visible';
-      
-      // 确保按钮背景和边框始终显示
-      toggleButton.style.backgroundColor = '';
-      toggleButton.style.borderColor = '';
     }
 
     let timeout;
@@ -212,62 +821,567 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       }, 150);
     });
 
-    // 键盘导航支持
-    if (toggleButton) {
-      toggleButton.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          const dropdown = menu.querySelector('div:last-child');
-          if (dropdown) {
-            const isVisible = dropdown.style.opacity === '1';
-            if (isVisible) {
-              dropdown.style.opacity = '0';
-              dropdown.style.visibility = 'hidden';
-              dropdown.style.transform = 'scale(0.95)';
-            } else {
-              dropdown.style.opacity = '1';
-              dropdown.style.visibility = 'visible';
-              dropdown.style.transform = 'scale(1)';
-            }
-          }
-        }
-      });
-    }
-
-    // 修复：点击外部区域时，只隐藏菜单，不隐藏图标
+    // 点击外部区域时隐藏菜单
     document.addEventListener('click', (e) => {
-      // 检查点击的元素是否在菜单内部
       if (menu && !menu.contains(e.target)) {
         const dropdown = menu.querySelector('div:last-child');
         if (dropdown) {
-          // 只隐藏下拉菜单，不隐藏触发按钮
           dropdown.style.opacity = '0';
           dropdown.style.visibility = 'hidden';
           dropdown.style.transform = 'scale(0.95)';
         }
       }
     });
+
+    // 主题样式功能初始化
+    initThemeStyleModule();
     
-    // 定期检查并确保图标和按钮可见
-    setInterval(() => {
-      if (menuIcon) {
-        menuIcon.style.opacity = '1';
-        menuIcon.style.display = 'block';
-        menuIcon.style.visibility = 'visible';
-        menuIcon.style.animationPlayState = 'running';
+    // 语言切换器功能初始化
+    initLanguageSwitcher();
+    
+    // 点击外部区域关闭语言切换器面板
+    document.addEventListener('click', function(e) {
+      const languageModule = document.querySelector('.language-switcher-module');
+      
+      // 如果点击的不是语言切换器模块内部，则关闭面板
+      if (!languageModule?.contains(e.target)) {
+        languageModule?.classList.remove('active');
+      }
+    });
+  });
+
+  // 主题样式模块初始化
+  function initThemeStyleModule() {
+    // 主题样式面板悬停控制
+    const themeModule = document.querySelector('.theme-style-module');
+    const themePanel = document.querySelector('.theme-style-panel');
+    
+    if (themeModule && themePanel) {
+      let showTimeout;
+      let hideTimeout;
+      
+      // 鼠标进入主题样式模块
+      themeModule.addEventListener('mouseenter', function() {
+        clearTimeout(hideTimeout);
+        showTimeout = setTimeout(() => {
+          themePanel.classList.add('show');
+        }, 200); // 200ms延迟显示
+      });
+      
+      // 鼠标离开主题样式模块
+      themeModule.addEventListener('mouseleave', function() {
+        clearTimeout(showTimeout);
+        hideTimeout = setTimeout(() => {
+          themePanel.classList.remove('show');
+        }, 100); // 100ms延迟隐藏
+      });
+      
+      // 鼠标进入面板时保持显示
+      themePanel.addEventListener('mouseenter', function() {
+        clearTimeout(hideTimeout);
+      });
+      
+      // 鼠标离开面板时隐藏
+      themePanel.addEventListener('mouseleave', function() {
+        hideTimeout = setTimeout(() => {
+          themePanel.classList.remove('show');
+        }, 100);
+      });
+    }
+
+    // 颜色选择功能
+    document.querySelectorAll('.color-bubble').forEach(bubble => {
+      // 添加多种事件监听确保响应
+      ['click', 'mousedown', 'touchstart'].forEach(eventType => {
+        bubble.addEventListener(eventType, function(e) {
+          if (eventType !== 'click') return; // 只在click事件时执行逻辑
+          
+          e.preventDefault();
+          e.stopPropagation();
+          
+          console.log('颜色按钮被点击:', this.dataset.color);
+        
+          // 移除其他选中状态
+          document.querySelectorAll('.color-bubble').forEach(b => {
+            b.classList.remove('selected');
+            const indicator = b.querySelector('.selected-indicator');
+            if (indicator) {
+              indicator.style.opacity = '0';
+              indicator.style.transform = 'scale(0)';
+            }
+          });
+          
+          // 添加选中状态
+          this.classList.add('selected');
+          const indicator = this.querySelector('.selected-indicator');
+          if (indicator) {
+            indicator.style.opacity = '1';
+            indicator.style.transform = 'scale(1)';
+          }
+
+          // 应用主题颜色
+          const themeColor = this.dataset.color;
+          document.documentElement.setAttribute('data-theme-color', themeColor);
+          localStorage.setItem('theme-color', themeColor);
+          
+          console.log('主题颜色已设置:', themeColor);
+        });
+      });
+    });
+
+    // 字体选择功能
+    document.querySelectorAll('.font-option').forEach(option => {
+      // 添加多种事件监听确保响应
+      ['click', 'mousedown', 'touchstart'].forEach(eventType => {
+        option.addEventListener(eventType, function(e) {
+          if (eventType !== 'click') return; // 只在click事件时执行逻辑
+          
+          e.preventDefault();
+          e.stopPropagation();
+          
+          console.log('字体选项被点击:', this.dataset.font);
+        
+          // 移除其他选中状态
+          document.querySelectorAll('.font-option').forEach(f => {
+            f.classList.remove('selected');
+            const indicator = f.querySelector('.selected-indicator');
+            if (indicator) {
+              indicator.style.opacity = '0';
+              indicator.style.transform = 'scale(0)';
+            }
+          });
+          
+          // 添加选中状态
+          this.classList.add('selected');
+          const indicator = this.querySelector('.selected-indicator');
+          if (indicator) {
+            indicator.style.opacity = '1';
+            indicator.style.transform = 'scale(1)';
+          }
+
+          // 应用字体设置
+          const fontFamily = this.dataset.font;
+          let fontCSS = '';
+          
+          switch(fontFamily) {
+            case 'system':
+              fontCSS = 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+              break;
+            case 'serif':
+              fontCSS = 'Georgia, "Times New Roman", Times, serif';
+              break;
+            case 'mono':
+              fontCSS = '"Courier New", Consolas, Monaco, monospace';
+              break;
+            default:
+              fontCSS = 'system-ui, -apple-system, sans-serif';
+          }
+          
+          document.documentElement.style.setProperty('--font-family-base', fontCSS);
+          localStorage.setItem('font-family', fontFamily);
+          
+          console.log('字体已设置:', fontFamily, fontCSS);
+        });
+      });
+    });
+
+    // 主题模式选择功能
+    document.querySelectorAll('.theme-mode-btn').forEach(btn => {
+      // 添加多种事件监听确保响应
+      ['click', 'mousedown', 'touchstart'].forEach(eventType => {
+        btn.addEventListener(eventType, function(e) {
+          if (eventType !== 'click') return; // 只在click事件时执行逻辑
+          
+          e.preventDefault();
+          e.stopPropagation();
+          
+          console.log('主题模式被点击:', this.dataset.theme);
+        
+          // 移除其他选中状态
+          document.querySelectorAll('.theme-mode-btn').forEach(b => {
+            b.classList.remove('selected');
+            const indicator = b.querySelector('.selected-indicator');
+            if (indicator) {
+              indicator.style.opacity = '0';
+              indicator.style.transform = 'scale(0)';
+            }
+          });
+          
+          // 添加选中状态
+          this.classList.add('selected');
+          const indicator = this.querySelector('.selected-indicator');
+          if (indicator) {
+            indicator.style.opacity = '1';
+            indicator.style.transform = 'scale(1)';
+          }
+
+          // 应用主题模式
+          const theme = this.dataset.theme;
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+          }
+          localStorage.setItem('theme', theme);
+          
+          console.log('主题模式已设置:', theme);
+        });
+      });
+    });
+
+    // 恢复保存的设置
+    const savedColor = localStorage.getItem('theme-color');
+    const savedTheme = localStorage.getItem('theme');
+    const savedFont = localStorage.getItem('font-family');
+
+    if (savedColor) {
+      const colorBubble = document.querySelector(`[data-color="${savedColor}"]`);
+      if (colorBubble) {
+        colorBubble.classList.add('selected');
+        const indicator = colorBubble.querySelector('.selected-indicator');
+        if (indicator) {
+          indicator.style.opacity = '1';
+          indicator.style.transform = 'scale(1)';
+        }
+        document.documentElement.setAttribute('data-theme-color', savedColor);
+      }
+    }
+
+    if (savedTheme) {
+      const themeBtn = document.querySelector(`[data-theme="${savedTheme}"]`);
+      if (themeBtn) {
+        themeBtn.classList.add('selected');
+        const indicator = themeBtn.querySelector('.selected-indicator');
+        if (indicator) {
+          indicator.style.opacity = '1';
+          indicator.style.transform = 'scale(1)';
+        }
+        if (savedTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      }
+    }
+
+    if (savedFont) {
+      const fontOption = document.querySelector(`[data-font="${savedFont}"]`);
+      if (fontOption) {
+        fontOption.classList.add('selected');
+        const indicator = fontOption.querySelector('.selected-indicator');
+        if (indicator) {
+          indicator.style.opacity = '1';
+          indicator.style.transform = 'scale(1)';
+        }
+        
+        // 应用保存的字体设置
+        let fontCSS = '';
+        switch(savedFont) {
+          case 'system':
+            fontCSS = 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            break;
+          case 'serif':
+            fontCSS = 'Georgia, "Times New Roman", Times, serif';
+            break;
+          case 'mono':
+            fontCSS = '"Courier New", Consolas, Monaco, monospace';
+            break;
+          default:
+            fontCSS = 'system-ui, -apple-system, sans-serif';
+        }
+        document.documentElement.style.setProperty('--font-family', fontCSS);
+      }
+    }
+  }
+
+  // 语言切换器模块初始化
+  function initLanguageSwitcher() {
+    const languageModule = document.querySelector('.language-switcher-module');
+    
+    // 语言切换器模块点击切换
+    if (languageModule) {
+      const trigger = languageModule.querySelector('.language-switcher-trigger');
+      if (trigger) {
+        trigger.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // 切换面板显示状态
+          languageModule.classList.toggle('active');
+        });
+      }
+    }
+
+    // 语言选择功能
+    document.querySelectorAll('.language-option').forEach(option => {
+      // 添加多种事件监听确保响应
+      ['click', 'mousedown', 'touchstart'].forEach(eventType => {
+        option.addEventListener(eventType, function(e) {
+          if (eventType !== 'click') return; // 只在click事件时执行逻辑
+          
+          e.preventDefault();
+          e.stopPropagation();
+          
+          console.log('语言选项被点击:', this.dataset.lang);
+        
+          // 移除其他选中状态
+          document.querySelectorAll('.language-option').forEach(opt => {
+            opt.classList.remove('selected');
+            const indicator = opt.querySelector('.selected-indicator');
+            if (indicator) {
+              indicator.style.opacity = '0';
+              indicator.style.transform = 'scale(0)';
+            }
+          });
+          
+          // 添加选中状态
+          this.classList.add('selected');
+          const indicator = this.querySelector('.selected-indicator');
+          if (indicator) {
+            indicator.style.opacity = '1';
+            indicator.style.transform = 'scale(1)';
+          }
+
+          // 应用语言设置
+          const selectedLang = this.dataset.lang;
+          localStorage.setItem('selected-language', selectedLang);
+          
+          console.log('语言已设置:', selectedLang);
+          
+          // 根据选择的语言进行页面跳转
+          switchLanguage(selectedLang);
+        });
+      });
+    });
+
+    // 恢复保存的语言设置
+    const savedLang = localStorage.getItem('selected-language') || getCurrentLanguage();
+    
+    if (savedLang) {
+      const langOption = document.querySelector(`[data-lang="${savedLang}"]`);
+      if (langOption) {
+        langOption.classList.add('selected');
+        const indicator = langOption.querySelector('.selected-indicator');
+        if (indicator) {
+          indicator.style.opacity = '1';
+          indicator.style.transform = 'scale(1)';
+        }
+      }
+    }
+  }
+
+  // 获取当前页面语言
+  function getCurrentLanguage() {
+    const path = window.location.pathname;
+    if (path.startsWith('/en/') || path === '/en') {
+      return 'en';
+    }
+    return 'zh-CN'; // 默认中文
+  }
+
+  // 语言切换功能
+  function switchLanguage(targetLang) {
+    const currentPath = window.location.pathname;
+    const currentSearch = window.location.search;
+    const currentHash = window.location.hash;
+    
+    let newPath = currentPath;
+    
+    // 移除当前语言前缀
+    if (currentPath.startsWith('/en/')) {
+      newPath = currentPath.substring(3);
+    } else if (currentPath === '/en') {
+      newPath = '/';
+    }
+    
+    // 确保路径以 / 开头
+    if (!newPath.startsWith('/')) {
+      newPath = '/' + newPath;
+    }
+    
+    // 添加新的语言前缀
+    if (targetLang === 'en') {
+      if (newPath === '/') {
+        newPath = '/en';
+      } else {
+        newPath = '/en' + newPath;
+      }
+    }
+    // zh-CN 不需要前缀，保持原路径
+    
+    // 构建完整的新URL
+    const newUrl = newPath + currentSearch + currentHash;
+    
+    console.log('切换语言:', {
+      from: getCurrentLanguage(),
+      to: targetLang,
+      currentPath,
+      newPath,
+      newUrl
+    });
+    
+    // 跳转到新的语言页面
+    window.location.href = newUrl;
+  }
+
+  // 音效和动画开关初始化
+  function initAudioControls() {
+    // 音效开关
+    const audioToggle = document.getElementById('audio-toggle');
+    if (audioToggle) {
+      // 恢复保存的音效设置
+      const savedAudioState = localStorage.getItem('audio-enabled');
+      if (savedAudioState !== null) {
+        audioToggle.checked = savedAudioState === 'true';
+      }
+
+      audioToggle.addEventListener('change', function() {
+        const isEnabled = this.checked;
+        localStorage.setItem('audio-enabled', isEnabled.toString());
+        
+        // 通知颜色球组件音效状态变化
+        window.dispatchEvent(new CustomEvent('audioStateChanged', {
+          detail: { enabled: isEnabled }
+        }));
+        
+        console.log('音效状态:', isEnabled ? '开启' : '关闭');
+      });
+    }
+
+    // 动画控制
+    const animationToggle = document.getElementById('animation-toggle');
+    if (animationToggle) {
+      // 恢复保存的动画设置
+      const savedAnimationState = localStorage.getItem('animation-enabled');
+      if (savedAnimationState !== null) {
+        animationToggle.checked = savedAnimationState === 'true';
+      }
+
+      animationToggle.addEventListener('change', function() {
+        const isEnabled = this.checked;
+        localStorage.setItem('animation-enabled', isEnabled.toString());
+        
+        // 通知颜色球组件动画状态变化
+        window.dispatchEvent(new CustomEvent('animationStateChanged', {
+          detail: { enabled: isEnabled }
+        }));
+        
+        console.log('动画状态:', isEnabled ? '开启' : '关闭');
+      });
+    }
+  }
+
+  // 幽灵特效控制函数
+  function initGhostEffect() {
+    const ghostIcon = document.getElementById('ghost-icon');
+    if (!ghostIcon) return;
+
+    // 添加初始的悬浮效果和发光效果
+    ghostIcon.classList.add('ghost-floating', 'ghost-glow');
+
+    // 定期触发幽灵特效（每15-25秒随机触发一次）
+    function scheduleGhostEffect() {
+      const randomDelay = Math.random() * 10000 + 15000; // 15-25秒随机间隔
+      
+      setTimeout(() => {
+        triggerGhostEffect();
+        scheduleGhostEffect(); // 递归调度下一次特效
+      }, randomDelay);
+    }
+
+    // 触发幽灵特效的函数
+    function triggerGhostEffect() {
+      if (!ghostIcon) return;
+
+      // 定义所有可能的飞出方向
+      const directions = [
+        'top-left',
+        'top-right', 
+        'bottom-left',
+        'bottom-right',
+        'top',
+        'left',
+        'right',
+        'spiral',
+        'scale-disappear'
+      ];
+
+      // 随机选择一个方向
+      const randomDirection = directions[Math.floor(Math.random() * directions.length)];
+      const flyOutClass = `ghost-flying-out-${randomDirection}`;
+
+      // 移除所有动画类
+      ghostIcon.classList.remove('ghost-floating', 'ghost-fading-in');
+      
+      // 移除所有可能的飞出动画类
+      directions.forEach(direction => {
+        ghostIcon.classList.remove(`ghost-flying-out-${direction}`);
+      });
+      
+      // 添加随机选择的飞出动画
+      ghostIcon.classList.add(flyOutClass);
+      
+      // 根据动画类型设置不同的持续时间
+      let duration = 1500; // 默认时长
+      if (randomDirection === 'spiral') {
+        duration = 2000;
+      } else if (randomDirection === 'scale-disappear') {
+        duration = 2500; // 放大消失动画需要更长时间
       }
       
-      if (toggleButton) {
-        toggleButton.style.opacity = '1';
-        toggleButton.style.visibility = 'visible';
-        // 确保按钮的背景和边框样式不被覆盖
-        if (!toggleButton.style.backgroundColor || toggleButton.style.backgroundColor === 'initial') {
-          toggleButton.style.backgroundColor = '';
+      // 动画结束后开始淡入动画
+      setTimeout(() => {
+        ghostIcon.classList.remove(flyOutClass);
+        ghostIcon.classList.add('ghost-fading-in');
+        
+        // 2秒后恢复悬浮效果
+        setTimeout(() => {
+          ghostIcon.classList.remove('ghost-fading-in');
+          ghostIcon.classList.add('ghost-floating');
+        }, 2000);
+      }, duration);
+
+      // 在控制台输出当前使用的方向（调试用）
+      console.log(`🎭 幽灵飞向: ${randomDirection}`);
+    }
+
+    // 鼠标悬停时也可以触发特效
+    const ghostLink = ghostIcon.closest('a');
+    if (ghostLink) {
+      let hoverTimeout;
+      
+      ghostLink.addEventListener('mouseenter', () => {
+        // 悬停1秒后触发特效
+        hoverTimeout = setTimeout(() => {
+          triggerGhostEffect();
+        }, 1000);
+      });
+      
+      ghostLink.addEventListener('mouseleave', () => {
+        // 离开时清除悬停触发
+        if (hoverTimeout) {
+          clearTimeout(hoverTimeout);
         }
-        if (!toggleButton.style.borderColor || toggleButton.style.borderColor === 'initial') {
-          toggleButton.style.borderColor = '';
-        }
-      }
-    }, 1000);
+      });
+    }
+
+    // 开始调度随机特效
+    scheduleGhostEffect();
+  }
+
+  // 页面加载完成后初始化所有功能
+  document.addEventListener('DOMContentLoaded', function() {
+    initThemeStyleModule();
+    initLanguageSwitcher();
+    initAudioControls();
+    initGhostEffect();
+  });
+
+  // Astro页面切换时重新初始化
+  document.addEventListener('astro:page-load', function() {
+    initThemeStyleModule();
+    initLanguageSwitcher();
+    initAudioControls();
+    initGhostEffect();
   });
 </script>
