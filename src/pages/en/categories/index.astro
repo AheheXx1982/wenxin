@@ -19,6 +19,6 @@ const uiText = getUIText('en');
     <Cover slot="cover" title={uiText.categoriesTitle} />
     <HomeSider slot="sider" lang="en" />
     <QuoteMarquee />
-    <CategoryList categories={categories} countMap={countMap} totalCount={links.length ?? 0} lang="en" />
+    <CategoryList categories={categories} countMap={countMap} totalCount={categories.length ?? 0} lang="en" />
   </TwoColumnLayout>
 </Layout>
