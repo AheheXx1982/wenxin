@@ -92,13 +92,30 @@ p.shoka-decoration-circle:hover {
 
 @media (max-width: 768px) {
   p.shoka-decoration-circle {
-    height: 70px;
+    min-height: 70px;
+    line-height: 1.4;
+    padding-top: 12px;
+    padding-bottom: 12px;
     &::before {
-      top: 35%;
+      top: 20px;
     }
     &::after {
-      height: 70px;
+      height: calc(100% + 10px);
       top: 24px;
+    }
+  }
+  
+  /* 修复archives页面的flex布局问题 */
+  p.shoka-decoration-circle.md\\:flex {
+    min-height: 80px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    &::before {
+      top: 24px;
+    }
+    &::after {
+      height: calc(100% + 12px);
+      top: 28px;
     }
   }
 }
