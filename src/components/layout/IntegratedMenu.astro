@@ -53,7 +53,7 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
         </div>
 
         <!-- 向左弹出的主题样式控制面板 -->
-        <div class="theme-style-panel invisible absolute top-0 right-0 z-50 w-[480px] scale-95 transform rounded-xl bg-white opacity-0 shadow-xl transition-all duration-300 dark:bg-gray-800" style="transform: translateX(-100%) scale(0.95);">
+        <div class="theme-style-panel absolute top-0 right-full z-50 w-[480px] scale-95 transform rounded-xl bg-white opacity-0 shadow-xl transition-all duration-300 dark:bg-gray-800 mr-2" style="transform: translateX(0) scale(0.95); visibility: hidden;">
           <div class="p-5">
             <!-- 两列布局 -->
             <div class="grid grid-cols-2 gap-6">
@@ -554,9 +554,9 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
 
   /* 主题样式模块悬停效果 - 通过JavaScript控制 */
   .theme-style-panel.show {
-    visibility: visible;
-    opacity: 1;
-    transform: translateX(-100%) scale(1);
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translateX(0) scale(1) !important;
   }
 
   /* 颜色泡泡样式 */
@@ -865,7 +865,7 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
         clearTimeout(hideTimeout);
         showTimeout = setTimeout(() => {
           themePanel.classList.add('show');
-        }, 200); // 200ms延迟显示
+        }, 200); // 200ms延迟显示，快速响应用户悬停
       });
       
       // 鼠标离开主题样式模块
@@ -873,7 +873,7 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
         clearTimeout(showTimeout);
         hideTimeout = setTimeout(() => {
           themePanel.classList.remove('show');
-        }, 100); // 100ms延迟隐藏
+        }, 300); // 300ms延迟隐藏，给用户时间移动到面板
       });
       
       // 鼠标进入面板时保持显示
@@ -885,7 +885,7 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       themePanel.addEventListener('mouseleave', function() {
         hideTimeout = setTimeout(() => {
           themePanel.classList.remove('show');
-        }, 100);
+        }, 200); // 稍微延迟隐藏，避免意外关闭
       });
     }
 
