@@ -110,10 +110,12 @@ function generateRandomPositions(count) {
   const positions = [];
   const containerWidth = 100; // 百分比
   const containerHeight = 100; // 百分比
-  const ballSize = 6; // 减小球的占用空间百分比
   
-  // 字体区域：更精确的定义，严格控制
+  // 默认使用桌面端配置，客户端会重新计算
+  const ballSize = 6;
+  const minDistance = 1.2;
   const fontArea = { left: 15, right: 85, top: 25, bottom: 75 };
+  
   let fontAreaCount = 0; // 字体区域球计数器
   
   for (let i = 0; i < count; i++) {
@@ -130,7 +132,7 @@ function generateRandomPositions(count) {
     } while (
       attempts < 100 && // 增加尝试次数
       (isInFontArea(position, fontArea, ballSize) && fontAreaCount >= 3) ||
-      isTooClose(position, positions, ballSize * 1.2) // 减小最小间距
+      isTooClose(position, positions, ballSize * minDistance) // 使用响应式最小间距
     );
     
     // 如果球在字体区域，增加计数
@@ -483,6 +485,73 @@ const ballPositions = generateRandomPositions(12);
       opacity: 0;
     }
   }
+
+  /* 移动端响应式优化 */
+  @media (max-width: 768px) {
+    .color-balls-container {
+      height: 280px; /* 减少高度适配小屏幕 */
+      padding: 8px;
+      margin-bottom: 15px;
+      border-radius: 15px;
+    }
+
+    .color-ball {
+      width: 28px; /* 减小球的尺寸 */
+      height: 28px;
+      border-width: 2px;
+    }
+
+    .ball-shine {
+      top: 18%;
+      left: 22%;
+      width: 40%;
+      height: 40%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .color-balls-container {
+      height: 240px; /* 进一步减少高度 */
+      padding: 6px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+    }
+
+    .color-ball {
+      width: 24px; /* 更小的球尺寸 */
+      height: 24px;
+      border-width: 2px;
+    }
+
+    .ball-shine {
+      top: 15%;
+      left: 20%;
+      width: 45%;
+      height: 45%;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .color-balls-container {
+      height: 200px; /* 最小屏幕的高度 */
+      padding: 5px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+
+    .color-ball {
+      width: 20px; /* 最小球尺寸 */
+      height: 20px;
+      border-width: 1px;
+    }
+
+    .ball-shine {
+      top: 12%;
+      left: 18%;
+      width: 50%;
+      height: 50%;
+    }
+  }
 </style>
 
 <script>
@@ -515,6 +584,85 @@ const ballPositions = generateRandomPositions(12);
     { name: '天蓝色', value: 'slate', color: '#87CEEB' },
     { name: '琥珀色', value: 'amber', color: '#f59e0b' }
   ];
+
+  // 客户端响应式定位函数
+  function generateResponsivePositions(count) {
+    const positions = [];
+    const containerWidth = 100; // 百分比
+    const containerHeight = 100; // 百分比
+    
+    // 响应式球尺寸和间距调整
+    const screenWidth = window.innerWidth;
+    let ballSize, minDistance, fontArea;
+    
+    if (screenWidth <= 360) {
+      // 最小屏幕
+      ballSize = 4; // 更小的占用空间
+      minDistance = 0.8;
+      fontArea = { left: 10, right: 90, top: 20, bottom: 80 }; // 更宽松的字体区域
+    } else if (screenWidth <= 480) {
+      // 小屏幕
+      ballSize = 5;
+      minDistance = 1.0;
+      fontArea = { left: 12, right: 88, top: 22, bottom: 78 };
+    } else if (screenWidth <= 768) {
+      // 平板
+      ballSize = 5.5;
+      minDistance = 1.1;
+      fontArea = { left: 13, right: 87, top: 23, bottom: 77 };
+    } else {
+      // 桌面端
+      ballSize = 6;
+      minDistance = 1.2;
+      fontArea = { left: 15, right: 85, top: 25, bottom: 75 };
+    }
+    
+    let fontAreaCount = 0; // 字体区域球计数器
+    
+    for (let i = 0; i < count; i++) {
+      let position;
+      let attempts = 0;
+      
+      do {
+        // 增大活动范围，允许负值和超出100%的值
+        position = {
+          left: (Math.random() - 0.1) * (containerWidth + 20) - 10, // 可以从-10%到110%
+          top: (Math.random() - 0.05) * (containerHeight + 30) - 15  // 可以从-15%到115%
+        };
+        attempts++;
+      } while (
+        attempts < 100 && // 增加尝试次数
+        (isInFontArea(position, fontArea, ballSize) && fontAreaCount >= 3) ||
+        isTooClose(position, positions, ballSize * minDistance) // 使用响应式最小间距
+      );
+      
+      // 如果球在字体区域，增加计数
+      if (isInFontArea(position, fontArea, ballSize)) {
+        fontAreaCount++;
+      }
+      
+      positions.push(position);
+    }
+    
+    return positions;
+  }
+
+  function isInFontArea(pos, fontArea, ballSize) {
+    return pos.left + ballSize > fontArea.left &&
+           pos.left < fontArea.right &&
+           pos.top + ballSize > fontArea.top &&
+           pos.top < fontArea.bottom;
+  }
+
+  function isTooClose(pos, existingPositions, minDistance) {
+    return existingPositions.some(existing => {
+      const distance = Math.sqrt(
+        Math.pow(pos.left - existing.left, 2) +
+        Math.pow(pos.top - existing.top, 2)
+      );
+      return distance < minDistance;
+    });
+  }
 
   // 颜色相近检测函数 - 使用HSL色彩空间计算相似度
   function hexToHsl(hex) {
@@ -1260,4 +1408,27 @@ const ballPositions = generateRandomPositions(12);
 
   // Astro页面切换时重新初始化
   document.addEventListener('astro:page-load', initColorBalls);
+  
+  // 窗口大小变化时重新布局（防抖处理）
+  let resizeTimeout;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      // 重新生成位置并更新球的位置
+      const container = document.querySelector('.color-balls-container');
+      if (container) {
+        const balls = container.querySelectorAll('.color-ball');
+        const newPositions = generateResponsivePositions(balls.length);
+        
+        balls.forEach((ball, index) => {
+          if (newPositions[index]) {
+            ball.style.left = `${newPositions[index].left}%`;
+            ball.style.top = `${newPositions[index].top}%`;
+          }
+        });
+        
+        console.log('📱 响应式布局已更新，适配当前屏幕尺寸');
+      }
+    }, 300); // 300ms防抖
+  });
 </script>
