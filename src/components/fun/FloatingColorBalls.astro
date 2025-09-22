@@ -29,178 +29,7 @@ const themeColors = [
   { name: '琥珀色', value: 'amber', color: '#f59e0b' }
 ];
 
-// 高级渐变颜色系统 - 避免黑色，创造丰富视觉效果
-function createAdvancedGradient(color) {
-  const num = parseInt(color.replace("#", ""), 16);
-  const R = (num >> 16);
-  const G = (num >> 8 & 0x00FF);
-  const B = (num & 0x0000FF);
-  
-  // 计算颜色的亮度和饱和度
-  const brightness = (R * 299 + G * 587 + B * 114) / 1000;
-  const max = Math.max(R, G, B);
-  const min = Math.min(R, G, B);
-  const saturation = max === 0 ? 0 : (max - min) / max;
-  
-  // 创建多种渐变变体
-  const variants = [];
-  
-  // 1. 亮度渐变 - 从亮到稍暗，但不会变黑
-  const lighterColor = adjustBrightness(R, G, B, 1.3);
-  const darkerColor = adjustBrightness(R, G, B, 0.7);
-  variants.push({
-    type: 'brightness',
-    gradient: `linear-gradient(135deg, ${lighterColor}, ${color}, ${darkerColor})`
-  });
-  
-  // 2. 饱和度渐变 - 从饱和到柔和
-  const saturatedColor = adjustSaturation(R, G, B, 1.4);
-  const desaturatedColor = adjustSaturation(R, G, B, 0.6);
-  variants.push({
-    type: 'saturation',
-    gradient: `linear-gradient(45deg, ${saturatedColor}, ${color}, ${desaturatedColor})`
-  });
-  
-  // 3. 色相偏移渐变 - 创造彩虹效果
-  const hueShift1 = adjustHue(R, G, B, 30);
-  const hueShift2 = adjustHue(R, G, B, -30);
-  variants.push({
-    type: 'hue',
-    gradient: `linear-gradient(90deg, ${hueShift1}, ${color}, ${hueShift2})`
-  });
-  
-  // 4. 径向渐变 - 中心发光效果
-  const glowColor = adjustBrightness(R, G, B, 1.5);
-  variants.push({
-    type: 'radial',
-    gradient: `radial-gradient(circle at center, ${glowColor}, ${color}, ${darkerColor})`
-  });
-  
-  // 5. 多色渐变 - 丰富的色彩过渡
-  const complementary = getComplementaryColor(R, G, B);
-  const analogous = getAnalogousColor(R, G, B);
-  variants.push({
-    type: 'multicolor',
-    gradient: `linear-gradient(120deg, ${color}, ${analogous}, ${complementary})`
-  });
-  
-  // 随机选择一种渐变类型
-  return variants[Math.floor(Math.random() * variants.length)].gradient;
-}
-
-// 调整亮度，确保不会变成黑色
-function adjustBrightness(r, g, b, factor) {
-  const newR = Math.min(255, Math.max(40, Math.round(r * factor)));
-  const newG = Math.min(255, Math.max(40, Math.round(g * factor)));
-  const newB = Math.min(255, Math.max(40, Math.round(b * factor)));
-  return `rgb(${newR}, ${newG}, ${newB})`;
-}
-
-// 调整饱和度
-function adjustSaturation(r, g, b, factor) {
-  const gray = (r + g + b) / 3;
-  const newR = Math.min(255, Math.max(40, Math.round(gray + (r - gray) * factor)));
-  const newG = Math.min(255, Math.max(40, Math.round(gray + (g - gray) * factor)));
-  const newB = Math.min(255, Math.max(40, Math.round(gray + (b - gray) * factor)));
-  return `rgb(${newR}, ${newG}, ${newB})`;
-}
-
-// 调整色相
-function adjustHue(r, g, b, degrees) {
-  // 转换为HSL
-  const [h, s, l] = rgbToHsl(r, g, b);
-  const newH = (h + degrees + 360) % 360;
-  const [newR, newG, newB] = hslToRgb(newH, s, l);
-  return `rgb(${Math.round(newR)}, ${Math.round(newG)}, ${Math.round(newB)})`;
-}
-
-// 获取补色
-function getComplementaryColor(r, g, b) {
-  const [h, s, l] = rgbToHsl(r, g, b);
-  const compH = (h + 180) % 360;
-  const [newR, newG, newB] = hslToRgb(compH, s, l);
-  return `rgb(${Math.round(newR)}, ${Math.round(newG)}, ${Math.round(newB)})`;
-}
-
-// 获取类似色
-function getAnalogousColor(r, g, b) {
-  const [h, s, l] = rgbToHsl(r, g, b);
-  const analogH = (h + 60) % 360;
-  const [newR, newG, newB] = hslToRgb(analogH, s, l);
-  return `rgb(${Math.round(newR)}, ${Math.round(newG)}, ${Math.round(newB)})`;
-}
-
-// RGB转HSL
-function rgbToHsl(r, g, b) {
-  r /= 255; g /= 255; b /= 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  let h, s, l = (max + min) / 2;
-  
-  if (max === min) {
-    h = s = 0;
-  } else {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      case b: h = (r - g) / d + 4; break;
-    }
-    h /= 6;
-  }
-  return [h * 360, s, l];
-}
-
-// HSL转RGB
-function hslToRgb(h, s, l) {
-  h /= 360;
-  const hue2rgb = (p, q, t) => {
-    if (t < 0) t += 1;
-    if (t > 1) t -= 1;
-    if (t < 1/6) return p + (q - p) * 6 * t;
-    if (t < 1/2) return q;
-    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-    return p;
-  };
-  
-  if (s === 0) {
-    return [l * 255, l * 255, l * 255];
-  } else {
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
-    const r = hue2rgb(p, q, h + 1/3);
-    const g = hue2rgb(p, q, h);
-    const b = hue2rgb(p, q, h - 1/3);
-    return [r * 255, g * 255, b * 255];
-  }
-}
-
-// 保留原有函数作为备用
-function darkenColor(color, percent) {
-  const num = parseInt(color.replace("#", ""), 16);
-  const R = (num >> 16);
-  const G = (num >> 8 & 0x00FF);
-  const B = (num & 0x0000FF);
-  
-  // 计算颜色的亮度 (0-255)
-  const brightness = (R * 299 + G * 587 + B * 114) / 1000;
-  
-  // 对于较暗的颜色，减少加深程度，避免变成黑色
-  let adjustedPercent = percent;
-  if (brightness < 100) {
-    adjustedPercent = percent * 0.3; // 深色只加深30%
-  } else if (brightness < 150) {
-    adjustedPercent = percent * 0.6; // 中等深度加深60%
-  }
-  
-  const amt = Math.round(2.55 * adjustedPercent);
-  const newR = Math.max(30, R - amt); // 确保R值不低于30
-  const newG = Math.max(30, G - amt); // 确保G值不低于30
-  const newB = Math.max(30, B - amt); // 确保B值不低于30
-  
-  return "#" + (0x1000000 + newR * 0x10000 + newG * 0x100 + newB).toString(16).slice(1);
-}
+// 已移除渐变系统，使用纯色显示
 
 // 颜色相近检测函数 - 使用HSL色彩空间计算相似度
 function hexToHsl(hex) {
@@ -366,9 +195,7 @@ const ballPositions = generateRandomPositions(12);
     width: 100%;
     height: 420px; /* 增加高度从320px到420px */
     position: relative;
-    background: linear-gradient(135deg, 
-      rgba(255, 255, 255, 0.1) 0%, 
-      rgba(255, 255, 255, 0.05) 100%);
+    background: rgba(255, 255, 255, 0.08); /* 纯色半透明背景 */
     border-radius: 20px;
     overflow: visible; /* 允许球超出容器边界 */
     border: 2px solid rgba(255, 255, 255, 0.2);
@@ -378,9 +205,7 @@ const ballPositions = generateRandomPositions(12);
   }
 
   .dark .color-balls-container {
-    background: linear-gradient(135deg, 
-      rgba(0, 0, 0, 0.2) 0%, 
-      rgba(0, 0, 0, 0.1) 100%);
+    background: rgba(0, 0, 0, 0.15); /* 纯色半透明背景 */
     border-color: rgba(255, 255, 255, 0.1);
   }
 
@@ -1421,7 +1246,7 @@ const ballPositions = generateRandomPositions(12);
     effectSystem.startRandomEffects(balls);
     
     console.log(`🎉 初始化了 ${balls.length} 个超炫酷颜色球！`);
-    console.log(`🌈 高级渐变颜色系统已启动！避免黑色，丰富视觉效果！`);
+    console.log(`🎨 纯色显示系统已启动！避免渐变和黑色问题！`);
     console.log(`✨ 18种随机特效系统已启动！支持单个/多个/聚合/分散特效！`);
     console.log(`🔄 随机交替显示系统已启动！`);
   }
