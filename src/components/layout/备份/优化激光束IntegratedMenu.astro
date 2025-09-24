@@ -121,11 +121,6 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
     animation-duration: 2s;
   }
 
-  /* 简化的旋转控制 */
-  .rotation-stopped {
-    animation: none !important;
-  }
-
   /* 幽灵图标动画效果 */
   .ghost-icon {
     animation: ghost-float 3s ease-in-out infinite;
@@ -2737,29 +2732,6 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       }, 1200);
     }
 
-    // 停止图标旋转 - 使用JavaScript直接控制
-    function stopIconRotation() {
-      const whirlwindIcon = document.querySelector('.integrated-menu-icon');
-      if (!whirlwindIcon) return;
-      
-      // 直接设置CSS属性停止动画
-      whirlwindIcon.style.animation = 'none';
-      whirlwindIcon.style.animationPlayState = 'paused';
-    }
-
-    // 重新开始旋转 - 使用JavaScript直接控制
-    function restartIconRotation() {
-      const whirlwindIcon = document.querySelector('.integrated-menu-icon');
-      if (!whirlwindIcon) return;
-      
-      // 直接设置CSS动画属性重新开始旋转
-      whirlwindIcon.style.animation = 'rotate-clockwise 8s linear infinite';
-      whirlwindIcon.style.animationPlayState = 'running';
-      
-      // 确保动画从头开始
-      whirlwindIcon.style.animationDelay = '0s';
-    }
-
     // 创建能量聚集效果 - 简洁版（红色配色）
     function createEnergyChargeEffect() {
       const triggerRect = menuTrigger.getBoundingClientRect();
@@ -2847,14 +2819,10 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
     function fireLaser() {
       console.log('🚀 激光发射开始！');
       
-      // 停止图标旋转
-      stopIconRotation();
-      
-      // 计算激光路径 - 从中间小圆圈发出
+      // 计算激光路径
       const triggerRect = menuTrigger.getBoundingClientRect();
-      // 调整起点位置：稍微往左上移动，对准中间的小圆圈
-      const triggerCenterX = triggerRect.left + triggerRect.width / 2 - 1;
-      const triggerCenterY = triggerRect.top + triggerRect.height / 2 - 2.5;
+      const triggerCenterX = triggerRect.left + triggerRect.width / 2;
+      const triggerCenterY = triggerRect.top + triggerRect.height / 2;
       
       console.log('📍 激光起点:', triggerCenterX, triggerCenterY);
       
@@ -3150,9 +3118,6 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       circularMenu.style.animation = 'menu-expand 0.5s ease-out forwards';
       isMenuOpen = true;
       isAnimating = false;
-      
-      // 重新开始图标旋转
-      restartIconRotation();
       
       // 添加拖动事件监听器
       dragHandle.addEventListener('mousedown', dragStart);

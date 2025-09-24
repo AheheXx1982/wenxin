@@ -274,7 +274,7 @@ export const i18nUI = {
     home: '首页',
     totalCategoriesCount: '目前共计',
     categoriesUnit: '个分类',
-    subcategoriesCount: '个子分类',
+    totalSubcategoriesCount: '个子分类',
 
     // 归档页面
     archives: '归档',
@@ -373,7 +373,7 @@ export const i18nUI = {
     home: 'Home',
     totalCategoriesCount: 'Total',
     categoriesUnit: 'categories',
-    subcategoriesCount: 'subcategories',
+    totalSubcategoriesCount: 'subcategories',
 
     // Archives page
     archives: 'Archives',
