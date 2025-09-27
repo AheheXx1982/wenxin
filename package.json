@@ -16,7 +16,7 @@
     "update-covers": "node scripts/update-cover-config.cjs"
   },
   "dependencies": {
-    "@astrojs/react": "^4.3.1",
+    "@astrojs/react": "^4.4.0",
     "@astrojs/rss": "^4.0.12",
     "@floating-ui/react": "^0.27.2",
     "@fontsource/noto-sans": "^5.2.10",
@@ -35,7 +35,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@tailwindcss/vite": "^4.0.3",
     "@yeskunall/astro-umami": "0.0.4",
-    "astro": "^5.13.7",
+    "astro": "^5.14.1",
     "astro-icon": "^1.1.5",
     "astro-loading-indicator": "^0.7.0",
     "astro-tooltips": "^0.6.2",
