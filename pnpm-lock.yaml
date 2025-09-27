@@ -17,12 +17,21 @@ importers:
       '@floating-ui/react':
         specifier: ^0.27.2
         version: 0.27.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@fontsource/noto-sans':
+        specifier: ^5.2.10
+        version: 5.2.10
       '@fontsource/noto-serif-jp':
         specifier: ^5.1.2
         version: 5.1.2
       '@fontsource/noto-serif-sc':
         specifier: ^5.1.0
         version: 5.1.0
+      '@fontsource/open-sans':
+        specifier: ^5.2.7
+        version: 5.2.7
+      '@fontsource/playfair-display':
+        specifier: ^5.2.8
+        version: 5.2.8
       '@fontsource/poppins':
         specifier: ^5.1.0
         version: 5.1.0
@@ -80,6 +89,9 @@ importers:
       es-toolkit:
         specifier: ^1.31.0
         version: 1.31.0
+      font-smiley-sans:
+        specifier: ^1.0.0
+        version: 1.0.0
       markdown-it:
         specifier: ^14.1.0
         version: 14.1.0
@@ -782,11 +794,20 @@ packages:
   '@floating-ui/utils@0.2.8':
     resolution: {integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==}
 
+  '@fontsource/noto-sans@5.2.10':
+    resolution: {integrity: sha512-J58RVfS/C0Z2VBF+PoU260Tx8cdRGYuS+e3yQe4hYaIYDl0sEVn5CzlLo5zVRvQD0HaIUTV8AZMfqR7rtdEpqQ==}
+
   '@fontsource/noto-serif-jp@5.1.2':
     resolution: {integrity: sha512-pO+bVVRIIzsH6QQShV+T1DYyu3o/8H4ZEtiP8reVKX8ImSgAY5t9I/AWMsfixN40B0Iz6hrDt5+oWLkcYOWIOw==}
 
   '@fontsource/noto-serif-sc@5.1.0':
     resolution: {integrity: sha512-KUqvssRd5UGNk1tYykiKT+7cuXdCjQe865z0tv/oz6RQc4d48DjEvx4uBH6yO3WwN49SsgyV6Ajxd9iBIUnAQg==}
+
+  '@fontsource/open-sans@5.2.7':
+    resolution: {integrity: sha512-8yfgDYjE5O0vmTPdrcjV35y4yMnctsokmi9gN49Gcsr0sjzkMkR97AnKDe6OqZh2SFkYlR28fxOvi21bYEgMSw==}
+
+  '@fontsource/playfair-display@5.2.8':
+    resolution: {integrity: sha512-fUEhib70SszNhQVsGbUMSsWJhr7Je0rdeuZdtGpDNu0GKF1xJM8QhpI/y0pckU25GcChXm9TLOmeZupkvvZo2g==}
 
   '@fontsource/poppins@5.1.0':
     resolution: {integrity: sha512-tpLXlnNi2fwQjiipvuj4uNFHCdoLA8izRsKdoexZuEzjx0r/g1aKLf4ta6lFgF7L+/+AFdmaXFlUwwvmDzYH+g==}
@@ -2460,6 +2481,9 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+
+  font-smiley-sans@1.0.0:
+    resolution: {integrity: sha512-B0oRSyhlnFaIiFRF46GUpG8rlGgn9dbDxDTgbAYgMJ2FdqYe28wqQhZD6DVI5wiX7aa1ei7ReV5cX5iLaWKiuw==}
 
   fontace@0.3.0:
     resolution: {integrity: sha512-czoqATrcnxgWb/nAkfyIrRp6Q8biYj7nGnL6zfhTcX+JKKpWHFBnb8uNMw/kZr7u++3Y3wYSYoZgHkCcsuBpBg==}
@@ -5161,9 +5185,15 @@ snapshots:
 
   '@floating-ui/utils@0.2.8': {}
 
+  '@fontsource/noto-sans@5.2.10': {}
+
   '@fontsource/noto-serif-jp@5.1.2': {}
 
   '@fontsource/noto-serif-sc@5.1.0': {}
+
+  '@fontsource/open-sans@5.2.7': {}
+
+  '@fontsource/playfair-display@5.2.8': {}
 
   '@fontsource/poppins@5.1.0': {}
 
@@ -7054,6 +7084,8 @@ snapshots:
   flattie@1.1.1: {}
 
   follow-redirects@1.15.9: {}
+
+  font-smiley-sans@1.0.0: {}
 
   fontace@0.3.0:
     dependencies:
