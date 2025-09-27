@@ -24,6 +24,7 @@ import '@styles/index.css';
 import { Tooltips } from 'astro-tooltips';
 import FloatingGroup from '@components/layout/FloatingGroup.astro';
 import MobileDrawer from '@components/layout/MobileDrawer.astro';
+import GlobalMusicPlayer from '@components/music/GlobalMusicPlayer.astro';
 
 // 获取当前语言
 const currentLang = getLanguageFromAstroUrl(Astro.url);
@@ -109,7 +110,8 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
       
       // 监听主题颜色变更事件
       document.addEventListener('theme-color-changed', function(event) {
-        const { color, colorHex, colorName, colorData } = event.detail;
+        const customEvent = event as CustomEvent;
+        const { color, colorHex, colorName, colorData } = customEvent.detail;
         if (color) {
           // 应用主题颜色
           document.documentElement.setAttribute('data-theme-color', color);
@@ -126,6 +128,7 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
       <Footer since={2020} lang={currentLang} />
       <FloatingGroup />
       <MobileDrawer type={siderType} lang={currentLang} />
+      <GlobalMusicPlayer />
     </div>
   </body>
 </html>

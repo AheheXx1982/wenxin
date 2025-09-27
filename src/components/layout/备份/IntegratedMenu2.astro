@@ -8,6 +8,12 @@ const currentLang = getLanguageFromAstroUrl(Astro.url);
 // 获取对应语言的幻念集链接和文本
 const thoughtsLink = currentLang === 'en' ? '/en/illusionary-thoughts' : '/illusionary-thoughts';
 const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集';
+
+// 通用颜色常量
+const THEME_COLORS = [
+  '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFBE0B', '#FB5607', '#FF006E', 
+  '#8338EC', '#3A86FF', '#06D6A0', '#118AB2', '#073B4C', '#EF476F'
+];
 ---
 
 <div class="integrated-menu group relative">
@@ -53,19 +59,6 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
     <div id="color-balls-container" class="absolute top-0 left-0 w-full h-full rounded-full" style="z-index: 25;">
       <!-- 颜色球将通过JavaScript动态生成 -->
     </div>
-    
-    <!-- 音乐播放器 -->
-    <button type="button"
-       class="absolute top-1/2 left-4 transform -translate-y-1/2 cursor-pointer hover:scale-110 transition-all duration-300 counter-clockwise-rotation menu-item-container z-50" 
-       id="music-toggle"
-       style="pointer-events: auto !important;">
-      <div class="flex flex-col items-center p-3 rounded-full bg-white/60 backdrop-blur-sm shadow-lg border border-pink-200/50 hover:bg-pink-100/70 hover:shadow-xl">
-        <svg class="w-6 h-6 text-pink-600 hover:text-pink-800 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-        </svg>
-        <span class="text-xs mt-1 text-pink-700 font-medium">音乐</span>
-      </div>
-    </button>
     
     <!-- 主题样式选择器 -->
     <button type="button"
@@ -119,6 +112,11 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
   /* 悬停时加速旋转 */
   .integrated-menu:hover .clockwise-rotation {
     animation-duration: 2s;
+  }
+
+  /* 简化的旋转控制 */
+  .rotation-stopped {
+    animation: none !important;
   }
 
   /* 幽灵图标动画效果 */
@@ -1120,6 +1118,42 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
   .drag-handle:hover {
     background: rgba(255, 255, 255, 0.7);
   }
+
+  /* 最小化播放器播放动效 */
+  @keyframes playing-pulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+    }
+  }
+
+  @keyframes playing-ripple {
+    0% {
+      transform: scale(0.8);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  @keyframes playing-rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+
+
+
 </style>
 
 <script is:inline>
@@ -1175,76 +1209,149 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
     // 初始化音乐播放器
     async function initMusicPlayer() {
       try {
+        // 如果音频上下文已存在且状态正常，不重复初始化
+        if (audioContext && audioContext.state !== 'closed' && audioElement) {
+          console.log('Music player already initialized, skipping...');
+          return;
+        }
+        
         // 加载播放列表
         const response = await fetch('/music/playlist.json');
         const data = await response.json();
         playlist = data.playlist || [];
         
         // 初始化Web Audio API
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (!audioContext || audioContext.state === 'closed') {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
         
         // 创建音频元素（用于非demo音频）
-        audioElement = new Audio();
-        audioElement.volume = 0.7;
+        if (!audioElement) {
+          audioElement = new Audio();
+          audioElement.volume = 0.7;
+          
+          // 设置音频事件监听器
+          audioElement.addEventListener('ended', () => {
+            nextTrack();
+          });
+          
+          audioElement.addEventListener('error', (e) => {
+            console.error('音频播放错误:', e);
+            showMusicNotification('播放器已关闭');
+            isPlaying = false;
+            updateMusicToggleIcon();
+          });
+          
+          // 添加时间更新监听器
+          audioElement.addEventListener('timeupdate', () => {
+            updateSongInfo();
+          });
+          
+          // 添加加载完成监听器
+          audioElement.addEventListener('loadedmetadata', () => {
+            updateSongInfo();
+          });
+        }
         
-        // 设置音频事件监听器
-        audioElement.addEventListener('ended', () => {
-          nextTrack();
-        });
+        // 首先尝试从详细状态恢复
+        const savedDetailedState = localStorage.getItem('musicPlayerDetailedState');
+        if (savedDetailedState) {
+          try {
+            const state = JSON.parse(savedDetailedState);
+            // 检查状态是否过期（超过5分钟则清除）
+            const stateAge = Date.now() - (state.timestamp || 0);
+            if (stateAge <= 5 * 60 * 1000) {
+              console.log('Restoring from detailed state...');
+              if (state.playlist && state.playlist.length > 0) {
+                playlist = state.playlist;
+                currentTrackIndex = state.currentTrackIndex || 0;
+                currentTrack = state.currentTrack || playlist[currentTrackIndex];
+                isPlaying = state.isPlaying || false;
+                
+                if (currentTrack) {
+                  audioElement.src = currentTrack.src;
+                  audioElement.currentTime = state.currentTime || 0;
+                  audioElement.volume = state.volume || 0.7;
+                }
+              }
+            } else {
+              console.log('Detailed state expired, clearing...');
+              localStorage.removeItem('musicPlayerDetailedState');
+            }
+          } catch (e) {
+            console.log('Failed to parse detailed state:', e);
+            localStorage.removeItem('musicPlayerDetailedState');
+          }
+        }
         
-        audioElement.addEventListener('error', (e) => {
-          console.error('音频播放错误:', e);
-          showMusicNotification('音频文件加载失败，请检查网络连接');
-          isPlaying = false;
-          updateMusicToggleIcon();
-        });
-        
-        // 添加时间更新监听器
-        audioElement.addEventListener('timeupdate', () => {
-          updateSongInfo();
-        });
-        
-        // 添加加载完成监听器
-        audioElement.addEventListener('loadedmetadata', () => {
-          updateSongInfo();
-        });
-        
-        // 从本地存储加载音乐播放器状态
-        const savedState = localStorage.getItem('musicPlayerState');
-        if (savedState) {
-          const state = JSON.parse(savedState);
-          isPlaying = state.isPlaying || false;
-          currentTrackIndex = state.currentTrackIndex || 0;
-          currentTrack = playlist[currentTrackIndex] || playlist[0];
-        } else {
-          currentTrack = playlist[0];
+        // 如果没有详细状态，尝试从普通状态恢复
+        if (!currentTrack) {
+          const savedState = localStorage.getItem('musicPlayerState');
+          if (savedState) {
+            try {
+              const state = JSON.parse(savedState);
+              isPlaying = state.isPlaying || false;
+              currentTrackIndex = state.currentTrackIndex || 0;
+              currentTrack = playlist[currentTrackIndex] || playlist[0];
+            } catch (e) {
+              console.log('Failed to parse basic state:', e);
+            }
+          } else {
+            currentTrack = playlist[0];
+          }
         }
         
         // 设置当前音轨
-        if (currentTrack) {
+        if (currentTrack && audioElement) {
           audioElement.src = currentTrack.src;
         }
         
+        // 检查是否需要恢复播放器UI
+        const shouldRestoreUI = localStorage.getItem('musicPlayerState') || localStorage.getItem('musicPlayerMinimized') || savedDetailedState;
+        
         // 初始化可视化效果和界面更新
         setTimeout(() => {
+          // 如果之前有播放器状态，重新创建UI
+          if (shouldRestoreUI) {
+            const isMinimized = localStorage.getItem('musicPlayerMinimized') === 'true';
+            if (isMinimized) {
+              // 直接创建最小化播放器（Qoder的右侧播放器）
+              // 这里应该调用创建右侧播放器的函数
+              console.log('Should restore minimized player');
+            } else {
+              // 不再创建左侧播放器
+              console.log('Should restore full player - but left player removed');
+            }
+          }
+          
           initVisualizer();
           updateSongInfo();
           updatePlayButton();
           enhanceHoverEffects();
           
           // 如果有保存的播放状态，恢复播放
-          if (isPlaying && audioElement) {
+          if (isPlaying && audioElement && currentTrack) {
             audioElement.play().then(() => {
               drawVisualizer();
+              updateTonearmPosition(true);
+              updateVinylRotation(true);
             }).catch(() => {
               isPlaying = false;
               updatePlayButton();
+              updateTonearmPosition(false);
+              updateVinylRotation(false);
             });
           }
         }, 100);
         
+        console.log('Music player initialized successfully');
+        
       } catch (error) {
         console.error('初始化音乐播放器失败:', error);
+        // 如果初始化失败，清理状态并重试
+        localStorage.removeItem('musicPlayerDetailedState');
+        localStorage.removeItem('musicPlayerState');
+        localStorage.removeItem('musicPlayerMinimized');
       }
     }
 
@@ -1268,33 +1375,52 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
           cancelAnimationFrame(animationId);
           animationId = null;
         }
+        
+        // 立即更新动画状态（暂停）
+        updateTonearmPosition(false);
+        updateVinylRotation(false);
+        updatePlayButton(false);
+        updateMinimizedPlayerIcons();
+        
       } else {
-        // 开始播放
-        audioElement.play().then(() => {
-          isPlaying = true;
-          showMusicNotification(`🎵 正在播放: ${currentTrack.title}`);
-          
-          // 开始可视化效果
-          drawVisualizer();
-        }).catch(error => {
-          console.error('播放失败:', error);
-          showMusicNotification('播放失败');
-        });
+        // 开始播放 - 先启动唱针动画，然后延迟播放音乐
+        isPlaying = true; // 先设置状态，让界面显示播放状态
+        
+        // 立即更新界面状态（播放）
+        updateTonearmPosition(true);
+        updateVinylRotation(true);
+        updatePlayButton(true);
+        updateMinimizedPlayerIcons();
+        
+        // 延迟播放音乐，等待唱针动画完成（1.2秒动画 + 0.3秒缓冲）
+        setTimeout(() => {
+          if (isPlaying) { // 确保在延迟期间用户没有暂停
+            audioElement.play().then(() => {
+              showMusicNotification(`🎵 正在播放: ${currentTrack.title}`);
+              
+              // 开始可视化效果
+              drawVisualizer();
+              
+            }).catch(error => {
+              console.error('播放失败:', error);
+              showMusicNotification('播放失败');
+              // 如果播放失败，重置状态
+              isPlaying = false;
+              updateTonearmPosition(false);
+              updateVinylRotation(false);
+              updatePlayButton(false);
+              updateMinimizedPlayerIcons();
+            });
+          }
+        }, 1500); // 1.5秒延迟，确保唱针完全到位
       }
       
       // 更新界面
       updatePlayButton();
       updateSongInfo();
+      updateSongDisplay(currentTrack);
       
-      // 更新播放状态类
-      const musicMenu = document.getElementById('music-menu');
-      if (musicMenu) {
-        if (isPlaying) {
-          musicMenu.classList.add('playing');
-        } else {
-          musicMenu.classList.remove('playing');
-        }
-      }
+      // 播放状态更新（左侧播放器已删除）
       
       // 保存状态到本地存储
       savePlayerState();
@@ -1303,17 +1429,29 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       updateMusicToggleIcon();
     }
     
+    // 播放/暂停音乐（别名函数，用于最小化播放器）
+    function togglePlayPause() {
+      toggleMusic();
+    }
+    
+    // 获取下一首歌曲信息（不切换，仅用于预览）
+    function getNextTrack() {
+      if (playlist.length === 0) return null;
+      const nextIndex = (currentTrackIndex + 1) % playlist.length;
+      return playlist[nextIndex];
+    }
+    
     // 下一首
     function nextTrack() {
       if (playlist.length === 0) return;
       
       // 停止当前播放
-      if (isPlaying) {
-        if (currentTrack && currentTrack.src === 'demo' && oscillator) {
-          oscillator.stop();
-          oscillator = null;
-        } else if (audioElement) {
-          audioElement.pause();
+      if (isPlaying && audioElement) {
+        audioElement.pause();
+        // 停止可视化动画
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
         }
       }
       
@@ -1322,13 +1460,43 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       
       audioElement.src = currentTrack.src;
       
-      if (isPlaying) {
-        audioElement.play().then(() => {
-          showMusicNotification(`🎵 正在播放: ${currentTrack.title}`);
-        });
-      }
+      // 切换歌曲时自动开始播放 - 先启动唱针动画，然后延迟播放音乐
+      isPlaying = true; // 先设置状态，让界面显示播放状态
+      
+      // 立即更新界面状态（播放）
+      updateTonearmPosition(true);
+      updateVinylRotation(true);
+      updatePlayButton(true);
+      updateMinimizedPlayerIcons();
+      updateSongInfo();
+      updateSongDisplay(currentTrack);
+      
+      // 播放状态更新（左侧播放器已删除）
+      
+      // 延迟播放音乐，等待唱针动画完成（1.2秒动画 + 0.3秒缓冲）
+      setTimeout(() => {
+        if (isPlaying) { // 确保在延迟期间用户没有暂停
+          audioElement.play().then(() => {
+            showMusicNotification(`🎵 正在播放: ${currentTrack.title}`);
+            
+            // 开始可视化效果
+            drawVisualizer();
+            
+          }).catch(error => {
+            console.error('播放失败:', error);
+            showMusicNotification('播放失败');
+            // 如果播放失败，重置状态
+            isPlaying = false;
+            updateTonearmPosition(false);
+            updateVinylRotation(false);
+            updatePlayButton(false);
+            updateMinimizedPlayerIcons();
+          });
+        }
+      }, 1500); // 1.5秒延迟，确保唱针完全到位
       
       savePlayerState();
+      updateMusicToggleIcon();
     }
     
     // 上一首
@@ -1338,6 +1506,11 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       // 停止当前播放
       if (isPlaying && audioElement) {
         audioElement.pause();
+        // 停止可视化动画
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
+        }
       }
       
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
@@ -1345,13 +1518,43 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       
       audioElement.src = currentTrack.src;
       
-      if (isPlaying) {
-        audioElement.play().then(() => {
-          showMusicNotification(`🎵 正在播放: ${currentTrack.title}`);
-        });
-      }
+      // 切换歌曲时自动开始播放 - 先启动唱针动画，然后延迟播放音乐
+      isPlaying = true; // 先设置状态，让界面显示播放状态
+      
+      // 立即更新界面状态（播放）
+      updateTonearmPosition(true);
+      updateVinylRotation(true);
+      updatePlayButton(true);
+      updateMinimizedPlayerIcons();
+      updateSongInfo();
+      updateSongDisplay(currentTrack);
+      
+      // 播放状态更新（左侧播放器已删除）
+      
+      // 延迟播放音乐，等待唱针动画完成（1.2秒动画 + 0.3秒缓冲）
+      setTimeout(() => {
+        if (isPlaying) { // 确保在延迟期间用户没有暂停
+          audioElement.play().then(() => {
+            showMusicNotification(`🎵 正在播放: ${currentTrack.title}`);
+            
+            // 开始可视化效果
+            drawVisualizer();
+            
+          }).catch(error => {
+            console.error('播放失败:', error);
+            showMusicNotification('播放失败');
+            // 如果播放失败，重置状态
+            isPlaying = false;
+            updateTonearmPosition(false);
+            updateVinylRotation(false);
+            updatePlayButton(false);
+            updateMinimizedPlayerIcons();
+          });
+        }
+      }, 1500); // 1.5秒延迟，确保唱针完全到位
       
       savePlayerState();
+      updateMusicToggleIcon();
     }
     
     // 保存播放器状态
@@ -1359,9 +1562,28 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       const state = {
         isPlaying: isPlaying,
         currentTrackIndex: currentTrackIndex,
-        currentTrack: currentTrack
+        currentTrack: currentTrack,
+        currentTime: audioElement ? audioElement.currentTime : 0
       };
       localStorage.setItem('musicPlayerState', JSON.stringify(state));
+      
+      // 保存更详细的状态信息
+      if (audioElement && currentTrack) {
+        const detailedState = {
+          isPlaying: isPlaying,
+          currentTrackIndex: currentTrackIndex,
+          currentTrack: currentTrack,
+          currentTime: audioElement.currentTime || 0,
+          volume: audioElement.volume || 0.7,
+          playlist: playlist,
+          isMinimized: localStorage.getItem('musicPlayerMinimized') === 'true',
+          position: localStorage.getItem('musicPlayerPosition'),
+          timestamp: Date.now()
+        };
+        localStorage.setItem('musicPlayerDetailedState', JSON.stringify(detailedState));
+      }
+      
+      console.log('Music player state saved:', state);
     }
     
     // 更新音乐播放器图标
@@ -1387,6 +1609,50 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
     
     // 初始化音乐播放器
     initMusicPlayer();
+    
+    // 在初始化后立即检查并恢复状态
+    setTimeout(() => {
+      checkAndRestorePlayerState();
+    }, 200);
+    
+    // 添加检查和恢复播放器状态的函数
+    function checkAndRestorePlayerState() {
+      try {
+        // 检查是否有播放器状态需要恢复
+        const hasDetailedState = localStorage.getItem('musicPlayerDetailedState');
+        const hasBasicState = localStorage.getItem('musicPlayerState');
+        const isMinimized = localStorage.getItem('musicPlayerMinimized') === 'true';
+        
+        if (!hasDetailedState && !hasBasicState) {
+          console.log('No player state to restore');
+          return;
+        }
+        
+        // 检查播放器是否已经存在
+        const existingMinimized = document.getElementById('minimized-music-player');
+        
+        if (existingMinimized) {
+          console.log('Player already exists, updating state...');
+          // 如果播放器已存在，只更新状态
+          updateMusicToggleIcon();
+          return;
+        }
+        
+        console.log('Restoring player UI...', { isMinimized, hasDetailedState, hasBasicState });
+        
+        // 恢复播放器界面
+        if (isMinimized) {
+          // 应该恢复右侧播放器
+          console.log('Should restore minimized player');
+        } else if (hasDetailedState || hasBasicState) {
+          // 不再创建左侧播放器
+          console.log('Should restore full player - but left player removed');
+        }
+        
+      } catch (error) {
+        console.error('Failed to check and restore player state:', error);
+      }
+    }
 
     // 拖拽功能
     function makeDraggable(element) {
@@ -1492,32 +1758,7 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       localStorage.setItem('musicPlayerDockSide', side);
     }
     
-    // 切换贴附状态
-    window.toggleDockPlayer = function() {
-      const musicMenu = document.getElementById('music-menu');
-      if (!musicMenu) return;
-      
-      const isDocked = musicMenu.classList.contains('docked-left') || musicMenu.classList.contains('docked-right');
-      
-      if (isDocked) {
-        // 取消贴附
-        musicMenu.classList.remove('docked-left', 'docked-right');
-        musicMenu.style.right = 'auto';
-        musicMenu.style.transform = 'none';
-        
-        // 恢复到中心位置
-        const centerX = window.innerWidth / 2 - 120;
-        const centerY = window.innerHeight / 2 - 120;
-        musicMenu.style.left = centerX + 'px';
-        musicMenu.style.top = centerY + 'px';
-        
-        localStorage.setItem('musicPlayerDocked', 'false');
-        localStorage.removeItem('musicPlayerDockSide');
-      } else {
-        // 贴附到右边
-        dockToSide(musicMenu, 'right');
-      }
-    }
+    // 贴附状态切换功能（左侧播放器已删除）
 
     // 为播放列表容器添加拖拽功能
     function makeDraggablePlaylist(playlistContainer, musicMenu) {
@@ -1562,8 +1803,10 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
         newLeft = Math.max(0, Math.min(newLeft, maxLeft));
         newTop = Math.max(0, Math.min(newTop, maxTop));
         
-        musicMenu.style.left = newLeft + 'px';
-        musicMenu.style.top = newTop + 'px';
+        // 使用CSS自定义属性避免内联样式干扰动画
+        musicMenu.style.setProperty('--menu-x', newLeft + 'px');
+        musicMenu.style.setProperty('--menu-y', newTop + 'px');
+        musicMenu.classList.add('positioned-menu');
         
         // 检查是否接近边缘（贴附检测）
         const snapDistance = 20;
@@ -1624,18 +1867,28 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
           100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
         }
         
-        #music-display:hover {
-          animation: musicPulse 2s ease-in-out infinite, rotateGlow 3s ease-in-out infinite;
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
         
         #music-controls button:hover {
           animation: buttonFloat 1s ease-in-out infinite;
         }
         
-        /* 播放时的额外效果 */
-        .playing #music-display {
-          animation: musicPulse 1.5s ease-in-out infinite, rotateGlow 2s ease-in-out infinite;
+        /* 悬停时的效果 */
+        #music-display:hover {
+          animation: musicPulse 2s ease-in-out infinite, rotateGlow 3s ease-in-out infinite !important;
         }
+        
+        /* 播放时的额外效果 - 优先级最高 */
+        .playing #music-display {
+          animation: musicPulse 1.5s ease-in-out infinite, rotateGlow 2s ease-in-out infinite, spin 3s linear infinite !important;
+          transition: none !important;
+          transform: none !important;
+        }
+        
+
         
         /* 渐变边框效果 */
         #music-display::before {
@@ -1677,60 +1930,32 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
           transition: color 0.3s ease;
         }
         
-        /* 拖拽相关样式 */
-        #music-menu {
-          cursor: move;
-          user-select: none;
+
+
+        /* 唱片旋转动画 */
+        @keyframes vinyl-spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
         }
+
+        /* 唱针动画 */
+        #tonearm {
+          transform-origin: bottom right;
+          transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* 银色和金色渐变色彩 */
+        .from-silver-400 { background: linear-gradient(to bottom, #cbd5e1, #94a3b8); }
+        .to-silver-600 { background: linear-gradient(to bottom, #cbd5e1, #475569); }
+        .from-gold-400 { background: linear-gradient(to bottom, #fbbf24, #f59e0b); }
+        .to-gold-600 { background: linear-gradient(to bottom, #fbbf24, #d97706); }
+        .bg-silver-500 { background: #64748b; }
         
-        #music-menu.snap-left {
-          border-left: 3px solid #3b82f6;
-          box-shadow: -5px 0 15px rgba(59, 130, 246, 0.3);
-        }
-        
-        #music-menu.snap-right {
-          border-right: 3px solid #3b82f6;
-          box-shadow: 5px 0 15px rgba(59, 130, 246, 0.3);
-        }
-        
-        /* 贴附状态样式 */
-        #music-menu.docked-left,
-        #music-menu.docked-right {
-          transition: all 0.3s ease;
-        }
-        
-        #music-menu.docked-left {
-          border-left: none;
-        }
-        
-        #music-menu.docked-right {
-          border-right: none;
-        }
-        
-        /* 最小化状态样式 */
-        #music-menu.minimized {
-          width: 80px !important;
-          height: 80px !important;
-          overflow: hidden;
-        }
-        
-        #music-menu.minimized #music-display {
-          width: 60px !important;
-          height: 60px !important;
-        }
-        
-        #music-menu.minimized #song-info {
-          display: none;
-        }
-        
-        #music-menu.minimized #music-controls {
-          display: none;
-        }
-        
-        /* 窗口控制按钮组悬停效果 */
-        #music-menu:hover #window-controls {
-          opacity: 1 !important;
-        }
+
         
         #window-controls {
           opacity: 0;
@@ -1748,19 +1973,153 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
           margin-left: 2px;
           font-size: 10px;
         }
+        
+        /* 长方形按钮样式 */
+        .diamond-button {
+          width: 32px;
+          height: 20px;
+          position: relative;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          transform: rotate(45deg);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.1));
+        }
+        
+        .diamond-button:hover {
+          transform: rotate(45deg) scale(1.1);
+          filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.2));
+        }
+        
+        .diamond-button:active {
+          transform: rotate(45deg) scale(0.95);
+        }
+        
+        .diamond-inner {
+          width: 100%;
+          height: 100%;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transform: rotate(-45deg);
+          transition: all 0.3s ease;
+          backdrop-filter: blur(4px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .diamond-inner::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(0, 0, 0, 0.02) 100%);
+          border-radius: inherit;
+          pointer-events: none;
+        }
+        
+        .minimize-btn .diamond-inner {
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15));
+        }
+        
+        .minimize-btn:hover .diamond-inner {
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(37, 99, 235, 1));
+          box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .close-btn .diamond-inner {
+          background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.15));
+        }
+        
+        .close-btn:hover .diamond-inner {
+          background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 1));
+          box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+        
+        /* 播放列表滚动条样式 */
+        .playlist-scroll::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        .playlist-scroll::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 3px;
+        }
+        
+        .playlist-scroll::-webkit-scrollbar-thumb {
+          background: linear-gradient(135deg, rgba(147, 51, 234, 0.6), rgba(59, 130, 246, 0.6));
+          border-radius: 3px;
+          transition: background 0.2s ease;
+        }
+        
+        .playlist-scroll::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(135deg, rgba(147, 51, 234, 0.8), rgba(59, 130, 246, 0.8));
+        }
+        
+        /* Firefox 滚动条样式 */
+        .playlist-scroll {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(147, 51, 234, 0.6) rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 慢速旋转动画 */
+        @keyframes spin-slow {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        
+        .animate-spin-slow {
+          animation: spin-slow 3s linear infinite;
+        }
+        
+        /* 播放器过渡效果优化 */
+        #minimized-music-player {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #minimized-music-player:hover {
+          transform: scale(1.02);
+        }
+        
+        #minimized-music-player.dragging {
+          transform: scale(1.05);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 下一首歌曲提示动画优化 */
+        #next-song-hint {
+          backdrop-filter: blur(12px);
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* 播放按钮脉冲效果 */
+        @keyframes pulse-glow {
+          0%, 100% {
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+          }
+          50% {
+            box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+          }
+        }
+        
+        .pulse-playing {
+          animation: pulse-glow 2s infinite;
+        }
       `;
       document.head.appendChild(style);
       
-      // 添加播放状态类
+      // 播放状态类更新（左侧播放器已删除）
       const updatePlayingClass = () => {
-        const musicMenu = document.getElementById('music-menu');
-        if (musicMenu) {
-          if (isPlaying) {
-            musicMenu.classList.add('playing');
-          } else {
-            musicMenu.classList.remove('playing');
-          }
-        }
+        // 左侧播放器已删除，无需更新playing类
       };
       
       // 监听播放状态变化
@@ -1919,29 +2278,42 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       }
     }
     
-    // 更新播放按钮图标
-    function updatePlayButton() {
+    // 更新播放按钮图标（统一函数）
+    function updatePlayButton(targetIsPlaying = isPlaying) {
+      // 更新主播放按钮
       const playBtn = document.getElementById('play-btn');
-      if (!playBtn) return;
+      if (playBtn) {
+        const svg = playBtn.querySelector('svg');
+        if (svg) {
+          if (targetIsPlaying) {
+            // 暂停图标
+            svg.innerHTML = '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>';
+          } else {
+            // 播放图标
+            svg.innerHTML = '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>';
+          }
+        }
+      }
       
-      const svg = playBtn.querySelector('svg');
-      if (!svg) return;
-      
-      if (isPlaying) {
-        // 暂停图标
-        svg.innerHTML = '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>';
-      } else {
-        // 播放图标
-        svg.innerHTML = '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>';
+      // 更新独立的播放图标
+      const playIcon = document.getElementById('play-icon');
+      if (playIcon) {
+        if (targetIsPlaying) {
+          // 暂停图标
+          playIcon.innerHTML = '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>';
+        } else {
+          // 播放图标
+          playIcon.innerHTML = '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>';
+        }
       }
     }
 
     // 将音乐播放器函数添加到全局作用域，以便onclick事件能够访问
     window.toggleMusic = toggleMusic;
+    window.togglePlayPause = togglePlayPause;
     window.nextTrack = nextTrack;
     window.previousTrack = previousTrack;
-    window.showPlaylist = showPlaylist;
-    window.closePlaylist = closePlaylist;
+    // showPlaylist, closePlaylist 函数已删除 - 左侧播放器已移除
     window.selectTrack = selectTrack;
 
     // 幽灵图标点击反馈效果（简化版，无音效）
@@ -1977,39 +2349,60 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
     }
 
     // 点击主按钮触发特效
-    menuTrigger.addEventListener('click', function(e) {
-      e.stopPropagation();
-      
-      if (isAnimating) return;
-      isAnimating = true;
-      
-      if (isMenuOpen) {
-        // 关闭菜单
-        closeCircularMenu();
-      } else {
-        // 触发蓄力效果
-        chargeAndFireLaser();
-      }
-    });
+    if (menuTrigger) {
+      menuTrigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        if (isAnimating) return;
+        isAnimating = true;
+        
+        if (isMenuOpen) {
+          // 关闭菜单
+          closeCircularMenu();
+        } else {
+          // 触发蓄力效果
+          chargeAndFireLaser();
+        }
+      });
+    }
 
     // 添加语言、主题、音乐按钮的事件监听器
-    languageToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      createLanguageMenu();
-    });
+    if (languageToggle) {
+      languageToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        createLanguageMenu();
+      });
+    }
 
-    themeToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      createThemeMenu();
-    });
+    if (themeToggle) {
+      themeToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        createThemeMenu();
+      });
+    }
 
-    musicToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      createMusicMenu();
-    });
+    if (musicToggle) {
+      musicToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      
+      // 检查当前是否已经有播放器
+      const existingMinimized = document.getElementById('minimized-music-player');
+      
+      if (existingMinimized) {
+        console.log('Player already exists, showing existing player...');
+        // 如果是最小化状态，可以考虑展开或保持原状
+        showMusicNotification('播放器已在运行中');
+        return;
+      }
+      
+      // 如果没有播放器，直接创建右侧播放器
+      // 这里应该调用创建右侧播放器的函数
+      console.log('Should create right-side player');
+      });
+    }
 
     // 创建语言切换菜单
     function createLanguageMenu() {
@@ -2261,6 +2654,15 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       }
     }
 
+    // 关闭音频菜单
+    function closeAudioMenu(e) {
+      const audioMenu = document.getElementById('audio-menu');
+      if (audioMenu && (!audioMenu.contains(e.target))) {
+        audioMenu.remove();
+        document.removeEventListener('click', closeAudioMenu);
+      }
+    }
+
     // 主题切换函数
     function switchTheme(theme) {
       const html = document.documentElement;
@@ -2359,275 +2761,250 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       }, 2000);
     }
 
-    // 创建音乐播放器菜单
-    function createMusicMenu() {
-      // 检查是否已存在菜单
-      const existingMenu = document.getElementById('music-menu');
-      if (existingMenu) {
-        existingMenu.remove();
-        document.removeEventListener('click', closeMusicMenu);
-      }
-      
-      // 创建音乐播放器容器 - 圆形设计
-      const musicMenu = document.createElement('div');
-      musicMenu.id = 'music-menu';
-      musicMenu.className = 'fixed bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl z-50 group';
-      musicMenu.style.width = '240px';
-      musicMenu.style.height = '240px';
-      musicMenu.style.borderRadius = '50%';
-      
-      // 获取当前菜单项的位置（与其他模块保持一致）
-      const rect = musicToggle.getBoundingClientRect();
-      const menuSize = 240;
-      
-      // 总是在触发按钮前方打开（与语言模块保持一致）
-      musicMenu.style.top = (rect.top - menuSize/2 + rect.height/2) + 'px';
-      musicMenu.style.left = (rect.left - menuSize/2 + rect.width/2) + 'px';
-      
-      // 清除任何贴附状态，确保完整显示
-      musicMenu.classList.remove('docked-left', 'docked-right');
-      musicMenu.style.right = 'auto';
-      musicMenu.style.transform = 'none';
-      
-      // 添加音乐播放器 - 圆形设计
-      musicMenu.innerHTML = `
-        <div class="relative w-full h-full flex items-center justify-center">
-          <!-- 右上角控制按钮 - 悬停时显示 -->
-          <div id="window-controls" class="absolute top-4 right-4 flex items-center space-x-1 opacity-90 hover:opacity-100 transition-opacity duration-300 z-20">
-            <button id="dock-btn" class="w-6 h-6 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors duration-200 pointer-events-auto" onclick="toggleDockPlayer()" title="贴附/取消贴附">
-              <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
-              </svg>
-            </button>
-            <button id="minimize-btn" class="w-6 h-6 bg-yellow-500 hover:bg-yellow-600 rounded-full flex items-center justify-center transition-colors duration-200 pointer-events-auto" onclick="minimizeMusicPlayer()" title="最小化">
-              <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-              </svg>
-            </button>
-            <button id="close-btn" class="w-6 h-6 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors duration-200 pointer-events-auto" onclick="closeMusicPlayer()" title="关闭">
-              <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-              </svg>
-            </button>
-          </div>
-          
-          <!-- 中心显示区域 - 歌曲信息和可视化效果 -->
-          <div id="music-display" class="relative w-48 h-48 rounded-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center text-white overflow-hidden transition-transform duration-700 ease-in-out group-hover:rotate-[360deg]">
-            <!-- 可视化背景 -->
-            <div id="visualizer-bg" class="absolute inset-0 opacity-30">
-              <canvas id="visualizer-canvas" class="w-full h-full rounded-full"></canvas>
-            </div>
-            
-            <!-- 歌曲信息 -->
-            <div id="song-info" class="relative z-10 text-center px-4 transition-transform duration-500 group-hover:scale-105">
-              <div id="song-title" class="text-sm font-bold mb-1 truncate max-w-32">未播放</div>
-              <div id="song-artist" class="text-xs opacity-75 truncate max-w-32">选择音乐</div>
-              <div id="song-progress" class="mt-2 text-xs opacity-60">--:-- / --:--</div>
-            </div>
-            
-            <!-- 播放状态指示器 -->
-            <div id="play-indicator" class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-                <div class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse opacity-0 transition-opacity duration-300"></div>
-              </div>
-            </div>
-            
-            <!-- 控制按钮容器 -->
-            <div id="music-controls" class="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <!-- 播放/暂停按钮 - 右侧 -->
-              <button id="play-btn" class="absolute right-4 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center justify-center pointer-events-auto opacity-0 group-hover:opacity-100" onclick="toggleMusic()">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
-                </svg>
-              </button>
-            
-               <!-- 上一曲按钮 - 左侧 -->
-               <button class="absolute left-4 bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center justify-center pointer-events-auto opacity-0 group-hover:opacity-100" onclick="previousTrack()">
-                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                   <path fill-rule="evenodd" d="M15.445 5.168A1 1 0 0117 6v8a1 1 0 01-1.555.832L10 11.202V14a1 1 0 01-1.555.832l-6-4a1 1 0 010-1.664l6-4A1 1 0 0110 6v2.798l5.445-3.63z" clip-rule="evenodd"></path>
-                 </svg>
-               </button>
-               
-               <!-- 下一曲按钮 - 底部 -->
-               <button class="absolute bottom-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center justify-center pointer-events-auto opacity-0 group-hover:opacity-100" onclick="nextTrack()">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z" clip-rule="evenodd"></path>
-              </svg>
-            </button>
-            
-               <!-- 播放列表按钮 - 顶部 -->
-               <button class="absolute top-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center justify-center pointer-events-auto opacity-0 group-hover:opacity-100" onclick="showPlaylist()">
-                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                   <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 8a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM4 11a1 1 0 100 2h8a1 1 0 100-2H4z"></path>
-                 </svg>
-               </button>
-             </div>
-           </div>
-         </div>
-       `;
-       
-       // 添加到页面
-       document.body.appendChild(musicMenu);
-       
-       // 添加拖拽功能
-       makeDraggable(musicMenu);
-       
-       // 检查是否需要恢复最小化状态
-       const isMinimized = localStorage.getItem('musicPlayerMinimized') === 'true';
-       if (isMinimized) {
-         musicMenu.classList.add('minimized');
-       }
-       
-       // 添加展开动画
-       musicMenu.style.transform = isDocked ? 'translateY(-50%) scale(0)' : 'scale(0)';
-       musicMenu.style.opacity = '0';
-       setTimeout(() => {
-         musicMenu.style.transition = 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-         musicMenu.style.transform = isDocked ? 'translateY(-50%) scale(1)' : 'scale(1)';
-         musicMenu.style.opacity = '1';
-       }, 10);
-      
-      // 不再自动关闭播放器
-    }
 
-    // 手动关闭音乐播放器
+
+    // 关闭音乐播放器
     window.closeMusicPlayer = function() {
-      const musicMenu = document.getElementById('music-menu');
-      if (musicMenu) {
-        musicMenu.remove();
+      // 停止音频播放
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+        audioElement.src = '';
       }
+      
+      // 停止可视化动画
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+      
+      // 重置播放状态
+      isPlaying = false;
+      
+      // 清除播放器状态
+      localStorage.removeItem('musicPlayerState');
+      localStorage.removeItem('musicPlayerMinimized');
+      localStorage.removeItem('musicPlayerDockSide');
+      
+      // 移除播放器界面
+      const minimizedPlayer = document.getElementById('minimized-music-player');
+      
+      if (minimizedPlayer) {
+        minimizedPlayer.remove();
+      }
+      
+      // 显示关闭提示
+      showNotification('音乐已退出', 'success');
+      
+      // 更新音乐按钮图标
+      updateMusicToggleIcon();
     }
 
-    // 最小化音乐播放器
-    window.minimizeMusicPlayer = function() {
-      const musicMenu = document.getElementById('music-menu');
-      if (musicMenu) {
-        musicMenu.classList.toggle('minimized');
-        // 保存最小化状态
-        localStorage.setItem('musicPlayerMinimized', musicMenu.classList.contains('minimized'));
-      }
+    // 获取当前播放的歌曲
+    function getCurrentTrack() {
+      return currentTrack;
     }
 
-    // 显示播放列表
-    function showPlaylist() {
-      const musicMenu = document.getElementById('music-menu');
-      if (!musicMenu) return;
-      
-      // 隐藏所有播放控制按钮
-      const controlButtons = musicMenu.querySelectorAll('button');
-      const centerTitle = musicMenu.querySelector('.absolute.top-1\\/2.left-1\\/2');
-      
-      controlButtons.forEach(button => {
-        button.style.opacity = '0';
-        button.style.pointerEvents = 'none';
-      });
-      
-      if (centerTitle) {
-        centerTitle.style.opacity = '0';
-      }
-      
-      // 创建播放列表内容，直接填充整个圆形容器
-      let playlistHTML = `
-        <div class="absolute inset-0 bg-gradient-to-br from-purple-50/90 to-blue-50/90 rounded-full flex flex-col overflow-hidden backdrop-blur-sm">
-          <!-- 关闭按钮 -->
-          <button onclick="closePlaylist()" class="absolute top-3 right-3 z-10 text-gray-600 hover:text-gray-800 w-8 h-8 flex items-center justify-center bg-white/80 rounded-full shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-          
-          <!-- 播放列表标题 -->
-          <div class="text-center pt-6 pb-2">
-            <h3 class="text-lg font-bold text-gray-800">播放列表</h3>
-          </div>
-          
-          <!-- 播放列表内容 -->
-          <div class="flex-1 overflow-y-auto px-4 pb-4" style="max-height: calc(100% - 80px);">
-      `;
-      
-      if (playlist.length === 0) {
-        playlistHTML += `
-          <div class="flex flex-col items-center justify-center h-full text-gray-500">
-            <svg class="w-12 h-12 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
-            </svg>
-            <p class="text-center text-sm">播放列表为空</p>
-            <p class="text-center text-xs mt-1 opacity-75">添加一些音乐来开始播放</p>
-          </div>
-        `;
-      } else {
-        playlist.forEach((track, index) => {
-          const isCurrentTrack = index === currentTrackIndex;
-          playlistHTML += `
-            <div class="flex items-center p-3 mb-2 rounded-lg cursor-pointer transition-all duration-200 hover:bg-white/70 hover:shadow-sm ${isCurrentTrack ? 'bg-gradient-to-r from-blue-100 to-purple-100 border border-blue-200 shadow-sm' : 'bg-white/40'}" onclick="selectTrack(${index})">
-              <div class="flex-1 min-w-0">
-                <div class="text-sm font-medium text-gray-900 truncate ${isCurrentTrack ? 'text-blue-700' : ''}">${track.title}</div>
-                <div class="text-xs text-gray-600 truncate mt-1">${track.artist}</div>
-              </div>
-              ${isCurrentTrack ? '<div class="text-blue-600 ml-2 flex-shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832L14 10.202a1 1 0 000-1.664l-4.445-2.83z" clip-rule="evenodd"></path></svg></div>' : ''}
-            </div>
-          `;
-        });
-      }
-      
-      playlistHTML += `
-          </div>
-        </div>
-      `;
-      
-      // 添加播放列表到音乐菜单容器
-      const playlistContainer = document.createElement('div');
-      playlistContainer.id = 'playlist-container';
-      playlistContainer.className = 'absolute inset-0';
-      playlistContainer.innerHTML = playlistHTML;
-      
-      musicMenu.appendChild(playlistContainer);
-      
-      // 为播放列表容器添加拖拽功能
-      makeDraggablePlaylist(playlistContainer, musicMenu);
-      
-      // 添加展开动画
-      playlistContainer.style.opacity = '0';
-      playlistContainer.style.transform = 'scale(0.8)';
-      setTimeout(() => {
-        playlistContainer.style.transition = 'all 0.3s ease';
-        playlistContainer.style.opacity = '1';
-        playlistContainer.style.transform = 'scale(1)';
-      }, 10);
-    }
 
-    // 关闭播放列表
-    function closePlaylist() {
-      const playlistContainer = document.getElementById('playlist-container');
-      const musicMenu = document.getElementById('music-menu');
-      
-      if (playlistContainer) {
-        // 添加关闭动画
-        playlistContainer.style.transition = 'all 0.3s ease';
-        playlistContainer.style.opacity = '0';
-        playlistContainer.style.transform = 'scale(0.8)';
+    
+    // 更新最小化播放器的播放状态图标
+    function updateMinimizedPlayerIcons() {
+      const minimizedPlayer = document.getElementById('minimized-music-player');
+      if (minimizedPlayer) {
+        const playIcon = minimizedPlayer.querySelector('#minimized-play-icon');
+        const pauseIcon = minimizedPlayer.querySelector('#minimized-pause-icon');
+        const playBtn = minimizedPlayer.querySelector('#minimized-play-btn');
         
-        setTimeout(() => {
-          playlistContainer.remove();
+        // 更新播放/暂停图标
+        if (playIcon && pauseIcon) {
+          if (isPlaying) {
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.remove('hidden');
+          } else {
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+          }
+        }
+        
+        // 更新旋转动画（仅在单按钮模式下）
+        if (playBtn) {
+          const isDocked = minimizedPlayer.dataset.isDocked === 'true';
+          const rect = minimizedPlayer.getBoundingClientRect();
+        const isInSidebar = isDocked && rect.right > window.innerWidth - 200;
           
-          // 恢复播放控制按钮和标题的显示
-          if (musicMenu) {
-            const controlButtons = musicMenu.querySelectorAll('button');
-            const centerTitle = musicMenu.querySelector('.absolute.top-1\\/2.left-1\\/2');
-            
-            controlButtons.forEach(button => {
-              button.style.transition = 'all 0.3s ease';
-              button.style.opacity = '1';
-              button.style.pointerEvents = 'auto';
-            });
-            
-            if (centerTitle) {
-              centerTitle.style.transition = 'all 0.3s ease';
-              centerTitle.style.opacity = '1';
+          // 只有在自由拖拽模式（非侧边栏模式）下才添加旋转动画
+          if (!isInSidebar) {
+            if (isPlaying) {
+              playBtn.classList.add('animate-spin-slow');
+              playBtn.classList.add('pulse-playing');
+            } else {
+              playBtn.classList.remove('animate-spin-slow');
+              playBtn.classList.remove('pulse-playing');
+            }
+          } else {
+            // 侧边栏模式下移除旋转动画，但保留脉冲效果
+            playBtn.classList.remove('animate-spin-slow');
+            if (isPlaying) {
+              playBtn.classList.add('pulse-playing');
+            } else {
+              playBtn.classList.remove('pulse-playing');
             }
           }
-        }, 300);
+        }
       }
     }
+    
+    // 拖拽功能
+    function makeDraggableMinimizedPlayer(element) {
+      // 避免重复绑定
+      if (element.dataset.draggable === 'true') {
+        return;
+      }
+      element.dataset.draggable = 'true';
+      
+      let isDragging = false;
+      let hasMoved = false; // 添加移动标记
+      let startX, startY, startLeft, startTop;
+      const DRAG_THRESHOLD = 5; // 拖拽阈值，像素
+      
+      element.addEventListener('mousedown', function(e) {
+        if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+          return;
+        }
+        
+        isDragging = true;
+        hasMoved = false; // 重置移动标记
+        element.dataset.isDragging = 'true';
+        
+        startX = e.clientX;
+        startY = e.clientY;
+        startLeft = element.offsetLeft;
+        startTop = element.offsetTop;
+        
+        // 暂时不添加拖拽视觉反馈，等确认是拖拽操作时再添加
+        
+        // 禁用过渡效果和hover效果
+        element.style.transition = 'none';
+        element.style.cursor = 'grabbing';
+        element.style.pointerEvents = 'none'; // 禁用hover效果
+        
+        // 临时移除hover类
+        const originalClassName = element.className;
+        element.className = originalClassName.replace('hover:translate-x-1/4', '');
+        element.dataset.originalClassName = originalClassName;
+        
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+        
+        e.preventDefault();
+      });
+      
+      function onMouseMove(e) {
+        if (!isDragging) return;
+        
+        const deltaX = e.clientX - startX;
+        const deltaY = e.clientY - startY;
+        
+        // 检查是否超过拖拽阈值
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        if (!hasMoved && distance > DRAG_THRESHOLD) {
+          hasMoved = true;
+          // 只有真正开始拖拽时才添加拖拽样式
+          element.classList.add('dragging');
+        }
+        
+        // 只有确认是拖拽操作时才移动元素
+        if (!hasMoved) return;
+        
+        let newLeft = startLeft + deltaX;
+        let newTop = startTop + deltaY;
+        
+        // 边界检查
+        const rect = element.getBoundingClientRect();
+        const maxLeft = window.innerWidth - rect.width;
+        const maxTop = window.innerHeight - rect.height;
+        
+        newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+        newTop = Math.max(0, Math.min(newTop, maxTop));
+        
+        element.style.left = newLeft + 'px';
+        element.style.top = newTop + 'px';
+        element.style.transform = 'none';
+        element.style.right = 'auto';
+      }
+      
+      function onMouseUp(e) {
+        if (!isDragging) return;
+        
+        isDragging = false;
+        element.dataset.isDragging = 'false';
+        
+        // 如果没有移动，说明是点击操作，不执行拖拽逻辑
+        if (!hasMoved) {
+          // 恢复过渡效果和指针事件
+          element.style.transition = 'all 0.3s ease';
+          element.style.cursor = 'move';
+          element.style.pointerEvents = 'auto';
+          
+          // 清理事件监听器
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+          return; // 直接返回，不执行后续的拖拽结束逻辑
+        }
+        
+        // 移除拖拽视觉反馈
+        element.classList.remove('dragging');
+        
+        // 恢复过渡效果和指针事件
+        element.style.transition = 'all 0.3s ease';
+        element.style.cursor = 'move';
+        element.style.pointerEvents = 'auto'; // 恢复指针事件
+        
+        // 检查是否靠近右侧边缘（侧边栏模式）
+        const rect = element.getBoundingClientRect();
+        const isNearRightEdge = rect.right > window.innerWidth - 200;
+        
+        if (isNearRightEdge) {
+          // 回到侧边栏模式
+          element.dataset.isDocked = 'true';
+          element.className = 'fixed right-0 top-1/2 transform -translate-y-1/2 translate-x-4/5 bg-gradient-to-r from-purple-600 to-blue-600 backdrop-blur-xl border border-white/20 rounded-l-2xl shadow-2xl z-50 transition-all duration-300 hover:translate-x-1/4 cursor-move select-none';
+          element.style.left = 'auto';
+          element.style.top = '50%';
+          element.style.transform = 'translateY(-50%) translateX(80%)';
+        } else {
+          // 自由拖拽模式
+          element.dataset.isDocked = 'false';
+          element.className = 'fixed bg-gradient-to-r from-purple-600 to-blue-600 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl z-50 transition-all duration-300 cursor-move select-none';
+        }
+        
+        // 延迟更新内容，确保样式设置完成
+        setTimeout(() => {
+          updateMinimizedPlayerContent(element);
+        }, 50);
+        
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
+    }
+    
+    // 还原音乐播放器功能已删除 - 左侧播放器已移除
+    window.restoreMusicPlayer = function() {
+      const minimizedPlayer = document.getElementById('minimized-music-player');
+      
+      if (minimizedPlayer) {
+        // 移除最小化播放器
+        minimizedPlayer.remove();
+        
+        // 清除最小化状态
+        localStorage.removeItem('musicPlayerMinimized');
+      }
+    }
+
+    // 播放列表显示功能（左侧播放器已删除）
+
+    // 播放列表关闭功能（左侧播放器已删除）
+
+    // 播放列表功能已删除 - 左侧播放器已移除
 
     // 选择音轨
     function selectTrack(index) {
@@ -2646,30 +3023,38 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
         currentTrack = playlist[currentTrackIndex];
         audioElement.src = currentTrack.src;
         
-        // 如果之前在播放，则继续播放新音轨
-        if (isPlaying) {
-          audioElement.play().then(() => {
-            showMusicNotification(`🎵 正在播放: ${currentTrack.title}`);
-            // 开始可视化效果
-            drawVisualizer();
-          });
-        } else {
-          showMusicNotification(`🎵 已选择: ${currentTrack.title}`);
-        }
+        // 选择歌曲时自动开始播放 - 先启动唱针动画，然后延迟播放音乐
+        isPlaying = true; // 先设置状态，让界面显示播放状态
         
-        // 更新界面
-        updatePlayButton();
+        // 立即更新界面状态（播放）
+        updateTonearmPosition(true);
+        updateVinylRotation(true);
+        updatePlayButton(true);
         updateSongInfo();
+        updateSongDisplay(currentTrack);
         
-        // 更新播放状态类
-        const musicMenu = document.getElementById('music-menu');
-        if (musicMenu) {
-          if (isPlaying) {
-            musicMenu.classList.add('playing');
-          } else {
-            musicMenu.classList.remove('playing');
+        // 播放状态更新已删除 - 左侧播放器已移除
+        
+        // 延迟播放音乐，等待唱针动画完成（1.2秒动画 + 0.3秒缓冲）
+        setTimeout(() => {
+          if (isPlaying) { // 确保在延迟期间用户没有暂停
+            audioElement.play().then(() => {
+              showMusicNotification(`🎵 正在播放: ${currentTrack.title}`);
+              
+              // 开始可视化效果
+              drawVisualizer();
+              
+            }).catch(error => {
+              console.error('播放失败:', error);
+              showMusicNotification('播放失败');
+              // 如果播放失败，重置状态
+              isPlaying = false;
+              updateTonearmPosition(false);
+              updateVinylRotation(false);
+              updatePlayButton(false);
+            });
           }
-        }
+        }, 1500); // 1.5秒延迟，确保唱针完全到位
         
         savePlayerState();
         closePlaylist();
@@ -2730,6 +3115,29 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
         // 3. 发射激光
         fireLaser();
       }, 1200);
+    }
+
+    // 停止图标旋转 - 使用JavaScript直接控制
+    function stopIconRotation() {
+      const whirlwindIcon = document.querySelector('.integrated-menu-icon');
+      if (!whirlwindIcon) return;
+      
+      // 直接设置CSS属性停止动画
+      whirlwindIcon.style.animation = 'none';
+      whirlwindIcon.style.animationPlayState = 'paused';
+    }
+
+    // 重新开始旋转 - 使用JavaScript直接控制
+    function restartIconRotation() {
+      const whirlwindIcon = document.querySelector('.integrated-menu-icon');
+      if (!whirlwindIcon) return;
+      
+      // 直接设置CSS动画属性重新开始旋转
+      whirlwindIcon.style.animation = 'rotate-clockwise 8s linear infinite';
+      whirlwindIcon.style.animationPlayState = 'running';
+      
+      // 确保动画从头开始
+      whirlwindIcon.style.animationDelay = '0s';
     }
 
     // 创建能量聚集效果 - 简洁版（红色配色）
@@ -2819,10 +3227,14 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
     function fireLaser() {
       console.log('🚀 激光发射开始！');
       
-      // 计算激光路径
+      // 停止图标旋转
+      stopIconRotation();
+      
+      // 计算激光路径 - 从中间小圆圈发出
       const triggerRect = menuTrigger.getBoundingClientRect();
-      const triggerCenterX = triggerRect.left + triggerRect.width / 2;
-      const triggerCenterY = triggerRect.top + triggerRect.height / 2;
+      // 调整起点位置：稍微往左上移动，对准中间的小圆圈
+      const triggerCenterX = triggerRect.left + triggerRect.width / 2 - 1;
+      const triggerCenterY = triggerRect.top + triggerRect.height / 2 - 2.5;
       
       console.log('📍 激光起点:', triggerCenterX, triggerCenterY);
       
@@ -3119,6 +3531,9 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       isMenuOpen = true;
       isAnimating = false;
       
+      // 重新开始图标旋转
+      restartIconRotation();
+      
       // 添加拖动事件监听器
       dragHandle.addEventListener('mousedown', dragStart);
       document.addEventListener('mouseup', dragEnd);
@@ -3143,11 +3558,8 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       colorBallsContainer.innerHTML = '';
       colorBalls = [];
       
-      // 定义12种颜色
-      const colors = [
-        '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFBE0B', '#FB5607', '#FF006E', 
-        '#8338EC', '#3A86FF', '#06D6A0', '#118AB2', '#073B4C', '#EF476F'
-      ];
+      // 使用通用颜色常量
+      const colors = THEME_COLORS;
       
       // 在圆盘内随机分布颜色球
       const centerX = 160; // 圆盘中心x坐标
@@ -3701,7 +4113,12 @@ const thoughtsText = currentLang === 'en' ? 'Illusionary Thoughts' : '幻念集'
       soundEnabled = false;
     }
     
-    // 更新音乐播放器图标
-    updateMusicToggleIcon();
+    // 添加调试功能
+    setTimeout(() => {
+      const script = document.createElement('script');
+      script.src = '/debug-music-animation.js';
+      document.head.appendChild(script);
+    }, 2000);
+
   });
 </script>
