@@ -33,12 +33,12 @@ const THEME_COLORS = [
   <div id="laser-container" class="fixed inset-0 pointer-events-none z-50"></div>
 
   <!-- 幽灵图标 - 初始隐藏 -->
-  <div id="ghost-target" class="fixed opacity-0 pointer-events-none z-40">
+  <div id="ghost-target" class="fixed opacity-0 pointer-events-none z-40" style="top: -9999px; left: -9999px;">
     <img src="/ghost.svg" alt="幽灵目标" class="w-10 h-10" />
   </div>
 
   <!-- 逆时针旋转的大圆盘二级菜单 -->
-  <div id="circular-menu" class="fixed top-0 left-0 w-80 h-80 bg-gradient-to-br from-white/95 via-purple-50/90 to-blue-50/90 backdrop-blur-lg rounded-full shadow-2xl z-50 opacity-0 pointer-events-none draggable-menu circular-menu-rotation border-4 border-white/30">
+  <div id="circular-menu" class="fixed w-80 h-80 bg-gradient-to-br from-white/95 via-purple-50/90 to-blue-50/90 backdrop-blur-lg rounded-full shadow-2xl z-50 opacity-0 pointer-events-none draggable-menu circular-menu-rotation border-4 border-white/30" style="top: -9999px; left: -9999px;">
     <!-- 圆盘中心的幽灵图标 - 最简单实现 -->
     <a href={thoughtsLink} 
        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
@@ -2815,6 +2815,12 @@ const THEME_COLORS = [
 
     // 关闭语言菜单
     function closeLanguageMenu(e) {
+      // 检查是否点击在banner区域，如果是则不处理
+      const bannerBox = document.getElementById('banner-box');
+      if (bannerBox && bannerBox.contains(e.target)) {
+        return;
+      }
+      
       const languageMenu = document.getElementById('language-menu');
       if (languageMenu && (!languageMenu.contains(e.target) && !languageToggle.contains(e.target))) {
         languageMenu.remove();
@@ -3042,6 +3048,12 @@ const THEME_COLORS = [
 
     // 关闭主题菜单
     function closeThemeMenu(e) {
+      // 检查是否点击在banner区域，如果是则不处理
+      const bannerBox = document.getElementById('banner-box');
+      if (bannerBox && bannerBox.contains(e.target)) {
+        return;
+      }
+      
       const themeMenu = document.getElementById('theme-menu');
       if (themeMenu && (!themeMenu.contains(e.target) && !themeToggle.contains(e.target))) {
         themeMenu.remove();
@@ -3051,6 +3063,12 @@ const THEME_COLORS = [
 
     // 关闭音频菜单
     function closeAudioMenu(e) {
+      // 检查是否点击在banner区域，如果是则不处理
+      const bannerBox = document.getElementById('banner-box');
+      if (bannerBox && bannerBox.contains(e.target)) {
+        return;
+      }
+      
       const audioMenu = document.getElementById('audio-menu');
       if (audioMenu && (!audioMenu.contains(e.target))) {
         audioMenu.remove();
@@ -4873,6 +4891,9 @@ const THEME_COLORS = [
       setTimeout(() => {
         circularMenu.style.opacity = '0';
         circularMenu.style.pointerEvents = 'none';
+        // 将圆形菜单移出视口，避免覆盖其他区域
+        circularMenu.style.top = '-9999px';
+        circularMenu.style.left = '-9999px';
         isMenuOpen = false;
         isAnimating = false;
         
@@ -4959,6 +4980,12 @@ const THEME_COLORS = [
 
     // 点击外部区域关闭菜单
     document.addEventListener('click', function(e) {
+      // 检查是否点击在banner区域，如果是则不处理菜单关闭
+      const bannerBox = document.getElementById('banner-box');
+      if (bannerBox && bannerBox.contains(e.target)) {
+        return; // 在banner区域的点击不处理菜单关闭
+      }
+      
       if (isMenuOpen && !circularMenu.contains(e.target) && !menuTrigger.contains(e.target)) {
         closeCircularMenu();
       }
