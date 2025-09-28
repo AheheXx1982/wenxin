@@ -17,116 +17,116 @@ interface Position {
 }
 
 const themeColors: ColorData[] = [
-  // 第一排 - 常用颜色 
+  // 第一排 - 有音频文件的颜色 
   { 
     name: '粉红色', 
     value: 'pink', 
     color: '#ed6ea0',
-    music: { title: '粉红色主题音乐', artist: '颜色球', src: '/colorball-music/pink.mp3' }
+    music: { title: '粉红色主题音乐', artist: '颜色球', src: '/colorball-music/pink1.mp3' }
   },
   { 
     name: '蓝色', 
     value: 'blue', 
     color: '#3b82f6',
-    music: { title: '蓝色主题音乐', artist: '颜色球', src: '/colorball-music/blue.mp3' }
+    music: { title: '蓝色主题音乐', artist: '颜色球', src: '/colorball-music/blue1.mp3' }
   },
   { 
     name: '绿色', 
     value: 'green', 
     color: '#22c55e',
-    music: { title: '绿色主题音乐', artist: '颜色球', src: '/colorball-music/green.mp3' }
+    music: { title: '绿色主题音乐', artist: '颜色球', src: '/colorball-music/green1.mp3' }
   },
   { 
     name: '紫色', 
     value: 'purple', 
     color: '#8b5cf6',
-    music: { title: '紫色主题音乐', artist: '颜色球', src: '/colorball-music/purple.mp3' }
+    music: { title: '紫色主题音乐', artist: '颜色球', src: '/colorball-music/purple1.mp3' }
   },
-  { 
-    name: '橙色', 
-    value: 'orange', 
-    color: '#f97316',
-    music: { title: '橙色主题音乐', artist: '颜色球', src: '/colorball-music/orange.mp3' }
-  },
-  { 
-    name: '青色', 
-    value: 'cyan', 
-    color: '#06b6d4',
-    music: { title: '青色主题音乐', artist: '颜色球', src: '/colorball-music/cyan.mp3' }
-  },
-  // 第二排 - 更多颜色选项
   { 
     name: '红色', 
     value: 'red', 
     color: '#ef4444',
-    music: { title: '红色主题音乐', artist: '颜色球', src: '/colorball-music/red.mp3' }
+    music: { title: '红色主题音乐', artist: '颜色球', src: '/colorball-music/red1.mp3' }
   },
   { 
     name: '黄色', 
     value: 'yellow', 
     color: '#eab308',
-    music: { title: '黄色主题音乐', artist: '颜色球', src: '/colorball-music/yellow.mp3' }
+    music: { title: '黄色主题音乐', artist: '颜色球', src: '/colorball-music/yellow1.mp3' }
+  },
+  // 第二排 - 无音频文件的颜色（仅视觉效果）
+  { 
+    name: '橙色', 
+    value: 'orange', 
+    color: '#f97316'
+    // 无音频文件，不设置music属性
+  },
+  { 
+    name: '青色', 
+    value: 'cyan', 
+    color: '#06b6d4'
+    // 无音频文件，不设置music属性
   },
   { 
     name: '深紫色', 
     value: 'violet', 
-    color: '#7c3aed',
-    music: { title: '深紫色主题音乐', artist: '颜色球', src: '/colorball-music/violet.mp3' }
+    color: '#7c3aed'
+    // 无音频文件，不设置music属性
   },
   { 
     name: '薄荷绿', 
     value: 'emerald', 
-    color: '#10b981',
-    music: { title: '薄荷绿主题音乐', artist: '颜色球', src: '/colorball-music/emerald.mp3' }
+    color: '#10b981'
+    // 无音频文件，不设置music属性
   },
   { 
     name: '天蓝色', 
     value: 'sky', 
-    color: '#0ea5e9',
-    music: { title: '天蓝色主题音乐', artist: '颜色球', src: '/colorball-music/sky.mp3' }
+    color: '#0ea5e9'
+    // 无音频文件，不设置music属性
   },
   { 
     name: '金色', 
     value: 'gold', 
-    color: '#d97706',
-    music: { title: '金色主题音乐', artist: '颜色球', src: '/colorball-music/gold.mp3' }
+    color: '#d97706'
+    // 无音频文件，不设置music属性
   },
-  // 第三排 - 精选美色
+  // 第三排 - 精选美色（仅视觉效果）
   { 
     name: '珊瑚红', 
     value: 'coral', 
-    color: '#ff7875',
-    music: { title: '珊瑚红主题音乐', artist: '颜色球', src: '/colorball-music/coral.mp3' }
+    color: '#ff7875'
+    // 无音频文件，不设置music属性
   },
   { 
     name: '薰衣草', 
     value: 'lavender', 
-    color: '#a78bfa',
-    music: { title: '薰衣草主题音乐', artist: '颜色球', src: '/colorball-music/lavender.mp3' }
+    color: '#a78bfa'
+    // 无音频文件，不设置music属性
   },
   { 
     name: '桃花粉', 
     value: 'peach', 
-    color: '#fb7185',
-    music: { title: '桃花粉主题音乐', artist: '颜色球', src: '/colorball-music/peach.mp3' }
+    color: '#fb7185'
+    // 无音频文件，不设置music属性
   },
   { 
     name: '翡翠绿', 
     value: 'jade', 
-    color: '#20B2AA',
-    music: { title: '翡翠绿主题音乐', artist: '颜色球', src: '/colorball-music/jade.mp3' }
+    color: '#20B2AA'
+    // 无音频文件，不设置music属性
   },
   { 
     name: '深青色', 
     value: 'teal', 
-    color: '#40E0D0',
-    music: { title: '深青色主题音乐', artist: '颜色球', src: '/colorball-music/teal.mp3' }
+    color: '#40E0D0'
+    // 无音频文件，不设置music属性
   },
   { 
     name: '琥珀色', 
     value: 'amber', 
-    color: '#f59e0b',
-    music: { title: '琥珀色主题音乐', artist: '颜色球', src: '/colorball-music/amber.mp3' }
+    color: '#f59e0b'
+    // 无音频文件，不设置music属性
   }
 ];
 
@@ -922,46 +922,33 @@ const ballPositions = generateRandomPositions();
 </style>
 
 <script>
-  // 颜色配置 - 18种颜色（使用专用音乐文件夹）
+  // 颜色配置 - 只使用实际存在的音频文件
   const themeColors = [
-    // 第一排 - 常用颜色 
+    // 第一排 - 有音频文件的颜色 
     { 
       name: '粉红色', 
       value: 'pink', 
       color: '#ed6ea0',
-      music: { title: '粉红色主题音乐', artist: '颜色球', src: '/colorball-music/pink.mp3' }
+      music: { title: '粉红色主题音乐', artist: '颜色球', src: '/colorball-music/pink1.mp3' }
     },
     { 
       name: '蓝色', 
       value: 'blue', 
       color: '#3b82f6',
-      music: { title: '蓝色主题音乐', artist: '颜色球', src: '/colorball-music/blue.mp3' }
+      music: { title: '蓝色主题音乐', artist: '颜色球', src: '/colorball-music/blue1.mp3' }
     },
     { 
       name: '绿色', 
       value: 'green', 
       color: '#22c55e',
-      music: { title: '绿色主题音乐', artist: '颜色球', src: '/colorball-music/green.mp3' }
+      music: { title: '绿色主题音乐', artist: '颜色球', src: '/colorball-music/green1.mp3' }
     },
     { 
       name: '紫色', 
       value: 'purple', 
       color: '#8b5cf6',
-      music: { title: '紫色主题音乐', artist: '颜色球', src: '/colorball-music/purple.mp3' }
+      music: { title: '紫色主题音乐', artist: '颜色球', src: '/colorball-music/purple1.mp3' }
     },
-    { 
-      name: '橙色', 
-      value: 'orange', 
-      color: '#f97316',
-      music: { title: '橙色主题音乐', artist: '颜色球', src: '/colorball-music/orange.mp3' }
-    },
-    { 
-      name: '青色', 
-      value: 'cyan', 
-      color: '#06b6d4',
-      music: { title: '青色主题音乐', artist: '颜色球', src: '/colorball-music/cyan.mp3' }
-    },
-    // 第二排 - 更多颜色选项
     { 
       name: '红色', 
       value: 'red', 
@@ -972,68 +959,81 @@ const ballPositions = generateRandomPositions();
       name: '黄色', 
       value: 'yellow', 
       color: '#eab308',
-      music: { title: '黄色主题音乐', artist: '颜色球', src: '/colorball-music/yellow.mp3' }
+      music: { title: '黄色主题音乐', artist: '颜色球', src: '/colorball-music/yellow1.mp3' }
+    },
+    // 第二排 - 无音频文件的颜色（仅视觉效果）
+    { 
+      name: '橙色', 
+      value: 'orange', 
+      color: '#f97316'
+      // 无音频文件，不设置music属性
+    },
+    { 
+      name: '青色', 
+      value: 'cyan', 
+      color: '#06b6d4'
+      // 无音频文件，不设置music属性
     },
     { 
       name: '深紫色', 
       value: 'violet', 
-      color: '#7c3aed',
-      music: { title: '深紫色主题音乐', artist: '颜色球', src: '/colorball-music/violet.mp3' }
+      color: '#7c3aed'
+      // 无音频文件，不设置music属性
     },
     { 
       name: '薄荷绿', 
       value: 'emerald', 
-      color: '#10b981',
-      music: { title: '薄荷绿主题音乐', artist: '颜色球', src: '/colorball-music/emerald.mp3' }
+      color: '#10b981'
+      // 无音频文件，不设置music属性
     },
     { 
       name: '天蓝色', 
       value: 'sky', 
-      color: '#0ea5e9',
-      music: { title: '天蓝色主题音乐', artist: '颜色球', src: '/colorball-music/sky.mp3' }
+      color: '#0ea5e9'
+      // 无音频文件，不设置music属性
     },
     { 
       name: '金色', 
       value: 'gold', 
-      color: '#d97706',
-      music: { title: '金色主题音乐', artist: '颜色球', src: '/colorball-music/gold.mp3' }
+      color: '#d97706'
+      // 无音频文件，不设置music属性
     },
-    // 第三排 - 精选美色
+    // 第三排 - 精选美色（仅视觉效果）
     { 
       name: '珊瑚红', 
       value: 'coral', 
-      color: '#ff7875',
-      music: { title: '珊瑚红主题音乐', artist: '颜色球', src: '/colorball-music/coral.mp3' }
+      color: '#ff7875'
+      // 无音频文件，不设置music属性
     },
     { 
       name: '薰衣草', 
       value: 'lavender', 
-      color: '#a78bfa',
-      music: { title: '薰衣草主题音乐', artist: '颜色球', src: '/colorball-music/lavender.mp3' }
+      color: '#a78bfa'
+      // 无音频文件，不设置music属性
     },
     { 
       name: '桃花粉', 
       value: 'peach', 
-      color: '#fb7185',
-      music: { title: '桃花粉主题音乐', artist: '颜色球', src: '/colorball-music/peach.mp3' }
+      color: '#fb7185'
+      // 无音频文件，不设置music属性
     },
     { 
       name: '翡翠绿', 
       value: 'jade', 
-      color: '#20B2AA',
-      music: { title: '翡翠绿主题音乐', artist: '颜色球', src: '/colorball-music/jade.mp3' }
+      color: '#20B2AA'
+      // 无音频文件，不设置music属性
     },
     { 
       name: '深青色', 
       value: 'teal', 
-      color: '#40E0D0',
-      music: { title: '深青色主题音乐', artist: '颜色球', src: '/colorball-music/teal.mp3' }
+      color: '#40E0D0'
+      // 无音频文件，不设置music属性
     },
     { 
       name: '琥珀色', 
       value: 'amber', 
-      color: '#f59e0b',
-      music: { title: '琥珀色主题音乐', artist: '颜色球', src: '/colorball-music/amber.mp3' }
+      color: '#f59e0b'
+      // 无音频文件，不设置music属性
     }
   ];
 
@@ -1059,104 +1059,29 @@ const ballPositions = generateRandomPositions();
       this.scanMusicFiles();
     }
     
-    // 扫描并构建实际存在的音乐文件映射
+    // 构建实际存在的音乐文件映射（基于已知存在的文件）
     async scanMusicFiles() {
-      console.log('🔍 开始扫描colorball-music目录下的音乐文件...');
+      console.log('🔍 初始化colorball-music音乐文件映射...');
       
-      // 定义所有可能的色系
-      const allColors = ['red', 'coral', 'peach', 'pink', 'lavender', 'blue', 'sky', 'cyan', 'teal', 'green', 'emerald', 'jade', 'purple', 'violet', 'yellow', 'gold', 'amber', 'orange'];
+      // 直接使用已知存在的文件，避免404错误
+      const knownExistingFiles = {
+        'pink': ['pink1.mp3'],
+        'blue': ['blue1.mp3'],
+        'green': ['green1.mp3'],
+        'purple': ['purple1.mp3'],
+        'red': ['red1.mp3'],
+        'yellow': ['yellow1.mp3']
+      };
       
-      // 先获取目录下实际存在的文件列表
-      const existingFilesInDir: string[] = [];
-      try {
-        // 尝试获取目录列表（这可能不总是有效，取决于服务器配置）
-        // 作为替代方案，我们先检查一些常见的文件
-        const commonFiles = [
-          '1.mp3', '2.mp3', '3.mp3', '4.mp3', '5.mp3', '6.mp3', '7.mp3', '8.mp3', '9.mp3', '10.mp3',
-          'red.mp3', 'blue.mp3', 'green.mp3', 'purple.mp3', 'orange.mp3', 'yellow.mp3', 'cyan.mp3',
-          'pink.mp3', 'coral.mp3', 'emerald.mp3', 'sky.mp3', 'gold.mp3', 'lavender.mp3', 'peach.mp3',
-          'jade.mp3', 'teal.mp3', 'violet.mp3', 'amber.mp3'
-        ];
-        
-        // 检查这些常见文件是否存在
-        for (const fileName of commonFiles) {
-          const musicPath = `/colorball-music/${fileName}`;
-          try {
-            const response = await fetch(musicPath, { method: 'HEAD' });
-            if (response.ok) {
-              existingFilesInDir.push(fileName);
-              console.log(`✅ 找到音乐文件: ${fileName}`);
-            }
-          } catch (error) {
-            // 文件不存在或无法访问，跳过
-          }
-        }
-      } catch (error) {
-        console.warn('⚠️ 无法获取目录文件列表');
+      // 直接设置已知存在的文件映射
+      this.colorMusicGroups = knownExistingFiles;
+      
+      console.log('🎵 音乐文件映射已初始化:');
+      for (const [color, files] of Object.entries(this.colorMusicGroups)) {
+        console.log(`  🎨 ${color}: ${files.join(', ')}`);
       }
       
-      // 如果没有找到任何文件，使用更保守的方法
-      if (existingFilesInDir.length === 0) {
-        console.log('🎵 未找到现有文件，使用保守扫描方法');
-        
-        // 为每个色系检查实际存在的文件
-        for (const color of allColors) {
-          const existingFiles: string[] = [];
-          
-          // 只检查最基本的文件名模式
-          const basicPatterns = [
-            `${color}.mp3`,
-            `${color}1.mp3`,
-            `${color}2.mp3`
-          ];
-          
-          // 检查每个可能的文件是否存在
-          for (const fileName of basicPatterns) {
-            const musicPath = `/colorball-music/${fileName}`;
-            try {
-              const response = await fetch(musicPath, { method: 'HEAD' });
-              if (response.ok) {
-                existingFiles.push(fileName);
-                console.log(`✅ 找到音乐文件: ${fileName} (色系: ${color})`);
-              }
-            } catch (error) {
-              // 文件不存在或无法访问，跳过
-            }
-          }
-          
-          // 只有当该色系有实际存在的文件时才添加到映射中
-          if (existingFiles.length > 0) {
-            this.colorMusicGroups[color] = existingFiles;
-            console.log(`🎵 色系 ${color} 已配置 ${existingFiles.length} 个音乐文件`);
-          } else {
-            console.warn(`⚠️ 色系 ${color} 没有找到任何音乐文件`);
-          }
-        }
-      } else {
-        console.log(`🎵 找到 ${existingFilesInDir.length} 个现有文件，基于这些文件构建映射`);
-        
-        // 根据实际存在的文件构建色系映射
-        for (const color of allColors) {
-          const colorFiles = existingFilesInDir.filter(file => 
-            file.startsWith(`${color}.`) || 
-            file.startsWith(`${color}1.`) || 
-            file.startsWith(`${color}2.`) ||
-            file === `${color}.mp3` ||
-            file === `${color}1.mp3` ||
-            file === `${color}2.mp3`
-          );
-          
-          if (colorFiles.length > 0) {
-            this.colorMusicGroups[color] = colorFiles;
-            console.log(`🎵 色系 ${color} 已配置 ${colorFiles.length} 个音乐文件`);
-          } else {
-            console.warn(`⚠️ 色系 ${color} 没有找到任何音乐文件`);
-          }
-        }
-      }
-      
-      console.log('🎨 色系音乐映射构建完成:', Object.keys(this.colorMusicGroups));
-      console.log('🎵 色系音乐播放器已初始化 - 终极方案');
+      console.log('🎵 色系音乐播放器已初始化 - 优化版本');
       console.log('🎨 支持的色系:', Object.keys(this.colorMusicGroups));
     }
     
@@ -1179,38 +1104,14 @@ const ballPositions = generateRandomPositions();
         return;
       }
       
-      // 创建一个包含所有候选文件的副本，用于尝试播放
-      let candidatesToTry = [...musicCandidates];
-      let attempts = 0;
+      // 随机选择该色系的一首音乐
+      const randomIndex = Math.floor(Math.random() * musicCandidates.length);
+      const selectedMusic = musicCandidates[randomIndex];
+      const musicPath = `/colorball-music/${selectedMusic}`;
       
-      // 尝试播放音乐文件
-      while (candidatesToTry.length > 0 && attempts < musicCandidates.length) {
-        attempts++;
-        // 随机选择该色系的一首音乐
-        const randomIndex = Math.floor(Math.random() * candidatesToTry.length);
-        const selectedMusic = candidatesToTry[randomIndex];
-        const musicPath = `/colorball-music/${selectedMusic}`;
-        
-        console.log(`🎵 为色系 ${colorValue} 尝试播放音乐: ${selectedMusic}`);
-        
-        // 检查文件是否存在（通过尝试加载）
-        let fileExists = false;
-        try {
-          const response = await fetch(musicPath, { method: 'HEAD' });
-          fileExists = response.ok;
-          if (fileExists) {
-            console.log(`✅ 音乐文件存在: ${musicPath}`);
-          } else {
-            console.warn(`⚠️ 音乐文件不存在或无法访问: ${musicPath} (HTTP ${response.status})`);
-          }
-        } catch (error) {
-          console.error(`❌ 检查音乐文件时出错: ${musicPath}`, error);
-          fileExists = false;
-        }
-        
-        // 如果文件存在，尝试播放
-        if (fileExists) {
-          try {
+      console.log(`🎵 为色系 ${colorValue} 播放音乐: ${selectedMusic}`);
+      
+      try {
             // 创建新的音频实例
             this.currentAudio = new Audio(musicPath);
             this.currentAudio.volume = this.volume; // 使用统一音量控制
@@ -1219,24 +1120,12 @@ const ballPositions = generateRandomPositions();
             // 音量标准化处理
             // 为不同音乐文件设置预定义的音量系数，以平衡音量差异
             const volumeCoefficients: { [key: string]: number } = {
-              'red.mp3': 0.8,
-              'blue.mp3': 0.9,
-              'green.mp3': 0.7,
-              'purple.mp3': 0.85,
-              'orange.mp3': 0.75,
-              'yellow.mp3': 0.8,
-              'cyan.mp3': 0.9,
-              'pink.mp3': 0.7,
-              'coral.mp3': 0.75,
-              'emerald.mp3': 0.8,
-              'sky.mp3': 0.85,
-              'gold.mp3': 0.9,
-              'lavender.mp3': 0.75,
-              'peach.mp3': 0.8,
-              'jade.mp3': 0.85,
-              'teal.mp3': 0.9,
-              'violet.mp3': 0.75,
-              'amber.mp3': 0.8
+              'red1.mp3': 0.8,
+              'blue1.mp3': 0.9,
+              'green1.mp3': 0.7,
+              'purple1.mp3': 0.85,
+              'pink1.mp3': 0.7,
+              'yellow1.mp3': 0.8
             };
             
             // 根据文件名调整音量系数
@@ -1328,27 +1217,17 @@ const ballPositions = generateRandomPositions();
             await this.currentAudio.play();
             
             console.log(`🎶 成功播放 ${colorValue} 色系音乐: ${selectedMusic}`);
-            return; // 成功播放，退出循环
             
           } catch (error) {
             console.error(`❌ 播放音乐失败: ${selectedMusic}`, error);
             this.isPlaying = false;
             this.removeVisualFeedback();
+            // 如果播放失败，只显示视觉效果
+            this.addVisualFeedback(ball);
+            setTimeout(() => {
+              this.removeVisualFeedback();
+            }, 2000);
           }
-        }
-        
-        // 如果文件不存在或播放失败，从候选列表中移除并继续尝试
-        candidatesToTry.splice(randomIndex, 1);
-        console.log(`⚠️ 移除无法播放的文件: ${selectedMusic}，剩余候选文件: ${candidatesToTry.length}`);
-      }
-      
-      // 如果所有候选文件都无法播放
-      console.warn(`⚠️ 色系 ${colorValue} 的所有候选音乐文件都无法播放，只显示视觉效果`);
-      // 如果没有音乐文件，只显示视觉效果
-      this.addVisualFeedback(ball);
-      setTimeout(() => {
-        this.removeVisualFeedback();
-      }, 2000);
     }
     
     // 添加视觉反馈效果
