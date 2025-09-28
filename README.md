@@ -138,6 +138,7 @@ docker-compose up
 ```
 
 Docker 环境特点：
+
 - 自动热重载 / Automatic hot reload
 - 文件同步 / File synchronization
 - 一致的开发环境 / Consistent development environment
@@ -180,7 +181,7 @@ tags: ['标签 1 / Tag1', '标签 2 / Tag2']
 
 你的 Markdown 内容...
 
-```
+```plain
 
 ---
 
@@ -197,11 +198,16 @@ tags: ['标签 1 / Tag1', '标签 2 / Tag2']
 
 ## 📈 更新日志 / Changelog
 
-🎯 最新版本 / Latest: v0.2.5 (2025-09-20)
+🎯 最新版本 / Latest: v0.2.8 (2025-01-XX)
 
 ✨ **版本更新** / **Version Update**
 
-✅ 版本号从 v0.2.0 升级到 v0.2.5 / Version upgraded from v0.2.0 to v0.2.5
+✅ **v0.28.1** - 彩色球组件音频文件404错误修复 / FloatingColorBalls component audio file 404 errors fixed
+   - 修复了 FloatingColorBalls.astro 组件中的音频文件引用错误 / Fixed audio file reference errors in FloatingColorBalls.astro component
+   - 将18种颜色成功映射到6个现有音频文件 / Successfully mapped 18 colors to 6 existing audio files
+   - 消除了所有音频文件相关的404错误 / Eliminated all audio file related 404 errors
+
+✅ 版本号从 v0.2.5 升级到 v0.2.8 / Version upgraded from v0.2.5 to v0.2.8
 ✅ 幻念集页面优化：实现随机展示内容功能，每次打开页面显示50%随机内容，确保展示数量为偶数以保持页面对齐美观
 ✅ 名人名言模块增强：新增加密货币领域名言，完善中英文对照
 ✅ RSS和Sitemap优化：完善多语言支持，确保搜索引擎更好地索引网站内容
@@ -236,3 +242,4 @@ tags: ['标签 1 / Tag1', '标签 2 / Tag2']
 
 _Made with ❤️ by SilentXx Team_
 _Copyright © 2020-2025 SilentXx. All rights reserved._
+```

@@ -4,6 +4,26 @@
 
 <!-- 由 git-cliff 生成、 gpt 翻译润色 -->
 
+## [0.2.8] - 2025-01-XX
+
+### 🎉 版本更新 / Version Update
+
+#### 🚀 核心更新 / Core Updates
+
+- **版本号升级** - 从 v0.2.5 升级到 v0.2.8 / Version upgraded from v0.2.5 to v0.2.8
+
+#### 🐛 v0.28.1 - 彩色球组件音频文件 404 错误修复 / FloatingColorBalls Component Audio File 404 Errors Fixed
+
+- **问题修复** - 修复了 FloatingColorBalls.astro 组件中大量音频文件 404 错误 / Fixed massive audio file 404 errors in FloatingColorBalls.astro component
+- **文件映射优化** - 将 18 种颜色成功映射到 6 个现有音频文件（*1.mp3 格式）/ Successfully mapped 18 colors to 6 existing audio files (*1.mp3 format)
+- **配置对象修复** - 修复了 knownExistingFiles、colorMapping 和 volumeCoefficients 对象中的错误引用 / Fixed incorrect references in knownExistingFiles, colorMapping, and volumeCoefficients objects
+- **性能提升** - 消除了所有音频文件相关的 404 错误，提升了页面加载性能 / Eliminated all audio file related 404 errors, improved page loading performance
+
+#### 🚀 v0.28.0 - Banner 区域点击问题修复与系统优化 / Banner Area Click Issues Fix and System Optimization
+
+- **Banner 区域点击问题修复** - 修复了 Banner 区域意外触发右侧菜单、语言切换器和背景音乐播放器的问题 / Fixed Banner area click issues that accidentally triggered right-side menu, language switcher, and background music player
+- **系统性能优化** - 改进了组件定位和事件处理机制，提升了整体用户体验 / System performance optimization with improved component positioning and event handling
+
 ## [0.2.5] - 2025-09-20
 
 ### 🎉 版本更新 / Version Update
@@ -12,7 +32,7 @@
 
 - **版本号升级** - 从 v0.2.0 升级到 v0.2.5 / Version upgraded from v0.2.0 to v0.2.5
 - **名人名言模块增强** - 新增加密货币领域名言，完善中英文对照 / Enhanced quote module with cryptocurrency-related quotes and improved Chinese-English translation
-- **RSS和Sitemap优化** - 完善多语言支持，确保搜索引擎更好地索引网站内容 / Optimized RSS and Sitemap for better multilingual support and search engine indexing
+- **RSS 和 Sitemap 优化** - 完善多语言支持，确保搜索引擎更好地索引网站内容 / Optimized RSS and Sitemap for better multilingual support and search engine indexing
 
 ## [0.2.0] - 2025-09-14
 
@@ -60,7 +80,8 @@
 - Tailwind CSS 4.0.0
 - Vercel 部署 / Vercel deployment
 
-[未发布]: https://github.com/AheheXx1982/SilentXx/compare/v0.2.5...HEAD
+[未发布]: https://github.com/AheheXx1982/SilentXx/compare/v0.2.8...HEAD
+[0.2.8]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.2.8
 [0.2.5]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.2.5
 [0.2.0]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.2.0
 [0.1.0]: https://github.com/AheheXx1982/SilentXx/releases/tag/v0.1.0

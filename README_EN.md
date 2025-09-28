@@ -129,6 +129,7 @@ docker-compose up
 ```
 
 Docker environment features:
+
 - Automatic hot reload
 - File synchronization
 - Consistent development environment
@@ -193,11 +194,17 @@ These features help search engines better index your website content and provide
 
 ## 📈 Changelog
 
-🎯 Latest: v0.2.5 (2025-09-20)
+🎯 Latest: v0.2.8 (2025-01-XX)
 
 ✨ **Version Update**
 
-✅ Version upgraded from v0.2.0 to v0.2.5
+✅ **v0.28.1** - FloatingColorBalls component audio file 404 errors fixed
+
+- Fixed audio file reference errors in FloatingColorBalls.astro component
+- Successfully mapped 18 colors to 6 existing audio files
+- Eliminated all audio file related 404 errors
+
+✅ Version upgraded from v0.2.5 to v0.2.8
 ✅ Illusionary Thoughts page optimization: Implemented random content display feature, showing 50% random content each time the page is opened, ensuring an even number of displays to maintain page alignment and aesthetics
 ✅ Quote module enhancement: Added cryptocurrency-related quotes, improved Chinese-English translation
 ✅ RSS and Sitemap optimization: Enhanced multilingual support to ensure search engines better index website content
