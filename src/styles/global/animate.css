@@ -605,3 +605,348 @@
 .transition-opacity {
   transition: opacity 0.3s ease;
 }
+
+/* 颜色球特效系统动画 */
+
+/* 自旋动画 */
+@keyframes ball-spin {
+  0% { 
+    transform: rotate(0deg) scale(1); 
+  }
+  100% { 
+    transform: rotate(360deg) scale(1); 
+  }
+}
+
+.ball-spin {
+  animation: ball-spin 2s linear infinite;
+}
+
+/* 弹跳动画 */
+@keyframes ball-bounce {
+  0%, 100% { 
+    transform: translateY(0) scale(1); 
+  }
+  30% { 
+    transform: translateY(-20px) scale(1.1); 
+  }
+  60% { 
+    transform: translateY(-10px) scale(1.05); 
+  }
+  80% { 
+    transform: translateY(-5px) scale(1.02); 
+  }
+}
+
+.ball-bounce {
+  animation: ball-bounce 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+
+/* 龙卷风动画 */
+@keyframes tornado {
+  0% { 
+    transform: rotate(0deg) translateX(0) scale(1); 
+  }
+  25% { 
+    transform: rotate(90deg) translateX(15px) scale(1.2); 
+  }
+  50% { 
+    transform: rotate(180deg) translateX(0) scale(0.8); 
+  }
+  75% { 
+    transform: rotate(270deg) translateX(-15px) scale(1.2); 
+  }
+  100% { 
+    transform: rotate(360deg) translateX(0) scale(1); 
+  }
+}
+
+.tornado {
+  animation: tornado 1.8s ease-in-out infinite;
+}
+
+/* 泡泡上升动画 */
+@keyframes bubble-rise {
+  0% { 
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% { 
+    transform: translateY(-30px) scale(1.3) rotate(180deg);
+    opacity: 0.8;
+  }
+  100% { 
+    transform: translateY(-15px) scale(0.9) rotate(360deg);
+    opacity: 1;
+  }
+}
+
+.bubble-rise {
+  animation: bubble-rise 2.5s ease-in-out infinite;
+}
+
+/* 螺旋动画 */
+@keyframes spiral {
+  0% { 
+    transform: rotate(0deg) translateX(0) rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg) translateX(25px) rotate(-360deg); 
+  }
+}
+
+.spiral {
+  animation: spiral 3s ease-in-out infinite;
+}
+
+/* 波浪运动动画 */
+@keyframes wave-motion {
+  0%, 100% { 
+    transform: translateX(0) translateY(0); 
+  }
+  25% { 
+    transform: translateX(10px) translateY(-5px); 
+  }
+  50% { 
+    transform: translateX(0) translateY(-10px); 
+  }
+  75% { 
+    transform: translateX(-10px) translateY(-5px); 
+  }
+}
+
+.wave-motion {
+  animation: wave-motion 2s ease-in-out infinite;
+}
+
+/* 磁场动画 */
+@keyframes magnetic-field {
+  0% { 
+    transform: scale(1) rotate(0deg);
+    box-shadow: 0 0 10px currentColor;
+  }
+  33% { 
+    transform: scale(1.3) rotate(120deg);
+    box-shadow: 0 0 25px currentColor, 0 0 35px currentColor;
+  }
+  66% { 
+    transform: scale(0.7) rotate(240deg);
+    box-shadow: 0 0 5px currentColor;
+  }
+  100% { 
+    transform: scale(1) rotate(360deg);
+    box-shadow: 0 0 10px currentColor;
+  }
+}
+
+.magnetic-field {
+  animation: magnetic-field 2.2s ease-in-out infinite;
+}
+
+/* 大特效 - 超新星爆发 */
+@keyframes supernova {
+  0% { 
+    transform: scale(1);
+    box-shadow: 0 0 10px currentColor;
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(2.5);
+    box-shadow: 0 0 50px currentColor, 0 0 80px currentColor, 0 0 120px currentColor;
+    opacity: 0.8;
+  }
+  100% { 
+    transform: scale(1);
+    box-shadow: 0 0 15px currentColor;
+    opacity: 1;
+  }
+}
+
+.supernova {
+  animation: supernova 4s ease-in-out infinite;
+}
+
+/* 星系螺旋 */
+@keyframes galaxy-spiral {
+  0% { 
+    transform: rotate(0deg) translateX(0) scale(1); 
+  }
+  25% { 
+    transform: rotate(90deg) translateX(40px) scale(1.5); 
+  }
+  50% { 
+    transform: rotate(180deg) translateX(0) scale(0.5); 
+  }
+  75% { 
+    transform: rotate(270deg) translateX(-40px) scale(1.5); 
+  }
+  100% { 
+    transform: rotate(360deg) translateX(0) scale(1); 
+  }
+}
+
+.galaxy-spiral {
+  animation: galaxy-spiral 5s ease-in-out infinite;
+}
+
+/* 矩阵变换 */
+@keyframes matrix-transform {
+  0%, 100% { 
+    transform: matrix(1, 0, 0, 1, 0, 0) scale(1);
+    filter: hue-rotate(0deg);
+  }
+  20% { 
+    transform: matrix(0.8, 0.6, -0.6, 0.8, 10, -10) scale(1.2);
+    filter: hue-rotate(72deg);
+  }
+  40% { 
+    transform: matrix(0.3, 0.9, -0.9, 0.3, -5, 15) scale(0.8);
+    filter: hue-rotate(144deg);
+  }
+  60% { 
+    transform: matrix(-0.2, 0.9, -0.9, -0.2, 20, 5) scale(1.3);
+    filter: hue-rotate(216deg);
+  }
+  80% { 
+    transform: matrix(-0.8, -0.5, 0.5, -0.8, -15, -10) scale(0.9);
+    filter: hue-rotate(288deg);
+  }
+}
+
+.matrix-transform {
+  animation: matrix-transform 6s ease-in-out infinite;
+}
+
+/* 能量爆发 */
+@keyframes energy-burst {
+  0% { 
+    transform: scale(1) rotate(0deg);
+    box-shadow: 0 0 10px currentColor;
+  }
+  25% { 
+    transform: scale(2) rotate(90deg);
+    box-shadow: 0 0 30px currentColor, 0 0 60px rgba(255,255,255,0.5);
+  }
+  50% { 
+    transform: scale(0.5) rotate(180deg);
+    box-shadow: 0 0 5px currentColor;
+  }
+  75% { 
+    transform: scale(2.2) rotate(270deg);
+    box-shadow: 0 0 40px currentColor, 0 0 80px rgba(255,255,255,0.7);
+  }
+  100% { 
+    transform: scale(1) rotate(360deg);
+    box-shadow: 0 0 10px currentColor;
+  }
+}
+
+.energy-burst {
+  animation: energy-burst 3s ease-in-out infinite;
+}
+
+/* 编队飞行 */
+@keyframes formation-flight {
+  0% { 
+    transform: translateX(0) translateY(0) rotate(0deg); 
+  }
+  20% { 
+    transform: translateX(20px) translateY(-10px) rotate(45deg); 
+  }
+  40% { 
+    transform: translateX(0) translateY(-20px) rotate(90deg); 
+  }
+  60% { 
+    transform: translateX(-20px) translateY(-10px) rotate(135deg); 
+  }
+  80% { 
+    transform: translateX(-10px) translateY(5px) rotate(180deg); 
+  }
+  100% { 
+    transform: translateX(0) translateY(0) rotate(360deg); 
+  }
+}
+
+.formation-flight {
+  animation: formation-flight 4s ease-in-out infinite;
+}
+
+/* 颜色级联 */
+@keyframes color-cascade {
+  0% { 
+    filter: hue-rotate(0deg) saturate(1) brightness(1);
+    transform: scale(1);
+  }
+  25% { 
+    filter: hue-rotate(90deg) saturate(1.5) brightness(1.2);
+    transform: scale(1.1);
+  }
+  50% { 
+    filter: hue-rotate(180deg) saturate(2) brightness(1.4);
+    transform: scale(1.2);
+  }
+  75% { 
+    filter: hue-rotate(270deg) saturate(1.5) brightness(1.2);
+    transform: scale(1.1);
+  }
+  100% { 
+    filter: hue-rotate(360deg) saturate(1) brightness(1);
+    transform: scale(1);
+  }
+}
+
+.color-cascade {
+  animation: color-cascade 3.5s ease-in-out infinite;
+}
+
+/* 流星雨 */
+@keyframes meteor-shower {
+  0% { 
+    transform: translateX(-50px) translateY(-50px) rotate(0deg) scale(0);
+    opacity: 0;
+  }
+  10% { 
+    opacity: 1;
+    transform: translateX(-30px) translateY(-30px) rotate(45deg) scale(0.5);
+  }
+  50% { 
+    opacity: 1;
+    transform: translateX(30px) translateY(30px) rotate(225deg) scale(1.5);
+  }
+  90% { 
+    opacity: 1;
+    transform: translateX(50px) translateY(50px) rotate(405deg) scale(0.8);
+  }
+  100% { 
+    opacity: 0;
+    transform: translateX(70px) translateY(70px) rotate(450deg) scale(0);
+  }
+}
+
+.meteor-shower {
+  animation: meteor-shower 5s ease-in-out infinite;
+}
+
+/* 空间扭曲 */
+@keyframes space-warp {
+  0%, 100% { 
+    transform: perspective(100px) rotateX(0deg) rotateY(0deg) scale(1);
+    filter: blur(0px);
+  }
+  25% { 
+    transform: perspective(100px) rotateX(45deg) rotateY(90deg) scale(1.3);
+    filter: blur(1px);
+  }
+  50% { 
+    transform: perspective(100px) rotateX(90deg) rotateY(180deg) scale(0.7);
+    filter: blur(2px);
+  }
+  75% { 
+    transform: perspective(100px) rotateX(135deg) rotateY(270deg) scale(1.2);
+    filter: blur(1px);
+  }
+}
+
+.space-warp {
+  animation: space-warp 4.5s ease-in-out infinite;
+}

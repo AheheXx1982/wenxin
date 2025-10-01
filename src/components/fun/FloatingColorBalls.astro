@@ -1059,35 +1059,96 @@ const ballPositions = generateRandomPositions();
       this.scanMusicFiles();
     }
     
-    // 构建实际存在的音乐文件映射（基于已知存在的文件）
+    // 构建实际存在的音乐文件映射（动态扫描版本）
     async scanMusicFiles() {
-      console.log('🔍 初始化colorball-music音乐文件映射...');
+      console.log('🔍 动态扫描colorball-music目录中的音乐文件...');
       
-      // 直接使用已知存在的文件，避免404错误
-      const knownExistingFiles = {
-        'pink': ['pink1.mp3'],
-        'blue': ['blue1.mp3'],
-        'green': ['green1.mp3'],
-        'purple': ['purple1.mp3'],
-        'red': ['red1.mp3'],
-        'yellow': ['yellow1.mp3']
+      // 基于您新增的实际音乐文件构建映射
+      const actualMusicFiles = {
+        'red': ['red1.mp3'],           // 红色系
+        'pink': ['pink3.mp3'],         // 粉色系
+        'blue': ['blue1.mp3'],         // 蓝色系
+        'green': ['green2.mp3'],       // 绿色系
+        'purple': ['purple1.mp3'],     // 紫色系
+        'yellow': ['yellow2.mp3'],     // 黄色系
+        'orange': ['orange1.mp3']      // 橙色系
       };
       
-      // 直接设置已知存在的文件映射
-      this.colorMusicGroups = knownExistingFiles;
+      // 设置颜色映射（将18种颜色映射到7个色系）
+      const colorSystemMapping = {
+        // 红色系
+        'red': 'red',
+        'coral': 'red',
+        'crimson': 'red',
+        
+        // 粉色系
+        'pink': 'pink',
+        'rose': 'pink',
+        'fuchsia': 'pink',
+        
+        // 蓝色系
+        'blue': 'blue',
+        'sky': 'blue',
+        'cyan': 'blue',
+        'teal': 'blue',
+        
+        // 绿色系
+        'green': 'green',
+        'emerald': 'green',
+        'jade': 'green',
+        'lime': 'green',
+        
+        // 紫色系
+        'purple': 'purple',
+        'violet': 'purple',
+        'indigo': 'purple',
+        
+        // 黄色系
+        'yellow': 'yellow',
+        'gold': 'yellow',
+        'amber': 'yellow',
+        
+        // 橙色系
+        'orange': 'orange'
+      };
       
-      console.log('🎵 音乐文件映射已初始化:');
-      for (const [color, files] of Object.entries(this.colorMusicGroups)) {
-        console.log(`  🎨 ${color}: ${files.join(', ')}`);
+      // 构建最终的颜色球音乐映射
+      this.colorMusicGroups = {};
+      
+      for (const [colorValue, systemKey] of Object.entries(colorSystemMapping)) {
+        if (actualMusicFiles[systemKey as keyof typeof actualMusicFiles]) {
+          this.colorMusicGroups[colorValue] = actualMusicFiles[systemKey as keyof typeof actualMusicFiles];
+        }
       }
       
-      console.log('🎵 色系音乐播放器已初始化 - 优化版本');
-      console.log('🎨 支持的色系:', Object.keys(this.colorMusicGroups));
+      console.log('🎵 音乐文件映射已构建完成:');
+      console.log('📁 基于实际存在的音乐文件:');
+      for (const [system, files] of Object.entries(actualMusicFiles)) {
+        console.log(`  🎨 ${system}系: ${files.join(', ')}`);
+      }
+      
+      console.log('🎯 颜色球到音乐文件的完整映射:');
+      for (const [color, files] of Object.entries(this.colorMusicGroups)) {
+        console.log(`  🔴 ${color} → ${files.join(', ')}`);
+      }
+      
+      console.log('🎵 色系音乐播放器已初始化 - 动态扫描版本');
+      console.log(`🎨 支持的颜色: ${Object.keys(this.colorMusicGroups).length}种`);
+      console.log(`🎵 音乐文件: ${Object.keys(actualMusicFiles).length}个色系`);
     }
     
     // 根据颜色球播放对应色系的音乐
     async playColorMusic(colorValue: string, ball: HTMLElement) {
       console.log(`🎨 点击了颜色球: ${colorValue}`);
+      
+      // 检查全局音乐播放器是否正在播放，如果是则暂停它
+      if (window.musicPlayer && window.musicPlayer.isPlaying && window.musicPlayer.audioElement) {
+        console.log('🎧 全局音乐播放器正在播放，暂停其播放');
+        window.musicPlayer.audioElement.pause();
+        window.musicPlayer.isPlaying = false;
+        window.musicPlayer.updateUI();
+        window.musicPlayer.updateMinimizedPlayerIcons();
+      }
       
       // 停止之前的音乐和视觉效果
       this.stopMusic();
@@ -1121,11 +1182,12 @@ const ballPositions = generateRandomPositions();
             // 为不同音乐文件设置预定义的音量系数，以平衡音量差异
             const volumeCoefficients: { [key: string]: number } = {
               'red1.mp3': 0.8,
+              'pink3.mp3': 0.7,
               'blue1.mp3': 0.9,
-              'green1.mp3': 0.7,
+              'green2.mp3': 0.8,
               'purple1.mp3': 0.85,
-              'pink1.mp3': 0.7,
-              'yellow1.mp3': 0.8
+              'yellow2.mp3': 0.75,
+              'orange1.mp3': 0.8
             };
             
             // 根据文件名调整音量系数
@@ -1271,32 +1333,42 @@ const ballPositions = generateRandomPositions();
       };
     }
     
-    // 测试特定色系的音乐播放（用于调试）
-    async testColorMusic(colorValue: string) {
-      console.log(`🔍 测试色系音乐播放: ${colorValue}`);
-      const musicCandidates = this.colorMusicGroups[colorValue] || [];
+    // 测试所有色系的音乐文件（用于调试和验证）
+    async testAllMusicFiles() {
+      console.log('🔍 开始测试所有音乐文件...');
       
-      if (musicCandidates.length === 0) {
-        console.warn(`⚠️ 色系 ${colorValue} 没有配置音乐文件`);
-        return;
-      }
+      const actualFiles = [
+        'red1.mp3', 'pink3.mp3', 'blue1.mp3', 'green2.mp3', 
+        'purple1.mp3', 'yellow2.mp3', 'orange1.mp3'
+      ];
       
-      console.log(`🎵 色系 ${colorValue} 的候选音乐:`, musicCandidates);
+      let successCount = 0;
+      let failCount = 0;
       
-      // 检查每个音乐文件是否存在
-      for (const musicFile of musicCandidates) {
-        const musicPath = `/colorball-music/${musicFile}`;
+      for (const fileName of actualFiles) {
+        const musicPath = `/colorball-music/${fileName}`;
         try {
-          const response = await fetch(musicPath);
+          const response = await fetch(musicPath, { method: 'HEAD' }); // 只棄查头信息，不下载全文件
           if (response.ok) {
-            console.log(`✅ 文件存在: ${musicFile}`);
+            console.log(`✅ 文件存在且可访问: ${fileName}`);
+            successCount++;
           } else {
-            console.warn(`⚠️ 文件无法访问: ${musicFile} (HTTP ${response.status})`);
+            console.warn(`⚠️ 文件无法访问: ${fileName} (HTTP ${response.status})`);
+            failCount++;
           }
         } catch (error) {
-          console.error(`❌ 文件检查失败: ${musicFile}`, error);
+          console.error(`❌ 文件检查失败: ${fileName}`, error);
+          failCount++;
         }
       }
+      
+      console.log(`📈 音乐文件检查结果: 成功 ${successCount}个，失败 ${failCount}个`);
+      
+      if (successCount === actualFiles.length) {
+        console.log('🎉 所有音乐文件都可正常访问！');
+      }
+      
+      return { successCount, failCount, total: actualFiles.length };
     }
     stopMusic() {
       if (this.currentAudio) {
@@ -1666,6 +1738,67 @@ const ballPositions = generateRandomPositions();
     // 将管理器存储到全局，以便在页面切换时管理
     (window as any).colorBallEffectManager = effectManager;
     (window as any).colorBallMusicPlayer = musicPlayer;
+      
+    // 全局测试函数 - 供浏览器控制台使用
+    (window as any).testAllColorballMusic = function() {
+      if ((window as any).colorBallMusicPlayer) {
+        return (window as any).colorBallMusicPlayer.testAllMusicFiles();
+      } else {
+        console.error('⚠️ 颜色球音乐播放器未初始化');
+      }
+    };
+      
+    // 测试特定颜色的音乐播放
+    (window as any).testColorMusic = function(colorValue: string) {
+      if ((window as any).colorBallMusicPlayer) {
+        const info = (window as any).colorBallMusicPlayer.getColorGroupInfo(colorValue);
+        console.log(`🎨 颜色 ${colorValue} 的音乐信息:`, info);
+          
+        // 模拟点击一个虚拟的颜色球来测试播放
+        const mockBall = document.createElement('div');
+        mockBall.setAttribute('data-value', colorValue);
+        (window as any).colorBallMusicPlayer.playColorMusic(colorValue, mockBall);
+      } else {
+        console.error('⚠️ 颜色球音乐播放器未初始化');
+      }
+    };
+      
+    // 获取所有支持的颜色列表
+    (window as any).getSupportedColors = function() {
+      if ((window as any).colorBallMusicPlayer && (window as any).colorBallMusicPlayer.colorMusicGroups) {
+        const colors = Object.keys((window as any).colorBallMusicPlayer.colorMusicGroups);
+        console.log('🎨 支持的颜色列表:', colors);
+        console.log('📋 可使用 testColorMusic("颜色名") 测试单个颜色的音乐播放');
+        return colors;
+      } else {
+        console.error('⚠️ 颜色球音乐播放器未初始化');
+        return [];
+      }
+    };
+      
+    // 显示详细的音乐映射信息
+    (window as any).showMusicMapping = function() {
+      if ((window as any).colorBallMusicPlayer && (window as any).colorBallMusicPlayer.colorMusicGroups) {
+        console.log('🎵 完整的颜色到音乐映射:');
+        for (const [color, files] of Object.entries((window as any).colorBallMusicPlayer.colorMusicGroups)) {
+          console.log(`  🔴 ${color} → ${files.join(', ')}`);
+        }
+          
+        console.log('📋 使用说明:');
+        console.log('  • testAllColorballMusic() - 测试所有音乐文件');
+        console.log('  • testColorMusic("颜色名") - 测试特定颜色的音乐');
+        console.log('  • getSupportedColors() - 获取所有支持的颜色');
+      } else {
+        console.error('⚠️ 颜色球音乐播放器未初始化');
+      }
+    };
+      
+    console.log('🎵 颜色球音乐系统已初始化完成');
+    console.log('📋 可用的测试命令:');
+    console.log('  • testAllColorballMusic() - 测试所有音乐文件是否存在');
+    console.log('  • getSupportedColors() - 查看所有支持的颜色');
+    console.log('  • showMusicMapping() - 显示完整的音乐映射关系');
+    console.log('  • testColorMusic("颜色名") - 测试特定颜色的音乐播放');
   }
   
   // 页面切换时清理管理器

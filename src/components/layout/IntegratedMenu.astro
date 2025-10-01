@@ -16,6 +16,45 @@ const THEME_COLORS = [
 ];
 ---
 
+<style>
+  /* 太阳系行星式旋转动画系统 - 错落有致的视觉层次 */
+  @keyframes rotate-clockwise {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  @keyframes rotate-counter-clockwise {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+  }
+  
+  /* 🎯 一级菜单主图标 - 最外层，最慢速度营造稳定感 */
+  .main-menu-rotation {
+    animation: rotate-clockwise 8s linear infinite;
+    transition: animation-duration 0.3s ease;
+  }
+  
+  /* 悬停时加快到2秒一圈，符合规范 */
+  .integrated-menu:hover .main-menu-rotation {
+    animation-duration: 2s;
+  }
+  
+  /* 🌟 二级菜单大圆盘 - 与一级菜单同速度，反方向，形成对比 */
+  .planet-rotation-level2 {
+    animation: rotate-counter-clockwise 8s linear infinite !important;
+    animation-play-state: running !important;
+    /* 使用CSS变量来处理拖拽位移，不影响旋转动画 */
+    --translate-x: 0px;
+    --translate-y: 0px;
+    transform: translate(var(--translate-x), var(--translate-y));
+  }
+  
+  /* 二级菜单内容反向补偿旋转，保持可读性 */
+  .menu-button-content {
+    animation: rotate-clockwise 8s linear infinite;
+  }
+</style>
+
 <div class="integrated-menu group relative">
   <!-- 集成菜单触发按钮 - 使用whirlwind图标 -->
   <button
@@ -25,7 +64,7 @@ const THEME_COLORS = [
   >
     <div class="h-8 w-8 flex items-center justify-center">
       <!-- 使用本地whirlwind图标并保持旋转效果，增强视觉效果和可见性 -->
-      <img src="/whirlwind.svg" alt="菜单" class="integrated-menu-icon clockwise-rotation w-full h-full object-contain drop-shadow-[0_0_4px_rgba(255,255,255,0.8)]" loading="eager" />
+      <img src="/whirlwind.svg" alt="菜单" class="integrated-menu-icon main-menu-rotation w-full h-full object-contain drop-shadow-[0_0_4px_rgba(255,255,255,0.8)]" loading="eager" />
     </div>
   </button>
 
@@ -37,18 +76,18 @@ const THEME_COLORS = [
     <img src="/ghost.svg" alt="幽灵目标" class="w-10 h-10" />
   </div>
 
-  <!-- 逆时针旋转的大圆盘二级菜单 -->
-  <div id="circular-menu" class="fixed w-80 h-80 bg-gradient-to-br from-white/95 via-purple-50/90 to-blue-50/90 backdrop-blur-lg rounded-full shadow-2xl z-50 opacity-0 pointer-events-none draggable-menu circular-menu-rotation border-4 border-white/30" style="top: -9999px; left: -9999px;">
+  <!-- 二级菜单大圆盘 - 逆时针旋转 -->
+  <div id="circular-menu" class="fixed w-80 h-80 bg-gradient-to-br from-white/95 via-purple-50/90 to-blue-50/90 backdrop-blur-lg rounded-full shadow-2xl z-50 opacity-0 pointer-events-none draggable-menu planet-rotation-level2 border-4 border-white/30" style="top: -9999px; left: -9999px;">
     <!-- 圆盘中心的幽灵图标 - 最简单实现 -->
     <a href={thoughtsLink} 
        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
               w-16 h-16 flex items-center justify-center 
-              cursor-pointer hover:scale-110 transition-transform duration-300
+              cursor-pointer transition-all duration-300
               z-50 ghost-icon-container group"
        style="pointer-events: auto !important;">
       <img src="/ghost.svg" 
            alt={thoughtsText} 
-           class="w-12 h-12 drop-shadow-[0_0_8px_rgba(255,0,0,0.6)]" />
+           class="w-12 h-12 drop-shadow-[0_0_8px_rgba(255,0,0,0.6)] ghost-icon" />
       <span class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 
                    text-xs text-gray-600 font-medium opacity-0 group-hover:opacity-100 
                    transition-opacity duration-300 whitespace-nowrap pointer-events-none">
@@ -63,10 +102,10 @@ const THEME_COLORS = [
     
     <!-- 音乐播放器 -->
     <button type="button"
-       class="absolute top-1/2 left-4 transform -translate-y-1/2 cursor-pointer hover:scale-110 transition-all duration-300 counter-clockwise-rotation menu-item-container z-50" 
+       class="absolute top-1/2 left-4 transform -translate-y-1/2 cursor-pointer hover:scale-110 transition-all duration-300 menu-item-container z-50" 
        id="music-toggle"
        style="pointer-events: auto !important;">
-      <div class="flex flex-col items-center p-3 rounded-full bg-white/60 backdrop-blur-sm shadow-lg border border-pink-200/50 hover:bg-pink-100/70 hover:shadow-xl">
+      <div class="menu-button-content flex flex-col items-center justify-center p-3 w-14 h-14 rounded-full bg-white/60 backdrop-blur-sm shadow-lg border border-pink-200/50 hover:bg-pink-100/70 hover:shadow-xl relative music-icon-rotation">
         <svg class="w-6 h-6 text-pink-600 hover:text-pink-800 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
         </svg>
@@ -76,10 +115,10 @@ const THEME_COLORS = [
 
     <!-- 主题样式选择器 -->
     <button type="button"
-       class="absolute top-4 left-1/2 transform -translate-x-1/2 cursor-pointer hover:scale-110 transition-all duration-300 counter-clockwise-rotation menu-item-container z-50" 
+       class="absolute top-4 left-1/2 transform -translate-x-1/2 cursor-pointer hover:scale-110 transition-all duration-300 menu-item-container z-50" 
        id="theme-toggle"
        style="pointer-events: auto !important;">
-      <div class="flex flex-col items-center p-3 rounded-full bg-white/60 backdrop-blur-sm shadow-lg border border-blue-200/50 hover:bg-blue-100/70 hover:shadow-xl">
+      <div class="menu-button-content flex flex-col items-center justify-center p-3 w-14 h-14 rounded-full bg-white/60 backdrop-blur-sm shadow-lg border border-blue-200/50 hover:bg-blue-100/70 hover:shadow-xl relative theme-icon-rotation">
         <svg class="w-6 h-6 text-blue-600 hover:text-blue-800 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
         </svg>
@@ -89,14 +128,27 @@ const THEME_COLORS = [
     
     <!-- 语言切换器 -->
     <button type="button"
-       class="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer hover:scale-110 transition-all duration-300 counter-clockwise-rotation menu-item-container z-50" 
+       class="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer hover:scale-110 transition-all duration-300 menu-item-container z-50" 
        id="language-toggle"
        style="pointer-events: auto !important;">
-      <div class="flex flex-col items-center p-3 rounded-full bg-white/60 backdrop-blur-sm shadow-lg border border-purple-200/50 hover:bg-purple-100/70 hover:shadow-xl">
+      <div class="menu-button-content flex flex-col items-center justify-center p-3 w-14 h-14 rounded-full bg-white/60 backdrop-blur-sm shadow-lg border border-purple-200/50 hover:bg-purple-100/70 hover:shadow-xl relative language-icon-rotation">
         <svg class="w-6 h-6 text-purple-600 hover:text-purple-800 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
         </svg>
         <span class="text-xs mt-1 text-purple-700 font-medium">语言</span>
+      </div>
+    </button>
+    
+    <!-- 字体选择器 -->
+    <button type="button"
+       class="absolute bottom-4 left-1/2 transform -translate-x-1/2 cursor-pointer hover:scale-110 transition-all duration-300 counter-clockwise-rotation menu-item-container z-50" 
+       id="font-toggle"
+       style="pointer-events: auto !important;">
+      <div class="flex flex-col items-center justify-center p-3 w-14 h-14 rounded-full bg-white/60 backdrop-blur-sm shadow-lg border border-orange-200/50 hover:bg-orange-100/70 hover:shadow-xl relative font-icon-rotation">
+        <svg class="w-6 h-6 text-orange-600 hover:text-orange-800 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+        </svg>
+        <span class="text-xs mt-1 text-orange-700 font-medium">字体</span>
       </div>
     </button>
     
@@ -108,14 +160,154 @@ const THEME_COLORS = [
 </div>
 
 <style>
-  /* 顺时针旋转动画 */
-  .clockwise-rotation {
+  /* 主菜单图标旋转动画 - 默认8秒一圈，悬停时2秒一圈 */
+  .main-menu-rotation {
     animation: rotate-clockwise 8s linear infinite;
+    transition: animation-duration 0.3s ease;
   }
 
-  /* 逆时针旋转动画 */
-  .counter-clockwise-rotation {
+  /* 二级菜单圆盘逆时针旋转动画 */
+  .secondary-menu-rotation {
     animation: rotate-counter-clockwise 12s linear infinite;
+  }
+
+  /* 二级菜单内容反向补偿旋转，保持可读性 - 但不影响各菜单项的独立旋转 */
+  .secondary-menu-rotation .drag-handle,
+  .secondary-menu-rotation a:not(.ghost-icon-container),
+  .secondary-menu-rotation button:not([class*="-toggle"]),
+  .secondary-menu-rotation span:not(.ghost-icon-container span):not([class*="font-medium"]) {
+    animation: rotate-clockwise 12s linear infinite;
+  }
+
+  /* 🎵 二级菜单内各功能图标的独立旋转动画 - 错落有致的视觉层次 */
+  
+  /* 音乐播放器 - 最快速度，体现活力 */
+  .music-icon-rotation {
+    animation: rotate-clockwise 2.0s linear infinite !important;
+  }
+
+  /* 语言切换器 - 次快速度，逆时针与音乐形成对比 */
+  .language-icon-rotation {
+    animation: rotate-counter-clockwise 2.6s linear infinite !important;
+  }
+
+  /* 字体选择器 - 中等速度，顺时针与语言形成对比 */
+  .font-icon-rotation {
+    animation: rotate-clockwise 3.4s linear infinite !important;
+  }
+
+  /* 主题选择器 - 最慢速度，逆时针体现稳重 */
+  .theme-icon-rotation {
+    animation: rotate-counter-clockwise 4.2s linear infinite !important;
+  }
+
+  /* 一级菜单悬停加速效果 */
+  .integrated-menu:hover .main-menu-rotation {
+    animation-duration: 2s;
+  }
+
+  /* 顺时针旋转动画 - 加快速度让肉眼可见 */
+  .clockwise-rotation {
+    animation: rotate-clockwise 2s linear infinite;
+  }
+
+  /* 逆时针旋转动画 - 加快速度让肉眼可见 */
+  .counter-clockwise-rotation {
+    animation: rotate-counter-clockwise 3s linear infinite;
+  }
+
+
+
+  /* 幻想集幽灵图标逆时针旋转动画 - 符合规范要求 */
+  .ghost-icon-rotation {
+    animation: rotate-counter-clockwise 3.2s linear infinite;
+  }
+
+
+
+  /* 🌀 三级菜单旋转动画 - 更慢更优雅的视觉效果 */
+  
+  /* 主题选择菜单 - 逆时针，与主题图标方向一致 */
+  .theme-menu-rotation {
+    animation: rotate-counter-clockwise 12s linear infinite !important;
+    animation-play-state: running !important;
+    /* 支持拖拽而不影响旋转动画 - 移除rotate(0deg)避免覆盖CSS动画 */
+    --translate-x: 0px;
+    --translate-y: 0px;
+    transform: translate(var(--translate-x), var(--translate-y));
+    /* 确保动画中心点正确 */
+    transform-origin: center center;
+  }
+
+  /* 字体选择菜单 - 顺时针，与字体图标方向一致 */
+  .font-menu-rotation {
+    animation: rotate-clockwise 11s linear infinite !important;
+    animation-play-state: running !important;
+    /* 支持拖拽而不影响旋转动画 - 移除rotate(0deg)避免覆盖CSS动画 */
+    --translate-x: 0px;
+    --translate-y: 0px;
+    transform: translate(var(--translate-x), var(--translate-y));
+    /* 确保动画中心点正确 */
+    transform-origin: center center;
+  }
+
+  /* 语言切换菜单 - 逆时针，与语言图标方向一致 */
+  .language-menu-rotation {
+    animation: rotate-counter-clockwise 10s linear infinite !important;
+    animation-play-state: running !important;
+    /* 支持拖拽而不影响旋转动画 - 移除rotate(0deg)避免覆盖CSS动画 */
+    --translate-x: 0px;
+    --translate-y: 0px;
+    transform: translate(var(--translate-x), var(--translate-y));
+    /* 确保动画中心点正确 */
+    transform-origin: center center;
+  }
+
+  /* 音频控制菜单 - 顺时针，与音乐图标方向一致 */
+  .audio-menu-rotation {
+    animation: rotate-clockwise 9s linear infinite !important;
+    animation-play-state: running !important;
+    /* 支持拖拽而不影响旋转动画 - 移除rotate(0deg)避免覆盖CSS动画 */
+    --translate-x: 0px;
+    --translate-y: 0px;
+    transform: translate(var(--translate-x), var(--translate-y));
+    /* 确保动画中心点正确 */
+    transform-origin: center center;
+  }
+
+  /* 四级菜单旋转动画 - 主题子菜单（深色/浅色/自动按钮容器） - 加快速度让肉眼可见 */
+  .theme-submenu-rotation {
+    animation: rotate-clockwise 5s linear infinite;
+  }
+
+  /* 🔄 三级菜单内容的旋转补偿，保持文字可读性（更新速度） */
+  .theme-menu-rotation .menu-button-content,
+  .theme-menu-rotation button,
+  .theme-menu-rotation div {
+    animation: rotate-clockwise 12s linear infinite !important;
+  }
+
+  .font-menu-rotation .menu-button-content,
+  .font-menu-rotation button,
+  .font-menu-rotation div {
+    animation: rotate-counter-clockwise 11s linear infinite !important;
+  }
+
+  .language-menu-rotation .menu-button-content,
+  .language-menu-rotation button,
+  .language-menu-rotation div {
+    animation: rotate-clockwise 10s linear infinite !important;
+  }
+
+  .audio-menu-rotation .menu-button-content,
+  .audio-menu-rotation button,
+  .audio-menu-rotation div {
+    animation: rotate-counter-clockwise 9s linear infinite !important;
+  }
+
+  /* 四级菜单内容旋转补偿 - 更新速度 */
+  .theme-submenu-rotation .triangle-theme-btn {
+    animation: rotate-counter-clockwise 5s linear infinite;
   }
 
   /* 圆盘整体逆时针旋转 */
@@ -133,9 +325,17 @@ const THEME_COLORS = [
     animation: none !important;
   }
 
-  /* 幽灵图标动画效果 */
+  /* 幽灵图标动画效果 - 独立逆时针旋转 + 浮动 */
   .ghost-icon {
-    animation: ghost-float 3s ease-in-out infinite;
+    animation: ghost-float 3s ease-in-out infinite, rotate-counterclockwise 3.2s linear infinite !important;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  /* 幽灵图标悬停效果 - 放大和加速旋转 */
+  .ghost-icon-container:hover .ghost-icon {
+    transform: scale(1.3);
+    animation: ghost-float 1.5s ease-in-out infinite, rotate-counterclockwise 1.2s linear infinite !important;
+    filter: drop-shadow(0 0 16px rgba(147, 51, 234, 1)) brightness(1.3);
   }
 
   .ghost-glow {
@@ -146,7 +346,7 @@ const THEME_COLORS = [
     animation: ghost-pulse-ring 2.5s ease-in-out infinite;
   }
 
-  /* 幽灵图标浮动动画 */
+  /* 幽灵图标浮动动画 - 恢复纯浮动效果 */
   @keyframes ghost-float {
     0%, 100% {
       transform: translateY(0px);
@@ -184,19 +384,7 @@ const THEME_COLORS = [
     }
   }
 
-  /* 幽灵图标容器悬停效果 */
-  .ghost-icon-container:hover .ghost-icon {
-    animation-duration: 1.5s;
-    filter: drop-shadow(0 0 12px rgba(147, 51, 234, 0.8));
-  }
 
-  .ghost-icon-container:hover .ghost-glow {
-    animation-duration: 1s;
-  }
-
-  .ghost-icon-container:hover .ghost-pulse {
-    animation-duration: 1.5s;
-  }
 
 
 
@@ -235,19 +423,20 @@ const THEME_COLORS = [
 
   /* 圆盘菜单展开动画增强 */
   #circular-menu {
-    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: opacity 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), 
+                transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
 
   #circular-menu.menu-open {
     opacity: 1;
     pointer-events: auto;
-    transform: scale(1) rotate(0deg);
+    transform: scale(1);
   }
 
   #circular-menu.menu-closed {
     opacity: 0;
     pointer-events: none;
-    transform: scale(0.3) rotate(-180deg);
+    transform: scale(0.3);
   }
 
   /* 幽灵图标点击效果 */
@@ -952,6 +1141,67 @@ const THEME_COLORS = [
     transform: scale(1);
   }
 
+  /* 等边三角形主题选择器按钮增强样式 */
+  .triangle-theme-btn {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .triangle-theme-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.2) 100%);
+    transition: left 0.5s ease;
+  }
+
+  .triangle-theme-btn:hover::before {
+    left: 100%;
+  }
+
+  /* 为不同主题按钮添加特殊动画效果 */
+  .light-theme-btn {
+    animation: gentle-pulse-light 3s ease-in-out infinite;
+  }
+
+  .dark-theme-btn {
+    animation: gentle-pulse-dark 3s ease-in-out infinite;
+  }
+
+  .auto-theme-btn {
+    animation: gentle-pulse-auto 3s ease-in-out infinite;
+  }
+
+  @keyframes gentle-pulse-light {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(251, 191, 36, 0);
+    }
+  }
+
+  @keyframes gentle-pulse-dark {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(75, 85, 99, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(75, 85, 99, 0);
+    }
+  }
+
+  @keyframes gentle-pulse-auto {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+    }
+  }
+
   /* 语言切换器模块样式 */
   .language-switcher-module {
     position: relative;
@@ -1508,6 +1758,7 @@ const THEME_COLORS = [
     const languageToggle = document.getElementById('language-toggle');
     const themeToggle = document.getElementById('theme-toggle');
     const musicToggle = document.getElementById('music-toggle');
+    const fontToggle = document.getElementById('font-toggle');
 
     if (menuIcon) {
       menuIcon.style.opacity = '1';
@@ -1697,6 +1948,12 @@ const THEME_COLORS = [
     
     // 播放/暂停音乐
     function toggleMusic() {
+      // 检查颜色球音乐播放器是否正在播放，如果是则停止它
+      if (window.colorBallMusicPlayer && window.colorBallMusicPlayer.isPlaying) {
+        console.log('🎨 颜色球音乐播放器正在播放，停止其播放');
+        window.colorBallMusicPlayer.stopMusic();
+      }
+      
       if (!currentTrack) {
         showMusicNotification('音乐播放器未就绪');
         return;
@@ -2698,8 +2955,18 @@ const THEME_COLORS = [
           // 关闭菜单
           closeCircularMenu();
         } else {
-          // 触发蓄力效果
-          chargeAndFireLaser();
+          // 添加调试日志
+          console.log('🎯 一级菜单被点击，准备打开二级菜单...');
+          
+          // 检查是否启用特效模式（可通过按住Shift键跳过特效）
+          if (e.shiftKey) {
+            console.log('⚡ Shift键按下，直接打开菜单（跳过特效）');
+            showCircularMenu();
+          } else {
+            console.log('✨ 开始播放特效动画...');
+            // 触发蓄力效果
+            chargeAndFireLaser();
+          }
         }
       });
     }
@@ -2720,19 +2987,20 @@ const THEME_COLORS = [
         createThemeMenu();
       });
     }
+    
+    if (fontToggle) {
+      fontToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        createFontMenu();
+      });
+    }
 
     if (musicToggle) {
       musicToggle.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        
-        // 调用全局音乐播放器的显示方法
-        if (window.musicPlayer) {
-          window.musicPlayer.showPlayer();
-          console.log('音乐播放器已通过菜单控件显示');
-        } else {
-          console.warn('音乐播放器未初始化');
-        }
+        createAudioMenu();
       });
     }
 
@@ -2752,7 +3020,7 @@ const THEME_COLORS = [
       // 创建语言菜单容器 - 圆形设计
       const languageMenu = document.createElement('div');
       languageMenu.id = 'language-menu';
-      languageMenu.className = 'fixed bg-gradient-to-br from-white/95 via-purple-50/90 to-blue-50/90 backdrop-blur-lg rounded-full shadow-2xl border-4 border-white/30 z-50 flex items-center justify-center';
+      languageMenu.className = 'fixed bg-gradient-to-br from-white/95 via-purple-50/90 to-blue-50/90 backdrop-blur-lg rounded-full shadow-2xl border-4 border-white/30 z-50 flex items-center justify-center language-menu-rotation';
       languageMenu.style.width = '240px';
       languageMenu.style.height = '240px';
       
@@ -2788,13 +3056,34 @@ const THEME_COLORS = [
       // 添加到页面
       document.body.appendChild(languageMenu);
       
-      // 添加展开动画
-      languageMenu.style.transform = 'scale(0)';
+      // 添加展开动画 - 完全避免设置任何transform相关属性
       languageMenu.style.opacity = '0';
+      languageMenu.style.visibility = 'visible'; // 确保元素可见
       setTimeout(() => {
-        languageMenu.style.transition = 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-        languageMenu.style.transform = 'scale(1)';
         languageMenu.style.opacity = '1';
+        // 不设置任何transform或transition属性，完全依靠CSS动画
+        
+        // 为语言按钮添加内容旋转补偿
+        const languageButtons = languageMenu.querySelectorAll('.language-btn');
+        languageButtons.forEach(btn => {
+          btn.classList.add('menu-button-content');
+        });
+        
+        // 加强语言菜单动画保障机制
+        languageMenu.style.animationPlayState = 'running';
+        languageMenu.style.animationName = 'rotate-counter-clockwise';
+        languageMenu.style.animationDuration = '10s'; // 更新为更慢的速度
+        languageMenu.style.animationIterationCount = 'infinite';
+        languageMenu.style.animationTimingFunction = 'linear';
+        
+        // 定期检查动画状态
+        const animationChecker = setInterval(() => {
+          if (languageMenu && document.body.contains(languageMenu)) {
+            languageMenu.style.animationPlayState = 'running';
+          } else {
+            clearInterval(animationChecker);
+          }
+        }, 1000);
       }, 10);
       
       // 添加语言切换事件监听器
@@ -2807,25 +3096,65 @@ const THEME_COLORS = [
         });
       });
       
-      // 添加点击外部关闭事件
-      setTimeout(() => {
-        document.addEventListener('click', closeLanguageMenu);
-      }, 10);
+      // 不再添加点击外部关闭事件，由统一的点击事件处理
     }
 
-    // 关闭语言菜单
+    // 处理音频操作
+    function handleAudioAction(action) {
+      switch(action) {
+        case 'player':
+          // 调用全局音乐播放器的显示方法
+          if (window.musicPlayer) {
+            window.musicPlayer.showPlayer();
+            console.log('音乐播放器已通过菜单控件显示');
+          } else {
+            console.warn('音乐播放器未初始化');
+          }
+          break;
+        case 'volume':
+          // 显示音量控制
+          showVolumeControl();
+          break;
+        case 'effects':
+          // 显示音效设置
+          showAudioEffects();
+          break;
+        case 'settings':
+          // 显示音频设置
+          showAudioSettings();
+          break;
+      }
+    }
+    
+    // 简单的音量控制函数
+    function showVolumeControl() {
+      // 显示音量控制通知
+      showColorChangeNotification('🔊 音量控制功能待开发');
+    }
+    
+    function showAudioEffects() {
+      // 显示音效设置通知
+      showColorChangeNotification('🎛️ 音效设置功能待开发');
+    }
+    
+    function showAudioSettings() {
+      // 显示音频设置通知
+      showColorChangeNotification('⚙️ 音频设置功能待开发');
+    }
     function closeLanguageMenu(e) {
-      // 检查是否点击在banner区域，如果是则不处理
-      const bannerBox = document.getElementById('banner-box');
-      if (bannerBox && bannerBox.contains(e.target)) {
-        return;
-      }
-      
       const languageMenu = document.getElementById('language-menu');
-      if (languageMenu && (!languageMenu.contains(e.target) && !languageToggle.contains(e.target))) {
-        languageMenu.remove();
+      if (!languageMenu) return;
+      
+      // 添加关闭动画
+      languageMenu.style.opacity = '0';
+      
+      setTimeout(() => {
+        if (languageMenu.parentNode) {
+          languageMenu.parentNode.removeChild(languageMenu);
+        }
         document.removeEventListener('click', closeLanguageMenu);
-      }
+        document.removeEventListener('keydown', handleMenuEscKey);
+      }, 300);
     }
 
     // 语言切换函数
@@ -2834,13 +3163,7 @@ const THEME_COLORS = [
       const currentLang = currentPath.startsWith('/en') ? 'en' : 'zh';
       
       if (targetLang === currentLang) {
-        // 如果是当前语言，只关闭菜单
-        const languageMenu = document.getElementById('language-menu');
-        if (languageMenu) {
-          languageMenu.remove();
-          document.removeEventListener('click', closeLanguageMenu);
-        }
-        return;
+        return; // 如果是当前语言，不做任何操作
       }
       
       let newPath;
@@ -2924,7 +3247,7 @@ const THEME_COLORS = [
       // 创建主题菜单容器 - 圆形设计
       const themeMenu = document.createElement('div');
       themeMenu.id = 'theme-menu';
-      themeMenu.className = 'fixed bg-white/90 backdrop-blur-lg rounded-full shadow-xl border-4 border-white/30 z-50 flex items-center justify-center';
+      themeMenu.className = 'fixed bg-white/90 backdrop-blur-lg rounded-full shadow-xl border-4 border-white/30 z-50 flex items-center justify-center theme-menu-rotation';
       themeMenu.style.width = '280px';
       themeMenu.style.height = '280px';
       
@@ -2936,75 +3259,39 @@ const THEME_COLORS = [
       
       // 添加主题选项 - 圆形布局
       themeMenu.innerHTML = `
-        <div class="relative w-full h-full flex items-center justify-center">
+        <div class="relative w-full h-full flex items-center justify-center theme-submenu-rotation">
           <!-- 中心标题 -->
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
             <div class="text-lg font-bold text-gray-800 mb-2">主题选择</div>
             <div class="text-sm text-gray-600">Theme</div>
           </div>
           
-          <!-- 主题选项按钮 - 圆形分布 -->
-          <button class="absolute top-8 left-1/2 transform -translate-x-1/2 bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-3 rounded-full transition-all duration-200 hover:scale-110 shadow-lg flex items-center space-x-2" onclick="switchTheme('light')">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <!-- 主题选项按钮 - 等边三角形布局在圆形内 -->
+          <!-- 等边三角形圆形布局 -->
+          
+          <!-- 浅色主题 - 顶点 (0度，圆形顶部) -->
+          <button class="triangle-theme-btn light-theme-btn absolute w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white rounded-full transition-all duration-300 hover:scale-125 shadow-xl flex flex-col items-center justify-center border-2 border-white/30 hover:border-white/60" onclick="switchTheme('light')" style="top: 40px; left: 50%; transform: translateX(-50%);">
+            <svg class="w-5 h-5 mb-0.5" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
             </svg>
-            <span class="font-medium">浅色</span>
+            <span class="text-xs font-bold">浅色</span>
           </button>
           
-          <button class="absolute top-1/2 right-7 transform -translate-y-1/2 bg-gray-800 hover:bg-gray-900 text-white px-5 py-3 rounded-full transition-all duration-200 hover:scale-110 shadow-lg flex items-center space-x-2" onclick="switchTheme('dark')">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <!-- 深色主题 - 右下角 (120度，等边三角形右下顶点) -->
+          <button class="triangle-theme-btn dark-theme-btn absolute w-14 h-14 bg-gradient-to-br from-gray-700 to-gray-900 hover:from-gray-800 hover:to-black text-white rounded-full transition-all duration-300 hover:scale-125 shadow-xl flex flex-col items-center justify-center border-2 border-white/30 hover:border-white/60" onclick="switchTheme('dark')" style="top: 190px; right: 53px;">
+            <svg class="w-5 h-5 mb-0.5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
             </svg>
-            <span class="font-medium">深色</span>
+            <span class="text-xs font-bold">深色</span>
           </button>
           
-          <button class="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-3 rounded-full transition-all duration-200 hover:scale-110 shadow-lg flex items-center space-x-2" onclick="switchTheme('auto')">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <!-- 自动主题 - 左下角 (240度，等边三角形左下顶点) -->
+          <button class="triangle-theme-btn auto-theme-btn absolute w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-full transition-all duration-300 hover:scale-125 shadow-xl flex flex-col items-center justify-center border-2 border-white/30 hover:border-white/60" onclick="switchTheme('auto')" style="top: 190px; left: 53px;">
+            <svg class="w-5 h-5 mb-0.5" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
             </svg>
-            <span class="font-medium">自动</span>
+            <span class="text-xs font-bold">自动</span>
           </button>
-          
-          <!-- 字体选择器 - 圆形集成到主题菜单 -->
-          <div class="absolute top-1/2 left-7 transform -translate-y-1/2">
-            <div class="relative">
-              <button class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-3 rounded-full transition-all duration-200 hover:scale-110 shadow-lg flex items-center space-x-2" id="font-selector-btn">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
-                </svg>
-                <span class="font-medium">字体</span>
-              </button>
-              <!-- 字体选项圆盘菜单 -->
-              <div class="absolute left-16 top-1/2 transform -translate-y-1/2 font-options-circle opacity-0 pointer-events-none transition-all duration-300" id="font-options-circle">
-                <!-- 圆盘样式的字体选择器 -->
-                <div class="relative bg-white/95 backdrop-blur-lg rounded-full shadow-xl border-4 border-white/30" style="width: 220px; height: 220px;">
-                  <!-- 中心标题 -->
-                  <div class="absolute inset-0 flex items-center justify-center text-gray-800 font-medium text-sm pointer-events-none">
-                    字体选择<br/>Font
-                  </div>
-                  
-                  <!-- 字体按钮按圆形分布 -->
-                  <!-- 无衬线字体 (顶部区域) -->
-                  <button onclick="setFont('Inter')" class="absolute w-12 h-8 bg-blue-500/20 text-blue-700 rounded-lg text-xs hover:bg-blue-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 15px; left: 50%; transform: translateX(-50%); font-family: Inter, sans-serif;">Inter</button>
-                  <button onclick="setFont('Roboto')" class="absolute w-12 h-8 bg-blue-500/20 text-blue-700 rounded-lg text-xs hover:bg-blue-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 25px; right: 35px; font-family: Roboto, sans-serif;">Roboto</button>
-                  <button onclick="setFont('Nunito')" class="absolute w-12 h-8 bg-blue-500/20 text-blue-700 rounded-lg text-xs hover:bg-blue-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 25px; left: 35px; font-family: Nunito, sans-serif;">Nunito</button>
-                  
-                  <!-- 衬线字体 (中间区域) -->
-                  <button onclick="setFont('Crimson Text')" class="absolute w-16 h-8 bg-green-500/20 text-green-700 rounded-lg text-xs hover:bg-green-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 50%; right: 8px; transform: translateY(-50%); font-family: 'Crimson Text', serif;">Crimson</button>
-                  <button onclick="setFont('Merriweather')" class="absolute w-16 h-8 bg-green-500/20 text-green-700 rounded-lg text-xs hover:bg-green-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 50%; left: 8px; transform: translateY(-50%); font-family: Merriweather, serif;">Merri</button>
-                  <button onclick="setFont('Lora')" class="absolute w-12 h-8 bg-green-500/20 text-green-700 rounded-lg text-xs hover:bg-green-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 70px; right: 25px; font-family: Lora, serif;">Lora</button>
-                  <button onclick="setFont('Fira Sans')" class="absolute w-12 h-8 bg-blue-500/20 text-blue-700 rounded-lg text-xs hover:bg-blue-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 70px; left: 25px; font-family: 'Fira Sans', sans-serif;">Fira</button>
-                  
-                  <!-- 手写字体 (底部区域) -->
-                  <button onclick="setFont('Dancing Script')" class="absolute w-14 h-8 bg-purple-500/20 text-purple-700 rounded-lg text-xs hover:bg-purple-500/30 transition-all hover:scale-110 flex items-center justify-center" style="bottom: 25px; left: 30px; font-family: 'Dancing Script', cursive;">Dancing</button>
-                  <button onclick="setFont('Pacifico')" class="absolute w-12 h-8 bg-purple-500/20 text-purple-700 rounded-lg text-xs hover:bg-purple-500/30 transition-all hover:scale-110 flex items-center justify-center" style="bottom: 15px; left: 50%; transform: translateX(-50%); font-family: Pacifico, cursive;">Pacifico</button>
-                  <button onclick="setFont('Caveat')" class="absolute w-12 h-8 bg-purple-500/20 text-purple-700 rounded-lg text-xs hover:bg-purple-500/30 transition-all hover:scale-110 flex items-center justify-center" style="bottom: 25px; right: 30px; font-family: Caveat, cursive;">Caveat</button>
-                  <button onclick="setFont('Kalam')" class="absolute w-12 h-8 bg-purple-500/20 text-purple-700 rounded-lg text-xs hover:bg-purple-500/30 transition-all hover:scale-110 flex items-center justify-center" style="bottom: 45px; right: 15px; font-family: Kalam, cursive;">Kalam</button>
-                  <button onclick="setFont('Source Sans Pro')" class="absolute w-14 h-8 bg-blue-500/20 text-blue-700 rounded-lg text-xs hover:bg-blue-500/30 transition-all hover:scale-110 flex items-center justify-center" style="bottom: 45px; left: 15px; font-family: 'Source Sans Pro', sans-serif;">Source</button>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       `;
       
@@ -3031,49 +3318,267 @@ const THEME_COLORS = [
         });
       }
       
-      // 添加展开动画
-      themeMenu.style.transform = 'scale(0)';
+      // 添加展开动画 - 完全避免设置任何transform相关属性
       themeMenu.style.opacity = '0';
+      themeMenu.style.visibility = 'visible'; // 确保元素可见
       setTimeout(() => {
-        themeMenu.style.transition = 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-        themeMenu.style.transform = 'scale(1)';
         themeMenu.style.opacity = '1';
+        // 不设置任何transform或transition属性，完全依靠CSS动画
+        
+        // 为主题按钮添加内容旋转补偿
+        const themeButtons = themeMenu.querySelectorAll('button');
+        themeButtons.forEach(btn => {
+          btn.classList.add('menu-button-content');
+        });
+        
+        // 参考技术文档v0.25.2修复经验：加强动画保障机制
+        themeMenu.style.animationPlayState = 'running';
+        themeMenu.style.animationName = 'rotate-counter-clockwise';
+        themeMenu.style.animationDuration = '12s'; // 更新为更慢的速度
+        themeMenu.style.animationIterationCount = 'infinite';
+        themeMenu.style.animationTimingFunction = 'linear';
+        
+        // 定期检查动画状态，防止被意外停止
+        const animationChecker = setInterval(() => {
+          if (themeMenu && document.body.contains(themeMenu)) {
+            themeMenu.style.animationPlayState = 'running';
+          } else {
+            clearInterval(animationChecker);
+          }
+        }, 1000);
       }, 10);
       
-      // 添加点击外部关闭事件
-      setTimeout(() => {
-        document.addEventListener('click', closeThemeMenu);
-      }, 10);
+      // 不再添加点击外部关闭事件，由统一的点击事件处理
     }
-
-    // 关闭主题菜单
-    function closeThemeMenu(e) {
-      // 检查是否点击在banner区域，如果是则不处理
-      const bannerBox = document.getElementById('banner-box');
-      if (bannerBox && bannerBox.contains(e.target)) {
-        return;
-      }
-      
-      const themeMenu = document.getElementById('theme-menu');
-      if (themeMenu && (!themeMenu.contains(e.target) && !themeToggle.contains(e.target))) {
-        themeMenu.remove();
-        document.removeEventListener('click', closeThemeMenu);
-      }
-    }
-
-    // 关闭音频菜单
-    function closeAudioMenu(e) {
-      // 检查是否点击在banner区域，如果是则不处理
-      const bannerBox = document.getElementById('banner-box');
-      if (bannerBox && bannerBox.contains(e.target)) {
-        return;
-      }
-      
-      const audioMenu = document.getElementById('audio-menu');
-      if (audioMenu && (!audioMenu.contains(e.target))) {
-        audioMenu.remove();
+    
+    // 创建音频菜单
+    function createAudioMenu() {
+      // 检查是否已存在菜单
+      const existingMenu = document.getElementById('audio-menu');
+      if (existingMenu) {
+        existingMenu.remove();
         document.removeEventListener('click', closeAudioMenu);
       }
+      
+      // 创建音频菜单容器 - 圆形设计
+      const audioMenu = document.createElement('div');
+      audioMenu.id = 'audio-menu';
+      audioMenu.className = 'fixed bg-white/90 backdrop-blur-lg rounded-full shadow-xl border-4 border-white/30 z-50 flex items-center justify-center audio-menu-rotation';
+      audioMenu.style.width = '280px';
+      audioMenu.style.height = '280px';
+      
+      // 获取当前菜单项的位置
+      const rect = musicToggle.getBoundingClientRect();
+      const menuSize = 280;
+      audioMenu.style.top = (rect.top - menuSize/2 + rect.height/2) + 'px';
+      audioMenu.style.left = (rect.left - menuSize/2 + rect.width/2) + 'px';
+      
+      // 添加音频选项 - 圆形布局
+      audioMenu.innerHTML = `
+        <div class="relative w-full h-full flex items-center justify-center">
+          <!-- 中心标题 -->
+          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+            <div class="text-lg font-bold text-gray-800 mb-1">音频控制</div>
+            <div class="text-sm text-gray-600">Audio</div>
+          </div>
+          
+          <!-- 音频选项按钮 - 圆形分布 -->
+          <button class="audio-btn absolute top-6 left-1/2 transform -translate-x-1/2 bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center space-x-2" data-action="player">
+            <span class="text-lg">🎵</span>
+            <span class="font-medium">播放器</span>
+          </button>
+          <button class="audio-btn absolute top-1/2 right-6 transform -translate-y-1/2 bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center space-x-2" data-action="volume">
+            <span class="text-lg">🔊</span>
+            <span class="font-medium">音量</span>
+          </button>
+          <button class="audio-btn absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center space-x-2" data-action="effects">
+            <span class="text-lg">🎛️</span>
+            <span class="font-medium">音效</span>
+          </button>
+          <button class="audio-btn absolute top-1/2 left-6 transform -translate-y-1/2 bg-rose-500 hover:bg-rose-600 text-white px-6 py-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center space-x-2" data-action="settings">
+            <span class="text-lg">⚙️</span>
+            <span class="font-medium">设置</span>
+          </button>
+        </div>
+      `;
+      
+      // 添加到页面
+      document.body.appendChild(audioMenu);
+      
+      // 添加展开动画 - 完全避免设置任何transform相关属性
+      audioMenu.style.opacity = '0';
+      audioMenu.style.visibility = 'visible'; // 确保元素可见
+      setTimeout(() => {
+        audioMenu.style.opacity = '1';
+        // 不设置任何transform或transition属性，完全依靠CSS动画
+        
+        // 为音频按钮添加内容旋转补偿
+        const audioButtons = audioMenu.querySelectorAll('.audio-btn');
+        audioButtons.forEach(btn => {
+          btn.classList.add('menu-button-content');
+        });
+        
+        // 加强音频菜单动画保障机制
+        audioMenu.style.animationPlayState = 'running';
+        audioMenu.style.animationName = 'rotate-clockwise';
+        audioMenu.style.animationDuration = '9s'; // 更新为更慢的速度
+        audioMenu.style.animationIterationCount = 'infinite';
+        audioMenu.style.animationTimingFunction = 'linear';
+        
+        // 定期检查动画状态
+        const animationChecker = setInterval(() => {
+          if (audioMenu && document.body.contains(audioMenu)) {
+            audioMenu.style.animationPlayState = 'running';
+          } else {
+            clearInterval(animationChecker);
+          }
+        }, 1000);
+      }, 10);
+      
+      // 添加音频功能事件监听器
+      const audioButtons = audioMenu.querySelectorAll('.audio-btn');
+      audioButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const action = btn.getAttribute('data-action');
+          handleAudioAction(action);
+        });
+      });
+      
+      // 不再添加点击外部关闭事件，由统一的点击事件处理
+    }
+    
+    // 创建字体菜单
+    function createFontMenu() {
+      // 检查是否已存在菜单
+      const existingMenu = document.getElementById('font-menu');
+      if (existingMenu) {
+        existingMenu.remove();
+        document.removeEventListener('click', closeFontMenu);
+      }
+      
+      // 创建字体菜单容器 - 圆形设计
+      const fontMenu = document.createElement('div');
+      fontMenu.id = 'font-menu';
+      fontMenu.className = 'fixed bg-white/90 backdrop-blur-lg rounded-full shadow-xl border-4 border-white/30 z-50 flex items-center justify-center font-menu-rotation';
+      fontMenu.style.width = '280px';
+      fontMenu.style.height = '280px';
+      
+      // 获取当前菜单项的位置
+      const rect = fontToggle.getBoundingClientRect();
+      const menuSize = 280;
+      fontMenu.style.top = (rect.top - menuSize/2 + rect.height/2) + 'px';
+      fontMenu.style.left = (rect.left - menuSize/2 + rect.width/2) + 'px';
+      
+      // 添加字体选项 - 圆形布局
+      fontMenu.innerHTML = `
+        <div class="relative w-full h-full flex items-center justify-center">
+          <!-- 中心标题 -->
+          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+            <div class="text-lg font-bold text-gray-800 mb-2">字体选择</div>
+            <div class="text-sm text-gray-600">Font</div>
+          </div>
+          
+          <!-- 字体按钮按圆形分布 -->
+          <!-- 无衬线字体 (顶部区域) -->
+          <button onclick="setFont('Inter')" class="absolute w-12 h-8 bg-blue-500/20 text-blue-700 rounded-lg text-xs hover:bg-blue-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 15px; left: 50%; transform: translateX(-50%); font-family: Inter, sans-serif;">Inter</button>
+          <button onclick="setFont('Roboto')" class="absolute w-12 h-8 bg-blue-500/20 text-blue-700 rounded-lg text-xs hover:bg-blue-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 25px; right: 35px; font-family: Roboto, sans-serif;">Roboto</button>
+          <button onclick="setFont('Nunito')" class="absolute w-12 h-8 bg-blue-500/20 text-blue-700 rounded-lg text-xs hover:bg-blue-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 25px; left: 35px; font-family: Nunito, sans-serif;">Nunito</button>
+          
+          <!-- 衬线字体 (中间区域) -->
+          <button onclick="setFont('Crimson Text')" class="absolute w-16 h-8 bg-green-500/20 text-green-700 rounded-lg text-xs hover:bg-green-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 50%; right: 8px; transform: translateY(-50%); font-family: 'Crimson Text', serif;">Crimson</button>
+          <button onclick="setFont('Merriweather')" class="absolute w-16 h-8 bg-green-500/20 text-green-700 rounded-lg text-xs hover:bg-green-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 50%; left: 8px; transform: translateY(-50%); font-family: Merriweather, serif;">Merri</button>
+          <button onclick="setFont('Lora')" class="absolute w-12 h-8 bg-green-500/20 text-green-700 rounded-lg text-xs hover:bg-green-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 70px; right: 25px; font-family: Lora, serif;">Lora</button>
+          <button onclick="setFont('Fira Sans')" class="absolute w-12 h-8 bg-blue-500/20 text-blue-700 rounded-lg text-xs hover:bg-blue-500/30 transition-all hover:scale-110 flex items-center justify-center" style="top: 70px; left: 25px; font-family: 'Fira Sans', sans-serif;">Fira</button>
+          
+          <!-- 手写字体 (底部区域) -->
+          <button onclick="setFont('Dancing Script')" class="absolute w-14 h-8 bg-purple-500/20 text-purple-700 rounded-lg text-xs hover:bg-purple-500/30 transition-all hover:scale-110 flex items-center justify-center" style="bottom: 25px; left: 30px; font-family: 'Dancing Script', cursive;">Dancing</button>
+          <button onclick="setFont('Pacifico')" class="absolute w-12 h-8 bg-purple-500/20 text-purple-700 rounded-lg text-xs hover:bg-purple-500/30 transition-all hover:scale-110 flex items-center justify-center" style="bottom: 15px; left: 50%; transform: translateX(-50%); font-family: Pacifico, cursive;">Pacifico</button>
+          <button onclick="setFont('Caveat')" class="absolute w-12 h-8 bg-purple-500/20 text-purple-700 rounded-lg text-xs hover:bg-purple-500/30 transition-all hover:scale-110 flex items-center justify-center" style="bottom: 25px; right: 30px; font-family: Caveat, cursive;">Caveat</button>
+          <button onclick="setFont('Kalam')" class="absolute w-12 h-8 bg-purple-500/20 text-purple-700 rounded-lg text-xs hover:bg-purple-500/30 transition-all hover:scale-110 flex items-center justify-center" style="bottom: 45px; right: 15px; font-family: Kalam, cursive;">Kalam</button>
+          <button onclick="setFont('Source Sans Pro')" class="absolute w-14 h-8 bg-blue-500/20 text-blue-700 rounded-lg text-xs hover:bg-blue-500/30 transition-all hover:scale-110 flex items-center justify-center" style="bottom: 45px; left: 15px; font-family: 'Source Sans Pro', sans-serif;">Source</button>
+        </div>
+      `;
+      
+      // 添加到页面
+      document.body.appendChild(fontMenu);
+      
+      // 添加展开动画 - 完全避免设置任何transform相关属性
+      fontMenu.style.opacity = '0';
+      fontMenu.style.visibility = 'visible'; // 确保元素可见
+      setTimeout(() => {
+        fontMenu.style.opacity = '1';
+        // 不设置任何transform或transition属性，完全依靠CSS动画
+        
+        // 加强字体菜单动画保障机制
+        fontMenu.style.animationPlayState = 'running';
+        fontMenu.style.animationName = 'rotate-clockwise';
+        fontMenu.style.animationDuration = '11s'; // 更新为更慢的速度
+        fontMenu.style.animationIterationCount = 'infinite';
+        fontMenu.style.animationTimingFunction = 'linear';
+        
+        // 定期检查动画状态
+        const animationChecker = setInterval(() => {
+          if (fontMenu && document.body.contains(fontMenu)) {
+            fontMenu.style.animationPlayState = 'running';
+          } else {
+            clearInterval(animationChecker);
+          }
+        }, 1000);
+      }, 10);
+      
+      // 不再添加点击外部关闭事件，由统一的点击事件处理
+    }
+    
+    // 关闭字体菜单 - 简化版（移除点击外部检查）
+    function closeFontMenu(e) {
+      const fontMenu = document.getElementById('font-menu');
+      if (!fontMenu) return;
+      
+      // 添加关闭动画
+      fontMenu.style.opacity = '0';
+      
+      setTimeout(() => {
+        if (fontMenu.parentNode) {
+          fontMenu.parentNode.removeChild(fontMenu);
+        }
+        document.removeEventListener('click', closeFontMenu);
+        document.removeEventListener('keydown', handleMenuEscKey);
+      }, 300);
+    }
+
+    // 关闭主题菜单 - 简化版（移除点击外部检查）
+    function closeThemeMenu(e) {
+      const themeMenu = document.getElementById('theme-menu');
+      if (!themeMenu) return;
+      
+      // 添加关闭动画
+      themeMenu.style.opacity = '0';
+      
+      setTimeout(() => {
+        if (themeMenu.parentNode) {
+          themeMenu.parentNode.removeChild(themeMenu);
+        }
+        document.removeEventListener('click', closeThemeMenu);
+        document.removeEventListener('keydown', handleMenuEscKey);
+      }, 300);
+    }
+
+    // 关闭音频菜单 - 简化版（移除点击外部检查）
+    function closeAudioMenu(e) {
+      const audioMenu = document.getElementById('audio-menu');
+      if (!audioMenu) return;
+      
+      // 添加关闭动画
+      audioMenu.style.opacity = '0';
+      
+      setTimeout(() => {
+        if (audioMenu.parentNode) {
+          audioMenu.parentNode.removeChild(audioMenu);
+        }
+        document.removeEventListener('click', closeAudioMenu);
+        document.removeEventListener('keydown', handleMenuEscKey);
+      }, 300);
     }
 
     // 主题切换函数
@@ -3082,13 +3587,7 @@ const THEME_COLORS = [
       const currentTheme = localStorage.getItem('theme') || 'auto';
       
       if (theme === currentTheme) {
-        // 如果是当前主题，只关闭菜单
-        const themeMenu = document.getElementById('theme-menu');
-        if (themeMenu) {
-          themeMenu.remove();
-          document.removeEventListener('click', closeThemeMenu);
-        }
-        return;
+        return; // 如果是当前主题，不做任何操作
       }
       
       // 保存主题设置
@@ -3111,13 +3610,6 @@ const THEME_COLORS = [
       
       // 显示主题切换通知
       showThemeSwitchNotification(theme);
-      
-      // 关闭菜单
-      const themeMenu = document.getElementById('theme-menu');
-      if (themeMenu) {
-        themeMenu.remove();
-        document.removeEventListener('click', closeThemeMenu);
-      }
     }
 
     // 显示主题切换通知
@@ -3259,7 +3751,7 @@ const THEME_COLORS = [
           e.stopPropagation();
           const fontId = btn.getAttribute('data-font');
           switchFont(fontId);
-          closeFontSelector();
+          // 不关闭字体选择器，允许用户尝试不同字体
         });
       });
       
@@ -3822,6 +4314,8 @@ const THEME_COLORS = [
 
     // 蓄力并发射激光
     function chargeAndFireLaser() {
+      console.log('🔋 开始蓄力动画...');
+      
       // 1. 开始蓄力动画
       menuIcon.style.animation = 'charging 1.2s ease-in-out';
       
@@ -3829,6 +4323,7 @@ const THEME_COLORS = [
       createEnergyChargeEffect();
       
       setTimeout(() => {
+        console.log('🚀 蓄力完成，开始发射激光...');
         // 3. 发射激光
         fireLaser();
       }, 1200);
@@ -4200,8 +4695,12 @@ const THEME_COLORS = [
 
     // 显示圆盘菜单
     function showCircularMenu() {
+      console.log('🎆 showCircularMenu() 被调用！');
+      console.log('🔄 当前状态: isMenuOpen =', isMenuOpen, ', isAnimating =', isAnimating);
+      
       // 获取触发按钮的位置
       const triggerRect = menuTrigger.getBoundingClientRect();
+      console.log('📍 触发按钮位置:', triggerRect);
       
       // 计算圆盘菜单位置，确保完全显示在页面上
       // 圆盘应该显示在触发按钮的左下方
@@ -4237,16 +4736,25 @@ const THEME_COLORS = [
       circularMenu.style.top = menuTop + 'px';
       circularMenu.style.left = menuLeft + 'px';
       
-      // 重置拖动偏移
+      // 重置拖动偏移 - 不调用setTranslate以避免覆盖CSS旋转动画
       xOffset = 0;
       yOffset = 0;
-      setTranslate(0, 0, circularMenu);
+      // setTranslate(0, 0, circularMenu); // 注释掉以保持CSS旋转动画
       
       circularMenu.style.opacity = '1';
       circularMenu.style.pointerEvents = 'auto';
-      circularMenu.style.animation = 'menu-expand 0.5s ease-out forwards';
+      // 不设置animation，以免覆盖CSS中的旋转动画
+      circularMenu.classList.add('menu-open');
       isMenuOpen = true;
       isAnimating = false;
+      
+      console.log('✅ 二级圆盘菜单成功打开！');
+      console.log('📍 菜单位置:', menuTop, menuLeft);
+      console.log('🎆 菜单样式:', {
+        opacity: circularMenu.style.opacity,
+        pointerEvents: circularMenu.style.pointerEvents,
+        animation: circularMenu.style.animation
+      });
       
       // 重新开始图标旋转
       restartIconRotation();
@@ -4273,6 +4781,10 @@ const THEME_COLORS = [
           createSimpleColorBalls();
         }
       }, 200);
+      
+      // 启动定时特效系统
+      console.log('🎮 菜单已打开，启动定时特效系统...');
+      startEffectTimers();
     }
 
     // 生成12个颜色球 - 按两行6个排列
@@ -4877,7 +5389,13 @@ const THEME_COLORS = [
 
     // 关闭圆盘菜单
     function closeCircularMenu() {
-      circularMenu.style.animation = 'menu-expand 0.5s ease-in reverse forwards';
+      // 停止特效定时器
+      console.log('🚫 关闭菜单，停止特效定时器...');
+      stopEffectTimers();
+      
+      // 不设置animation，以免覆盖CSS中的旋转动画
+      circularMenu.classList.add('menu-closed');
+      circularMenu.classList.remove('menu-open');
       
       // 移除拖动事件监听器
       dragHandle.removeEventListener('mousedown', dragStart);
@@ -4975,10 +5493,14 @@ const THEME_COLORS = [
     }
 
     function setTranslate(xPos, yPos, el) {
-      el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+      // 避免覆盖CSS旋转动画，使用CSS变量来控制位移
+      el.style.setProperty('--translate-x', xPos + 'px');
+      el.style.setProperty('--translate-y', yPos + 'px');
+      // 注释掉直接设置transform，因为它会覆盖CSS动画
+      // el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
     }
 
-    // 点击外部区域关闭菜单
+    // 点击外部区域关闭菜单 - 精确的菜单退出逻辑
     document.addEventListener('click', function(e) {
       // 检查是否点击在banner区域，如果是则不处理菜单关闭
       const bannerBox = document.getElementById('banner-box');
@@ -4986,20 +5508,104 @@ const THEME_COLORS = [
         return; // 在banner区域的点击不处理菜单关闭
       }
       
-      if (isMenuOpen && !circularMenu.contains(e.target) && !menuTrigger.contains(e.target)) {
-        closeCircularMenu();
+      // 检查是否有打开的三级菜单
+      const openThirdLevelMenus = [
+        document.getElementById('theme-menu'),
+        document.getElementById('font-menu'),
+        document.getElementById('language-menu'),
+        document.getElementById('audio-menu')
+      ].filter(menu => menu && menu.style.opacity !== '0' && menu.style.visibility !== 'hidden');
+      
+      // 如果有三级菜单打开
+      if (openThirdLevelMenus.length > 0) {
+        // 检查点击的位置
+        let clickedOnThirdLevelMenu = false;
+        
+        for (let menu of openThirdLevelMenus) {
+          if (menu.contains(e.target)) {
+            clickedOnThirdLevelMenu = true;
+            break;
+          }
+        }
+        
+        // 如果点击在三级菜单内部，阻止事件冒泡，不关闭任何菜单
+        if (clickedOnThirdLevelMenu) {
+          e.stopPropagation();
+          return;
+        }
+        
+        // 如果点击在二级菜单大圆盘上（但不在三级菜单内），只关闭三级菜单
+        if (circularMenu && circularMenu.contains(e.target)) {
+          console.log('🎯 点击二级菜单大圆盘，关闭三级菜单');
+          closeAllSubMenus();
+          e.stopPropagation();
+          return;
+        }
+        
+        // 如果点击在网站其他区域，关闭所有菜单
+        console.log('🌐 点击网站其他区域，关闭所有菜单');
+        closeAllSubMenus();
+        if (isMenuOpen) {
+          closeCircularMenu();
+        }
+        return;
       }
       
-      // 关闭其他可能打开的菜单
-      closeLanguageMenu(e);
-      closeThemeMenu(e);
-      closeAudioMenu(e);
+      // 如果没有三级菜单打开，处理二级菜单的关闭逻辑
+      if (isMenuOpen && !circularMenu.contains(e.target) && !menuTrigger.contains(e.target)) {
+        console.log('🔵 关闭二级菜单');
+        closeCircularMenu();
+      }
     });
 
-    // ESC键关闭菜单
+    // 关闭所有三四级菜单的通用函数
+    function closeAllSubMenus() {
+      // 关闭所有三四级菜单
+      const subMenus = [
+        { id: 'theme-menu', closeFn: closeThemeMenu, name: '主题菜单' },
+        { id: 'font-menu', closeFn: closeFontMenu, name: '字体菜单' },
+        { id: 'language-menu', closeFn: closeLanguageMenu, name: '语言菜单' },
+        { id: 'audio-menu', closeFn: closeAudioMenu, name: '音频菜单' }
+      ];
+      
+      let hasClosedMenu = false;
+      let closedMenuNames = [];
+      
+      subMenus.forEach(menu => {
+        const menuElement = document.getElementById(menu.id);
+        if (menuElement) {
+          menu.closeFn();
+          hasClosedMenu = true;
+          closedMenuNames.push(menu.name);
+        }
+      });
+      
+      // 显示关闭反馈
+      if (hasClosedMenu && closedMenuNames.length > 0) {
+        console.log(`已关闭菜单: ${closedMenuNames.join(', ')}`);
+        // 可以在这里添加轻微的视觉反馈，例如音效或动画
+      }
+      
+      return hasClosedMenu;
+    }
+
+    // 统一的ESC键处理函数 - 用于三四级菜单
+    function handleMenuEscKey(e) {
+      if (e.key === 'Escape') {
+        closeAllSubMenus();
+      }
+    }
+
+    // ESC键关闭菜单 - 更新版本，支持多级菜单
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && isMenuOpen) {
-        closeCircularMenu();
+      if (e.key === 'Escape') {
+        // 先尝试关闭三四级菜单
+        const hasClosedSubMenu = closeAllSubMenus();
+        
+        // 如果没有三四级菜单被关闭，且二级菜单打开，则关闭二级菜单
+        if (!hasClosedSubMenu && isMenuOpen) {
+          closeCircularMenu();
+        }
       }
     });
     
@@ -5044,13 +5650,6 @@ const THEME_COLORS = [
       if (newUrl !== pathname) {
         window.location.href = newUrl;
       }
-      
-      // 关闭语言菜单
-      const languageMenu = document.getElementById('language-menu');
-      if (languageMenu) {
-        languageMenu.remove();
-        document.removeEventListener('click', closeLanguageMenu);
-      }
     };
     
     // 主题切换函数
@@ -5075,13 +5674,6 @@ const THEME_COLORS = [
         } else {
           document.documentElement.classList.remove('dark');
         }
-      }
-      
-      // 关闭主题菜单
-      const themeMenu = document.getElementById('theme-menu');
-      if (themeMenu) {
-        themeMenu.remove();
-        document.removeEventListener('click', closeThemeMenu);
       }
     };
     
@@ -5108,13 +5700,6 @@ const THEME_COLORS = [
           localStorage.setItem('audioVolume', Math.min(100, Math.max(0, volume)));
           showColorChangeNotification(`🔊 音量设置为 ${volume}%`);
         }
-      }
-      
-      // 关闭音效菜单
-      const audioMenu = document.getElementById('audio-menu');
-      if (audioMenu) {
-        audioMenu.remove();
-        document.removeEventListener('click', closeAudioMenu);
       }
     }
     
@@ -5189,13 +5774,6 @@ const THEME_COLORS = [
       
       // 显示切换通知
       showColorChangeNotification(`🎨 字体已切换为 ${fontName}`);
-      
-      // 关闭主题菜单
-      const themeMenu = document.getElementById('theme-menu');
-      if (themeMenu) {
-        themeMenu.remove();
-        document.removeEventListener('click', closeThemeMenu);
-      }
     };
 
     // 字体设置函数 - 用于圆盘字体选择器
@@ -5281,16 +5859,160 @@ const THEME_COLORS = [
         fontOptionsCircle.classList.add('opacity-0', 'pointer-events-none');
         fontOptionsCircle.classList.remove('opacity-100', 'pointer-events-auto');
       }
-      
-      // 关闭主题菜单
-      const themeMenu = document.getElementById('theme-menu');
-      if (themeMenu) {
-        themeMenu.remove();
-        document.removeEventListener('click', closeThemeMenu);
-      }
     };
     
     // 删除了颜色球相关的调试功能，使用新的简化组件
+    
+    // 测试广念集幽灵图标旋转的函数
+    window.testGhostRotation = function() {
+      console.log('👻 测试幻念集幽灵图标旋转效果...');
+      
+      const ghostIcon = document.querySelector('.ghost-icon');
+      if (ghostIcon) {
+        const style = window.getComputedStyle(ghostIcon);
+        const animation = style.animation;
+        console.log('✅ 找到幻念集幽灵图标');
+        console.log('🔄 当前动画:', animation);
+        console.log('🌀 应该包含两个动画:');
+        console.log('   1. ghost-float: 3秒浮动效果');
+        console.log('   2. ghost-rotate-counterclockwise: 3.2秒逆时针旋转');
+        
+        // 检查是否在二级菜单中
+        const circularMenu = document.getElementById('circular-menu');
+        const isInMenu = circularMenu && circularMenu.contains(ghostIcon);
+        console.log('🎯 位置: ' + (isInMenu ? '在二级圆盘菜单中心' : '独立位置'));
+        
+        return true;
+      } else {
+        console.log('❌ 未找到幻念集幽灵图标');
+        return false;
+      }
+    };
+    
+    // 测试一级菜单点击效果的调试函数
+    window.testMenuClick = function() {
+      console.log('🎯 测试一级菜单点击功能...');
+      
+      const menuTrigger = document.getElementById('menu-trigger');
+      const circularMenu = document.getElementById('circular-menu');
+      
+      if (!menuTrigger) {
+        console.log('❌ 未找到一级菜单按钮');
+        return false;
+      }
+      
+      if (!circularMenu) {
+        console.log('❌ 未找到二级圆盘菜单');
+        return false;
+      }
+      
+      console.log('✅ 找到一级菜单按钮:', menuTrigger);
+      console.log('✅ 找到二级圆盘菜单:', circularMenu);
+      console.log('🔄 当前菜单状态: isMenuOpen =', isMenuOpen);
+      console.log('🔄 当前动画状态: isAnimating =', isAnimating);
+      
+      // 直接调用显示函数测试
+      console.log('🚀 直接调用 showCircularMenu() 测试...');
+      showCircularMenu();
+      
+      return true;
+    };
+    
+    // 快捷打开二级菜单的函数方便调试
+    window.quickOpenMenu = function() {
+      console.log('⚡ 快捷打开二级菜单...');
+      if (isMenuOpen) {
+        console.log('ℹ️ 菜单已经打开');
+        return;
+      }
+      isAnimating = false; // 确保可以打开
+      showCircularMenu();
+    };
+    
+    // 测试旋转动画效果的调试函数
+    window.testRotationVisibility = function() {
+      console.log('🌀 开始测试所有旋转动画的可见性...');
+      
+      const rotationElements = {
+        '一级菜单图标': '.integrated-menu-icon', // 2秒一圈顺时针
+        '二级大圆盘': '#circular-menu', // 3秒一圈逆时针
+        '幻念集幽灵图标': '.ghost-icon', // 3.2秒一圈逆时针+浮动
+        '主题图标': '.theme-icon-rotation', // 3秒一圈顺时针
+        '语言图标': '.language-icon-rotation', // 2.5秒一圈逆时针
+        '字体图标': '.font-icon-rotation', // 2.8秒一圈顺时针
+        '主题菜单': '.theme-menu-rotation', // 4秒一圈逆时针
+        '字体菜单': '.font-menu-rotation', // 4.5秒一圈顺时针
+        '语言菜单': '.language-menu-rotation', // 3.5秒一圈逆时针
+        '四级主题子菜单': '.theme-submenu-rotation' // 5秒一圈顺时针
+      };
+      
+      Object.entries(rotationElements).forEach(([name, selector]) => {
+        const element = document.querySelector(selector);
+        if (element) {
+          const style = window.getComputedStyle(element);
+          const animation = style.animationName;
+          const duration = style.animationDuration;
+          console.log(`✅ ${name}: 找到元素，动画: ${animation}，持续时间: ${duration}`);
+          
+          // 检查是否可见
+          const rect = element.getBoundingClientRect();
+          const isVisible = rect.width > 0 && rect.height > 0 && 
+                           rect.top < window.innerHeight && rect.bottom > 0 &&
+                           rect.left < window.innerWidth && rect.right > 0;
+          console.log(`   可见性: ${isVisible ? '✅ 可见' : '❌ 不可见'}`);
+        } else {
+          console.log(`❌ ${name}: 未找到元素 (${selector})`);
+        }
+      });
+      
+      console.log('');
+      console.log('📊 旋转速度概览:');
+      console.log('• 一级菜单图标: 2秒/圈 (顺时针)');
+      console.log('• 二级大圆盘: 3秒/圈 (逆时针)');
+      console.log('• 主题/语言/字体图标: 2.5-3秒/圈');
+      console.log('• 三级菜单: 3.5-4.5秒/圈');
+      console.log('• 四级主题子菜单: 5秒/圈');
+      console.log('');
+      console.log('👀 现在所有旋转都应该肉眼可见!');
+      
+      return Object.keys(rotationElements).length;
+    };
+    
+    // 测试统一退出逻辑的调试函数
+    window.testMenuExitLogic = function() {
+      console.log('🔍 开始测试菜单退出逻辑...');
+      
+      // 检查是否存在打开的菜单
+      const openMenus = [
+        { id: 'theme-menu', name: '主题菜单' },
+        { id: 'font-menu', name: '字体菜单' },
+        { id: 'language-menu', name: '语言菜单' },
+        { id: 'audio-menu', name: '音频菜单' }
+      ];
+      
+      let foundMenus = [];
+      openMenus.forEach(menu => {
+        if (document.getElementById(menu.id)) {
+          foundMenus.push(menu.name);
+        }
+      });
+      
+      if (foundMenus.length > 0) {
+        console.log(`📋 发现打开的菜单: ${foundMenus.join(', ')}`);
+        console.log('🔄 执行统一关闭逻辑...');
+        const closed = closeAllSubMenus();
+        console.log(`✅ 关闭结果: ${closed ? '成功' : '失败'}`);
+      } else {
+        console.log('❌ 当前没有打开的三四级菜单');
+        if (isMenuOpen) {
+          console.log('🔵 二级菜单已打开，可以使用ESC键关闭');
+        } else {
+          console.log('⚪ 所有菜单都已关闭');
+        }
+      }
+      
+      return foundMenus;
+    };
     
     // 测试主题切换函数
     window.testThemeChange = function(themeName = 'blue') {
@@ -5306,6 +6028,391 @@ const THEME_COLORS = [
       console.log('保存的主题:', savedTheme);
       return { current: currentTheme, saved: savedTheme };
     };
+    
+    // 旋转速度测试函数 - 展示错落有致的旋转效果
+    window.testStaggeredRotation = function() {
+      console.log('🎨 错落有致的旋转速度测试:');
+      console.log('🎵 音乐播放器: 2.0秒/圈 (顺时针) - 最快速度，体现音乐的活跃感');
+      console.log('🌍 语言切换器: 2.6秒/圈 (逆时针) - 快速度');
+      console.log('🔤 字体选择器: 3.4秒/圈 (顺时针) - 中等速度');
+      console.log('🎨 主题选择器: 4.2秒/圈 (逆时针) - 最慢速度，体现稳重感');
+      console.log('✨ 这样的速度差异让四个菜单项在旋转时呈现错落有致的视觉效果!');
+      
+      // 高亮显示各个菜单项
+      const menuItems = [
+        { id: 'music-toggle', name: '音乐', speed: '2.0秒', direction: '顺时针' },
+        { id: 'language-toggle', name: '语言', speed: '2.6秒', direction: '逆时针' },
+        { id: 'font-toggle', name: '字体', speed: '3.4秒', direction: '顺时针' },
+        { id: 'theme-toggle', name: '主题', speed: '4.2秒', direction: '逆时针' }
+      ];
+      
+      menuItems.forEach((item, index) => {
+        setTimeout(() => {
+          const element = document.getElementById(item.id);
+          if (element) {
+            // 短暂高亮效果
+            element.style.transform = 'scale(1.2)';
+            element.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.8)';
+            console.log(`✨ 正在高亮: ${item.name} - ${item.speed} (${item.direction})`);
+            
+            setTimeout(() => {
+              element.style.transform = '';
+              element.style.boxShadow = '';
+            }, 1000);
+          }
+        }, index * 800);
+      });
+    };
+    
+    console.log('🎆 集成菜单已加载 - 四个菜单项已设置为错落有致的旋转速度');
+    console.log('🔧 输入 testStaggeredRotation() 来测试旋转效果');
+    
+    // 一级二级菜单旋转测试函数
+    window.testMenuRotation = function() {
+      console.log('🌀 一级二级菜单旋转测试:');
+      console.log('🔄 一级菜单图标: 默认8秒/圈 (顺时针)，悬停时2秒/圈');
+      console.log('🎭 二级菜单圆盘: 12秒/圈 (逆时针)，内容反向补偿');
+      console.log('✨ 请点击一级菜单图标打开二级菜单，然后悬停一级图标观察加速效果!');
+      
+      const menuTrigger = document.getElementById('menu-trigger');
+      if (menuTrigger) {
+        // 短暂高亮一级菜单
+        menuTrigger.style.boxShadow = '0 0 20px rgba(255, 255, 255, 1)';
+        console.log('✨ 正在高亮一级菜单图标');
+        
+        setTimeout(() => {
+          menuTrigger.style.boxShadow = '';
+        }, 2000);
+      }
+    };
+    
+    console.log('🔧 输入 testMenuRotation() 来测试一级二级菜单旋转效果');
+    
+    // 幽灵图标旋转测试函数
+    window.testGhostRotation = function() {
+      console.log('👻 幽灵图标旋转测试:');
+      console.log('🌀 幽灵图标: 3.2秒/圈 (逆时针) + 3秒周期浮动');
+      console.log('✨ 悬停效果: 放大1.3倍 + 加速到1.2秒/圈 + 紫色发光');
+      console.log('✨ 请点击一级菜单图标打开二级菜单，然后悬停幽灵图标观察效果!');
+      
+      const circularMenu = document.getElementById('circular-menu');
+      const ghostContainer = document.querySelector('.ghost-icon-container');
+      
+      if (circularMenu) {
+        // 短暂高亮二级菜单
+        circularMenu.style.borderColor = 'rgba(147, 51, 234, 0.8)';
+        circularMenu.style.borderWidth = '6px';
+        console.log('✨ 正在高亮二级菜单圆盘');
+        
+        // 模拟悬停效果演示
+        if (ghostContainer) {
+          setTimeout(() => {
+            ghostContainer.style.transform = 'translate(-50%, -50%) scale(1.1)';
+            ghostContainer.style.transition = 'transform 0.3s ease';
+            console.log('✨ 模拟幽灵图标悬停效果');
+            
+            setTimeout(() => {
+              ghostContainer.style.transform = '';
+            }, 2000);
+          }, 1000);
+        }
+        
+        setTimeout(() => {
+          circularMenu.style.borderColor = '';
+          circularMenu.style.borderWidth = '';
+        }, 4000);
+      }
+    };
+    
+    console.log('🔧 输入 testGhostRotation() 来测试幽灵图标旋转效果');
+    
+    // 测试所有菜单旋转的调试函数
+    window.testAllMenuRotations = function() {
+      console.log('🌀 强制测试所有菜单旋转动画...');
+      
+      // 1. 先打开二级菜单
+      const circularMenu = document.getElementById('circular-menu');
+      if (circularMenu) {
+        circularMenu.style.top = '100px';
+        circularMenu.style.left = '100px';
+        circularMenu.style.opacity = '1';
+        circularMenu.style.pointerEvents = 'auto';
+        console.log('✅ 二级菜单已显示');
+      }
+      
+      // 2. 在不同位置显示三四级菜单
+      setTimeout(() => {
+        // 创建语言菜单
+        const languageMenu = document.createElement('div');
+        languageMenu.id = 'test-language-menu';
+        languageMenu.className = 'fixed bg-gradient-to-br from-white/95 via-purple-50/90 to-blue-50/90 backdrop-blur-lg rounded-full shadow-2xl border-4 border-white/30 z-50 flex items-center justify-center language-menu-rotation';
+        languageMenu.style.width = '200px';
+        languageMenu.style.height = '200px';
+        languageMenu.style.top = '150px';
+        languageMenu.style.left = '400px';
+        languageMenu.innerHTML = '<div class="text-center"><div class="text-red-500 text-2xl">•</div><div class="text-blue-500 text-2xl" style="margin-top: 150px;">•</div><div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-bold">语言菜单</div></div>';
+        document.body.appendChild(languageMenu);
+        
+        // 创建主题菜单
+        const themeMenu = document.createElement('div');
+        themeMenu.id = 'test-theme-menu';
+        themeMenu.className = 'fixed bg-white/90 backdrop-blur-lg rounded-full shadow-xl border-4 border-white/30 z-50 flex items-center justify-center theme-menu-rotation';
+        themeMenu.style.width = '200px';
+        themeMenu.style.height = '200px';
+        themeMenu.style.top = '150px';
+        themeMenu.style.left = '650px';
+        themeMenu.innerHTML = '<div class="text-center"><div class="text-green-500 text-2xl">•</div><div class="text-orange-500 text-2xl" style="margin-top: 150px;">•</div><div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-bold">主题菜单</div></div>';
+        document.body.appendChild(themeMenu);
+        
+        // 创建字体菜单
+        const fontMenu = document.createElement('div');
+        fontMenu.id = 'test-font-menu';
+        fontMenu.className = 'fixed bg-white/90 backdrop-blur-lg rounded-full shadow-xl border-4 border-white/30 z-50 flex items-center justify-center font-menu-rotation';
+        fontMenu.style.width = '200px';
+        fontMenu.style.height = '200px';
+        fontMenu.style.top = '400px';
+        fontMenu.style.left = '400px';
+        fontMenu.innerHTML = '<div class="text-center"><div class="text-purple-500 text-2xl">•</div><div class="text-yellow-500 text-2xl" style="margin-top: 150px;">•</div><div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-bold">字体菜单</div></div>';
+        document.body.appendChild(fontMenu);
+        
+        console.log('✅ 所有测试菜单已创建，应该可以看到旋转效果');
+        console.log('🔴 红蓝点 = 语言菜单 (3秒逆时针)');
+        console.log('🟢 绿橙点 = 主题菜单 (3秒逆时针)');
+        console.log('🟣 紫黄点 = 字体菜单 (3秒顺时针)');
+        
+        // 10秒后清理测试菜单
+        setTimeout(() => {
+          document.getElementById('test-language-menu')?.remove();
+          document.getElementById('test-theme-menu')?.remove();
+          document.getElementById('test-font-menu')?.remove();
+          console.log('🧹 测试菜单已清理');
+        }, 10000);
+      }, 1000);
+    };
+    
+    console.log('🔧 输入 testAllMenuRotations() 来强制测试所有菜单旋转');
+    
+    // 强制测试三级菜单旋转动画 - 详细诊断
+    window.forceTestThirdLevelMenus = function() {
+      console.log('📍 强制测试三级菜单旋转动画...');
+      
+      // 先清理所有存在的测试菜单
+      ['test-theme-menu', 'test-font-menu', 'test-language-menu', 'test-audio-menu'].forEach(id => {
+        const existing = document.getElementById(id);
+        if (existing) existing.remove();
+      });
+      
+      // 创建四个测试菜单，并排列显示
+      const menus = [
+        { id: 'test-theme-menu', class: 'theme-menu-rotation', name: '主题菜单', color: 'bg-blue-500/90', x: 200, y: 100 },
+        { id: 'test-font-menu', class: 'font-menu-rotation', name: '字体菜单', color: 'bg-orange-500/90', x: 500, y: 100 },
+        { id: 'test-language-menu', class: 'language-menu-rotation', name: '语言菜单', color: 'bg-purple-500/90', x: 800, y: 100 },
+        { id: 'test-audio-menu', class: 'audio-menu-rotation', name: '音频菜单', color: 'bg-pink-500/90', x: 350, y: 300 }
+      ];
+      
+      menus.forEach(menu => {
+        const testMenu = document.createElement('div');
+        testMenu.id = menu.id;
+        testMenu.className = `fixed ${menu.color} backdrop-blur-lg rounded-full shadow-xl border-4 border-white/30 z-50 flex items-center justify-center ${menu.class}`;
+        testMenu.style.width = '180px';
+        testMenu.style.height = '180px';
+        testMenu.style.top = menu.y + 'px';
+        testMenu.style.left = menu.x + 'px';
+        
+        // 添加旋转参考点和文字
+        testMenu.innerHTML = `
+          <!-- 顶部红点 -->
+          <div class="absolute top-1 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-red-500 rounded-full z-50"></div>
+          <!-- 底部蓝点 -->
+          <div class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-blue-500 rounded-full z-50"></div>
+          <!-- 中心文字 -->
+          <div class="text-white text-center font-bold">
+            <div class="text-sm">${menu.name}</div>
+            <div class="text-xs mt-1">${menu.class}</div>
+          </div>
+        `;
+        
+        document.body.appendChild(testMenu);
+        console.log(`✅ 已创建 ${menu.name} - ${menu.class}`);
+      });
+      
+      console.log('📍 所有测试菜单已创建，请观察红色和蓝色参考点的旋转情况');
+      console.log('🔍 如果参考点不旋转，说明 CSS 动画未生效');
+      
+      // 10秒后清理测试菜单
+      setTimeout(() => {
+        menus.forEach(menu => {
+          const testMenu = document.getElementById(menu.id);
+          if (testMenu) testMenu.remove();
+        });
+        console.log('🧹 测试菜单已清理');
+      }, 10000);
+    };
+    
+    console.log('🔧 输入 forceTestThirdLevelMenus() 来测试三级菜单旋转');
+    
+    // 菜单项旋转修复验证函数
+    window.testMenuItemsRotation = function() {
+      console.log('🔄 菜单项旋转修复验证:');
+      console.log('✅ 已修复问题: 三个菜单项的圆形按钮现在都能正常旋转!');
+      console.log('🎵 音乐: 2.0秒/圈 (顺时针) - 正常旋转');
+      console.log('🌍 语言: 2.6秒/圈 (逆时针) - ✅ 已修复');
+      console.log('🔤 字体: 3.4秒/圈 (顺时针) - ✅ 已修复');
+      console.log('🎨 主题: 4.2秒/圈 (逆时针) - ✅ 已修复');
+      console.log('✨ 请点击一级菜单图标打开二级菜单，观察四个圆形按钮的旋转效果!');
+      
+      // 依次高亮四个菜单项
+      const menuItems = [
+        { id: 'music-toggle', name: '🎵 音乐', speed: '2.0秒', status: '正常' },
+        { id: 'language-toggle', name: '🌍 语言', speed: '2.6秒', status: '✅ 已修复' },
+        { id: 'font-toggle', name: '🔤 字体', speed: '3.4秒', status: '✅ 已修复' },
+        { id: 'theme-toggle', name: '🎨 主题', speed: '4.2秒', status: '✅ 已修复' }
+      ];
+      
+      menuItems.forEach((item, index) => {
+        setTimeout(() => {
+          const element = document.getElementById(item.id);
+          if (element) {
+            const buttonDiv = element.querySelector('div');
+            if (buttonDiv) {
+              buttonDiv.style.transform = 'scale(1.15)';
+              buttonDiv.style.boxShadow = '0 0 25px rgba(255, 255, 255, 0.9)';
+              buttonDiv.style.borderWidth = '3px';
+              console.log(`✨ 高亮: ${item.name} - ${item.speed} ${item.status}`);
+              
+              setTimeout(() => {
+                buttonDiv.style.transform = '';
+                buttonDiv.style.boxShadow = '';
+                buttonDiv.style.borderWidth = '';
+              }, 1200);
+            }
+          }
+        }, index * 1000);
+      });
+    };
+    
+    console.log('🔧 输入 testMenuItemsRotation() 来验证菜单项旋转修复效果');
+    
+    // 颜色球特效定时触发系统
+    let mediumEffectTimer = null;
+    let bigEffectTimer = null;
+    
+    // 中等特效列表（单球和小组合特效）
+    const mediumEffects = [
+      'ball-jump', 'ball-float', 'ball-glow', 'ball-spin', 'ball-bounce',
+      'tornado', 'bubble-rise', 'spiral', 'wave-motion', 'magnetic-field'
+    ];
+    
+    // 大特效列表（大组合特效）
+    const bigEffects = [
+      'supernova', 'galaxy-spiral', 'matrix-transform', 'energy-burst',
+      'formation-flight', 'color-cascade', 'meteor-shower', 'space-warp'
+    ];
+    
+    // 获取所有颜色球元素
+    function getColorBalls() {
+      return document.querySelectorAll('.color-ball-random');
+    }
+    
+    // 随机选择颜色球
+    function getRandomBalls(count) {
+      const balls = Array.from(getColorBalls());
+      const selectedBalls = [];
+      for (let i = 0; i < Math.min(count, balls.length); i++) {
+        const randomIndex = Math.floor(Math.random() * balls.length);
+        const ball = balls.splice(randomIndex, 1)[0];
+        if (ball) selectedBalls.push(ball);
+      }
+      return selectedBalls;
+    }
+    
+    // 执行中等特效
+    function triggerMediumEffect() {
+      const balls = getColorBalls();
+      if (balls.length === 0) return;
+      
+      const effect = mediumEffects[Math.floor(Math.random() * mediumEffects.length)];
+      const selectedBalls = getRandomBalls(Math.floor(Math.random() * 3) + 1); // 1-3个球
+      
+      console.log(`🎆 触发中等特效: ${effect} (影响${selectedBalls.length}个颜色球)`);
+      
+      selectedBalls.forEach((ball, index) => {
+        setTimeout(() => {
+          // 清除旧类
+          ball.className = ball.className.replace(/\b(ball-jump|ball-float|ball-glow|ball-spin|ball-bounce|tornado|bubble-rise|spiral|wave-motion|magnetic-field)\b/g, '');
+          
+          // 添加新特效
+          ball.classList.add(effect);
+          
+          // 3-6秒后移除特效
+          setTimeout(() => {
+            ball.classList.remove(effect);
+          }, (Math.random() * 3 + 3) * 1000);
+        }, index * 200);
+      });
+    }
+    
+    // 执行大特效
+    function triggerBigEffect() {
+      const balls = getColorBalls();
+      if (balls.length === 0) return;
+      
+      const effect = bigEffects[Math.floor(Math.random() * bigEffects.length)];
+      const selectedBalls = getRandomBalls(Math.floor(Math.random() * 8) + 5); // 5-12个球
+      
+      console.log(`🎆🎆 触发大特效: ${effect} (影响${selectedBalls.length}个颜色球)`);
+      
+      selectedBalls.forEach((ball, index) => {
+        setTimeout(() => {
+          // 清除旧类
+          ball.className = ball.className.replace(/\b(supernova|galaxy-spiral|matrix-transform|energy-burst|formation-flight|color-cascade|meteor-shower|space-warp)\b/g, '');
+          
+          // 添加新特效
+          ball.classList.add(effect);
+          
+          // 8-15秒后移除特效
+          setTimeout(() => {
+            ball.classList.remove(effect);
+          }, (Math.random() * 7 + 8) * 1000);
+        }, index * 100);
+      });
+    }
+    
+    // 启动特效定时器
+    function startEffectTimers() {
+      if (mediumEffectTimer || bigEffectTimer) return; // 避免重复启动
+      
+      console.log('🎮 启动颜色球特效定时器');
+      console.log('⏰ 中等特效: 每3秒触发一次');
+      console.log('⏰ 大特效: 每5秒触发一次');
+      
+      // 中等特效定时器（3秒间隔）
+      mediumEffectTimer = setInterval(() => {
+        if (isMenuOpen) {
+          triggerMediumEffect();
+        }
+      }, 3000);
+      
+      // 大特效定时器（5秒间隔）
+      bigEffectTimer = setInterval(() => {
+        if (isMenuOpen) {
+          triggerBigEffect();
+        }
+      }, 5000);
+    }
+    
+    // 停止特效定时器
+    function stopEffectTimers() {
+      if (mediumEffectTimer) {
+        clearInterval(mediumEffectTimer);
+        mediumEffectTimer = null;
+      }
+      if (bigEffectTimer) {
+        clearInterval(bigEffectTimer);
+        bigEffectTimer = null;
+      }
+      console.log('⏹️ 已停止颜色球特效定时器');
+    }
 
   });
 </script>
