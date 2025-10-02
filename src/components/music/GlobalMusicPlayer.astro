@@ -175,13 +175,13 @@
       if (!container) return;
       
       container.innerHTML = `
-        <div id="music-player" class="fixed bg-gradient-to-br from-amber-900/20 to-amber-700/20 backdrop-blur-md border border-amber-500/30 shadow-2xl z-50 group" style="width: 280px; height: 320px; pointer-events: auto; border-radius: 20px; right: 20px; top: 50%; transform: translateY(-50%);">
-          <div class="relative w-full h-full p-4">
+        <div id="music-player" class="fixed bg-gradient-to-br from-amber-900/20 to-amber-700/20 backdrop-blur-md border border-amber-500/30 shadow-2xl z-50 group" style="width: 300px; height: 300px; pointer-events: auto; border-radius: 50%; right: 20px; top: 50%; transform: translateY(-50%);">
+          <div class="relative w-full h-full flex items-center justify-center">
             <!-- 拖拽区域（透明且在顶部，不包含按钮区域） -->
-            <div id="drag-area" class="absolute top-0 left-0 right-12 h-8 z-10 cursor-move" style="background: transparent;" title="拖拽移动播放器"></div>
+            <div id="drag-area" class="absolute top-0 left-0 right-0 h-12 z-10 cursor-move" style="background: transparent; border-radius: 50%;" title="拖拽移动播放器"></div>
             
-            <!-- 控制按钮（采用旧播放器的美观设计） -->
-            <div class="absolute top-2 right-2 flex space-x-2 z-20">
+            <!-- 控制按钮（新的圆形布局设计） -->
+            <div class="absolute top-4 right-4 flex space-x-2 z-20">
               <button id="minimize-btn" class="diamond-button minimize-btn group" title="最小化" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.minimizePlayer(); console.log('最小化按钮点击');">
                 <div class="diamond-inner bg-gradient-to-br from-blue-400 to-blue-600 group-hover:from-blue-500 group-hover:to-blue-700">
                   <svg class="w-3 h-3 text-white transform group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,50 +198,33 @@
               </button>
             </div>
             
-            <!-- 唱片机主体（整合美观界面和唱针效果） -->
-            <div class="relative w-full h-full flex flex-col items-center">
-              <!-- 唱针臂（保留正确的动画效果） -->
-              <div id="tonearm" class="absolute top-8 right-12 z-30 transition-transform duration-1000 ease-in-out origin-bottom-right">
-                <div class="relative">
-                  <!-- 唱针臂主体（采用旧播放器的金属渐变） -->
-                  <div class="w-1 h-20 bg-gradient-to-b from-silver-400 to-silver-600 rounded-full shadow-lg transform rotate-12"></div>
-                  <!-- 唱针头（金色设计） -->
-                  <div class="absolute -bottom-1 -left-0.5 w-2 h-3 bg-gradient-to-b from-gold-400 to-gold-600 rounded-full shadow-md"></div>
-                  <!-- 唱针臂支点 -->
-                  <div class="absolute -top-2 -left-1 w-3 h-3 bg-silver-500 rounded-full shadow-lg"></div>
-                </div>
-              </div>
-              
-              <!-- 唱片区域（使用更大更美观的设计） -->
-              <div class="relative mt-8">
-                <!-- 唱片（采用旧播放器的美观设计） -->
-                <div id="vinyl-record" class="relative w-48 h-48 rounded-full bg-gradient-to-br from-gray-900 via-gray-800 to-black shadow-2xl transition-transform duration-300 ease-out">
-                  <!-- 唱片纹理（多层同心圆） -->
-                  <div class="absolute inset-2 rounded-full border-2 border-gray-700/50"></div>
-                  <div class="absolute inset-4 rounded-full border border-gray-600/30"></div>
-                  <div class="absolute inset-6 rounded-full border border-gray-600/20"></div>
-                  <div class="absolute inset-8 rounded-full border border-gray-600/10"></div>
-                  
-                  <!-- 唱片标签（更大更美观） -->
-                  <div id="record-label" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex flex-col items-center justify-center text-white text-xs shadow-lg">
-                    <div id="song-title-label" class="font-bold text-center px-2 truncate w-full">${this.currentTrack ? this.currentTrack.title : '未选择'}</div>
-                    <div id="artist-label" class="text-xs opacity-75 text-center px-2 truncate w-full mt-1">${this.currentTrack ? this.currentTrack.artist : '音乐'}</div>
-                  </div>
-                  
-                  <!-- 中心孔 -->
-                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-black rounded-full shadow-inner"></div>
-                </div>
-              </div>
-              
-              <!-- 控制面板（采用旧播放器的美观设计） -->
-              <div class="mt-6 flex items-center space-x-4">
-                <button id="prev-btn" class="w-10 h-10 bg-amber-600 hover:bg-amber-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.previousTrack(); console.log('上一首按钮点击');">
+            <!-- 唱片机主体（圆形设计） -->
+            <div class="relative flex items-center justify-center">
+              <!-- 外围控制按钮圆环 -->
+              <div class="absolute w-64 h-64 rounded-full border-2 border-amber-500/50 z-10">
+                <!-- 上一首按钮 -->
+                <button id="prev-btn" class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-amber-600 hover:bg-amber-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.previousTrack(); console.log('上一首按钮点击');">
                   <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M15.445 5.168A1 1 0 0117 6v8a1 1 0 01-1.555.832L10 11.202V14a1 1 0 01-1.555.832l-6-4a1 1 0 010-1.664l6-4A1 1 0 0110 6v2.798l5.445-3.63z" clip-rule="evenodd"></path>
                   </svg>
                 </button>
                 
-                <button id="play-btn" class="w-12 h-12 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.togglePlay(); console.log('播放按钮点击');">
+                <!-- 播放列表按钮 -->
+                <button id="playlist-btn" class="absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.showPlaylist(); console.log('播放列表按钮点击');">
+                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 8a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM4 11a1 1 0 100 2h8a1 1 0 100-2H4z"></path>
+                  </svg>
+                </button>
+                
+                <!-- 下一首按钮 -->
+                <button id="next-btn" class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-10 h-10 bg-amber-600 hover:bg-amber-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.nextTrack(); console.log('下一首按钮点击');">
+                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z" clip-rule="evenodd"></path>
+                  </svg>
+                </button>
+                
+                <!-- 播放按钮 -->
+                <button id="play-btn" class="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.togglePlay(); console.log('播放按钮点击');">
                   <svg id="play-icon" class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
                     ${this.isPlaying ? 
                       '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>' :
@@ -249,29 +232,50 @@
                     }
                   </svg>
                 </button>
-                
-                <button id="next-btn" class="w-10 h-10 bg-amber-600 hover:bg-amber-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.nextTrack(); console.log('下一首按钮点击');">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z" clip-rule="evenodd"></path>
-                  </svg>
-                </button>
-                
-                <button id="playlist-btn" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.showPlaylist(); console.log('播放列表按钮点击');">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 8a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM4 11a1 1 0 100 2h8a1 1 0 100-2H4z"></path>
-                  </svg>
-                </button>
               </div>
               
-              <!-- 进度条（保持美观设计） -->
-              <div class="mt-4 w-full max-w-xs">
-                <div class="flex justify-between text-xs text-amber-200 mb-1">
-                  <span id="current-time">0:00</span>
-                  <span id="total-time">0:00</span>
+              <!-- 唱针臂（保留正确的动画效果） -->
+              <div id="tonearm" class="absolute top-4 right-8 z-30 transition-transform duration-1000 ease-in-out origin-bottom-right">
+                <div class="relative">
+                  <!-- 唱针臂主体（采用旧播放器的金属渐变） -->
+                  <div class="w-1 h-16 bg-gradient-to-b from-silver-400 to-silver-600 rounded-full shadow-lg transform rotate-12"></div>
+                  <!-- 唱针头（金色设计） -->
+                  <div class="absolute -bottom-1 -left-0.5 w-2 h-3 bg-gradient-to-b from-gold-400 to-gold-600 rounded-full shadow-md"></div>
+                  <!-- 唱针臂支点 -->
+                  <div class="absolute -top-2 -left-1 w-3 h-3 bg-silver-500 rounded-full shadow-lg"></div>
                 </div>
-                <div id="progress-container" class="w-full bg-amber-900/30 rounded-full h-1 cursor-pointer">
-                  <div id="progress-bar" class="bg-amber-500 h-1 rounded-full transition-all duration-300" style="width: 0%"></div>
+              </div>
+              
+              <!-- 唱片区域（使用圆形设计） -->
+              <div class="relative">
+                <!-- 唱片（采用圆形设计） -->
+                <div id="vinyl-record" class="relative w-40 h-40 rounded-full bg-gradient-to-br from-gray-900 via-gray-800 to-black shadow-2xl transition-transform duration-300 ease-out">
+                  <!-- 唱片纹理（多层同心圆） -->
+                  <div class="absolute inset-2 rounded-full border-2 border-gray-700/50"></div>
+                  <div class="absolute inset-4 rounded-full border border-gray-600/30"></div>
+                  <div class="absolute inset-6 rounded-full border border-gray-600/20"></div>
+                  <div class="absolute inset-8 rounded-full border border-gray-600/10"></div>
+                  
+                  <!-- 唱片标签（圆形设计） -->
+                  <div id="record-label" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex flex-col items-center justify-center text-white text-xs shadow-lg">
+                    <div id="song-title-label" class="font-bold text-center px-1 truncate w-full text-[8px]">${this.currentTrack ? this.currentTrack.title : '未选择'}</div>
+                    <div id="artist-label" class="text-[6px] opacity-75 text-center px-1 truncate w-full mt-0.5">${this.currentTrack ? this.currentTrack.artist : '音乐'}</div>
+                  </div>
+                  
+                  <!-- 中心孔 -->
+                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-black rounded-full shadow-inner"></div>
                 </div>
+              </div>
+            </div>
+            
+            <!-- 进度条（保持美观设计，放在底部） -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-3/4">
+              <div class="flex justify-between text-xs text-amber-200 mb-1">
+                <span id="current-time">0:00</span>
+                <span id="total-time">0:00</span>
+              </div>
+              <div id="progress-container" class="w-full bg-amber-900/30 rounded-full h-1 cursor-pointer">
+                <div id="progress-bar" class="bg-amber-500 h-1 rounded-full transition-all duration-300" style="width: 0%"></div>
               </div>
             </div>
           </div>

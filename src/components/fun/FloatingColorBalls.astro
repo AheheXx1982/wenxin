@@ -1063,23 +1063,25 @@ const ballPositions = generateRandomPositions();
     async scanMusicFiles() {
       console.log('🔍 动态扫描colorball-music目录中的音乐文件...');
       
-      // 基于您新增的实际音乐文件构建映射
+      // 基于用户更新的实际音乐文件构建映射
       const actualMusicFiles = {
-        'red': ['red1.mp3'],           // 红色系
-        'pink': ['pink3.mp3'],         // 粉色系
+        'red': ['red.mp3'],            // 红色系
+        'pink': ['pink1.mp3'],         // 粉色系
         'blue': ['blue1.mp3'],         // 蓝色系
         'green': ['green2.mp3'],       // 绿色系
-        'purple': ['purple1.mp3'],     // 紫色系
+        'purple': ['purple.mp3'],      // 紫色系
         'yellow': ['yellow2.mp3'],     // 黄色系
-        'orange': ['orange1.mp3']      // 橙色系
+        'orange': ['orange1.mp3'],     // 橙色系
+        'lavender': ['lavender1.mp3'], // 薰衣草色系
+        'cyan': ['cyan.mp3']           // 青色系
       };
       
-      // 设置颜色映射（将18种颜色映射到7个色系）
+      // 设置颜色映射（将18种颜色映射到8个色系）
       const colorSystemMapping = {
         // 红色系
         'red': 'red',
         'coral': 'red',
-        'crimson': 'red',
+        'peach': 'red',
         
         // 粉色系
         'pink': 'pink',
@@ -1089,8 +1091,8 @@ const ballPositions = generateRandomPositions();
         // 蓝色系
         'blue': 'blue',
         'sky': 'blue',
-        'cyan': 'blue',
-        'teal': 'blue',
+        'cyan': 'cyan',
+        'teal': 'cyan',
         
         // 绿色系
         'green': 'green',
@@ -1102,6 +1104,7 @@ const ballPositions = generateRandomPositions();
         'purple': 'purple',
         'violet': 'purple',
         'indigo': 'purple',
+        'lavender': 'lavender', // 薰衣草有独立的音乐文件
         
         // 黄色系
         'yellow': 'yellow',
@@ -1129,7 +1132,7 @@ const ballPositions = generateRandomPositions();
       
       console.log('🎯 颜色球到音乐文件的完整映射:');
       for (const [color, files] of Object.entries(this.colorMusicGroups)) {
-        console.log(`  🔴 ${color} → ${files.join(', ')}`);
+        console.log(`  🔴 ${color} → ${(files as string[]).join(', ')}`);
       }
       
       console.log('🎵 色系音乐播放器已初始化 - 动态扫描版本');
@@ -1142,12 +1145,12 @@ const ballPositions = generateRandomPositions();
       console.log(`🎨 点击了颜色球: ${colorValue}`);
       
       // 检查全局音乐播放器是否正在播放，如果是则暂停它
-      if (window.musicPlayer && window.musicPlayer.isPlaying && window.musicPlayer.audioElement) {
+      const globalMusicPlayer = (window as any).musicPlayer;
+      if (globalMusicPlayer && globalMusicPlayer.isPlaying && globalMusicPlayer.audioElement) {
         console.log('🎧 全局音乐播放器正在播放，暂停其播放');
-        window.musicPlayer.audioElement.pause();
-        window.musicPlayer.isPlaying = false;
-        window.musicPlayer.updateUI();
-        window.musicPlayer.updateMinimizedPlayerIcons();
+        globalMusicPlayer.audioElement.pause();
+        globalMusicPlayer.isPlaying = false;
+        globalMusicPlayer.updateUI();
       }
       
       // 停止之前的音乐和视觉效果
@@ -1181,13 +1184,15 @@ const ballPositions = generateRandomPositions();
             // 音量标准化处理
             // 为不同音乐文件设置预定义的音量系数，以平衡音量差异
             const volumeCoefficients: { [key: string]: number } = {
-              'red1.mp3': 0.8,
-              'pink3.mp3': 0.7,
+              'red.mp3': 0.8,
+              'pink1.mp3': 0.7,
               'blue1.mp3': 0.9,
               'green2.mp3': 0.8,
-              'purple1.mp3': 0.85,
+              'purple.mp3': 0.85,
               'yellow2.mp3': 0.75,
-              'orange1.mp3': 0.8
+              'orange1.mp3': 0.8,
+              'lavender1.mp3': 0.7,
+              'cyan.mp3': 0.8
             };
             
             // 根据文件名调整音量系数
@@ -1338,8 +1343,9 @@ const ballPositions = generateRandomPositions();
       console.log('🔍 开始测试所有音乐文件...');
       
       const actualFiles = [
-        'red1.mp3', 'pink3.mp3', 'blue1.mp3', 'green2.mp3', 
-        'purple1.mp3', 'yellow2.mp3', 'orange1.mp3'
+        'red.mp3', 'pink1.mp3', 'blue1.mp3', 'green2.mp3', 
+        'purple.mp3', 'yellow2.mp3', 'orange1.mp3', 'cyan.mp3',
+        'lavender1.mp3'
       ];
       
       let successCount = 0;
@@ -1781,7 +1787,7 @@ const ballPositions = generateRandomPositions();
       if ((window as any).colorBallMusicPlayer && (window as any).colorBallMusicPlayer.colorMusicGroups) {
         console.log('🎵 完整的颜色到音乐映射:');
         for (const [color, files] of Object.entries((window as any).colorBallMusicPlayer.colorMusicGroups)) {
-          console.log(`  🔴 ${color} → ${files.join(', ')}`);
+          console.log(`  🔴 ${color} → ${(files as string[]).join(', ')}`);
         }
           
         console.log('📋 使用说明:');

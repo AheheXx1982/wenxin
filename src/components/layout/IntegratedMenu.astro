@@ -3099,32 +3099,28 @@ const THEME_COLORS = [
       // 不再添加点击外部关闭事件，由统一的点击事件处理
     }
 
-    // 处理音频操作
-    function handleAudioAction(action) {
-      switch(action) {
-        case 'player':
-          // 调用全局音乐播放器的显示方法
-          if (window.musicPlayer) {
-            window.musicPlayer.showPlayer();
-            console.log('音乐播放器已通过菜单控件显示');
-          } else {
-            console.warn('音乐播放器未初始化');
-          }
-          break;
-        case 'volume':
-          // 显示音量控制
-          showVolumeControl();
-          break;
-        case 'effects':
-          // 显示音效设置
-          showAudioEffects();
-          break;
-        case 'settings':
-          // 显示音频设置
-          showAudioSettings();
-          break;
+    // 创建音频菜单
+    function createAudioMenu() {
+      // 直接显示音乐播放器，而不是创建音频控制菜单
+      if (window.musicPlayer) {
+        window.musicPlayer.showPlayer();
+        console.log('音乐播放器已通过菜单控件显示');
+      } else {
+        console.warn('音乐播放器未初始化');
       }
     }
+
+    // 处理音频操作
+    function handleAudioAction(action) {
+      // 直接显示音乐播放器，不管点击的是哪个音频控制选项
+      if (window.musicPlayer) {
+        window.musicPlayer.showPlayer();
+        console.log('音乐播放器已通过菜单控件显示');
+      } else {
+        console.warn('音乐播放器未初始化');
+      }
+    }
+
     
     // 简单的音量控制函数
     function showVolumeControl() {
@@ -3353,99 +3349,13 @@ const THEME_COLORS = [
     
     // 创建音频菜单
     function createAudioMenu() {
-      // 检查是否已存在菜单
-      const existingMenu = document.getElementById('audio-menu');
-      if (existingMenu) {
-        existingMenu.remove();
-        document.removeEventListener('click', closeAudioMenu);
+      // 直接显示音乐播放器，而不是创建音频控制菜单
+      if (window.musicPlayer) {
+        window.musicPlayer.showPlayer();
+        console.log('音乐播放器已通过菜单控件显示');
+      } else {
+        console.warn('音乐播放器未初始化');
       }
-      
-      // 创建音频菜单容器 - 圆形设计
-      const audioMenu = document.createElement('div');
-      audioMenu.id = 'audio-menu';
-      audioMenu.className = 'fixed bg-white/90 backdrop-blur-lg rounded-full shadow-xl border-4 border-white/30 z-50 flex items-center justify-center audio-menu-rotation';
-      audioMenu.style.width = '280px';
-      audioMenu.style.height = '280px';
-      
-      // 获取当前菜单项的位置
-      const rect = musicToggle.getBoundingClientRect();
-      const menuSize = 280;
-      audioMenu.style.top = (rect.top - menuSize/2 + rect.height/2) + 'px';
-      audioMenu.style.left = (rect.left - menuSize/2 + rect.width/2) + 'px';
-      
-      // 添加音频选项 - 圆形布局
-      audioMenu.innerHTML = `
-        <div class="relative w-full h-full flex items-center justify-center">
-          <!-- 中心标题 -->
-          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-            <div class="text-lg font-bold text-gray-800 mb-1">音频控制</div>
-            <div class="text-sm text-gray-600">Audio</div>
-          </div>
-          
-          <!-- 音频选项按钮 - 圆形分布 -->
-          <button class="audio-btn absolute top-6 left-1/2 transform -translate-x-1/2 bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center space-x-2" data-action="player">
-            <span class="text-lg">🎵</span>
-            <span class="font-medium">播放器</span>
-          </button>
-          <button class="audio-btn absolute top-1/2 right-6 transform -translate-y-1/2 bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center space-x-2" data-action="volume">
-            <span class="text-lg">🔊</span>
-            <span class="font-medium">音量</span>
-          </button>
-          <button class="audio-btn absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center space-x-2" data-action="effects">
-            <span class="text-lg">🎛️</span>
-            <span class="font-medium">音效</span>
-          </button>
-          <button class="audio-btn absolute top-1/2 left-6 transform -translate-y-1/2 bg-rose-500 hover:bg-rose-600 text-white px-6 py-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg flex items-center space-x-2" data-action="settings">
-            <span class="text-lg">⚙️</span>
-            <span class="font-medium">设置</span>
-          </button>
-        </div>
-      `;
-      
-      // 添加到页面
-      document.body.appendChild(audioMenu);
-      
-      // 添加展开动画 - 完全避免设置任何transform相关属性
-      audioMenu.style.opacity = '0';
-      audioMenu.style.visibility = 'visible'; // 确保元素可见
-      setTimeout(() => {
-        audioMenu.style.opacity = '1';
-        // 不设置任何transform或transition属性，完全依靠CSS动画
-        
-        // 为音频按钮添加内容旋转补偿
-        const audioButtons = audioMenu.querySelectorAll('.audio-btn');
-        audioButtons.forEach(btn => {
-          btn.classList.add('menu-button-content');
-        });
-        
-        // 加强音频菜单动画保障机制
-        audioMenu.style.animationPlayState = 'running';
-        audioMenu.style.animationName = 'rotate-clockwise';
-        audioMenu.style.animationDuration = '9s'; // 更新为更慢的速度
-        audioMenu.style.animationIterationCount = 'infinite';
-        audioMenu.style.animationTimingFunction = 'linear';
-        
-        // 定期检查动画状态
-        const animationChecker = setInterval(() => {
-          if (audioMenu && document.body.contains(audioMenu)) {
-            audioMenu.style.animationPlayState = 'running';
-          } else {
-            clearInterval(animationChecker);
-          }
-        }, 1000);
-      }, 10);
-      
-      // 添加音频功能事件监听器
-      const audioButtons = audioMenu.querySelectorAll('.audio-btn');
-      audioButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const action = btn.getAttribute('data-action');
-          handleAudioAction(action);
-        });
-      });
-      
-      // 不再添加点击外部关闭事件，由统一的点击事件处理
     }
     
     // 创建字体菜单

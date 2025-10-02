@@ -54,13 +54,15 @@
 - `music1.mp3`, `music2.mp3`, ... （音乐系列）
 
 **色系专用文件：**
-- 红色系：`red1.mp3`, `red2.mp3`, `fire.mp3`, `passion.mp3`
-- 粉色系：`pink1.mp3`, `pink2.mp3`, `dream.mp3`, `gentle.mp3`
-- 蓝色系：`blue1.mp3`, `blue2.mp3`, `ocean.mp3`, `calm.mp3`
-- 绿色系：`green1.mp3`, `green2.mp3`, `nature.mp3`, `forest.mp3`
-- 紫色系：`purple1.mp3`, `purple2.mp3`, `mystery.mp3`, `magic.mp3`
-- 黄色系：`yellow1.mp3`, `yellow2.mp3`, `sunny.mp3`, `happy.mp3`
-- 橙色系：`orange1.mp3`, `orange2.mp3`, `energy.mp3`, `sunset.mp3`
+- 红色系：`red.mp3`
+- 粉色系：`pink1.mp3`
+- 蓝色系：`blue1.mp3`
+- 绿色系：`green2.mp3`
+- 紫色系：`purple.mp3`
+- 黄色系：`yellow2.mp3`
+- 橙色系：`orange1.mp3`
+- 薰衣草系：`lavender1.mp3`
+- 青色系：`cyan.mp3`
 
 ## 🎮 交互方式
 
