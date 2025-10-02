@@ -32,12 +32,22 @@
         src = '/' + src;
       }
       
+      // 使用encodeURIComponent正确编码路径中的特殊字符
+      // 但要确保路径分隔符不被编码
+      const parts = src.split('/');
+      const encodedParts = parts.map((part, index) => {
+        // 第一个元素是空字符串（因为路径以/开头），不需要编码
+        if (index === 0) return part;
+        // 对文件名部分进行编码，处理特殊字符（包括+号）
+        return encodeURIComponent(part);
+      });
+      const encodedSrc = encodedParts.join('/');
+      
       // 获取当前页面的基础路径
-      const currentPath = window.location.pathname;
       const basePath = window.location.origin;
       
       // 返回完整的绝对路径
-      return basePath + src;
+      return basePath + encodedSrc;
     }
     
     async init() {
@@ -89,6 +99,11 @@
       
       this.audioElement.addEventListener('error', (e) => {
         console.error('音频播放错误:', e);
+        console.error('错误详情:', {
+          code: e.target.error?.code,
+          message: e.target.error?.message,
+          src: e.target.src
+        });
         this.isPlaying = false;
         this.updateUI();
       });
@@ -788,13 +803,32 @@
           console.log('开始播放:', this.currentTrack.title);
         }).catch((error) => {
           console.error('播放失败:', error);
+          console.error('播放失败详情:', {
+            track: this.currentTrack,
+            src: this.audioElement.src,
+            networkState: this.audioElement.networkState,
+            readyState: this.audioElement.readyState
+          });
           alert('播放失败，请检查音频文件路径');
           // 播放失败时恢复状态
           this.isPlaying = false;
           this.updateUI();
         });
       }
-      
+      // 点击播放列表中的歌曲时自动播放
+      this.isPlaying = true;
+      this.audioElement.play().catch((error) => {
+        console.error('播放列表播放失败:', error);
+        console.error('播放列表播放失败详情:', {
+          track: this.currentTrack,
+          src: this.audioElement.src,
+          networkState: this.audioElement.networkState,
+          readyState: this.audioElement.readyState
+        });
+        this.isPlaying = false;
+        this.updateUI();
+      });
+
     }
     
     previousTrack() {
