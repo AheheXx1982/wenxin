@@ -815,20 +815,6 @@
           this.updateUI();
         });
       }
-      // 点击播放列表中的歌曲时自动播放
-      this.isPlaying = true;
-      this.audioElement.play().catch((error) => {
-        console.error('播放列表播放失败:', error);
-        console.error('播放列表播放失败详情:', {
-          track: this.currentTrack,
-          src: this.audioElement.src,
-          networkState: this.audioElement.networkState,
-          readyState: this.audioElement.readyState
-        });
-        this.isPlaying = false;
-        this.updateUI();
-      });
-
     }
     
     previousTrack() {
