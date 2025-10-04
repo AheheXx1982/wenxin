@@ -6,6 +6,7 @@
 <script is:inline>
   class GlobalMusicPlayer {
     constructor() {
+      console.log('GlobalMusicPlayer 构造函数被调用');
       this.isPlaying = false;
       this.isMinimized = false;
       this.currentTrack = null;
@@ -13,6 +14,7 @@
       this.currentTrackIndex = 0;
       this.audioElement = null;
       this.playerPosition = null;
+      console.log('GlobalMusicPlayer 属性初始化完成，开始调用 init()');
       this.init();
     }
     
@@ -30,18 +32,30 @@
         src = '/' + src;
       }
       
+      // 使用encodeURIComponent正确编码路径中的特殊字符
+      // 但要确保路径分隔符不被编码
+      const parts = src.split('/');
+      const encodedParts = parts.map((part, index) => {
+        // 第一个元素是空字符串（因为路径以/开头），不需要编码
+        if (index === 0) return part;
+        // 对文件名部分进行编码，处理特殊字符（包括+号）
+        return encodeURIComponent(part);
+      });
+      const encodedSrc = encodedParts.join('/');
+      
       // 获取当前页面的基础路径
-      const currentPath = window.location.pathname;
       const basePath = window.location.origin;
       
       // 返回完整的绝对路径
-      return basePath + src;
+      return basePath + encodedSrc;
     }
     
     async init() {
       try {
+        console.log('GlobalMusicPlayer init() 方法开始执行');
         // 将播放器实例暴露到window对象，供HTML onclick使用
         window.musicPlayer = this;
+        console.log('window.musicPlayer 已设置:', window.musicPlayer);
         
         // 加载播放列表
         const response = await fetch('/music/playlist.json');
@@ -85,6 +99,11 @@
       
       this.audioElement.addEventListener('error', (e) => {
         console.error('音频播放错误:', e);
+        console.error('错误详情:', {
+          code: e.target.error?.code,
+          message: e.target.error?.message,
+          src: e.target.src
+        });
         this.isPlaying = false;
         this.updateUI();
       });
@@ -105,7 +124,7 @@
             this.currentTrack = state.currentTrack || this.playlist[this.currentTrackIndex];
             this.isPlaying = state.isPlaying || false;
             this.isMinimized = state.isMinimized || false;
-            this.playerPosition = state.position ? JSON.parse(state.position) : null;
+
             
             if (this.currentTrack && this.audioElement) {
               this.audioElement.src = this.resolveAudioPath(this.currentTrack.src);
@@ -138,14 +157,12 @@
       const existingPlayer = document.getElementById('music-player');
       if (existingPlayer) {
         existingPlayer.style.display = 'block';
-        this.savePlayerState(); // 保存显示状态
         return;
       }
       
       // 创建播放器UI
       this.createPlayerUI();
       this.setupEvents();
-      this.savePlayerState(); // 保存显示状态
       console.log('播放器已显示');
     }
     
@@ -159,9 +176,8 @@
           volume: this.audioElement?.volume || 0.7,
           playlist: this.playlist,
           isMinimized: this.isMinimized,
-          position: this.playerPosition ? JSON.stringify(this.playerPosition) : null,
           timestamp: Date.now(),
-          shouldShowPlayer: true  // 只有在播放器显示时才标记为应该显示
+          shouldShowPlayer: true
         };
         localStorage.setItem('musicPlayerDetailedState', JSON.stringify(state));
       } catch (error) {
@@ -174,70 +190,38 @@
       if (!container) return;
       
       container.innerHTML = `
-        <div id="music-player" class="fixed bg-gradient-to-br from-amber-900/20 to-amber-700/20 backdrop-blur-md border border-amber-500/30 shadow-2xl z-50 group" style="width: 280px; height: 320px; pointer-events: auto; border-radius: 20px; right: 20px; top: 50%; transform: translateY(-50%);">
-          <div class="relative w-full h-full p-4">
-            <!-- 控制按钮（采用旧播放器的美观设计） -->
-            <div class="absolute top-2 right-2 flex space-x-2 z-20">
-              <button id="minimize-btn" class="diamond-button minimize-btn group" title="最小化" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.minimizePlayer(); console.log('最小化按钮点击');">
-                <div class="diamond-inner bg-gradient-to-br from-blue-400 to-blue-600 group-hover:from-blue-500 group-hover:to-blue-700">
-                  <svg class="w-3 h-3 text-white transform group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4"></path>
-                  </svg>
-                </div>
-              </button>
-              <button id="close-btn" class="diamond-button close-btn group" title="关闭" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
-                <div class="diamond-inner bg-gradient-to-br from-red-400 to-red-600 group-hover:from-red-500 group-hover:to-red-700">
-                  <svg class="w-3 h-3 text-white transform group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                </div>
-              </button>
-            </div>
+        <div id="music-player" class="fixed bg-gradient-to-br from-amber-900/20 to-amber-700/20 backdrop-blur-md border border-amber-500/30 shadow-2xl z-50 group" style="width: 300px; height: 300px; pointer-events: auto; border-radius: 50%; right: 20px; top: 50%; transform: translateY(-50%);">
+          <div class="relative w-full h-full flex items-center justify-center">
+            <!-- 拖拽区域（透明且在顶部，不包含按钮区域） -->
+            <div id="drag-area" class="absolute top-0 left-0 right-0 h-12 z-10 cursor-move" style="background: transparent; border-radius: 50%;" title="拖拽移动播放器"></div>
             
-            <!-- 唱片机主体（整合美观界面和唱针效果） -->
-            <div class="relative w-full h-full flex flex-col items-center">
-              <!-- 唱针臂（保留正确的动画效果） -->
-              <div id="tonearm" class="absolute top-8 right-12 z-30 transition-transform duration-1000 ease-in-out origin-bottom-right">
-                <div class="relative">
-                  <!-- 唱针臂主体（采用旧播放器的金属渐变） -->
-                  <div class="w-1 h-20 bg-gradient-to-b from-silver-400 to-silver-600 rounded-full shadow-lg transform rotate-12"></div>
-                  <!-- 唱针头（金色设计） -->
-                  <div class="absolute -bottom-1 -left-0.5 w-2 h-3 bg-gradient-to-b from-gold-400 to-gold-600 rounded-full shadow-md"></div>
-                  <!-- 唱针臂支点 -->
-                  <div class="absolute -top-2 -left-1 w-3 h-3 bg-silver-500 rounded-full shadow-lg"></div>
-                </div>
-              </div>
-              
-              <!-- 唱片区域（使用更大更美观的设计） -->
-              <div class="relative mt-8">
-                <!-- 唱片（采用旧播放器的美观设计） -->
-                <div id="vinyl-record" class="relative w-48 h-48 rounded-full bg-gradient-to-br from-gray-900 via-gray-800 to-black shadow-2xl transition-transform duration-300 ease-out">
-                  <!-- 唱片纹理（多层同心圆） -->
-                  <div class="absolute inset-2 rounded-full border-2 border-gray-700/50"></div>
-                  <div class="absolute inset-4 rounded-full border border-gray-600/30"></div>
-                  <div class="absolute inset-6 rounded-full border border-gray-600/20"></div>
-                  <div class="absolute inset-8 rounded-full border border-gray-600/10"></div>
-                  
-                  <!-- 唱片标签（更大更美观） -->
-                  <div id="record-label" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex flex-col items-center justify-center text-white text-xs shadow-lg">
-                    <div id="song-title-label" class="font-bold text-center px-2 truncate w-full">${this.currentTrack ? this.currentTrack.title : '未选择'}</div>
-                    <div id="artist-label" class="text-xs opacity-75 text-center px-2 truncate w-full mt-1">${this.currentTrack ? this.currentTrack.artist : '音乐'}</div>
-                  </div>
-                  
-                  <!-- 中心孔 -->
-                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-black rounded-full shadow-inner"></div>
-                </div>
-              </div>
-              
-              <!-- 控制面板（采用旧播放器的美观设计） -->
-              <div class="mt-6 flex items-center space-x-4">
-                <button id="prev-btn" class="w-10 h-10 bg-amber-600 hover:bg-amber-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.previousTrack(); console.log('上一首按钮点击');">
+            <!-- 唱片机主体（圆形设计） -->
+            <div class="relative flex items-center justify-center">
+              <!-- 外围控制按钮圆环 -->
+              <div class="absolute w-64 h-64 rounded-full border-2 border-amber-500/50 z-10">
+                <!-- 上一首按钮 -->
+                <button id="prev-btn" class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-amber-600 hover:bg-amber-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.previousTrack(); console.log('上一首按钮点击');">
                   <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M15.445 5.168A1 1 0 0117 6v8a1 1 0 01-1.555.832L10 11.202V14a1 1 0 01-1.555.832l-6-4a1 1 0 010-1.664l6-4A1 1 0 0110 6v2.798l5.445-3.63z" clip-rule="evenodd"></path>
                   </svg>
                 </button>
                 
-                <button id="play-btn" class="w-12 h-12 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.togglePlay(); console.log('播放按钮点击');">
+                <!-- 播放列表按钮 -->
+                <button id="playlist-btn" class="absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.showPlaylist(); console.log('播放列表按钮点击');">
+                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 8a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM4 11a1 1 0 100 2h8a1 1 0 100-2H4z"></path>
+                  </svg>
+                </button>
+                
+                <!-- 下一首按钮 -->
+                <button id="next-btn" class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-10 h-10 bg-amber-600 hover:bg-amber-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.nextTrack(); console.log('下一首按钮点击');">
+                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z" clip-rule="evenodd"></path>
+                  </svg>
+                </button>
+                
+                <!-- 播放按钮 -->
+                <button id="play-btn" class="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.togglePlay(); console.log('播放按钮点击');">
                   <svg id="play-icon" class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
                     ${this.isPlaying ? 
                       '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>' :
@@ -245,29 +229,71 @@
                     }
                   </svg>
                 </button>
-                
-                <button id="next-btn" class="w-10 h-10 bg-amber-600 hover:bg-amber-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.nextTrack(); console.log('下一首按钮点击');">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z" clip-rule="evenodd"></path>
+              </div>
+              
+              <!-- 控制按钮（新的环绕式独立布局设计） -->
+              <div class="absolute inset-0 pointer-events-none">
+                <!-- 最小化按钮 - 环绕在播放器左上方 -->
+                <button id="minimize-btn" class="absolute top-6 left-6 w-8 h-8 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20" title="最小化" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.minimizePlayer(); console.log('最小化按钮点击');">
+                  <!-- 睁开的眼睛（含瞳孔） -->
+                  <svg class="w-5 h-5 text-amber-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
                 </button>
                 
-                <button id="playlist-btn" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.showPlaylist(); console.log('播放列表按钮点击');">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 8a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM4 11a1 1 0 100 2h8a1 1 0 100-2H4z"></path>
+                <!-- 关闭按钮 - 环绕在播放器右上方 -->
+                <button id="close-btn" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20" title="关闭" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
+                  <!-- 闭合的眼睛（带斜线） -->
+                  <svg class="w-5 h-5 text-amber-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </button>
               </div>
               
-              <!-- 进度条（保持美观设计） -->
-              <div class="mt-4 w-full max-w-xs">
-                <div class="flex justify-between text-xs text-amber-200 mb-1">
-                  <span id="current-time">0:00</span>
-                  <span id="total-time">0:00</span>
+              <!-- 唱针臂（保留正确的动画效果） -->
+              <div id="tonearm" class="absolute top-4 right-8 z-30 transition-transform duration-1000 ease-in-out origin-bottom-right">
+                <div class="relative">
+                  <!-- 唱针臂主体（采用旧播放器的金属渐变） -->
+                  <div class="w-1 h-16 bg-gradient-to-b from-silver-400 to-silver-600 rounded-full shadow-lg transform rotate-12"></div>
+                  <!-- 唱针头（金色设计） -->
+                  <div class="absolute -bottom-1 -left-0.5 w-2 h-3 bg-gradient-to-b from-gold-400 to-gold-600 rounded-full shadow-md"></div>
+                  <!-- 唱针臂支点 -->
+                  <div class="absolute -top-2 -left-1 w-3 h-3 bg-silver-500 rounded-full shadow-lg"></div>
                 </div>
-                <div id="progress-container" class="w-full bg-amber-900/30 rounded-full h-1 cursor-pointer">
-                  <div id="progress-bar" class="bg-amber-500 h-1 rounded-full transition-all duration-300" style="width: 0%"></div>
+              </div>
+            
+              <!-- 唱片区域（使用圆形设计） -->
+              <div class="relative">
+                <!-- 唱片（采用圆形设计） -->
+                <div id="vinyl-record" class="relative w-40 h-40 rounded-full bg-gradient-to-br from-gray-900 via-gray-800 to-black shadow-2xl transition-transform duration-300 ease-out">
+                  <!-- 唱片纹理（多层同心圆） -->
+                  <div class="absolute inset-2 rounded-full border-2 border-gray-700/50"></div>
+                  <div class="absolute inset-4 rounded-full border border-gray-600/30"></div>
+                  <div class="absolute inset-6 rounded-full border border-gray-600/20"></div>
+                  <div class="absolute inset-8 rounded-full border border-gray-600/10"></div>
+                  
+                  <!-- 唱片标签（圆形设计） -->
+                  <div id="record-label" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex flex-col items-center justify-center text-white text-xs shadow-lg">
+                    <div id="song-title-label" class="font-bold text-center px-1 truncate w-full text-[8px]">${this.currentTrack ? this.currentTrack.title : '未选择'}</div>
+                    <div id="artist-label" class="text-[6px] opacity-75 text-center px-1 truncate w-full mt-0.5">${this.currentTrack ? this.currentTrack.artist : '音乐'}</div>
+                  </div>
+                  
+                  <!-- 中心孔 -->
+                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-black rounded-full shadow-inner"></div>
                 </div>
+              </div>
+            </div>
+            
+            <!-- 进度条（保持美观设计，放在底部） -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-3/4">
+              <div class="flex justify-between text-xs text-amber-200 mb-1">
+                <span id="current-time">0:00</span>
+                <span id="total-time">0:00</span>
+              </div>
+              <div id="progress-container" class="w-full bg-amber-900/30 rounded-full h-1 cursor-pointer">
+                <div id="progress-bar" class="bg-amber-500 h-1 rounded-full transition-all duration-300" style="width: 0%"></div>
               </div>
             </div>
           </div>
@@ -282,22 +308,42 @@
         this.updateUI();
       }, 100);
               
-      // 设置默认位置（右侧中间）
-      if (this.playerPosition && player) {
-        player.style.left = this.playerPosition.left + 'px';
-        player.style.top = this.playerPosition.top + 'px';
-        player.style.right = 'auto';
-        player.style.bottom = 'auto';
-        player.style.transform = 'none';
-      } else if (player) {
-        // 默认位置：右侧中间
-        const defaultLeft = window.innerWidth - 320; // 距离右边界20px
-        const defaultTop = (window.innerHeight - 320) / 2; // 垂直居中
-        player.style.left = defaultLeft + 'px';
-        player.style.top = defaultTop + 'px';
-        player.style.right = 'auto';
-        player.style.bottom = 'auto';
-        player.style.transform = 'none';
+      // 恢复播放器位置或设置默认位置
+      if (player) {
+        if (this.playerPosition && this.playerPosition.isDocked) {
+          // 恢复吸附状态
+          console.log('恢复吸附状态:', this.playerPosition);
+          player.style.left = this.playerPosition.left + 'px';
+          player.style.top = this.playerPosition.top + 'px';
+          player.style.right = 'auto';
+          player.style.bottom = 'auto';
+          player.style.transform = 'none';
+          player.classList.add('docked', `docked-${this.playerPosition.dockedSide}`);
+        } else if (this.playerPosition && !this.playerPosition.isDocked) {
+          // 恢复普通位置
+          console.log('恢复普通位置:', this.playerPosition);
+          player.style.left = this.playerPosition.left + 'px';
+          player.style.top = this.playerPosition.top + 'px';
+          player.style.right = 'auto';
+          player.style.bottom = 'auto';
+          player.style.transform = 'none';
+        } else {
+          // 默认位置：右侧中间
+          const defaultLeft = window.innerWidth - 320; // 距离右边界20px
+          const defaultTop = (window.innerHeight - 320) / 2; // 垂直居中
+          player.style.left = defaultLeft + 'px';
+          player.style.top = defaultTop + 'px';
+          player.style.right = 'auto';
+          player.style.bottom = 'auto';
+          player.style.transform = 'none';
+          
+          // 保存默认位置
+          this.playerPosition = {
+            left: defaultLeft,
+            top: defaultTop,
+            isDocked: false
+          };
+        }
       }
     }
     
@@ -314,7 +360,8 @@
       }
       
       if (player) {
-        this.makeDraggable(player);
+        // 为最大化播放器也启用吸附功能
+        this.makeDraggableWithDocking(player);
       }
       
       console.log('简化事件设置完成');
@@ -370,14 +417,6 @@
           isDragging = false;
           element.style.cursor = '';
           draggableArea.style.cursor = this.isMinimized ? 'move' : '';
-          
-          // 保存位置
-          const rect = element.getBoundingClientRect();
-          this.playerPosition = {
-            left: rect.left,
-            top: rect.top
-          };
-          this.savePlayerState();
         }
       });
     }
@@ -386,14 +425,14 @@
       let isDragging = false;
       let startX, startY, startLeft, startTop;
       
-      // 获取拖拽区域，确保不干扰动效
+      // 获取拖拽区域
       const dragArea = element.querySelector('#drag-area');
       if (!dragArea) {
-        console.warn('未找到拖拽区域，使用默认拖拽方式');
-        return this.makeDraggable(element);
+        console.warn('未找到拖拽区域');
+        return;
       }
       
-      console.log('设置拖拽功能');
+      console.log('设置带吸附功能的拖拽');
       
       // 清理旧的事件监听器（如果存在）
       if (dragArea._dragHandlers) {
@@ -406,13 +445,6 @@
       dragArea.style.cursor = 'move';
       
       const handleMouseDown = (e) => {
-        // 检查是否点击在按钮上
-        const buttonElement = document.getElementById('play-pause-btn');
-        if (buttonElement && (buttonElement.contains(e.target) || buttonElement === e.target)) {
-          console.log('点击在按钮上，不启动拖拽');
-          return; // 如果点击在按钮上，不启动拖拽
-        }
-        
         console.log('开始拖拽');
         isDragging = true;
         startX = e.clientX;
@@ -451,8 +483,8 @@
         element.style.right = 'auto';
         element.style.bottom = 'auto';
         
-        // 显示吸附提示
-        this.showDockingHint(newLeft, newTop, element);
+        // 检查是否接近边缘，显示吸附提示
+        this.showDockingHint(element, newLeft, newTop);
       };
       
       const handleMouseUp = () => {
@@ -462,47 +494,25 @@
           element.style.cursor = '';
           dragArea.style.cursor = 'move';
           
-          // 检查是否需要吸附到侧边栏
-          const rect = element.getBoundingClientRect();
-          const dockResult = this.checkDocking(rect.left, rect.top, element);
+          // 隐藏吸附提示
+          this.hideDockingHint();
           
-          if (dockResult.shouldDock) {
-            // 执行吸附动画
-            element.style.transition = 'all 0.3s ease';
-            element.style.left = dockResult.left + 'px';
-            element.style.top = dockResult.top + 'px';
-            
-            // 保存吸附状态
-            this.playerPosition = {
-              left: dockResult.left,
-              top: dockResult.top,
-              docked: dockResult.side,
-              isDocked: dockResult.isDocked
-            };
-            
-            // 添加悬停展开功能
-            if (dockResult.isDocked) {
-              this.setupDockHoverEffects(element, dockResult);
-            }
-            
-            setTimeout(() => {
-              element.style.transition = '';
-            }, 300);
+          // 检查是否需要吸附
+          const rect = element.getBoundingClientRect();
+          const dockResult = this.checkDocking(rect.left, rect.top, element.offsetWidth, element.offsetHeight);
+          
+          if (dockResult.isDocked) {
+            console.log('执行吸附到:', dockResult.side);
+            this.executeDocking(element, dockResult);
           } else {
             // 保存当前位置
             this.playerPosition = {
               left: rect.left,
               top: rect.top,
-              docked: null,
               isDocked: false
             };
-            
-            // 移除悬停效果
-            this.removeDockHoverEffects(element);
+            this.savePlayerState();
           }
-          
-          this.savePlayerState();
-          this.hideDockingHint();
         }
       };
       
@@ -518,206 +528,227 @@
         mouseup: handleMouseUp
       };
       
-      console.log('拖拽功能设置完成');
+      console.log('带吸附功能的拖拽设置完成');
     }
-    
-    showDockingHint(left, top, element) {
-      const dockDistance = 30; // 吸附距离
+
+    // 检查是否需要吸附
+    checkDocking(left, top, width, height) {
+      const dockThreshold = 50; // 吸附阈值
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
-      const elementWidth = element.offsetWidth;
-      const elementHeight = element.offsetHeight;
       
-      let hint = '';
-      
-      // 只检查右侧吸附
-      if (left >= windowWidth - elementWidth - dockDistance) {
-        hint = '👉 粘右侧';
+      // 检查左侧吸附
+      if (left <= dockThreshold) {
+        return {
+          isDocked: true,
+          side: 'left',
+          position: {
+            left: 0,
+            top: Math.max(0, Math.min(top, windowHeight - height))
+          }
+        };
       }
-      // 其他方向吸附（但不显示提示）
-      else if (left <= dockDistance || top <= dockDistance || top >= windowHeight - elementHeight - dockDistance) {
-        hint = '🔄 吸附到边缘';
+      
+      // 检查右侧吸附
+      if (left + width >= windowWidth - dockThreshold) {
+        return {
+          isDocked: true,
+          side: 'right',
+          position: {
+            left: windowWidth - width,
+            top: Math.max(0, Math.min(top, windowHeight - height))
+          }
+        };
       }
       
-      if (hint) {
-        let hintElement = document.getElementById('docking-hint');
-        if (!hintElement) {
-          hintElement = document.createElement('div');
-          hintElement.id = 'docking-hint';
-          hintElement.style.cssText = `
+      return { isDocked: false };
+    }
+
+    // 显示吸附提示
+    showDockingHint(element, left, top) {
+      const dockResult = this.checkDocking(left, top, element.offsetWidth, element.offsetHeight);
+      
+      if (dockResult.isDocked) {
+        // 创建或更新吸附提示
+        let hint = document.getElementById('docking-hint');
+        if (!hint) {
+          hint = document.createElement('div');
+          hint.id = 'docking-hint';
+          hint.style.cssText = `
             position: fixed;
-            z-index: 9999;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 14px;
+            background: rgba(74, 144, 226, 0.3);
+            border: 2px dashed #4a90e2;
+            border-radius: 8px;
             pointer-events: none;
-            transition: opacity 0.2s ease;
+            z-index: 9998;
+            transition: all 0.2s ease;
           `;
-          document.body.appendChild(hintElement);
+          document.body.appendChild(hint);
         }
         
-        hintElement.textContent = hint;
-        hintElement.style.left = (left + elementWidth / 2 - 40) + 'px';
-        hintElement.style.top = (top - 40) + 'px';
-        hintElement.style.opacity = '1';
+        // 设置提示位置和大小
+        if (dockResult.side === 'left') {
+          hint.style.left = '0px';
+          hint.style.top = dockResult.position.top + 'px';
+          hint.style.width = '60px';
+          hint.style.height = element.offsetHeight + 'px';
+        } else if (dockResult.side === 'right') {
+          hint.style.left = (window.innerWidth - 60) + 'px';
+          hint.style.top = dockResult.position.top + 'px';
+          hint.style.width = '60px';
+          hint.style.height = element.offsetHeight + 'px';
+        }
+        
+        hint.style.display = 'block';
       } else {
         this.hideDockingHint();
       }
     }
-    
+
+    // 隐藏吸附提示
     hideDockingHint() {
-      const hintElement = document.getElementById('docking-hint');
-      if (hintElement) {
-        hintElement.style.opacity = '0';
-        setTimeout(() => {
-          if (hintElement.parentNode) {
-            hintElement.parentNode.removeChild(hintElement);
+      const hint = document.getElementById('docking-hint');
+      if (hint) {
+        hint.style.display = 'none';
+      }
+    }
+
+    // 执行吸附
+    executeDocking(element, dockResult) {
+      console.log('执行吸附到:', dockResult.side);
+      
+      // 设置吸附位置
+      element.style.left = dockResult.position.left + 'px';
+      element.style.top = dockResult.position.top + 'px';
+      element.style.right = 'auto';
+      element.style.bottom = 'auto';
+      
+      // 添加吸附状态类
+      element.classList.add('docked', `docked-${dockResult.side}`);
+      
+      // 保存吸附状态
+      this.playerPosition = {
+        left: dockResult.position.left,
+        top: dockResult.position.top,
+        isDocked: true,
+        dockedSide: dockResult.side
+      };
+      this.savePlayerState();
+      
+      // 添加吸附动画
+      element.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+      setTimeout(() => {
+        element.style.transition = '';
+      }, 300);
+
+      // 添加悬停展开功能
+      this.setupDockingHoverEvents(element);
+    }
+
+    // 设置吸附状态下的悬停展开功能
+    setupDockingHoverEvents(element) {
+      if (!element.classList.contains('docked')) return;
+
+      let hoverTimer = null;
+      let isExpanded = false;
+      let isMouseNear = false;
+      let checkInterval = null;
+
+      const expandPlayer = () => {
+        if (isExpanded) return;
+        isExpanded = true;
+        
+        const dockedSide = element.classList.contains('docked-left') ? 'left' : 'right';
+        
+        if (dockedSide === 'left') {
+          element.style.transform = 'translateX(0)';
+        } else {
+          element.style.transform = 'translateX(0)';
+        }
+        
+        element.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        element.style.zIndex = '9999';
+      };
+
+      const collapsePlayer = () => {
+        if (!isExpanded) return;
+        isExpanded = false;
+        
+        const dockedSide = element.classList.contains('docked-left') ? 'left' : 'right';
+        
+        if (dockedSide === 'left') {
+          element.style.transform = 'translateX(-255px)'; // 只露出25px
+        } else {
+          element.style.transform = 'translateX(255px)'; // 只露出25px
+        }
+        
+        element.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        element.style.zIndex = '50';
+      };
+
+      // 检查鼠标是否在播放器附近
+      const checkMousePosition = (event) => {
+        const rect = element.getBoundingClientRect();
+        const dockedSide = element.classList.contains('docked-left') ? 'left' : 'right';
+        const buffer = 50; // 缓冲区域
+        
+        let isNear = false;
+        
+        if (dockedSide === 'left') {
+          // 左侧吸附：检查鼠标是否在左侧区域
+          isNear = event.clientX <= rect.right + buffer && 
+                   event.clientY >= rect.top - buffer && 
+                   event.clientY <= rect.bottom + buffer;
+        } else {
+          // 右侧吸附：检查鼠标是否在右侧区域
+          isNear = event.clientX >= rect.left - buffer && 
+                   event.clientY >= rect.top - buffer && 
+                   event.clientY <= rect.bottom + buffer;
+        }
+        
+        if (isNear && !isMouseNear) {
+          isMouseNear = true;
+          if (hoverTimer) {
+            clearTimeout(hoverTimer);
+            hoverTimer = null;
           }
-        }, 200);
-      }
-    }
-    
-    checkDocking(left, top, element) {
-      const dockDistance = 30;
-      const windowWidth = window.innerWidth;
-      const windowHeight = window.innerHeight;
-      const elementWidth = element.offsetWidth;
-      const elementHeight = element.offsetHeight;
-      
-      // 检查右侧吸附（主要）
-      if (left >= windowWidth - elementWidth - dockDistance) {
-        return {
-          shouldDock: true,
-          left: windowWidth - 15, // 只露出15px
-          top: Math.max(10, Math.min(top, windowHeight - elementHeight - 10)),
-          side: 'right',
-          isDocked: true
-        };
-      }
-      
-      // 检查左侧吸附（可选）
-      if (left <= dockDistance) {
-        return {
-          shouldDock: true,
-          left: -elementWidth + 15, // 只露出15px
-          top: Math.max(10, Math.min(top, windowHeight - elementHeight - 10)),
-          side: 'left',
-          isDocked: true
-        };
-      }
-      
-      // 检查顶部吸附
-      if (top <= dockDistance) {
-        return {
-          shouldDock: true,
-          left: Math.max(10, Math.min(left, windowWidth - elementWidth - 10)),
-          top: -elementHeight + 15,
-          side: 'top',
-          isDocked: true
-        };
-      }
-      
-      // 检查底部吸附
-      if (top >= windowHeight - elementHeight - dockDistance) {
-        return {
-          shouldDock: true,
-          left: Math.max(10, Math.min(left, windowWidth - elementWidth - 10)),
-          top: windowHeight - 15,
-          side: 'bottom',
-          isDocked: true
-        };
-      }
-      
-      return { shouldDock: false, isDocked: false };
-    }
-    
-    setupDockHoverEffects(element, dockResult) {
-      console.log('设置吸附悬停效果');
-      
-      // 清理旧的悬停事件监听器（如果存在）
-      if (element._dockHoverEnter) {
-        element.removeEventListener('mouseenter', element._dockHoverEnter);
-      }
-      if (element._dockHoverLeave) {
-        element.removeEventListener('mouseleave', element._dockHoverLeave);
-      }
-      
-      const originalLeft = dockResult.left;
-      const originalTop = dockResult.top;
-      const side = dockResult.side;
-      
-      // 计算展开位置
-      let expandedLeft = originalLeft;
-      let expandedTop = originalTop;
-      
-      switch (side) {
-        case 'right':
-          expandedLeft = window.innerWidth - element.offsetWidth - 10;
-          break;
-        case 'left':
-          expandedLeft = 10;
-          break;
-        case 'top':
-          expandedTop = 10;
-          break;
-        case 'bottom':
-          expandedTop = window.innerHeight - element.offsetHeight - 10;
-          break;
-      }
-      
-      // 悬停进入事件
-      const handleMouseEnter = () => {
-        console.log('悬停进入，展开播放器');
-        element.style.transition = 'all 0.3s ease';
-        element.style.left = expandedLeft + 'px';
-        element.style.top = expandedTop + 'px';
-        element.classList.add('docked-expanded');
+          expandPlayer();
+        } else if (!isNear && isMouseNear) {
+          isMouseNear = false;
+          if (hoverTimer) {
+            clearTimeout(hoverTimer);
+          }
+          hoverTimer = setTimeout(() => {
+            collapsePlayer();
+          }, 800); // 增加延迟时间到800ms
+        }
       };
-      
-      // 悬停离开事件
-      const handleMouseLeave = () => {
-        console.log('悬停离开，收缩播放器');
-        element.style.transition = 'all 0.3s ease';
-        element.style.left = originalLeft + 'px';
-        element.style.top = originalTop + 'px';
-        element.classList.remove('docked-expanded');
+
+      // 使用全局鼠标移动事件来检测
+      const handleMouseMove = (event) => {
+        checkMousePosition(event);
       };
-      
-      // 添加事件监听器
-      element.addEventListener('mouseenter', handleMouseEnter);
-      element.addEventListener('mouseleave', handleMouseLeave);
-      
-      // 保存事件引用以便清理
-      element._dockHoverEnter = handleMouseEnter;
-      element._dockHoverLeave = handleMouseLeave;
-      
-      // 添加吸附状态标记
-      element.classList.add('docked-to-' + side);
-      
-      console.log('吸附悬停效果设置完成');
+
+      // 添加全局鼠标移动监听
+      document.addEventListener('mousemove', handleMouseMove);
+
+      // 清理函数
+      element._cleanupHoverEvents = () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        if (hoverTimer) {
+          clearTimeout(hoverTimer);
+        }
+        if (checkInterval) {
+          clearInterval(checkInterval);
+        }
+      };
+
+      // 初始状态：收缩
+      setTimeout(() => {
+        collapsePlayer();
+      }, 100);
     }
-    
-    removeDockHoverEffects(element) {
-      console.log('移除吸附悬停效果');
-      
-      if (element._dockHoverEnter) {
-        element.removeEventListener('mouseenter', element._dockHoverEnter);
-        delete element._dockHoverEnter;
-      }
-      
-      if (element._dockHoverLeave) {
-        element.removeEventListener('mouseleave', element._dockHoverLeave);
-        delete element._dockHoverLeave;
-      }
-      
-      // 移除吸附状态标记
-      element.classList.remove('docked-expanded', 'docked-to-left', 'docked-to-right', 'docked-to-top', 'docked-to-bottom');
-      
-      console.log('吸附悬停效果已移除');
-    }
-    
+
     // 处理最小化播放器的点击事件
     handleMinimizedPlayerClick(event) {
       console.log('最小化播放器按钮被点击');
@@ -775,14 +806,18 @@
           console.log('开始播放:', this.currentTrack.title);
         }).catch((error) => {
           console.error('播放失败:', error);
+          console.error('播放失败详情:', {
+            track: this.currentTrack,
+            src: this.audioElement.src,
+            networkState: this.audioElement.networkState,
+            readyState: this.audioElement.readyState
+          });
           alert('播放失败，请检查音频文件路径');
           // 播放失败时恢复状态
           this.isPlaying = false;
           this.updateUI();
         });
       }
-      
-      this.savePlayerState();
     }
     
     previousTrack() {
@@ -804,7 +839,6 @@
       
       this.updateTrackInfo();
       this.updateUI();
-      this.savePlayerState();
       console.log('上一首:', this.currentTrack.title, '- 自动播放');
     }
     
@@ -827,7 +861,6 @@
       
       this.updateTrackInfo();
       this.updateUI();
-      this.savePlayerState();
       console.log('下一首:', this.currentTrack.title, '- 自动播放');
     }
     
@@ -1034,7 +1067,6 @@
       
       this.updateTrackInfo();
       this.updateUI();
-      this.savePlayerState();
       
       console.log('切换到:', this.currentTrack.title, '- 自动播放');
     }
@@ -1228,6 +1260,27 @@
             <!-- 拖拽区域（透明且在最上层，不包含按钮区域） -->
             <div id="drag-area" class="absolute inset-0 z-30 cursor-move" style="background: transparent;"></div>
             
+            <!-- 环绕式控制按钮 -->
+            <div class="absolute inset-0 pointer-events-none">
+              <!-- 最小化按钮 - 环绕在播放器左上方 -->
+              <button id="minimize-btn" class="absolute top-2 left-2 w-6 h-6 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20 eye-button" title="最小化" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.expandPlayer(); console.log('最小化按钮点击');">
+                <!-- 睁开的眼睛（含瞳孔） -->
+                <svg class="w-3 h-3 text-amber-200 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </button>
+              
+              <!-- 关闭按钮 - 环绕在播放器右上方 -->
+              <button id="close-btn" class="absolute top-2 right-2 w-6 h-6 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20 eye-button" title="关闭" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
+                <!-- 闭合的眼睛（带斜线） -->
+                <svg class="w-3 h-3 text-amber-200 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </button>
+            </div>
+            
             <!-- 随机动效元素 -->
             ${randomEffects.backgroundRings}
             
@@ -1263,7 +1316,6 @@
         // 立即设置所有交互功能（但不绑定按钮事件，由HTML onclick处理）
         this.setupMinimizedPlayerInteractions(player);
       }
-      this.savePlayerState();
     }
     
     // 新方法：只更新最小化播放器的状态，不重新创建 HTML
@@ -1318,23 +1370,12 @@
       console.log('最小化播放器状态更新完成，播放状态:', this.isPlaying);
     }
     
-    // 新方法：设置最小化播放器的所有交互功能
+    // 设置最小化播放器的交互功能
     setupMinimizedPlayerInteractions(player) {
       console.log('设置最小化播放器交互功能（仅拖拽）');
       
-      // 只设置拖拽功能，按钮事件由HTML onclick处理
+      // 设置带吸附功能的拖拽，按钮事件由HTML onclick处理
       this.makeDraggableWithDocking(player);
-      
-      // 检查是否已经处于吸附状态
-      if (this.playerPosition && this.playerPosition.isDocked) {
-        const dockResult = {
-          left: this.playerPosition.left,
-          top: this.playerPosition.top,
-          side: this.playerPosition.docked,
-          isDocked: true
-        };
-        this.setupDockHoverEffects(player, dockResult);
-      }
       
       console.log('最小化播放器交互功能设置完成');
     }
@@ -1464,6 +1505,12 @@
         this.isPlaying = false;
       }
       
+      // 清理悬停事件监听器
+      const playerElement = document.querySelector('.minimized-player-container');
+      if (playerElement && playerElement._cleanupHoverEvents) {
+        playerElement._cleanupHoverEvents();
+      }
+      
       // 清除显示状态标志
       try {
         const savedState = localStorage.getItem('musicPlayerDetailedState');
@@ -1484,15 +1531,49 @@
       
       console.log('播放器已彻底关闭');
     }
+
+    // 保存播放器状态
+    savePlayerState() {
+      try {
+        const state = {
+          currentTrack: this.currentTrack,
+          currentTrackIndex: this.currentTrackIndex,
+          isPlaying: this.isPlaying,
+          volume: this.volume,
+          currentTime: this.audioElement ? this.audioElement.currentTime : 0,
+          playlist: this.playlist,
+          isMinimized: this.isMinimized,
+          shouldShowPlayer: true,
+          playerPosition: this.playerPosition
+        };
+        
+        localStorage.setItem('musicPlayerDetailedState', JSON.stringify(state));
+        console.log('播放器状态已保存:', state);
+      } catch (error) {
+        console.error('保存播放器状态失败:', error);
+      }
+    }
   }
 
+  // 将GlobalMusicPlayer类暴露到全局作用域
+  window.GlobalMusicPlayer = GlobalMusicPlayer;
+
   function initPlayer() {
+    console.log('=== GlobalMusicPlayer 初始化开始 ===');
+    console.log('document.readyState:', document.readyState);
+    console.log('window.musicPlayer 当前状态:', window.musicPlayer);
+    
     if (!window.musicPlayer) {
+      console.log('创建新的 GlobalMusicPlayer 实例');
       window.musicPlayer = new GlobalMusicPlayer();
+      console.log('GlobalMusicPlayer 实例已创建:', window.musicPlayer);
     } else {
+      console.log('播放器已存在，更新UI状态');
       // 如果已存在，则更新UI状态
       window.musicPlayer.updateUI();
     }
+    
+    console.log('=== GlobalMusicPlayer 初始化完成 ===');
   }
 
   if (document.readyState === 'loading') {
@@ -1505,32 +1586,6 @@
 </script>
 
 <style>
-  /* 钻石按钮样式（采用旧播放器的美观设计） */
-  .diamond-button {
-    width: 18px;
-    height: 18px;
-    position: relative;
-    cursor: pointer;
-    transform: rotate(45deg);
-    transition: all 0.3s ease;
-  }
-  
-  .diamond-inner {
-    width: 100%;
-    height: 100%;
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: rotate(-45deg);
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  }
-  
-  .diamond-button:hover {
-    transform: rotate(45deg) scale(1.1);
-  }
-  
   /* 唱片旋转动画（采用旧播放器的精确控制） */
   @keyframes vinyl-spin {
     from { transform: rotate(0deg); }
@@ -1608,6 +1663,26 @@
   /* 最小化播放器动画效果 */
   .minimized-player-container {
     animation: minimizedGlow 3s ease-in-out infinite;
+  }
+  
+  /* 环绕式按钮样式 */
+  .eye-button {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .eye-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* 眼睛图标动画 */
+  .eye-icon {
+    transition: all 0.2s ease;
+  }
+  
+  .eye-button:hover .eye-icon {
+    transform: scale(1.1);
   }
   
   /* 旋转光环效果 */
@@ -2009,32 +2084,7 @@
     border-radius: 3px;
   }
   
-  /* 吸附状态样式 */
-  .docked-to-right {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  
-  .docked-to-left {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-  
-  .docked-to-top {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-  
-  .docked-to-bottom {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  
-  /* 吸附展开状态 */
-  .docked-expanded {
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
-    z-index: 1000;
-  }
+
   
   /* 拖拽区域提示 */
   #drag-area:hover {
@@ -2062,4 +2112,52 @@
   .scrollbar-thumb-slate-600::-webkit-scrollbar-thumb:hover {
     background: rgb(71 85 105);
   }
+
+  /* 吸附状态样式 */
+  .docked {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .docked-left {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .docked-right {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    box-shadow: -2px 0 20px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* 吸附提示样式 */
+  #docking-hint {
+    background: rgba(74, 144, 226, 0.3) !important;
+    border: 2px dashed #4a90e2 !important;
+    border-radius: 8px !important;
+    pointer-events: none !important;
+    z-index: 9998 !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  /* 环绕式按钮样式 */
+  .eye-button {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .eye-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* 眼睛图标动画 */
+  .eye-icon {
+    transition: all 0.2s ease;
+  }
+  
+  .eye-button:hover .eye-icon {
+    transform: scale(1.1);
+  }
+
 </style>
