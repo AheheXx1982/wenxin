@@ -979,25 +979,25 @@
       playlistLeft = Math.min(playlistLeft, window.innerWidth - playlistWidth - 20);
       playlistTop = Math.min(playlistTop, window.innerHeight - playlistHeight - 20);
       
-      // 创建美观的播放列表窗口（采用旧播放器的美观设计）
+      // 创建美观的播放列表窗口（采用与播放器一致的设计风格）
       const playlistWindow = document.createElement('div');
       playlistWindow.id = 'beautiful-playlist-window';
-      playlistWindow.className = 'fixed w-96 max-h-[32rem] bg-gradient-to-br from-white/95 via-slate-50/90 to-blue-50/85 rounded-2xl flex flex-col overflow-hidden backdrop-blur-xl border border-white/30 shadow-2xl z-50';
+      playlistWindow.className = 'fixed w-96 max-h-[32rem] bg-gradient-to-br from-amber-50/90 via-white/90 to-amber-100/90 rounded-2xl flex flex-col overflow-hidden backdrop-blur-xl border border-amber-200/50 shadow-2xl z-50';
       playlistWindow.style.left = playlistLeft + 'px';
       playlistWindow.style.top = playlistTop + 'px';
       
       let playlistHTML = `
         <!-- 标题栏 -->
-        <div class="flex items-center justify-between p-4 border-b border-white/20 bg-gradient-to-r from-purple-50/50 to-blue-50/50">
+        <div class="flex items-center justify-between p-4 border-b border-amber-200/30 bg-gradient-to-r from-amber-100/50 to-amber-50/50 rounded-t-2xl">
           <div class="flex items-center space-x-2">
-            <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center shadow-sm">
+            <div class="w-8 h-8 bg-gradient-to-r from-amber-500 to-amber-600 rounded-lg flex items-center justify-center shadow-sm">
               <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
               </svg>
             </div>
-            <h3 class="text-lg font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">播放列表</h3>
+            <h3 class="text-lg font-bold bg-gradient-to-r from-amber-700 to-amber-800 bg-clip-text text-transparent">播放列表</h3>
           </div>
-          <button id="close-beautiful-playlist" class="text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center hover:bg-slate-100/50 rounded-lg transition-all duration-200 hover:scale-110">
+          <button id="close-beautiful-playlist" class="text-amber-600 hover:text-amber-800 w-8 h-8 flex items-center justify-center hover:bg-amber-100/50 rounded-lg transition-all duration-200 hover:scale-110">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -1005,13 +1005,16 @@
         </div>
         
         <!-- 播放列表内容 -->
-        <div class="flex-1 overflow-y-auto p-4 beautiful-playlist-scroll">
+        <div class="flex-1 overflow-y-auto p-4 beautiful-playlist-scroll relative">
+          <!-- 背景装饰 -->
+          <div class="absolute inset-0 bg-gradient-to-b from-purple-50/30 via-blue-50/30 to-purple-50/30 opacity-50 pointer-events-none"></div>
+          <div class="relative z-10">
       `;
       
       if (this.playlist.length === 0) {
         playlistHTML += `
-          <div class="flex flex-col items-center justify-center h-32 text-slate-500">
-            <svg class="w-10 h-10 mb-3 opacity-50 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="flex flex-col items-center justify-center h-32 text-slate-500 rounded-xl bg-white/50 backdrop-blur-sm border border-white/50 shadow-sm">
+            <svg class="w-12 h-12 mb-3 opacity-50 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
             </svg>
             <p class="text-sm font-medium text-slate-500">播放列表为空</p>
@@ -1022,23 +1025,32 @@
         this.playlist.forEach((track, index) => {
           const isCurrentTrack = index === this.currentTrackIndex;
           playlistHTML += `
-            <div class="group mb-3 last:mb-0 playlist-track-item" data-index="${index}">
-              <div class="flex items-center p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+            <div class="group mb-3 last:mb-0 playlist-track-item relative overflow-hidden rounded-xl transition-all duration-300 ${isCurrentTrack ? 'scale-[1.02]' : ''}" data-index="${index}">
+              <!-- 背景光晕效果 -->
+              ${isCurrentTrack ? `
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-purple-500/10 rounded-xl blur-xl animate-pulse"></div>
+              ` : ''}
+              
+              <div class="flex items-center p-4 rounded-xl cursor-pointer transition-all duration-300 relative z-10 ${
                 isCurrentTrack 
-                  ? 'bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 shadow-sm' 
-                  : 'bg-white/50 hover:bg-white/80 hover:shadow-sm border border-transparent hover:border-slate-200'
+                  ? 'bg-gradient-to-r from-purple-500/15 via-blue-500/15 to-purple-500/15 backdrop-blur-sm border border-purple-300/50 shadow-lg shadow-purple-500/20' 
+                  : 'bg-white/60 hover:bg-white/90 backdrop-blur-sm border border-white/50 hover:border-slate-300/50 shadow-sm hover:shadow-md'
               }">
                 <!-- 播放状态指示器 -->
-                <div class="flex-shrink-0 w-10 h-10 mr-3 flex items-center justify-center">
+                <div class="flex-shrink-0 w-12 h-12 mr-4 flex items-center justify-center relative">
                   ${isCurrentTrack ? `
-                    <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center shadow-sm">
-                      <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <!-- 当前播放的动画唱片 -->
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 animate-spin opacity-80" style="animation-duration: 3s;"></div>
+                    <div class="absolute inset-1 rounded-full bg-white/90"></div>
+                    <div class="relative w-6 h-6 flex items-center justify-center">
+                      <svg class="w-3 h-3 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M8 5v14l11-7z"/>
                       </svg>
                     </div>
                   ` : `
-                    <div class="w-8 h-8 bg-slate-100 group-hover:bg-slate-200 rounded-lg flex items-center justify-center transition-all duration-200">
-                      <svg class="w-4 h-4 text-slate-400 group-hover:text-slate-600 opacity-0 group-hover:opacity-100 transition-all duration-200" fill="currentColor" viewBox="0 0 24 24">
+                    <!-- 普通歌曲的播放按钮 -->
+                    <div class="w-10 h-10 bg-gradient-to-br from-slate-100 to-slate-200 group-hover:from-slate-200 group-hover:to-slate-300 rounded-full flex items-center justify-center transition-all duration-300 shadow-inner group-hover:shadow-md">
+                      <svg class="w-4 h-4 text-slate-500 group-hover:text-slate-700 opacity-60 group-hover:opacity-100 transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M8 5v14l11-7z"/>
                       </svg>
                     </div>
@@ -1047,31 +1059,42 @@
                 
                 <!-- 歌曲信息 -->
                 <div class="flex-1 min-w-0">
-                  <div class="font-medium text-slate-800 truncate ${isCurrentTrack ? 'text-purple-700' : 'group-hover:text-slate-900'} transition-colors duration-200">
+                  <div class="font-bold text-slate-800 truncate ${isCurrentTrack ? 'text-purple-800 text-lg' : 'group-hover:text-slate-900'} transition-colors duration-200">
                     ${track.title}
                   </div>
-                  <div class="text-sm text-slate-500 truncate mt-0.5 ${isCurrentTrack ? 'text-purple-500' : 'group-hover:text-slate-600'} transition-colors duration-200">
+                  <div class="text-sm text-slate-600 truncate mt-1 ${isCurrentTrack ? 'text-purple-600 font-medium' : 'group-hover:text-slate-700'} transition-colors duration-200">
                     ${track.artist}
                   </div>
+                  
+                  <!-- 进度条 (仅当前播放歌曲显示) -->
+                  ${isCurrentTrack ? `
+                    <div class="mt-2 w-full h-1 bg-slate-200/50 rounded-full overflow-hidden">
+                      <div class="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full animate-pulse" style="width: 45%;"></div>
+                    </div>
+                  ` : ''}
                 </div>
                 
                 <!-- 当前播放指示器 -->
                 ${isCurrentTrack ? `
-                  <div class="flex-shrink-0 ml-2">
+                  <div class="flex-shrink-0 ml-3">
                     <div class="flex items-center space-x-1">
-                      <div class="w-1 h-3 bg-purple-500 rounded-full animate-pulse"></div>
-                      <div class="w-1 h-4 bg-blue-500 rounded-full animate-pulse" style="animation-delay: 0.1s"></div>
-                      <div class="w-1 h-2 bg-purple-500 rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
+                      <div class="w-2 h-5 bg-gradient-to-t from-purple-500 to-blue-500 rounded-full animate-pulse"></div>
+                      <div class="w-2 h-6 bg-gradient-to-t from-blue-500 to-purple-500 rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
+                      <div class="w-2 h-4 bg-gradient-to-t from-purple-500 to-blue-500 rounded-full animate-pulse" style="animation-delay: 0.4s"></div>
                     </div>
                   </div>
                 ` : ''}
               </div>
+              
+              <!-- 悬停时的装饰元素 -->
+              <div class="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-purple-400/20 to-blue-400/20 rounded-full blur-lg transition-all duration-500 group-hover:opacity-100 ${isCurrentTrack ? 'opacity-100' : 'opacity-0'}"></div>
             </div>
           `;
         });
       }
       
       playlistHTML += `
+          </div>
         </div>
       `;
       
@@ -2226,6 +2249,7 @@
   
   #beautiful-playlist-window {
     animation: fadeInScale 0.3s ease-out;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(251, 191, 36, 0.1);
   }
   
   @keyframes fadeInScale {
@@ -2236,6 +2260,54 @@
     to {
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  
+  /* 播放列表项动画 */
+  @keyframes playlistItemAppear {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .playlist-track-item {
+    animation: playlistItemAppear 0.3s ease-out;
+  }
+  
+  /* 响应式设计 */
+  @media (max-width: 768px) {
+    #beautiful-playlist-window {
+      width: calc(100vw - 2rem);
+      max-height: 70vh;
+      left: 1rem !important;
+      right: 1rem !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+    }
+    
+    .playlist-track-item:hover {
+      transform: translateX(2px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    #beautiful-playlist-window {
+      width: calc(100vw - 1rem);
+      left: 0.5rem !important;
+      right: 0.5rem !important;
+    }
+    
+    .playlist-track-item .text-lg {
+      font-size: 0.95rem;
+    }
+    
+    .playlist-track-item .text-sm {
+      font-size: 0.8rem;
     }
   }
   
@@ -2261,7 +2333,26 @@
   
   /* 播放列表项悬停效果增强 */
   .playlist-track-item:hover {
-    transform: translateX(2px);
+    transform: translateX(5px);
+  }
+  
+  /* 当前播放项的特殊效果 */
+  .playlist-track-item:has(> div > div:first-child > div.absolute) {
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+  }
+  
+  /* 播放列表背景装饰 */
+  .beautiful-playlist-scroll::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(96, 165, 250, 0.05) 0%, transparent 20%);
+    pointer-events: none;
+    z-index: 0;
   }
   
   /* 最小化播放器动画效果 */
