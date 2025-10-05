@@ -97,6 +97,32 @@
         this.nextTrack();
       });
       
+      // 添加播放和暂停事件监听器确保状态同步
+      this.audioElement.addEventListener('play', () => {
+        console.log('🎵 音频开始播放事件');
+        this.isPlaying = true;
+        this.updateUI();
+        this.savePlayerState();
+      });
+      
+      this.audioElement.addEventListener('pause', () => {
+        console.log('⏸️ 音频暂停事件');
+        this.isPlaying = false;
+        this.updateUI();
+        this.savePlayerState();
+      });
+      
+      // 添加音频加载完成事件
+      this.audioElement.addEventListener('loadeddata', () => {
+        console.log('📁 音频数据加载完成');
+        this.updateProgressDisplay();
+      });
+      
+      // 添加播放进度更新事件
+      this.audioElement.addEventListener('timeupdate', () => {
+        this.updateProgressDisplay();
+      });
+      
       this.audioElement.addEventListener('error', (e) => {
         console.error('音频播放错误:', e);
         console.error('错误详情:', {
@@ -223,32 +249,31 @@
                 <!-- 播放按钮 -->
                 <button id="play-btn" class="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.togglePlay(); console.log('播放按钮点击');">
                   <svg id="play-icon" class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    ${this.isPlaying ? 
-                      '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>' :
-                      '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>'
-                    }
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
                   </svg>
                 </button>
               </div>
               
-              <!-- 控制按钮（新的环绕式独立布局设计） -->
+              <!-- 环绕式控制按钮 -->
               <div class="absolute inset-0 pointer-events-none">
                 <!-- 最小化按钮 - 环绕在播放器左上方 -->
-                <button id="minimize-btn" class="absolute top-6 left-6 w-8 h-8 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20" title="最小化" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.minimizePlayer(); console.log('最小化按钮点击');">
-                  <!-- 睁开的眼睛（含瞳孔） -->
-                  <svg class="w-5 h-5 text-amber-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
+                <button id="minimize-btn" class="absolute top-2 left-2 w-8 h-8 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20 eye-button" title="最小化" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.minimizePlayer(); console.log('最小化按钮点击');">
+                  <!-- 逼真的眼睛 -->
+                  <div class="realistic-eye" id="minimize-eye" style="width:20px;height:20px;background:#ffffff;border-radius:50%;border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 2px 6px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.9);">
+                    <div class="eye-pupil" style="width:8px;height:8px;background:#000000;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.3s ease;">
+                      <div class="eye-highlight" style="position:absolute;top:20%;left:30%;width:2px;height:2px;background:rgba(255,255,255,0.9);border-radius:50%;"></div>
+                    </div>
+                  </div>
                 </button>
                 
                 <!-- 关闭按钮 - 环绕在播放器右上方 -->
-                <button id="close-btn" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20" title="关闭" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
-                  <!-- 闭合的眼睛（带斜线） -->
-                  <svg class="w-5 h-5 text-amber-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
+                <button id="close-btn" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20 eye-button" title="关闭" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
+                  <!-- 逼真的眼睛 -->
+                  <div class="realistic-eye" id="close-eye" style="width:20px;height:20px;background:#ffffff;border-radius:50%;border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 2px 6px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.9);">
+                    <div class="eye-pupil" style="width:8px;height:8px;background:#000000;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.3s ease;">
+                      <div class="eye-highlight" style="position:absolute;top:20%;left:30%;width:2px;height:2px;background:rgba(255,255,255,0.9);border-radius:50%;"></div>
+                    </div>
+                  </div>
                 </button>
               </div>
               
@@ -773,18 +798,23 @@
     }
     
     togglePlay() {
+      console.log('🎵 togglePlay 被调用，当前状态:', this.isPlaying);
+      
       if (!this.audioElement) {
-        console.error('音频元素未初始化');
+        console.error('❌ 音频元素未初始化');
         return;
       }
       
+      // 确保有当前曲目
       if (!this.currentTrack) {
         if (this.playlist.length > 0) {
           this.currentTrack = this.playlist[0];
           this.currentTrackIndex = 0;
           this.audioElement.src = this.resolveAudioPath(this.currentTrack.src);
           this.updateTrackInfo();
+          console.log('✅ 设置默认曲目:', this.currentTrack.title);
         } else {
+          console.error('❌ 没有播放列表');
           alert('没有可播放的音乐，请检查 /music/playlist.json 文件');
           return;
         }
@@ -792,31 +822,48 @@
       
       if (this.isPlaying) {
         // 暂停播放
+        console.log('⏸️ 暂停播放');
         this.audioElement.pause();
-        this.isPlaying = false;
-        console.log('暂停播放');
-        // 立即更新UI
-        this.updateUI();
+        // 注意：isPlaying 状态会在 pause 事件监听器中设置
       } else {
-        // 开始播放 - 先更新状态和UI，再异步播放音频
-        this.isPlaying = true;
-        this.updateUI(); // 立即更新UI显示暂停图标
+        // 开始播放
+        console.log('▶️ 开始播放:', this.currentTrack.title);
+        console.log('🔗 音频路径:', this.audioElement.src);
         
-        this.audioElement.play().then(() => {
-          console.log('开始播放:', this.currentTrack.title);
-        }).catch((error) => {
-          console.error('播放失败:', error);
-          console.error('播放失败详情:', {
-            track: this.currentTrack,
-            src: this.audioElement.src,
-            networkState: this.audioElement.networkState,
-            readyState: this.audioElement.readyState
+        // 确保音频源已设置
+        if (!this.audioElement.src || this.audioElement.src !== this.resolveAudioPath(this.currentTrack.src)) {
+          this.audioElement.src = this.resolveAudioPath(this.currentTrack.src);
+        }
+        
+        // 异步播放音频
+        const playPromise = this.audioElement.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            console.log('✅ 播放成功:', this.currentTrack.title);
+            // 注意：isPlaying 状态会在 play 事件监听器中设置
+          }).catch((error) => {
+            console.error('❌ 播放失败:', error);
+            console.error('📋 错误详情:', {
+              track: this.currentTrack,
+              src: this.audioElement.src,
+              networkState: this.audioElement.networkState,
+              readyState: this.audioElement.readyState,
+              error: this.audioElement.error
+            });
+            
+            // 播放失败时确保状态正确
+            this.isPlaying = false;
+            this.updateUI();
+            this.savePlayerState();
+            alert(`播放失败: ${this.currentTrack.title}
+请检查音频文件是否存在`);
           });
-          alert('播放失败，请检查音频文件路径');
-          // 播放失败时恢复状态
-          this.isPlaying = false;
+        } else {
+          // 如果没有返回Promise，直接更新状态
+          this.isPlaying = true;
           this.updateUI();
-        });
+          this.savePlayerState();
+        }
       }
     }
     
@@ -826,20 +873,35 @@
         return;
       }
       
+      const wasPlaying = this.isPlaying;
+      
       this.currentTrackIndex = (this.currentTrackIndex - 1 + this.playlist.length) % this.playlist.length;
       this.currentTrack = this.playlist[this.currentTrackIndex];
       this.audioElement.src = this.resolveAudioPath(this.currentTrack.src);
       
-      // 切换歌曲时自动播放，无论之前是否在播放
-      this.isPlaying = true;
-      this.audioElement.play().catch(() => {
+      // 如果之前在播放，则继续播放新歌曲
+      if (wasPlaying) {
+        const playPromise = this.audioElement.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            this.isPlaying = true;
+            this.updateUI();
+            this.savePlayerState();
+          }).catch(() => {
+            this.isPlaying = false;
+            this.updateUI();
+          });
+        } else {
+          this.isPlaying = true;
+        }
+      } else {
         this.isPlaying = false;
-        this.updateUI();
-      });
+      }
       
       this.updateTrackInfo();
       this.updateUI();
-      console.log('上一首:', this.currentTrack.title, '- 自动播放');
+      this.savePlayerState();
+      console.log('上一首:', this.currentTrack.title, wasPlaying ? '- 继续播放' : '- 暂停状态');
     }
     
     nextTrack() {
@@ -848,20 +910,35 @@
         return;
       }
       
+      const wasPlaying = this.isPlaying;
+      
       this.currentTrackIndex = (this.currentTrackIndex + 1) % this.playlist.length;
       this.currentTrack = this.playlist[this.currentTrackIndex];
       this.audioElement.src = this.resolveAudioPath(this.currentTrack.src);
       
-      // 切换歌曲时自动播放，无论之前是否在播放
-      this.isPlaying = true;
-      this.audioElement.play().catch(() => {
+      // 如果之前在播放，则继续播放新歌曲
+      if (wasPlaying) {
+        const playPromise = this.audioElement.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            this.isPlaying = true;
+            this.updateUI();
+            this.savePlayerState();
+          }).catch(() => {
+            this.isPlaying = false;
+            this.updateUI();
+          });
+        } else {
+          this.isPlaying = true;
+        }
+      } else {
         this.isPlaying = false;
-        this.updateUI();
-      });
+      }
       
       this.updateTrackInfo();
       this.updateUI();
-      console.log('下一首:', this.currentTrack.title, '- 自动播放');
+      this.savePlayerState();
+      console.log('下一首:', this.currentTrack.title, wasPlaying ? '- 继续播放' : '- 暂停状态');
     }
     
     showPlaylist() {
@@ -1059,14 +1136,23 @@
       this.audioElement.src = this.resolveAudioPath(this.currentTrack.src);
       
       // 点击播放列表中的歌曲时自动播放
-      this.isPlaying = true;
-      this.audioElement.play().catch(() => {
-        this.isPlaying = false;
-        this.updateUI();
-      });
+      const playPromise = this.audioElement.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          this.isPlaying = true;
+          this.updateUI();
+          this.savePlayerState();
+        }).catch(() => {
+          this.isPlaying = false;
+          this.updateUI();
+        });
+      } else {
+        this.isPlaying = true;
+      }
       
       this.updateTrackInfo();
       this.updateUI();
+      this.savePlayerState();
       
       console.log('切换到:', this.currentTrack.title, '- 自动播放');
     }
@@ -1100,13 +1186,21 @@
     }
     
     updateUI() {
+      console.log('🔄 updateUI 被调用，当前播放状态:', this.isPlaying);
+      
       // 更新播放按钮图标
       const playIcon = document.getElementById('play-icon');
+      console.log('🔍 查找播放图标:', playIcon ? '找到' : '未找到');
+      
       if (playIcon) {
         if (this.isPlaying) {
+          // 显示暂停图标（两个竖条）
           playIcon.innerHTML = '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>';
+          console.log('✅ 切换到暂停图标（两个竖条）');
         } else {
+          // 显示播放图标（三角形）
           playIcon.innerHTML = '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>';
+          console.log('✅ 切换到播放图标（三角形）');
         }
       }
       
@@ -1156,6 +1250,12 @@
         }
       }
       
+      // 更新眼睛按钮动画状态
+      this.updateEyeButtonsState();
+      
+      // 触发眼睛动画
+      this.triggerEyeAnimation();
+      
       // 更新环形动画效果
       const rings = document.querySelectorAll('.animated-ring, .animated-ring-inner, .pulse-ring');
       rings.forEach(ring => {
@@ -1190,6 +1290,203 @@
       this.updateTonearmPosition(this.isPlaying);
       
       console.log('播放状态更新:', this.isPlaying ? '播放中' : '暂停', '图标更新:', playIcon ? '成功' : '失败');
+    }
+    
+    // 更新眼睛按钮动画状态
+    updateEyeButtonsState() {
+      console.log('🔥 眼睛动画状态更新开始，播放状态:', this.isPlaying);
+      
+      // 获取最大化播放器中的眼睛元素
+      const minimizeEye = document.getElementById('minimize-eye');
+      const closeEye = document.getElementById('close-eye');
+      
+      // 获取最小化播放器中的眼睛元素
+      const minimizedMinimizeEye = document.getElementById('minimized-minimize-eye');
+      const minimizedCloseEye = document.getElementById('minimized-close-eye');
+      
+      console.log('👁️ 找到的眼睛元素:', {
+        minimizeEye: !!minimizeEye,
+        closeEye: !!closeEye,
+        minimizedMinimizeEye: !!minimizedMinimizeEye,
+        minimizedCloseEye: !!minimizedCloseEye
+      });
+      
+      // 处理最大化播放器的眼睛
+      if (minimizeEye) {
+        console.log('🎯 更新最大化播放器最小化眼睛');
+        this.updateSingleEyeState(minimizeEye, 'minimize');
+      }
+      
+      if (closeEye) {
+        console.log('🎯 更新最大化播放器关闭眼睛');
+        this.updateSingleEyeState(closeEye, 'close');
+      }
+      
+      // 处理最小化播放器的眼睛
+      if (minimizedMinimizeEye) {
+        console.log('🎯 更新最小化播放器最小化眼睛');
+        this.updateSingleEyeState(minimizedMinimizeEye, 'minimize');
+      }
+      
+      if (minimizedCloseEye) {
+        console.log('🎯 更新最小化播放器关闭眼睛');
+        this.updateSingleEyeState(minimizedCloseEye, 'close');
+      }
+      
+      console.log('✅ 眼睛动画状态更新完成');
+    }
+    
+    // 更新单个眼睛的状态
+    updateSingleEyeState(eyeElement, eyeType) {
+      const pupil = eyeElement.querySelector('.eye-pupil');
+      const eyeLid = eyeElement.querySelector('.eye-lid');
+      
+      if (this.isPlaying) {
+        // 播放时的动画效果
+        if (pupil) {
+          // 添加眼珠转动动画
+          pupil.classList.add('looking-around');
+          
+          // 智能眨眼：根据音乐节拍模拟眨眼
+          this.scheduleSmartBlink(pupil);
+          
+          // 根据眼睛类型添加特殊效果
+          if (eyeType === 'minimize') {
+            // 最小化按钮的眼睛：更活跃的转动
+            pupil.classList.add('active-looking');
+            
+            // 添加音乐感应振动效果
+            if (Math.random() > 0.6) {
+              eyeElement.classList.add('music-vibrating');
+              setTimeout(() => {
+                eyeElement.classList.remove('music-vibrating');
+              }, 1500 + Math.random() * 1000);
+            }
+          } else if (eyeType === 'close') {
+            // 关闭按钮的眼睛：更谨慎的观察
+            pupil.classList.add('watchful-looking');
+            
+            // 偶尔的警觉效果
+            if (Math.random() > 0.8) {
+              eyeElement.classList.add('alert-pulse');
+              setTimeout(() => {
+                eyeElement.classList.remove('alert-pulse');
+              }, 2000);
+            }
+          }
+        }
+        
+        // 眼睑的微妙动画
+        if (eyeLid) {
+          eyeLid.classList.add('subtle-movement');
+        }
+      } else {
+        // 暂停时的状态
+        if (pupil) {
+          pupil.classList.remove('looking-around', 'active-looking', 'watchful-looking', 'smart-blink');
+        }
+        
+        if (eyeLid) {
+          eyeLid.classList.remove('subtle-movement');
+        }
+        
+        eyeElement.classList.remove('music-vibrating', 'alert-pulse');
+        
+        // 暂停时的缓慢眨眼
+        this.scheduleRestBlink(pupil);
+      }
+    }
+    
+    // 智能眨眼调度（播放时）
+    scheduleSmartBlink(pupil) {
+      if (!pupil || !this.isPlaying) return;
+      
+      // 清除之前的眨眼定时器
+      if (pupil._blinkTimer) {
+        clearTimeout(pupil._blinkTimer);
+      }
+      
+      // 模拟音乐节拍的眨眼（2-6秒间隔）
+      const blinkInterval = 2000 + Math.random() * 4000;
+      
+      pupil._blinkTimer = setTimeout(() => {
+        if (pupil && this.isPlaying) {
+          pupil.classList.add('smart-blink');
+          
+          // 眨眼持续时间
+          setTimeout(() => {
+            if (pupil) {
+              pupil.classList.remove('smart-blink');
+              // 递归调度下一次眨眼
+              this.scheduleSmartBlink(pupil);
+            }
+          }, 300 + Math.random() * 200);
+        }
+      }, blinkInterval);
+    }
+    
+    // 休息时的眨眼调度（暂停时）
+    scheduleRestBlink(pupil) {
+      if (!pupil || this.isPlaying) return;
+      
+      // 清除之前的眨眼定时器
+      if (pupil._restBlinkTimer) {
+        clearTimeout(pupil._restBlinkTimer);
+      }
+      
+      // 暂停时较慢的眨眼（5-10秒间隔）
+      const restBlinkInterval = 5000 + Math.random() * 5000;
+      
+      pupil._restBlinkTimer = setTimeout(() => {
+        if (pupil && !this.isPlaying) {
+          pupil.classList.add('rest-blink');
+          
+          setTimeout(() => {
+            if (pupil) {
+              pupil.classList.remove('rest-blink');
+              // 递归调度下一次休息眨眼
+              this.scheduleRestBlink(pupil);
+            }
+          }, 400);
+        }
+      }, restBlinkInterval);
+    }
+    
+    // 触发眼睛动画
+    triggerEyeAnimation() {
+      // 这个函数用于触发眼睛的特殊动画效果
+      const allEyes = document.querySelectorAll('[id*="eye"]');
+      
+      allEyes.forEach(eye => {
+        if (this.isPlaying) {
+          // 播放时添加活跃动画
+          eye.classList.add('music-active');
+          
+          // 随机触发特殊效果
+          if (Math.random() > 0.7) {
+            eye.classList.add('music-pulse');
+            setTimeout(() => {
+              eye.classList.remove('music-pulse');
+            }, 1000);
+          }
+        } else {
+          // 暂停时移除活跃动画
+          eye.classList.remove('music-active', 'music-pulse');
+        }
+      });
+    }
+    
+    // 清理眼睛动画定时器
+    cleanupEyeAnimations() {
+      const allPupils = document.querySelectorAll('.eye-pupil');
+      allPupils.forEach(pupil => {
+        if (pupil._blinkTimer) {
+          clearTimeout(pupil._blinkTimer);
+        }
+        if (pupil._restBlinkTimer) {
+          clearTimeout(pupil._restBlinkTimer);
+        }
+      });
     }
     
     // 更新唱针位置（整合旧播放器的精确控制）
@@ -1257,27 +1554,29 @@
         
         player.innerHTML = `
           <div class="w-full h-full flex items-center justify-center relative minimized-player-container ${this.isPlaying ? 'playing' : ''}" data-draggable="true">
-            <!-- 拖拽区域（透明且在最上层，不包含按钮区域） -->
+            <!-- 拖拽区域（透明且在中层） -->
             <div id="drag-area" class="absolute inset-0 z-30 cursor-move" style="background: transparent;"></div>
             
-            <!-- 环绕式控制按钮 -->
-            <div class="absolute inset-0 pointer-events-none">
-              <!-- 最小化按钮 - 环绕在播放器左上方 -->
-              <button id="minimize-btn" class="absolute top-2 left-2 w-6 h-6 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20 eye-button" title="最小化" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.expandPlayer(); console.log('最小化按钮点击');">
-                <!-- 睁开的眼睛（含瞳孔） -->
-                <svg class="w-3 h-3 text-amber-200 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
+            <!-- 环绕式控制按钮 - 无边框无背景，完全融入球体 -->
+            <div class="absolute inset-0 pointer-events-none z-40">
+              <!-- 最小化按钮 - 完全透明背景，只显示眼睛 -->
+              <button id="minimize-btn" class="absolute top-2 left-2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group pointer-events-auto cursor-pointer z-50" title="展开播放器" style="pointer-events: auto; cursor: pointer; background: transparent; border: none;" onclick="window.musicPlayer?.expandPlayer(); console.log('最小化按钮点击');">
+                <!-- 逼真的眼睛 -->
+                <div class="realistic-eye" id="minimized-minimize-eye" style="width:20px;height:20px;background:#ffffff;border-radius:50%;border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 2px 6px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.9);">
+                  <div class="eye-pupil" style="width:8px;height:8px;background:#000000;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.3s ease;">
+                    <div class="eye-highlight" style="position:absolute;top:20%;left:30%;width:2px;height:2px;background:rgba(255,255,255,0.9);border-radius:50%;"></div>
+                  </div>
+                </div>
               </button>
               
-              <!-- 关闭按钮 - 环绕在播放器右上方 -->
-              <button id="close-btn" class="absolute top-2 right-2 w-6 h-6 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20 eye-button" title="关闭" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
-                <!-- 闭合的眼睛（带斜线） -->
-                <svg class="w-3 h-3 text-amber-200 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+              <!-- 关闭按钮 - 完全透明背景，只显示眼睛 -->
+              <button id="close-btn" class="absolute top-2 right-2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group pointer-events-auto cursor-pointer z-50" title="关闭播放器" style="pointer-events: auto; cursor: pointer; background: transparent; border: none;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
+                <!-- 逼真的眼睛 -->
+                <div class="realistic-eye" id="minimized-close-eye" style="width:20px;height:20px;background:#ffffff;border-radius:50%;border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 2px 6px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.9);">
+                  <div class="eye-pupil" style="width:8px;height:8px;background:#000000;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.3s ease;">
+                    <div class="eye-highlight" style="position:absolute;top:20%;left:30%;width:2px;height:2px;background:rgba(255,255,255,0.9);border-radius:50%;"></div>
+                  </div>
+                </div>
               </button>
             </div>
             
@@ -1339,6 +1638,9 @@
           icon.classList.remove('rotating');
         }
       }
+      
+      // 更新眼睛按钮动画状态
+      this.updateEyeButtonsState();
       
       // 更新环形动效
       const rings = container.querySelectorAll('.animated-ring, .animated-ring-inner, .pulse-ring');
@@ -1511,6 +1813,9 @@
         playerElement._cleanupHoverEvents();
       }
       
+      // 清理眼睛动画定时器
+      this.cleanupEyeAnimations();
+      
       // 清除显示状态标志
       try {
         const savedState = localStorage.getItem('musicPlayerDetailedState');
@@ -1586,6 +1891,96 @@
 </script>
 
 <style>
+  /* 眼睛基础显示样式 - 让现有眼睛能够正确显示 */
+  .realistic-eye {
+    width: 16px !important;
+    height: 16px !important;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #f8f9fa, #e9ecef) !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(251, 191, 36, 0.6) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    box-shadow: 
+      inset 0 1px 2px rgba(255,255,255,0.8),
+      0 2px 4px rgba(0,0,0,0.15) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  .eye-pupil {
+    width: 6px !important;
+    height: 6px !important;
+    background: radial-gradient(circle at 25% 25%, #d97706, #92400e, #000000) !important;
+    border-radius: 50% !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    transition: all 0.15s ease-out !important;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.8) !important;
+    z-index: 2 !important;
+  }
+  
+  .eye-highlight {
+    position: absolute !important;
+    top: 15% !important;
+    left: 25% !important;
+    width: 2px !important;
+    height: 2px !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 50% !important;
+    z-index: 3 !important;
+  }
+  
+  /* 闭合眼睛样式 */
+  .realistic-eye.closed {
+    background: linear-gradient(90deg, 
+      rgba(251, 191, 36, 0.2), 
+      rgba(251, 191, 36, 0.4), 
+      rgba(251, 191, 36, 0.2)
+    ) !important;
+  }
+  
+  .realistic-eye.closed .eye-pupil {
+    opacity: 0.3 !important;
+    transform: translate(-50%, -50%) scaleY(0.1) !important;
+  }
+  
+  /* 眼睛动画效果 */
+  .eye-pupil.blink-animation {
+    animation: eyeBlink 0.3s ease-in-out !important;
+  }
+  
+  .eye-pupil.look-around-animation {
+    animation: eyeLookAround 2s ease-in-out !important;
+  }
+  
+  .realistic-eye.music-vibrating {
+    animation: musicVibrate 0.5s ease-in-out !important;
+  }
+  
+  /* 眼睛动画关键帧 */
+  @keyframes eyeBlink {
+    0%, 100% { transform: translate(-50%, -50%) scaleY(1); }
+    50% { transform: translate(-50%, -50%) scaleY(0.1); }
+  }
+  
+  @keyframes eyeLookAround {
+    0%, 100% { transform: translate(-50%, -50%) translate(0, 0); }
+    25% { transform: translate(-50%, -50%) translate(-2px, -1px); }
+    50% { transform: translate(-50%, -50%) translate(2px, 1px); }
+    75% { transform: translate(-50%, -50%) translate(-1px, 2px); }
+  }
+  
+  @keyframes musicVibrate {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(-1px, 1px) scale(1.05); }
+    50% { transform: translate(1px, -1px) scale(0.95); }
+    75% { transform: translate(-1px, -1px) scale(1.05); }
+  }
+
   /* 唱片旋转动画（采用旧播放器的精确控制） */
   @keyframes vinyl-spin {
     from { transform: rotate(0deg); }
@@ -1598,6 +1993,215 @@
   .from-gold-400 { background: linear-gradient(to bottom, #fbbf24, #f59e0b); }
   .to-gold-600 { background: linear-gradient(to bottom, #fbbf24, #d97706); }
   .bg-silver-500 { background: #64748b; }
+
+  /* 眼睛动画系统 - 核心样式 */
+  .realistic-eye {
+    position: relative;
+    width: 20px;
+    height: 14px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    border: 1px solid rgba(0,0,0,0.2);
+    box-shadow: 
+      inset 0 1px 2px rgba(255,255,255,0.8),
+      inset 0 -1px 1px rgba(0,0,0,0.1),
+      0 2px 4px rgba(0,0,0,0.15);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .eye-pupil {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #1a1a1a 0%, #000 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease-out;
+    z-index: 3;
+  }
+
+  .eye-pupil::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 2px;
+    height: 2px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 50%;
+    z-index: 4;
+  }
+
+  .eye-lid {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    z-index: 1;
+    opacity: 0;
+    transition: all 0.2s ease;
+  }
+
+  .eye-lid.blinking {
+    opacity: 0.8;
+    transform: scaleY(0.1);
+  }
+
+  /* 眼睫毛效果 */
+  .realistic-eye::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 2px;
+    right: 2px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.3) 20%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.3) 80%, transparent 100%);
+    border-radius: 50%;
+    z-index: 2;
+  }
+
+  /* 眼珠转动动画 - 增强版 */
+  @keyframes realisticEyeMovement {
+    0% { transform: translate(-50%, -50%) translate(0, 0) scale(1); }
+    10% { transform: translate(-50%, -50%) translate(4px, -2px) scale(1.05); }
+    25% { transform: translate(-50%, -50%) translate(-3px, 4px) scale(0.95); }
+    40% { transform: translate(-50%, -50%) translate(5px, 2px) scale(1.1); }
+    55% { transform: translate(-50%, -50%) translate(-4px, -3px) scale(0.9); }
+    70% { transform: translate(-50%, -50%) translate(3px, 5px) scale(1.05); }
+    85% { transform: translate(-50%, -50%) translate(-5px, 1px) scale(0.95); }
+    100% { transform: translate(-50%, -50%) translate(0, 0) scale(1); }
+  }
+
+  @keyframes activeEyeMovement {
+    0% { transform: translate(-50%, -50%) translate(0, 0) scale(1); }
+    8% { transform: translate(-50%, -50%) translate(6px, -3px) scale(1.15); }
+    16% { transform: translate(-50%, -50%) translate(-4px, 5px) scale(0.85); }
+    24% { transform: translate(-50%, -50%) translate(7px, 3px) scale(1.2); }
+    32% { transform: translate(-50%, -50%) translate(-5px, -4px) scale(0.8); }
+    40% { transform: translate(-50%, -50%) translate(4px, 6px) scale(1.1); }
+    48% { transform: translate(-50%, -50%) translate(-6px, 2px) scale(0.9); }
+    56% { transform: translate(-50%, -50%) translate(5px, -5px) scale(1.15); }
+    64% { transform: translate(-50%, -50%) translate(-3px, 4px) scale(0.95); }
+    72% { transform: translate(-50%, -50%) translate(6px, 1px) scale(1.05); }
+    80% { transform: translate(-50%, -50%) translate(-7px, -2px) scale(0.85); }
+    88% { transform: translate(-50%, -50%) translate(3px, 5px) scale(1.1); }
+    96% { transform: translate(-50%, -50%) translate(-2px, -3px) scale(0.95); }
+    100% { transform: translate(-50%, -50%) translate(0, 0) scale(1); }
+  }
+
+  @keyframes watchfulEyeMovement {
+    0% { transform: translate(-50%, -50%) translate(0, 0); }
+    20% { transform: translate(-50%, -50%) translate(2px, -1px); }
+    40% { transform: translate(-50%, -50%) translate(-1px, 2px); }
+    60% { transform: translate(-50%, -50%) translate(1px, 1px); }
+    80% { transform: translate(-50%, -50%) translate(-2px, 0px); }
+    100% { transform: translate(-50%, -50%) translate(0, 0); }
+  }
+
+  @keyframes eyePulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(255, 193, 7, 0.6); }
+    50% { box-shadow: 0 0 20px rgba(255, 193, 7, 0.9), 0 0 30px rgba(255, 193, 7, 0.5); }
+  }
+
+  @keyframes watchfulGlow {
+    0%, 100% { box-shadow: 0 0 5px rgba(255, 87, 34, 0.4); }
+    50% { box-shadow: 0 0 15px rgba(255, 87, 34, 0.7), 0 0 25px rgba(255, 87, 34, 0.3); }
+  }
+
+  @keyframes smartBlink {
+    0%, 90%, 100% { transform: scaleY(1); opacity: 0; }
+    5%, 15% { transform: scaleY(0.1); opacity: 0.8; }
+  }
+
+  @keyframes restBlink {
+    0%, 85%, 100% { transform: scaleY(1); opacity: 0; }
+    5%, 25% { transform: scaleY(0.1); opacity: 0.6; }
+  }
+
+  @keyframes subtleMovement {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-0.5px); }
+  }
+
+  @keyframes musicVibrate {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(1px, -1px); }
+    20% { transform: translate(-1px, 1px); }
+    30% { transform: translate(1px, 1px); }
+    40% { transform: translate(-1px, -1px); }
+    50% { transform: translate(1px, 0px); }
+    60% { transform: translate(-1px, 0px); }
+    70% { transform: translate(0px, 1px); }
+    80% { transform: translate(0px, -1px); }
+    90% { transform: translate(0.5px, 0.5px); }
+  }
+
+  @keyframes alertPulse {
+    0%, 100% { 
+      box-shadow: 0 0 8px rgba(244, 67, 54, 0.4);
+      border-color: rgba(244, 67, 54, 0.4);
+    }
+    25% { 
+      box-shadow: 0 0 18px rgba(244, 67, 54, 0.7), 0 0 28px rgba(244, 67, 54, 0.4);
+      border-color: rgba(244, 67, 54, 0.7);
+    }
+    50% { 
+      box-shadow: 0 0 25px rgba(244, 67, 54, 0.9), 0 0 40px rgba(244, 67, 54, 0.5);
+      border-color: rgba(244, 67, 54, 0.9);
+    }
+    75% { 
+      box-shadow: 0 0 18px rgba(244, 67, 54, 0.7), 0 0 28px rgba(244, 67, 54, 0.4);
+      border-color: rgba(244, 67, 54, 0.7);
+    }
+  }
+
+  /* 眼睛动画状态类 */
+  .eye-pupil.looking-around {
+    animation: realisticEyeMovement 6s infinite ease-in-out;
+  }
+
+  .eye-pupil.active-looking {
+    animation: activeEyeMovement 3s infinite ease-in-out;
+  }
+
+  .eye-pupil.watchful-looking {
+    animation: watchfulEyeMovement 10s infinite ease-in-out;
+  }
+
+  .eye-pupil.smart-blink .eye-lid {
+    animation: smartBlink 0.3s ease-in-out;
+  }
+
+  .eye-pupil.rest-blink .eye-lid {
+    animation: restBlink 0.5s ease-in-out;
+  }
+
+  .eye-lid.subtle-movement {
+    animation: subtleMovement 4s infinite ease-in-out;
+  }
+
+  .realistic-eye.music-vibrating {
+    animation: musicVibrate 1.2s infinite ease-in-out;
+  }
+
+  .realistic-eye.alert-pulse {
+    animation: alertPulse 1.8s infinite ease-in-out;
+  }
+
+  /* 眼睛按钮组合效果 */
+  .realistic-eye.active-looking .eye-pupil {
+    animation: activeEyeMovement 3s infinite ease-in-out, eyePulse 2s infinite;
+  }
+
+  .realistic-eye.watchful-looking .eye-pupil {
+    animation: watchfulEyeMovement 10s infinite ease-in-out, watchfulGlow 3s infinite;
+  }
   
   /* 旧唱针动画样式保留 */
   #tonearm {
@@ -1665,178 +2269,430 @@
     animation: minimizedGlow 3s ease-in-out infinite;
   }
   
-  /* 环绕式按钮样式 */
-  .eye-button {
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  /* 最小化播放器中的按钮样式 - 完全透明融入球体 */
+  .minimized-player-container button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
   }
   
-  .eye-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  .minimized-player-container button:hover {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
   }
   
-  /* 眼睛图标动画 */
-  .eye-icon {
-    transition: all 0.2s ease;
-  }
-  
-  .eye-button:hover .eye-icon {
-    transform: scale(1.1);
-  }
-  
-  /* 旋转光环效果 */
-  .animated-ring {
-    border: 2px solid transparent;
+  /* 统一的逼真眼睛样式 */
+  .realistic-eye {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #f8f9fa, #e9ecef);
     border-radius: 50%;
-    transition: all 0.3s ease;
-    will-change: transform, border-color;
-    transform-origin: center;
-  }
-  
-  .animated-ring.playing {
-    border-top: 2px solid rgba(34, 197, 94, 0.6);
-    border-right: 2px solid rgba(34, 197, 94, 0.3);
-    animation: ringRotate 2s linear infinite;
-  }
-  
-  .animated-ring-inner {
-    border: 1px solid transparent;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    will-change: transform, border-color;
-    transform-origin: center;
-  }
-  
-  .animated-ring-inner.playing {
-    border-bottom: 1px solid rgba(34, 197, 94, 0.4);
-    border-left: 1px solid rgba(34, 197, 94, 0.7);
-    animation: ringRotate 1.5s linear infinite reverse;
-  }
-  
-  /* 脉冲波纹效果 */
-  .pulse-ring {
-    border: 1px solid transparent;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    will-change: transform, border-color, opacity;
-    transform-origin: center;
-  }
-  
-  .pulse-ring.playing {
-    border: 1px solid rgba(34, 197, 94, 0.2);
-    animation: pulseExpand 2s ease-in-out infinite;
-  }
-  
-  /* 播放按钮旋转动画 */
-  .rotating-play-btn {
+    border: 1px solid rgba(251, 191, 36, 0.6);
+    box-shadow: 
+      inset 0 1px 2px rgba(255,255,255,0.8),
+      inset 0 -1px 1px rgba(0,0,0,0.1),
+      0 2px 4px rgba(0,0,0,0.15);
+    overflow: visible;
     transition: all 0.3s ease;
   }
   
-  .rotating-play-btn.playing {
-    animation: playButtonRotate 8s linear infinite;
+  .eye-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
-  /* 音波效果 */
-  .sound-wave-1, .sound-wave-2, .sound-wave-3, .sound-wave-4 {
+  .eye-outer {
     position: absolute;
-    width: 2px;
-    background: linear-gradient(to top, rgba(34, 197, 94, 0.8), rgba(34, 197, 94, 0.3));
-    border-radius: 1px;
-    animation: soundWave 1s ease-in-out infinite;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    border: 2px solid #22c55e;
+    border-radius: 50%;
+    background: transparent;
+    z-index: 1;
   }
   
-  .sound-wave-1 {
+  .eye-inner {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    border-radius: 50%;
+    background: #ffffff;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.9);
+  }
+  
+  .eye-pupil {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
     height: 8px;
-    left: 15px;
-    animation-delay: 0s;
+    background: #000000;
+    border-radius: 50%;
+    transition: all 0.15s ease-out;
+    z-index: 3;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
   }
   
-  .sound-wave-2 {
-    height: 12px;
-    left: 18px;
-    animation-delay: 0.1s;
+  .eye-pupil-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 2px;
+    background-color: #000000;
+    border-radius: 50%;
+    z-index: 4;
   }
   
-  .sound-wave-3 {
-    height: 6px;
-    right: 18px;
-    animation-delay: 0.2s;
+  .eye-highlight {
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    z-index: 5;
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.6);
   }
   
-  .sound-wave-4 {
-    height: 10px;
-    right: 15px;
-    animation-delay: 0.3s;
+  /* 眼睑效果 */
+  .eye-lid {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    background: linear-gradient(to bottom, rgba(251, 191, 36, 0.1), transparent 30%);
+    border-radius: 50%;
+    z-index: 6;
+    pointer-events: none;
   }
   
-  /* 动画关键帧 */
-  @keyframes minimizedGlow {
-    0%, 100% { 
-      filter: drop-shadow(0 0 5px rgba(34, 197, 94, 0.3));
-    }
-    50% { 
-      filter: drop-shadow(0 0 15px rgba(34, 197, 94, 0.6));
-    }
+  /* 眼睫毛效果 */
+  .realistic-eye::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.4), transparent);
+    border-radius: 1px;
+    z-index: 7;
   }
   
-  @keyframes ringRotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+  .realistic-eye::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent);
+    border-radius: 1px;
+    z-index: 7;
   }
   
-  @keyframes pulseExpand {
+  /* 眼睛高光效果 */
+  .eye-highlight {
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    width: 1.5px;
+    height: 1.5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  
+  /* 眼睫毛效果 */
+  .eye-lashes {
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(251, 191, 36, 0.3) 10%,
+      rgba(251, 191, 36, 0.5) 25%,
+      rgba(251, 191, 36, 0.3) 40%,
+      transparent 50%,
+      rgba(251, 191, 36, 0.3) 60%,
+      rgba(251, 191, 36, 0.5) 75%,
+      rgba(251, 191, 36, 0.3) 90%,
+      transparent 100%
+    );
+    border-radius: 50% 50% 0 0;
+    opacity: 0.6;
+  }
+  
+  .eye-lid {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 14px;
+    border-top: 2px solid #fde68a; /* amber-200 */
+    border-radius: 50% 50% 0 0;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+  
+  .eye-slash {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 28px;
+    height: 2px;
+    background-color: #fde68a; /* amber-200 */
+    border-radius: 1px;
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+  
+  /* 闭合状态的眼睛 */
+  .realistic-eye.closed .eye-lid {
+    transform: translateX(-50%) rotate(180deg);
+  }
+  
+  .realistic-eye.closed .eye-slash {
+    opacity: 1;
+  }
+  
+  /* 播放状态下的眼睛动画 */
+  .realistic-eye.playing .eye-pupil {
+    animation: realisticBlink 4s infinite;
+  }
+  
+  /* 眼珠转动动画 */
+  .realistic-eye.looking .eye-pupil {
+    animation: realisticEyeMovement 10s infinite;
+  }
+  
+  .eye-pupil.looking-around {
+    animation: realisticEyeMovement 10s infinite;
+  }
+  
+  /* 单独的眨眼效果 */
+  .eye-pupil.eye-blink {
+    animation: realisticBlink 4s infinite;
+  }
+  
+  /* 眼睛振动效果 */
+  .realistic-eye.vibrating {
+    animation: eyeVibrate 0.1s infinite;
+  }
+  
+  /* 更逼真的眼珠移动动画 */
+  @keyframes realisticEyeMovement {
     0% {
-      transform: scale(1);
-      opacity: 0.7;
+      transform: translate(-50%, -50%) translate(0, 0);
+    }
+    10% {
+      transform: translate(-50%, -50%) translate(-3px, -2px);
+    }
+    20% {
+      transform: translate(-50%, -50%) translate(2px, -3px);
+    }
+    30% {
+      transform: translate(-50%, -50%) translate(3px, 2px);
+    }
+    40% {
+      transform: translate(-50%, -50%) translate(-2px, 3px);
     }
     50% {
-      transform: scale(1.1);
-      opacity: 0.3;
+      transform: translate(-50%, -50%) translate(-3px, 1px);
+    }
+    60% {
+      transform: translate(-50%, -50%) translate(0, 3px);
+    }
+    70% {
+      transform: translate(-50%, -50%) translate(3px, 0);
+    }
+    80% {
+      transform: translate(-50%, -50%) translate(-3px, -2px);
+    }
+    90% {
+      transform: translate(-50%, -50%) translate(2px, -3px);
     }
     100% {
-      transform: scale(1);
-      opacity: 0.7;
+      transform: translate(-50%, -50%) translate(0, 0);
     }
   }
   
-  @keyframes playButtonRotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+  /* 更自然的眨眼动画 */
+  @keyframes realisticBlink {
+    0%, 92%, 100% {
+      transform: translate(-50%, -50%) scaleY(1);
+    }
+    96% {
+      transform: translate(-50%, -50%) scaleY(0.05);
+    }
   }
   
-  @keyframes soundWave {
-    0%, 100% {
-      transform: scaleY(1);
-      opacity: 0.7;
-    }
-    50% {
-      transform: scaleY(1.5);
+  /* 智能眨眼动画 */
+  @keyframes smartBlink {
+    0%, 85%, 100% {
+      transform: translate(-50%, -50%) scaleY(1);
       opacity: 1;
     }
+    90%, 95% {
+      transform: translate(-50%, -50%) scaleY(0.1);
+      opacity: 0.8;
+    }
   }
   
-  /* 播放/暂停按钮旋转效果 */
-  .play-pause-icon.rotating {
-    animation: iconSpin 3s linear infinite;
-    will-change: transform;
-    transform-origin: center;
+  /* 休息时的眨眼动画 */
+  @keyframes restBlink {
+    0%, 80%, 100% {
+      transform: translate(-50%, -50%) scaleY(1);
+    }
+    85%, 95% {
+      transform: translate(-50%, -50%) scaleY(0.05);
+    }
   }
   
-  .spinning-button {
-    animation: buttonRotateAndPulse 4s ease-in-out infinite;
-    will-change: transform, filter, box-shadow;
-    transform-origin: center;
+  /* 活跃的眼珠转动 */
+  @keyframes activeLooking {
+    0% { transform: translate(-50%, -50%) translate(0, 0); }
+    8% { transform: translate(-50%, -50%) translate(-4px, -3px); }
+    16% { transform: translate(-50%, -50%) translate(3px, -4px); }
+    24% { transform: translate(-50%, -50%) translate(4px, 2px); }
+    32% { transform: translate(-50%, -50%) translate(-3px, 4px); }
+    40% { transform: translate(-50%, -50%) translate(-4px, 1px); }
+    48% { transform: translate(-50%, -50%) translate(1px, 4px); }
+    56% { transform: translate(-50%, -50%) translate(4px, -1px); }
+    64% { transform: translate(-50%, -50%) translate(-2px, -4px); }
+    72% { transform: translate(-50%, -50%) translate(3px, -2px); }
+    80% { transform: translate(-50%, -50%) translate(-4px, 3px); }
+    88% { transform: translate(-50%, -50%) translate(2px, 4px); }
+    96% { transform: translate(-50%, -50%) translate(4px, -3px); }
+    100% { transform: translate(-50%, -50%) translate(0, 0); }
   }
   
-  .spinning-button.playing {
-    animation: buttonRotateAndPulse 4s ease-in-out infinite, buttonGlow 2s ease-in-out infinite alternate;
+  /* 谨慎观察的眼珠转动 */
+  @keyframes watchfulLooking {
+    0% { transform: translate(-50%, -50%) translate(0, 0); }
+    15% { transform: translate(-50%, -50%) translate(-2px, -1px); }
+    30% { transform: translate(-50%, -50%) translate(1px, -2px); }
+    45% { transform: translate(-50%, -50%) translate(2px, 1px); }
+    60% { transform: translate(-50%, -50%) translate(-1px, 2px); }
+    75% { transform: translate(-50%, -50%) translate(-2px, 0px); }
+    90% { transform: translate(-50%, -50%) translate(1px, -1px); }
+    100% { transform: translate(-50%, -50%) translate(0, 0); }
   }
   
-  @keyframes iconSpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+  /* 音乐感应振动 */
+  @keyframes musicVibrate {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    10% { transform: translate(-0.8px, 0.8px) scale(1.02); }
+    20% { transform: translate(0.8px, -0.8px) scale(0.98); }
+    30% { transform: translate(-0.8px, -0.8px) scale(1.01); }
+    40% { transform: translate(0.8px, 0.8px) scale(0.99); }
+    50% { transform: translate(-1px, 0px) scale(1.02); }
+    60% { transform: translate(1px, 0px) scale(0.98); }
+    70% { transform: translate(0px, -1px) scale(1.01); }
+    80% { transform: translate(0px, 1px) scale(0.99); }
+    90% { transform: translate(-0.5px, 0.5px) scale(1.01); }
   }
+  
+  /* 警觉脉冲效果 */
+  @keyframes alertPulse {
+    0%, 100% { 
+      box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4);
+      transform: scale(1);
+    }
+    25% { 
+      box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.2);
+      transform: scale(1.05);
+    }
+    50% { 
+      box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.1);
+      transform: scale(1.1);
+    }
+    75% { 
+      box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.2);
+      transform: scale(1.05);
+    }
+  }
+  
+  /* 眼睑微妙动画 */
+  @keyframes subtleMovement {
+    0%, 100% { transform: translateX(-50%) rotate(0deg); }
+    25% { transform: translateX(-50%) rotate(1deg); }
+    50% { transform: translateX(-50%) rotate(0deg); }
+    75% { transform: translateX(-50%) rotate(-1deg); }
+  }
+  
+  @keyframes eyeVibrate {
+    0%, 100% {
+      transform: translate(-50%, -50%) translate(0, 0);
+    }
+    25% {
+      transform: translate(-50%, -50%) translate(-0.5px, 0.5px);
+    }
+    50% {
+      transform: translate(-50%, -50%) translate(0.5px, -0.5px);
+    }
+    75% {
+      transform: translate(-50%, -50%) translate(-0.5px, -0.5px);
+    }
+  }
+  
+  /* 眼睛动画状态类 */
+  .eye-pupil.smart-blink {
+    animation: smartBlink 0.5s ease-in-out;
+  }
+  
+  .eye-pupil.rest-blink {
+    animation: restBlink 0.8s ease-in-out;
+  }
+  
+  .eye-pupil.active-looking {
+    animation: activeLooking 12s ease-in-out infinite;
+  }
+  
+  .eye-pupil.watchful-looking {
+    animation: watchfulLooking 8s ease-in-out infinite;
+  }
+  
+  .realistic-eye.music-vibrating {
+    animation: musicVibrate 0.15s ease-in-out infinite;
+  }
+  
+  .realistic-eye.alert-pulse {
+    animation: alertPulse 2s ease-in-out infinite;
+  }
+  
+  .eye-lid.subtle-movement {
+    animation: subtleMovement 6s ease-in-out infinite;
+  }
+
   
   @keyframes buttonRotateAndPulse {
     0%, 100% { 
@@ -2074,6 +2930,87 @@
     transform: translateY(-50%);
   }
   
+  /* 音波动画 */
+  @keyframes soundWave {
+    0%, 100% {
+      height: 8px;
+      opacity: 0.6;
+    }
+    50% {
+      height: 20px;
+      opacity: 1;
+    }
+  }
+  
+  /* 旋转播放按钮动画 */
+  .rotating-play-btn.playing {
+    animation: buttonRotateAndPulse 3s ease-in-out infinite;
+  }
+  
+  .rotating-play-btn.spinning-button {
+    animation: buttonGlow 2s ease-in-out infinite alternate;
+  }
+  
+  .play-pause-icon.rotating {
+    animation: iconRotate 2s linear infinite;
+  }
+  
+  @keyframes iconRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  /* 动画环效果 */
+  .animated-ring.playing {
+    animation: ringRotate 8s linear infinite;
+    background: conic-gradient(
+      from 0deg,
+      transparent,
+      rgba(34, 197, 94, 0.3),
+      transparent,
+      rgba(59, 130, 246, 0.3),
+      transparent
+    );
+  }
+  
+  .animated-ring-inner.playing {
+    animation: ringRotate 6s linear infinite reverse;
+    background: conic-gradient(
+      from 180deg,
+      transparent,
+      rgba(147, 51, 234, 0.3),
+      transparent,
+      rgba(251, 191, 36, 0.3),
+      transparent
+    );
+  }
+  
+  .pulse-ring.playing {
+    animation: pulseExpand 3s ease-in-out infinite;
+    background: radial-gradient(
+      circle,
+      transparent 40%,
+      rgba(34, 197, 94, 0.2) 50%,
+      transparent 60%
+    );
+  }
+  
+  @keyframes ringRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  @keyframes pulseExpand {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.8;
+    }
+  }
+  
   /* 滚动条样式 */
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
@@ -2102,6 +3039,25 @@
     font-size: 8px;
     pointer-events: none;
     z-index: 35;
+  }
+  
+  /* 最小化播放器容器样式 - 完整的球形背景 */
+  .minimized-player-container {
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    /* 单一的绿色球形背景，无边框无阴影 */
+    background: radial-gradient(circle at 30% 30%, 
+                rgba(34, 197, 94, 0.4) 0%, 
+                rgba(34, 197, 94, 0.3) 40%, 
+                rgba(34, 197, 94, 0.25) 70%, 
+                rgba(34, 197, 94, 0.2) 100%);
+  }
+  
+  /* 移除所有伪元素和额外的背景层 */
+  .minimized-player-container::before,
+  .minimized-player-container::after {
+    display: none;
   }
   
   .scrollbar-thumb-slate-600::-webkit-scrollbar-thumb {
@@ -2151,13 +3107,29 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   }
   
-  /* 眼睛图标动画 */
-  .eye-icon {
-    transition: all 0.2s ease;
+  /* 音乐播放时的眼睛动效 */
+  .music-active .eye-pupil {
+    animation: realisticEyeMovement 4s infinite ease-in-out;
   }
   
-  .eye-button:hover .eye-icon {
-    transform: scale(1.1);
+  .music-pulse .eye-pupil {
+    animation: musicPulse 1s ease-in-out;
   }
-
+  
+  @keyframes musicPulse {
+    0%, 100% { 
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+    50% { 
+      transform: translate(-50%, -50%) scale(1.2);
+      opacity: 0.8;
+    }
+  }
+  
+  /* 增强眼睛在播放时的反应 */
+  .music-active .realistic-eye {
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
+  }
+  
 </style>
