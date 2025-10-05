@@ -1064,16 +1064,23 @@ const ballPositions = generateRandomPositions();
       console.log('🔍 动态扫描colorball-music目录中的音乐文件...');
       
       // 基于用户更新的实际音乐文件构建映射
-      const actualMusicFiles = {
-        'red': ['red.mp3'],            // 红色系
-        'pink': ['pink1.mp3'],         // 粉色系
-        'blue': ['blue1.mp3'],         // 蓝色系
-        'green': ['green2.mp3'],       // 绿色系
-        'purple': ['purple.mp3'],      // 紫色系
-        'yellow': ['yellow2.mp3'],     // 黄色系
-        'orange': ['orange1.mp3'],     // 橙色系
-        'lavender': ['lavender1.mp3'], // 薰衣草色系
-        'cyan': ['cyan.mp3']           // 青色系
+      const genericMusicFiles = [
+        'generic-background.mp3', 
+        '2.mp3', 
+        '3.mp3',
+        'Nikolaj Egelund-Arrival Manor House.mp3',
+        'Painless Destiny-Lost control.mp3'
+      ];
+      const actualMusicFiles: { [key: string]: string[] } = {
+        'red': ['red.mp3', ...genericMusicFiles],            // 红色系
+        'pink': ['pink1.mp3', ...genericMusicFiles],         // 粉色系
+        'blue': ['blue1.mp3', ...genericMusicFiles],         // 蓝色系
+        'green': ['green2.mp3', ...genericMusicFiles],       // 绿色系
+        'purple': ['purple.mp3', ...genericMusicFiles],      // 紫色系
+        'yellow': ['yellow2.mp3', ...genericMusicFiles],     // 黄色系
+        'orange': ['orange1.mp3', ...genericMusicFiles],     // 橙色系
+        'lavender': ['lavender1.mp3', ...genericMusicFiles], // 薰衣草色系
+        'cyan': ['cyan.mp3', ...genericMusicFiles]           // 青色系
       };
       
       // 设置颜色映射（将18种颜色映射到8个色系）
@@ -1192,7 +1199,12 @@ const ballPositions = generateRandomPositions();
               'yellow2.mp3': 0.75,
               'orange1.mp3': 0.8,
               'lavender1.mp3': 0.7,
-              'cyan.mp3': 0.8
+              'cyan.mp3': 0.8,
+              'generic-background.mp3': 0.8,
+              '2.mp3': 0.8,
+              '3.mp3': 0.8,
+              'Nikolaj Egelund-Arrival Manor House.mp3': 0.75,
+              'Painless Destiny-Lost control.mp3': 0.8
             };
             
             // 根据文件名调整音量系数
@@ -1345,7 +1357,8 @@ const ballPositions = generateRandomPositions();
       const actualFiles = [
         'red.mp3', 'pink1.mp3', 'blue1.mp3', 'green2.mp3', 
         'purple.mp3', 'yellow2.mp3', 'orange1.mp3', 'cyan.mp3',
-        'lavender1.mp3'
+        'lavender1.mp3', 'generic-background.mp3', '2.mp3', '3.mp3',
+        'Nikolaj Egelund-Arrival Manor House.mp3', 'Painless Destiny-Lost control.mp3'
       ];
       
       let successCount = 0;

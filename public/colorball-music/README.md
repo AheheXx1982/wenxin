@@ -49,9 +49,8 @@
 ### 音乐文件命名建议
 
 **通用文件（所有色系共享）：**
-- `1.mp3`, `2.mp3`, `3.mp3`, ... （数字编号）
-- `song1.mp3`, `song2.mp3`, ... （歌曲系列）
-- `music1.mp3`, `music2.mp3`, ... （音乐系列）
+- `generic-background.mp3` - 通用背景音乐（原1.mp3）
+- `2.mp3`, `3.mp3` - 其他通用音乐文件
 
 **色系专用文件：**
 - 红色系：`red.mp3`
@@ -63,6 +62,10 @@
 - 橙色系：`orange1.mp3`
 - 薰衣草系：`lavender1.mp3`
 - 青色系：`cyan.mp3`
+
+**新增音乐文件：**
+- `Nikolaj Egelund-Arrival Manor House.mp3` - 可作为通用音乐文件使用
+- `Painless Destiny-Lost control.mp3` - 可作为通用音乐文件使用
 
 ## 🎮 交互方式
 
