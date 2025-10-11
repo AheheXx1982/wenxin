@@ -454,3 +454,22 @@ export function getRandomFeaturedCoverForPath(path: string): string {
   const cover = covers[randomIndex];
   return cover;
 }
+
+// 根据分类路径和文章slug获取固定图片（避免刷新时图片变化）
+export function getFixedCoverForPath(path: string, slug: string): string {
+  const covers = getDefaultCoversForPath(path);
+  
+  // 基于slug生成一个固定的索引
+  let hash = 0;
+  const slugStr = typeof slug === 'string' ? slug : String(slug);
+  for (let i = 0; i < slugStr.length; i++) {
+    const char = slugStr.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // 转换为32位整数
+  }
+  
+  // 确保索引为非负数
+  const fixedIndex = Math.abs(hash) % covers.length;
+  const cover = covers[fixedIndex];
+  return cover;
+}

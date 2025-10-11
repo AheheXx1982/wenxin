@@ -1,6 +1,6 @@
 import { categoryMap } from '@constants/category';
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { getRandomCoverForPath } from '@lib/cover';
+import { getRandomCoverForPath, getFixedCoverForPath } from '@lib/cover';
 import type { Language } from '@constants/i18n';
 
 import type { BlogPost } from 'types/blog';
@@ -115,7 +115,7 @@ export async function getRandomLatestPosts(count: number, lang?: Language): Prom
   return shuffled.slice(0, count);
 }
 
-// 为文章获取对应分类的随机封面图片
+// 为文章获取对应分类的固定封面图片（基于文章slug生成固定索引，避免刷新时图片变化）
 export function getPostCoverImage(post: BlogPost): string {
   const { categories, cover } = post.data;
 
@@ -136,12 +136,12 @@ export function getPostCoverImage(post: BlogPost): string {
       // 特殊处理加密风向标分类
       if (categoryPath === '新世界探索/加密风向标') {
         console.log('特殊处理加密风向标分类');
-        const result = getRandomCoverForPath('/categories/crypto-news');
+        const result = getFixedCoverForPath('/categories/crypto-news', post.slug);
         console.log(`获取到的图片: ${result}`);
         return result;
       }
 
-      const result = getRandomCoverForPath(path);
+      const result = getFixedCoverForPath(path, post.slug);
       console.log(`获取到的图片: ${result}`);
       return result;
     } else {
@@ -149,7 +149,7 @@ export function getPostCoverImage(post: BlogPost): string {
       // 例如: '期权研究院'
       const path = `/categories/${categories[0]}`;
       console.log(`获取单级分类图片: ${path}`);
-      const result = getRandomCoverForPath(path);
+      const result = getFixedCoverForPath(path, post.slug);
       console.log(`获取到的图片: ${result}`);
       return result;
     }
