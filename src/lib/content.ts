@@ -265,6 +265,26 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
     return indexA - indexB;
   });
 
+  // 递归对子分类进行排序
+  function sortChildrenCategories(categories: Category[]) {
+    categories.forEach(category => {
+      if (category.children && category.children.length > 0) {
+        category.children.sort((a, b) => {
+          const indexA = orderedCategoryNames.indexOf(a.name);
+          const indexB = orderedCategoryNames.indexOf(b.name);
+          if (indexA === -1) return 1; // a 不在映射中，排在后面
+          if (indexB === -1) return -1; // b 不在映射中，排在前面
+          return indexA - indexB;
+        });
+        // 递归处理更深层的子分类
+        sortChildrenCategories(category.children);
+      }
+    });
+  }
+
+  // 对所有层级的分类进行排序
+  sortChildrenCategories(resCategories);
+
   return { categories: resCategories, countMap };
 }
 
