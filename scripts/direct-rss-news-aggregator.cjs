@@ -93,17 +93,17 @@ async function fetchNewsFromRSS() {
           const sourceUrl = item.link || '';
           
           // 提取摘要（如果有）
-          const description = stripHtml(item.summary || content.substring(0, 100) + '...').substring(0, 150).replace(/[^a-zA-Z0-9一-鿿\s.,!?]/g, '');
+          const description = stripHtml(item.summary || content.substring(0, 100) + '...').substring(0, 150).replace(/[^a-zA-Z0-9\u4e00-\u9fff\s.,!?]/g, '').replace(/["']/g, '');
           
           allNews.push({
             id: item.guid || item.id || item.link || Math.random().toString(),
-            title: (item.title || '未命名文章').replace(/"/g, '\\"'),
-            content: content.replace(/"/g, '\\"'),
-            description: description.replace(/"/g, '\\"'),
+            title: (item.title || '未命名文章').replace(/["']/g, ''),
+            content: content.replace(/["']/g, ''),
+            description: description.replace(/["']/g, ''),
             date: date,
             tags: [...CONFIG.DEFAULT_TAGS, source.name],
             category: CONFIG.DEFAULT_CATEGORY,
-            source: sourceUrl.replace(/"/g, '\\"')
+            source: sourceUrl.replace(/["']/g, '')
           });
         }
         
