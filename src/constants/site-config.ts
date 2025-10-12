@@ -72,6 +72,7 @@ export const siteConfig: SiteConfig = {
     { name: '首页', href: '/' },
     { name: '课程', href: '/categories/options/course' },
     { name: '实盘', href: '/categories/options/trading-journal' },
+    { name: '新闻', href: '/categories/crypto-news' },
     { name: '关于', href: '/about' },
     { name: '幻念集', href: '/illusionary-thoughts' },
   ],

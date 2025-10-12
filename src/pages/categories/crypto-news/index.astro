@@ -1,0 +1,65 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PostList from '@components/post/PostList.astro';
+import { getLanguageFromAstroUrl, getSeoConfig, getUIText } from '@lib/i18n';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } }
+  ];
+}
+
+interface Props {
+  params: {
+    lang: string;
+  };
+}
+
+const { params: { lang } } = Astro.props;
+
+// 获取当前语言的新闻文章
+const allNews = await getCollection('blog', (post) => {
+  return post.slug.startsWith('crypto-news/') && 
+         (post.data.lang === lang || (!post.data.lang && lang === 'zh'));
+});
+
+// 按日期排序
+const sortedNews = allNews.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.data).getTime();
+});
+
+// 获取当前语言的SEO配置
+const currentLang = lang || 'zh';
+const localizedSeoConfig = getSeoConfig(currentLang as any);
+const uiText = getUIText(currentLang as any);
+
+const pageTitle = currentLang === 'en' ? 'Crypto News' : '加密风向标';
+const pageDescription = currentLang === 'en' 
+  ? 'Latest cryptocurrency news and market analysis' 
+  : '最新的加密货币新闻和市场分析';
+---
+
+<BaseLayout 
+  title={`${pageTitle} | ${localizedSeoConfig.title}`} 
+  description={pageDescription}
+>
+  <div class="shadow-box bg-gradient-start mx-0 flex w-full flex-col gap-8 p-4 pt-6 md:px-3 md:py-2">
+    <div class="prose dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl">
+      <h1 class="flex items-center">
+        <img src="/img/crypto/crypto-news/2.webp" alt="加密风向标" class="h-8 w-8 mr-2" />
+        {pageTitle}
+      </h1>
+      <p>{pageDescription}</p>
+    </div>
+    
+    <PostList 
+      posts={sortedNews} 
+      lang={currentLang}
+      showCover={true}
+      showExcerpt={true}
+    />
+  </div>
+</BaseLayout>

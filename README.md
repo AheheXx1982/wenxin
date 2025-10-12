@@ -10,7 +10,7 @@ _基于 Astro 的现代化静态站点生成器，集成先进的组件架构_
 [![React](https://img.shields.io/badge/React-19.1.1-61dafb?logo=react)](https://reactjs.org/)
 
 [🌍 Live Demo](https://www.silentxx.com) • [📖 中文文档](#-项目前言--project-overview) • [📖 English Docs](./README_EN.md) •  
-[🚀 Quick Start](#-安装部署--installation--deployment) • [🏗️ Architecture](#-项目结构--project-structure)
+[🚀 Quick Start](#-安装部署--installation--deployment) • [🏗️ Architecture](#-项目结构--project-structure) • [📰 Auto News](#-自动新闻聚合--auto-news-aggregation)
 
 ---
 
@@ -89,6 +89,21 @@ SilentXx/
 - pnpm >= 10.x
 - Git
 - Docker (可选，用于容器化开发) / Docker (Optional, for containerized development)
+
+---
+
+## 🔧 环境变量配置 / Environment Variables
+
+要使用 Auto-News 系统，您需要配置以下环境变量：
+
+```bash
+# 复制 .env.example 文件并重命名为 .env
+cp .env.example .env
+
+# 编辑 .env 文件，填写您的实际值
+```
+
+详细配置说明请查看 [.env.example](.env.example) 文件。
 
 ---
 
@@ -183,6 +198,40 @@ tags: ['标签 1 / Tag1', '标签 2 / Tag2']
 
 ```plain
 
+## 📰 自动新闻聚合 / Auto News Aggregation
+
+本项目集成了基于 [finaldie/auto-news](https://github.com/finaldie/auto-news) 的自动新闻聚合系统，可以定时抓取最新的加密货币新闻并自动发布到网站。
+
+### 工作原理 / How it works
+
+#### 直接 RSS 聚合系统
+
+1. 使用 GitHub Actions 定时运行新闻聚合任务
+2. 直接从 RSS 源获取最新的新闻
+3. 将新闻内容转换为 Markdown 格式的博客文章
+4. 自动提交并发布到网站
+
+#### Notion 集成系统
+
+1. 使用 GitHub Actions 定时运行新闻聚合任务
+2. 通过 Docker 容器运行 Auto-News 来抓取和处理新闻
+3. 将聚合的新闻存储在 Notion 数据库中
+4. 从 Notion 数据库生成 Markdown 格式的博客文章
+5. 自动提交并发布到网站
+
+### 配置说明 / Configuration
+
+详细配置说明请查看 [docs/auto-news-setup.md](docs/auto-news-setup.md)
+
+完整自动化设置指南请查看 [docs/auto-news-full-setup-guide.md](docs/auto-news-full-setup-guide.md)
+
+### 手动生成新闻 / Manual Generation
+
+```bash
+# 手动生成新闻文章
+pnpm generate-news
+```
+
 ---
 
 ## 📡 RSS 与 站点地图 / RSS & Sitemap
@@ -195,6 +244,62 @@ tags: ['标签 1 / Tag1', '标签 2 / Tag2']
 这些功能有助于搜索引擎更好地索引您的网站内容，并为读者提供内容订阅功能。
 
 ---
+
+## 📰 自动新闻聚合 / Auto News Aggregation
+
+本项目集成了两种自动新闻聚合系统：
+
+### 1. 直接 RSS 聚合系统（推荐）
+
+直接从 RSS 源获取新闻并生成 Markdown 文件，无需依赖外部服务。
+
+- 🚀 **轻量级**: 无需 Notion 配置，直接从 RSS 源获取数据
+- 🕐 **定时抓取**: 每天自动抓取最新的加密货币新闻
+- 📝 **自动发布**: 自动生成 Markdown 格式的博客文章并发布
+- 🌐 **多源聚合**: 支持多个 RSS 源
+- 📊 **智能过滤**: 自动过滤重复内容
+
+详细说明请查看 [docs/direct-rss-news-aggregator.md](docs/direct-rss-news-aggregator.md)
+
+### 2. Notion 集成系统（高级）
+
+基于 [finaldie/auto-news](https://github.com/finaldie/auto-news) 的自动新闻聚合系统，可以定时抓取最新的加密货币新闻并自动发布到网站。
+
+- 🕐 **定时抓取**: 每天自动抓取最新的加密货币新闻
+- 🤖 **AI摘要**: 使用 LLM 自动生成新闻摘要
+- 📝 **自动发布**: 自动生成 Markdown 格式的博客文章并发布
+- 🌐 **多源聚合**: 支持 RSS、Reddit、Twitter 等多种新闻源
+- 📊 **智能过滤**: 过滤不相关的内容，只保留感兴趣的新闻
+
+### 工作原理 / How it works
+
+#### 直接 RSS 聚合系统
+
+1. 使用 GitHub Actions 定时运行新闻聚合任务
+2. 直接从 RSS 源获取最新的新闻
+3. 将新闻内容转换为 Markdown 格式的博客文章
+4. 自动提交并发布到网站
+
+#### Notion 集成系统
+
+1. 使用 GitHub Actions 定时运行新闻聚合任务
+2. 通过 Docker 容器运行 Auto-News 来抓取和处理新闻
+3. 将聚合的新闻存储在 Notion 数据库中
+4. 从 Notion 数据库生成 Markdown 格式的博客文章
+5. 自动提交并发布到网站
+
+### 配置说明 / Configuration
+
+详细配置说明请查看 [docs/auto-news-setup.md](docs/auto-news-setup.md)
+
+完整自动化设置指南请查看 [docs/auto-news-full-setup-guide.md](docs/auto-news-full-setup-guide.md)
+
+### 手动生成新闻 / Manual Generation
+
+```bash
+# 手动生成新闻文章
+pnpm generate-news
+```
 
 ## 📈 更新日志 / Changelog
 
