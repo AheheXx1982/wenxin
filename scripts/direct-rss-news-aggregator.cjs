@@ -128,21 +128,16 @@ async function fetchNewsFromRSS() {
             }
           }
           
-          // 判断文章语言
+          // 判断文章语言 - 由于所有RSS源都是英文的，我们假设所有文章都是英文
           const hasChinese = /[\u4e00-\u9fff]/.test(item.title);
           const hasEnglish = /[a-zA-Z]/.test(item.title);
           
-          // 确定文章语言
-          let lang = 'zh';
-          if (hasChinese && !hasEnglish) {
-            lang = 'zh';
-          } else if (hasEnglish && !hasChinese) {
-            lang = 'en';
-          } else if (hasChinese && hasEnglish) {
-            // 如果同时包含中英文，根据主要语言判断
-            const chineseChars = (item.title.match(/[\u4e00-\u9fff]/g) || []).length;
-            const englishChars = (item.title.match(/[a-zA-Z]/g) || []).length;
-            lang = chineseChars >= englishChars ? 'zh' : 'en';
+          // 由于所有RSS源都是英文的，我们将所有文章标记为英文
+          let lang = 'en';
+          
+          // 只处理包含英文的文章（因为RSS源都是英文的）
+          if (!hasEnglish) {
+            continue;
           }
           
           allNews.push({
@@ -151,7 +146,7 @@ async function fetchNewsFromRSS() {
             content: content.replace(/["']/g, ''),
             description: description.replace(/["']/g, ''),
             date: date,
-            tags: lang === 'zh' ? [...CONFIG.DEFAULT_TAGS_CN, source.name] : [...CONFIG.DEFAULT_TAGS_EN, source.name],
+            tags: [...CONFIG.DEFAULT_TAGS_EN, source.name],
             category: CONFIG.DEFAULT_CATEGORY,
             source: sourceUrl.replace(/["']/g, ''),
             image: imageUrl,
