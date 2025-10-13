@@ -1,0 +1,112 @@
+name: Auto News Aggregator (Disabled)
+
+on:
+  schedule:
+    # 每天 UTC 时间 0 点运行（北京时间 8 点）
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+  # 允许手动触发
+  workflow_call:
+
+jobs:
+  aggregate-news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create env file
+        run: |
+          mkdir -p build
+          cat > build/.env << EOF
+          NOTION_TOKEN=${{ secrets.NOTION_TOKEN }}
+          NOTION_ENTRY_PAGE_ID=${{ secrets.NOTION_ENTRY_PAGE_ID }}
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          LLM_PROVIDER=openai
+          OPENAI_MODEL=gpt-4o-mini
+          EOF
+
+      - name: Pull Auto-News Docker Image
+        run: |
+          docker pull finaldie/auto-news:latest
+
+      - name: Run Auto-News Docker Container
+        run: |
+          echo "🚀 Starting Auto-News container..."
+          docker run -d \
+            --name auto-news \
+            --env-file build/.env \
+            finaldie/auto-news:latest
+          echo "✅ Auto-News container started successfully"
+
+      - name: Wait for news aggregation
+        run: |
+          echo "⏳ Waiting for news aggregation to complete..."
+          # 等待一段时间让新闻聚合完成
+          sleep 300
+          echo "✅ News aggregation completed"
+
+      - name: Check container logs
+        run: |
+          echo "📋 Container logs:"
+          docker logs auto-news || echo "No logs available"
+
+      - name: Stop and remove container
+        run: |
+          echo "🧹 Cleaning up container..."
+          docker stop auto-news || true
+          docker rm auto-news || true
+          echo "✅ Container cleanup completed"
+
+  publish-news:
+    needs: aggregate-news
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          echo "📦 Installing dependencies..."
+          npm install
+          echo "✅ Dependencies installed successfully"
+
+      - name: Generate news posts
+        run: |
+          echo "📝 Generating news posts from Notion database..."
+          # 这里会运行一个脚本来从 Notion 获取聚合的新闻并生成博客文章
+          node scripts/enhanced-generate-news-posts.js
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          echo "🔍 Checking for changes..."
+          git diff --exit-code src/content/blog/crypto-news/ || echo "changed=true" >> $GITHUB_OUTPUT
+          if [ "${{ steps.git-check.outputs.changed }}" = "true" ]; then
+            echo "✅ Changes detected"
+          else
+            echo "ℹ️ No changes detected"
+          fi
+
+      - name: Commit and push changes
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          echo "💾 Committing and pushing changes..."
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add src/content/blog/crypto-news/
+          git commit -m "Auto-publish: Add latest news articles"
+          git push
+          echo "✅ Changes committed and pushed successfully"
