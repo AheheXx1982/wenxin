@@ -337,22 +337,6 @@ lang: ${post.lang === 'en' ? 'zh' : 'en'}
   }
 }
 
-// 生成原始语言和翻译版本的文章
-async function generateBlogPostWithTranslation(post) {
-  try {
-    // 生成原始语言版本
-    await generateBlogPostOriginal(post);
-    
-    // 生成翻译版本
-    await generateBlogPostTranslated(post);
-    
-    return true;
-  } catch (error) {
-    logError(`生成博客文章及翻译版本失败: ${error.message}`);
-    throw error;
-  }
-}
-
 // 生成原始语言版本的文章
 async function generateBlogPostOriginal(post) {
   try {
