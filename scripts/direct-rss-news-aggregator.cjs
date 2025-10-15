@@ -15,10 +15,6 @@ const CONFIG = {
   // RSS 源列表
   RSS_SOURCES: [
     {
-      url: 'https://rss.coinmarketcap.com/cn/top.xml',
-      name: 'CoinMarketCap'
-    },
-    {
       url: 'https://www.coindesk.com/arc/outboundfeeds/rss/',
       name: 'CoinDesk'
     },
