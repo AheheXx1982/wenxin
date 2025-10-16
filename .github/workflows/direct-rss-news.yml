@@ -30,7 +30,7 @@ jobs:
       - name: Generate news posts from RSS
         run: |
           echo "📝 Generating news posts from RSS sources..."
-          node scripts/direct-rss-news-aggregator.cjs
+          node scripts/chinese-english-rss-aggregator.cjs
 
       - name: Check for changes
         id: git-check

@@ -280,6 +280,12 @@ pnpm generate-news
 3. 将新闻内容转换为 Markdown 格式的博客文章
 4. 自动提交并发布到网站
 
+#### 中英文内容处理
+
+- 英文文章只发布到英文版网站 (/src/content/blog/en/crypto-news)
+- 中文版网站不会显示英文文章，确保语言内容的纯净性
+- 系统会自动区分和分发不同语言的内容
+
 #### Notion 集成系统
 
 1. 使用 GitHub Actions 定时运行新闻聚合任务
