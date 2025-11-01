@@ -18,8 +18,12 @@ const CONFIG = {
       name: 'CoinDesk'
     },
     {
-      url: 'https://cointelegraph.com/rss',
-      name: 'CoinTelegraph'
+      url: 'https://cryptoslate.com/feed/',
+      name: 'CryptoSlate'
+    },
+    {
+      url: 'https://decrypt.co/feed',
+      name: 'Decrypt'
     }
   ],
   
@@ -81,7 +85,12 @@ async function fetchNewsFromRSS() {
   try {
     logInfo('开始从 RSS 源获取新闻...');
     
-    const parser = new Parser();
+    const parser = new Parser({
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
     const allNews = [];
     
     // 遍历所有 RSS 源
@@ -165,6 +174,16 @@ async function fetchNewsFromRSS() {
   }
 }
 
+// 检查文件是否已存在
+async function fileExists(filePath) {
+  try {
+    await fs.access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 // 生成博客文章文件
 async function generateBlogPost(post) {
   try {
@@ -175,10 +194,17 @@ async function generateBlogPost(post) {
     const cleanTitle = post.title
       .replace(/[^\w\s\u4e00-\u9fff]/g, '') // 移除特殊字符，但保留中文
       .replace(/\s+/g, '-') // 将空格替换为连字符
-      .toLowerCase();
+      .toLowerCase()
+      .substring(0, 100); // 限制文件名长度
     
     const fileName = `${cleanTitle}.md`;
     const filePath = path.join(newsDir, fileName);
+    
+    // 检查文件是否已存在
+    if (await fileExists(filePath)) {
+      logInfo(`文章已存在，跳过: ${fileName}`);
+      return null;
+    }
     
     // 使用原始标题和描述
     const title = post.title;
@@ -252,14 +278,23 @@ async function main() {
     
     // 生成博客文章（只生成英文版本）
     const generatedFiles = [];
+    let skippedCount = 0;
     for (const post of newsPosts) {
       try {
         // 只生成英文版本
         const filePath = await generateBlogPost(post);
-        generatedFiles.push(filePath);
+        if (filePath) {
+          generatedFiles.push(filePath);
+        } else {
+          skippedCount++;
+        }
       } catch (error) {
         logError(`生成文章 "${post.title}" 时出错: ${error.message}`);
       }
+    }
+    
+    if (skippedCount > 0) {
+      logInfo(`跳过了 ${skippedCount} 篇已存在的文章`);
     }
     
     logSuccess(`成功生成 ${generatedFiles.length} 篇英文新闻文章`);

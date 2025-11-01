@@ -305,7 +305,27 @@ pnpm generate-news
 ```bash
 # 手动生成新闻文章
 pnpm generate-news
+
+# 测试工作流配置
+pnpm test-workflow
+
+# 测试中文内容分发
+pnpm test-chinese-content
 ```
+
+### 工作流状态 / Workflow Status
+
+当前工作流设置：
+- ⏰ **定时运行**: 每天 UTC 0:00 和 12:00（北京时间 8:00 和 20:00）
+- 👍 **手动触发**: 支持在 GitHub Actions 页面手动触发
+- 🔒 **权限配置**: 已配置写入权限，可自动提交新文章
+- 🚨 **重复检测**: 自动跳过已存在的文章，避免重复
+
+如需手动触发工作流：
+1. 访问 GitHub 仓库的 Actions 页面
+2. 选择 "Direct RSS News Aggregator" 工作流
+3. 点击 "Run workflow" 按钮
+4. 选择分支（通常是 main）并点击 "Run workflow"
 
 ## 📈 更新日志 / Changelog
 

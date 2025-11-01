@@ -18,7 +18,8 @@
     "test-news": "node scripts/test-news-aggregation.cjs",
     "setup-news": "node scripts/setup-auto-news.cjs",
     "test-chinese-content": "node scripts/test-chinese-content.cjs",
-    "cleanup-english-articles": "node scripts/cleanup-english-articles-in-chinese.cjs"
+    "cleanup-english-articles": "node scripts/cleanup-english-articles-in-chinese.cjs",
+    "test-workflow": "node scripts/test-workflow.cjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.0",
