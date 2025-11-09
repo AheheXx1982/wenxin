@@ -13,13 +13,7 @@
     "lint-staged": "lint-staged",
     "change": "git cliff -o CHANGELOG.md",
     "prepare": "husky",
-    "update-covers": "node scripts/update-cover-config.cjs",
-    "generate-news": "node scripts/chinese-english-rss-aggregator.cjs",
-    "test-news": "node scripts/test-news-aggregation.cjs",
-    "setup-news": "node scripts/setup-auto-news.cjs",
-    "test-chinese-content": "node scripts/test-chinese-content.cjs",
-    "cleanup-english-articles": "node scripts/cleanup-english-articles-in-chinese.cjs",
-    "test-workflow": "node scripts/test-workflow.cjs"
+    "update-covers": "node scripts/update-cover-config.cjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.0",
