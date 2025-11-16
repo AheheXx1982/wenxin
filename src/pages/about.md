@@ -151,7 +151,7 @@ description: 'SilentXx｜寂静猎手'
   [SilentXx.com](https://www.silentxx.com)
 
 - **加密百科**  
-  [crypto.silentxx.com](https://crypto.silentxx.com)
+  <a href="https://crypto.silentxx.com" target="_blank" rel="noopener noreferrer">crypto.silentxx.com</a>
 
 ### 🌐 社交媒体
 

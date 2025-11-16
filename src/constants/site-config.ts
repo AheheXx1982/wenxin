@@ -120,24 +120,6 @@ export const siteConfig: SiteConfig = {
       image: '/img/cashflow-utopia/4.webp',
       description: '全球高息股轮动',
     },
-    {
-      link: '/categories/new-world-explore/ai',
-      label: '智能进化',
-      image: '/img/new-world-explore/ai/3.webp',
-      description: 'AI人工智能',
-    },
-    {
-      link: '/categories/new-world-explore/crypto-news',
-      label: '加密风向标',
-      image: '/img/crypto/crypto-news/2.webp',
-      description: '加密货币新闻',
-    },
-    {
-      link: '/categories/new-world-explore/quantum-universe',
-      label: '量子宇宙',
-      image: '/img/new-world-explore/quantum-universe/5.webp',
-      description: '探索量子计算的前沿科技',
-    },
   ],
 };
 

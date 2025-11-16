@@ -10,16 +10,12 @@ const categoryImageMap: CoverImageMap = {
   'crypto/grid': 'crypto/grid',
   'crypto/futures': 'crypto/futures',
   'crypto/crypto-wiki': 'crypto/crypto-wiki',
-  'crypto/crypto-news': 'crypto/crypto-news', // 加密风向标使用独立的图片目录
   'cashflow-utopia/drip': 'cashflow-utopia/drip',
   'cashflow-utopia/asset-allocation': 'cashflow-utopia/asset-allocation',
   'cashflow-utopia/option-selling': 'options/option-selling', // 添加现金流乌托邦/期权卖方策略的映射
-  'new-world-explore/ai': 'new-world-explore/ai',
-  'new-world-explore/quantum-universe': 'new-world-explore/quantum-universe',
 
   // 添加一级分类映射
   'cashflow-utopia': 'cashflow-utopia',
-  'new-world-explore': 'new-world-explore',
   options: 'options',
   crypto: 'crypto',
   // 添加单级分类映射
@@ -30,17 +26,13 @@ const categoryImageMap: CoverImageMap = {
   drip: 'cashflow-utopia/drip',
   futures: 'crypto/futures',
   'crypto-wiki': 'crypto/crypto-wiki',
-  'crypto-news': 'crypto/crypto-news', // 加密风向标使用独立的图片目录
   grid: 'crypto/grid',
   网格策略: 'crypto/grid', // 添加网格策略的直接映射
   course: 'options/course',
   'trading-journal': 'options/trading-journal',
   实盘分享: 'options/trading-journal', // 添加实盘分享的直接映射
-  ai: 'new-world-explore/ai',
   // 添加合约交易分类映射
   合约交易: 'crypto/futures',
-  // 添加加密风向标直接映射
-  加密风向标: 'crypto/crypto-news',
   // 可以根据需要添加更多分类映射
 };
 
@@ -51,10 +43,6 @@ export function getDefaultCoversForPath(path: string): string[] {
 
   // 特殊处理：将中文分类名转换为英文路径
   const pathMapping: Record<string, string> = {
-    新世界探索: 'new-world-explore',
-    量子宇宙: 'quantum-universe',
-    智能进化: 'ai',
-    加密风向标: 'crypto-news', // 更新加密风向标的映射
     加密实验室: 'crypto',
     加密百科: 'crypto-wiki',
     现金流乌托邦: 'cashflow-utopia',
@@ -98,78 +86,6 @@ export function getDefaultCoversForPath(path: string): string[] {
     mappedPath = '期权卖方策略';
   }
 
-  // 特殊处理：如果分类是数组格式 ['新世界探索', '加密风向标']，提取具体的子分类
-  if (mappedPath.includes('新世界探索') && mappedPath.includes('加密风向标')) {
-    mappedPath = 'crypto-news'; // 直接映射到crypto-news
-  }
-
-  // 特殊处理：直接处理加密风向标分类
-  if (mappedPath === '加密风向标') {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：处理加密风向标分类
-  if (mappedPath === 'crypto-news') {
-    // No special handling needed
-  } else if (mappedPath.includes('crypto-news') && mappedPath !== 'crypto-news') {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：确保加密风向标正确映射
-  if (mappedPath.includes('加密风向标') || mappedPath.includes('crypto-news')) {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：处理新世界探索/加密风向标路径
-  if (mappedPath === 'new-world-explore/加密风向标') {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：处理new-world-explore/crypto-news路径
-  if (mappedPath === 'new-world-explore/crypto-news') {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：处理包含加密风向标的路径
-  if (mappedPath.includes('加密风向标')) {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：处理包含new-world-explore和crypto-news的路径
-  if (mappedPath.includes('new-world-explore') && mappedPath.includes('crypto-news')) {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：处理包含new-world-explor和crypto-news的路径（处理可能的拼写错误）
-  if (mappedPath.includes('new-world-explor') && mappedPath.includes('crypto-news')) {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：处理包含new-world和crypto-news的路径
-  if (mappedPath.includes('new-world') && mappedPath.includes('crypto-news')) {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：处理包含explor和crypto-news的路径
-  if (mappedPath.includes('explor') && mappedPath.includes('crypto-news')) {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：处理包含world和crypto-news的路径
-  if (mappedPath.includes('world') && mappedPath.includes('crypto-news')) {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：处理包含crypto和news的路径
-  if (mappedPath.includes('crypto') && mappedPath.includes('news') && !mappedPath.includes('crypto-news')) {
-    mappedPath = 'crypto-news';
-  }
-
-  // 特殊处理：处理包含crypt和news的路径
-  if (mappedPath.includes('crypt') && mappedPath.includes('news')) {
-    mappedPath = 'crypto-news';
-  }
-
   // 对于文章列表，只从子目录获取图片
   const subDirImageDir = categoryImageMap[mappedPath];
   if (subDirImageDir) {
@@ -194,10 +110,6 @@ export function getFeaturedCoversForPath(path: string): string[] {
 
   // 特殊处理：将中文分类名转换为英文路径
   const pathMapping: Record<string, string> = {
-    新世界探索: 'new-world-explore',
-    量子宇宙: 'quantum-universe',
-    智能进化: 'ai',
-    加密风向标: 'crypto-news', // 更新加密风向标的映射
     加密实验室: 'crypto',
     加密百科: 'crypto-wiki',
     现金流乌托邦: 'cashflow-utopia',
@@ -348,17 +260,7 @@ function getImagesForDirectory(dir: string): string[] {
         '/img/crypto/crypto-wiki/7.webp',
         '/img/crypto/crypto-wiki/8.webp',
       ];
-    case 'crypto/crypto-news':
-      return [
-        '/img/crypto/crypto-news/1.webp',
-        '/img/crypto/crypto-news/2.webp',
-        '/img/crypto/crypto-news/3.webp',
-        '/img/crypto/crypto-news/4.webp',
-        '/img/crypto/crypto-news/5.webp',
-        '/img/crypto/crypto-news/6.webp',
-        '/img/crypto/crypto-news/7.webp',
-        '/img/crypto/crypto-news/8.webp',
-      ];
+
     case 'crypto':
       return [
         '/img/crypto/1.webp',
@@ -402,25 +304,6 @@ function getImagesForDirectory(dir: string): string[] {
         '/img/cashflow-utopia/asset-allocation/6.webp',
         '/img/cashflow-utopia/asset-allocation/7.webp',
       ];
-    case 'new-world-explore/ai':
-      return [
-        '/img/new-world-explore/ai/1.webp',
-        '/img/new-world-explore/ai/2.webp',
-        '/img/new-world-explore/ai/3.webp',
-        '/img/new-world-explore/ai/4.webp',
-        '/img/new-world-explore/ai/5.webp',
-        '/img/new-world-explore/ai/6.webp',
-        '/img/new-world-explore/ai/7.webp',
-      ];
-    case 'new-world-explore/quantum-universe':
-      return [
-        '/img/new-world-explore/quantum-universe/1.webp',
-        '/img/new-world-explore/quantum-universe/2.webp',
-        '/img/new-world-explore/quantum-universe/3.webp',
-        '/img/new-world-explore/quantum-universe/4.webp',
-        '/img/new-world-explore/quantum-universe/5.webp',
-      ];
-
     case 'cashflow-utopia':
       return [
         '/img/cashflow-utopia/1.webp',
@@ -428,8 +311,6 @@ function getImagesForDirectory(dir: string): string[] {
         '/img/cashflow-utopia/3.webp',
         '/img/cashflow-utopia/4.webp',
       ];
-    case 'new-world-explore':
-      return ['/img/new-world-explore/1.webp', '/img/new-world-explore/2.webp'];
     case 'options':
       return ['/img/options/1.webp', '/img/options/2.webp', '/img/options/3.webp'];
     case 'stock':

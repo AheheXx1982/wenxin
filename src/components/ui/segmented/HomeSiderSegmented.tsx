@@ -34,7 +34,6 @@ export const HomeSiderSegmented = ({
     (value: HomeSiderSegmentType) => {
       setValue(value);
       homeSiderSegmentType.set(value);
-      console.log('value', { value, _value, homeSiderType: homeSiderSegmentType.get() });
     },
     [setValue],
   );

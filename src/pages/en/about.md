@@ -151,7 +151,7 @@ and move towards true trading freedom.
   [SilentXx.com](https://www.silentxx.com)
 
 - **Crypto Wiki**  
-  [crypto.silentxx.com](https://crypto.silentxx.com)
+  <a href="https://crypto.silentxx.com" target="_blank" rel="noopener noreferrer">crypto.silentxx.com</a>
 
 ### 🌐 Social Media
 

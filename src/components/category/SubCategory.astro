@@ -28,9 +28,29 @@ const translateCategoryName = (categoryName: string): string => {
 const translatedCategoryName = translateCategoryName(category.name);
 const categoryLinkPrefix = lang === 'en' ? '/en/categories' : '/categories';
 
+// 获取分类对应的slug，处理中英文分类名
+const getCategorySlug = (categoryName: string): string => {
+  // 先尝试直接在categoryMap中查找（中文名）
+  if (categoryMap[categoryName]) {
+    return categoryMap[categoryName];
+  }
+  
+  // 如果是英文环境，需要将英文名转回中文key
+  if (lang === 'en' && uiText.categoryNames) {
+    const categoryNames = uiText.categoryNames as Record<string, string>;
+    // 通过英文名查找中文key
+    const zhKey = Object.keys(categoryNames).find(key => categoryNames[key] === categoryName);
+    if (zhKey && categoryMap[zhKey]) {
+      return categoryMap[zhKey];
+    }
+  }
+  
+  return categoryName;
+};
+
 // 修复:确保使用正确的分类映射
-const parentLink = categoryMap[parentName] || parentName;
-const childLink = categoryMap[category.name] || category.name;
+const parentLink = getCategorySlug(parentName);
+const childLink = getCategorySlug(category.name);
 const categoryLink = `${parentLink}/${childLink}`;
 
 // 加密百科特殊处理:直接链接到外部网站(中英文)
@@ -40,9 +60,9 @@ const categoryTarget = isCryptoWiki ? '_blank' : '_self';
 const showLinkIcon = isCryptoWiki; // 加密百科显示链接图标而不是数字
 const grandChildLinks = await Promise.all(
   (category.children || []).map(async (grandChild) => {
-    const parentLink = categoryMap[parentName] || parentName;
-    const childLink = categoryMap[category.name] || category.name;
-    const grandChildLink = categoryMap[grandChild.name] || grandChild.name;
+    const parentLink = getCategorySlug(parentName);
+    const childLink = getCategorySlug(category.name);
+    const grandChildLink = getCategorySlug(grandChild.name);
     const fullLink = `${parentLink}/${childLink}/${grandChildLink}`;
     return {
       grandChild,

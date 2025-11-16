@@ -131,33 +131,20 @@ export function getPostCoverImage(post: BlogPost): string {
       // 例如: ['新世界探索', '智能进化']
       const categoryPath = categories[0].join('/');
       const path = `/categories/${categoryPath}`;
-      console.log(`获取嵌套分类图片: ${path}`);
-      console.log(`分类详情:`, categories[0]);
-
-      // 特殊处理加密风向标分类
-      if (categoryPath === '新世界探索/加密风向标') {
-        console.log('特殊处理加密风向标分类');
-        const result = getFixedCoverForPath('/categories/crypto-news', post.slug);
-        console.log(`获取到的图片: ${result}`);
-        return result;
-      }
 
       const result = getFixedCoverForPath(path, post.slug);
-      console.log(`获取到的图片: ${result}`);
+
       return result;
     } else {
       // 处理单级分类格式
       // 例如: '期权研究院'
       const path = `/categories/${categories[0]}`;
-      console.log(`获取单级分类图片: ${path}`);
       const result = getFixedCoverForPath(path, post.slug);
-      console.log(`获取到的图片: ${result}`);
       return result;
     }
   }
 
   // 如果没有分类信息，返回默认图片
-  console.log('没有分类信息，返回默认图片');
   return '/img/banner.webp';
 }
 
@@ -378,7 +365,6 @@ export function getCategoryLinks(categories?: Category[], parentLink?: string): 
     const link = getCategoryMapKey(category.name);
     // 添加检查确保 link 不是 undefined
     if (!link) {
-      console.warn(`警告: 分类 "${category.name}" 没有在 _config.yml 中定义映射`);
       return;
     }
     const fullLink = parentLink ? `${parentLink}/${link}` : link;
@@ -595,7 +581,6 @@ export async function getCategoryLink(categories: string[]): Promise<string> {
     // 确保链接不以斜杠结尾，符合 trailingSlash: 'never' 的配置
     return link.replace(/\/$/, '');
   } catch (error) {
-    console.error('生成分类链接时出错:', error);
     return '';
   }
 }
