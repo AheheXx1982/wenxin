@@ -7,9 +7,10 @@ interface Props {
   href: string;
   level?: 'h2' | 'h3';
   className?: string;
+  target?: '_blank' | '_self';
 }
 
-const { title, count = 0, href, level = 'h2', className } = Astro.props;
+const { title, count = 0, href, level = 'h2', className, target = '_self' } = Astro.props;
 const Tag = level;
 ---
 
@@ -22,7 +23,12 @@ const Tag = level;
     className,
   )}
 >
-  <a href={href} class="dashed-border group-hover:border-blue group-hover:text-blue border-b">
+  <a 
+    href={href} 
+    class="dashed-border group-hover:border-blue group-hover:text-blue border-b"
+    target={target}
+    rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+  >
     {title}
   </a>
   <span class={cn('text-[0.8em] text-muted-foreground')}>({count})</span>

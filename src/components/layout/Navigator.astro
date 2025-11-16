@@ -23,6 +23,10 @@ const uiText = getUIText(currentLang);
         .map((item: { name: string; href: string }) => {
           const path = item.href;
           const { name } = item;
+          
+          // 加密百科特殊处理:新窗口打开
+          const isCryptoWiki = name === '加密百科' || name === 'Crypto Wiki';
+          const isExternal = path.startsWith('http');
 
           return (
             <ButtonLink
@@ -37,7 +41,13 @@ const uiText = getUIText(currentLang);
                 },
               )}
             >
-              {name}
+              {isExternal ? (
+                <a href={path} target="_blank" rel="noopener noreferrer" class="block">
+                  {name}
+                </a>
+              ) : (
+                name
+              )}
             </ButtonLink>
           );
         })
