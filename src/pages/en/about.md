@@ -126,7 +126,7 @@ and move towards true trading freedom.
 - **Lifestyle**  
   Simple and Buddhist lifestyle, staying at home is the norm. In reality, I am taciturn, but on the internet, I am mentally active and humorous. Perhaps it is this contrast that creates my unique perspective and trading philosophy.
 
-### 📚 Thoughts Collection
+### 📚 Investment Insights
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
     <div>
