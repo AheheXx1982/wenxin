@@ -50,8 +50,8 @@ export const i18nSiteConfig = {
     author: 'SilentXx',
     navLinks: [
       { name: '首页', href: '/' },
-      { name: '课程', href: '/categories/options/course' },
-      { name: '实盘', href: '/categories/options/trading-journal' },
+      { name: '期权课程', href: '/categories/options/course' },
+      { name: '加密百科', href: 'https://crypto.silentxx.com' },
       { name: '关于', href: '/about' },
       { name: '幻念集', href: '/illusionary-thoughts' },
     ],
@@ -103,8 +103,8 @@ export const i18nSiteConfig = {
     author: 'SilentXx',
     navLinks: [
       { name: 'Home', href: '/en' },
-      { name: 'Course', href: '/en/categories/options/course' },
-      { name: 'Live Trading', href: '/en/categories/options/trading-journal' },
+      { name: 'Options Course', href: '/en/categories/options/course' },
+      { name: 'Crypto Wiki', href: 'https://crypto.silentxx.com' },
       { name: 'About', href: '/en/about' },
       { name: 'Thoughts', href: '/en/illusionary-thoughts' },
     ],
