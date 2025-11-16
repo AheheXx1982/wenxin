@@ -91,7 +91,7 @@ export const siteConfig: SiteConfig = {
       description: '实盘交易记录',
     },
     {
-      link: '/categories/crypto/crypto-wiki',
+      link: 'https://crypto.silentxx.com/',
       label: '加密百科',
       image: '/img/crypto/1.webp',
       description: '加密货币百科全书',

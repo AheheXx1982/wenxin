@@ -28,10 +28,14 @@ const translateCategoryName = (categoryName: string): string => {
 const translatedCategoryName = translateCategoryName(category.name);
 const categoryLinkPrefix = lang === 'en' ? '/en/categories' : '/categories';
 
-// 修复：确保使用正确的分类映射
+// 修复:确保使用正确的分类映射
 const parentLink = categoryMap[parentName] || parentName;
 const childLink = categoryMap[category.name] || category.name;
 const categoryLink = `${parentLink}/${childLink}`;
+
+// 加密百科特殊处理:直接链接到外部网站
+const isCryptoWiki = category.name === '加密百科';
+const categoryHref = isCryptoWiki ? 'https://crypto.silentxx.com/' : `${categoryLinkPrefix}/${categoryLink}`;
 const grandChildLinks = await Promise.all(
   (category.children || []).map(async (grandChild) => {
     const parentLink = categoryMap[parentName] || parentName;
@@ -50,7 +54,7 @@ const grandChildLinks = await Promise.all(
 <CategoryTitle
   title={translatedCategoryName}
   count={countMap[category.name] ?? 0}
-  href={`${categoryLinkPrefix}/${categoryLink}`}
+  href={categoryHref}
   level="h3"
 />
 {

@@ -24,14 +24,25 @@ const uiText = getUIText(currentLang);
 const i18nSiteConfig = getSiteConfig(currentLang);
 
 const postCount = await getPostCount();
-const { countMap } = await getCategoryList();
-const posts = await getSortedPosts(currentLang, true); // 根据语言筛选文章，排除介绍文章
+const { categories, countMap } = await getCategoryList(currentLang);
+const posts = await getSortedPosts(currentLang, true); // 根据语言筛选文章,排除介绍文章
 const tags = getAllTags(posts);
 
 const allTags = Object.entries(tags).map(([tag, count]) => ({ tag, count }));
 
-// 计算所有分类的数量（包括没有文章的分类）
-const allCategoriesCount = Object.keys(categoryMap).length;
+// 计算实际存在的分类数量(递归统计所有子分类)
+function countAllCategories(cats: any[]): number {
+  let count = 0;
+  for (const cat of cats) {
+    count++; // 计数当前分类
+    if (cat.children && cat.children.length > 0) {
+      count += countAllCategories(cat.children); // 递归计数子分类
+    }
+  }
+  return count;
+}
+
+const allCategoriesCount = countAllCategories(categories);
 
 // 🔑 优先使用国际化配置
 const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ? i18nSiteConfig.navLinks : routers;
