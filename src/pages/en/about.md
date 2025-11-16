@@ -150,6 +150,9 @@ and move towards true trading freedom.
 - **SilentXx｜Silent Hunter - Main Site**  
   [SilentXx.com](https://www.silentxx.com)
 
+- **Crypto Wiki**  
+  [crypto.silentxx.com](https://crypto.silentxx.com)
+
 ### 🌐 Social Media
 
 <div class="mt-2 grid grid-cols-3 gap-2">

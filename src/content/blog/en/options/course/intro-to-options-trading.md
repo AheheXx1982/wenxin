@@ -4,7 +4,7 @@ date: 2025-01-02
 description: 'A beginner-friendly introduction to options trading fundamentals, perfect as the first course for new traders.'
 lang: en
 categories:
-  - ['期权研究院', '期权课程']
+  - ['Options Academy', 'Options Course']
 catalog: true
 tags:
   - Options Trading

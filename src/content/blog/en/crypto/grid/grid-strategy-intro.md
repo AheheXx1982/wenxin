@@ -4,7 +4,7 @@ date: 2025-01-04
 description: 'Master the grid trading strategy for cryptocurrency markets. Learn how to profit from market volatility with automated trading systems.'
 lang: en
 categories:
-  - ['加密实验室', '网格策略']
+  - ['Crypto Lab', 'Grid Strategy']
 catalog: true
 tags:
   - Cryptocurrency

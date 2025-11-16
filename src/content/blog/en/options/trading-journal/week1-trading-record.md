@@ -4,7 +4,7 @@ date: 2025-01-04
 description: 'Detailed record and analysis of week 1 options live trading'
 lang: en
 categories:
-  - ['期权研究院', '实盘分享']
+  - ['Options Academy', 'Live Trading']
 catalog: true
 tags:
   - Options Trading

@@ -4,7 +4,7 @@ description: 'Learn professional options selling strategies that generate consis
 date: 2025-01-15
 lang: en
 categories:
-  - ['现金流乌托邦', '期权卖方策略']
+  - ['Cash Flow Utopia', 'Option Selling Strategy']
 tags: ['Options Trading', 'Selling Strategy', 'Income Generation', 'Risk Management']
 cover: '/img/options/option-selling/1.webp'
 ---

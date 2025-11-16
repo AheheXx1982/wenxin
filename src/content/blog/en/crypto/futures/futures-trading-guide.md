@@ -4,7 +4,7 @@ date: 2025-01-07
 description: 'Basic concepts and risk control methods of futures trading'
 lang: en
 categories:
-  - ['加密实验室', '合约交易']
+  - ['Crypto Lab', 'Futures Trading']
 catalog: true
 tags:
   - Cryptocurrency

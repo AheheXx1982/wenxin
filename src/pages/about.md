@@ -150,6 +150,9 @@ description: 'SilentXx｜寂静猎手'
 - **SilentXx｜寂静猎手 - 主站**  
   [SilentXx.com](https://www.silentxx.com)
 
+- **加密百科**  
+  [crypto.silentxx.com](https://crypto.silentxx.com)
+
 ### 🌐 社交媒体
 
 <div class="mt-2 grid grid-cols-3 gap-2">

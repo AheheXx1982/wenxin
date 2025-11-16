@@ -2,6 +2,7 @@ import { categoryMap } from '@constants/category';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { getRandomCoverForPath, getFixedCoverForPath } from '@lib/cover';
 import type { Language } from '@constants/i18n';
+import { i18nUI } from '@constants/i18n';
 
 import type { BlogPost } from 'types/blog';
 
@@ -257,9 +258,29 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
 
   // 根据 categoryMap 中的顺序对 resCategories 进行排序
   const orderedCategoryNames = Object.keys(categoryMap);
+  
+  // 创建英文到中文的映射函数
+  const getCategoryKey = (categoryName: string): string => {
+    // 如果直接在 categoryMap 中存在，返回原名称
+    if (categoryMap[categoryName]) {
+      return categoryName;
+    }
+    
+    // 尝试从 i18n 配置中找到对应的中文名称
+    // 通过英文名称查找中文键
+    const enCategoryNames = i18nUI.en?.categoryNames as Record<string, string> || {};
+    const zhKey = orderedCategoryNames.find(key => {
+      return enCategoryNames[key] === categoryName;
+    });
+    
+    return zhKey || categoryName;
+  };
+  
   resCategories.sort((a, b) => {
-    const indexA = orderedCategoryNames.indexOf(a.name);
-    const indexB = orderedCategoryNames.indexOf(b.name);
+    const keyA = getCategoryKey(a.name);
+    const keyB = getCategoryKey(b.name);
+    const indexA = orderedCategoryNames.indexOf(keyA);
+    const indexB = orderedCategoryNames.indexOf(keyB);
     if (indexA === -1) return 1; // a 不在映射中，排在后面
     if (indexB === -1) return -1; // b 不在映射中，排在前面
     return indexA - indexB;
@@ -270,8 +291,10 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
     categories.forEach(category => {
       if (category.children && category.children.length > 0) {
         category.children.sort((a, b) => {
-          const indexA = orderedCategoryNames.indexOf(a.name);
-          const indexB = orderedCategoryNames.indexOf(b.name);
+          const keyA = getCategoryKey(a.name);
+          const keyB = getCategoryKey(b.name);
+          const indexA = orderedCategoryNames.indexOf(keyA);
+          const indexB = orderedCategoryNames.indexOf(keyB);
           if (indexA === -1) return 1; // a 不在映射中，排在后面
           if (indexB === -1) return -1; // b 不在映射中，排在前面
           return indexA - indexB;
@@ -333,10 +356,26 @@ export function getCategoryArr(categories?: string[] | string) {
  */
 export function getCategoryLinks(categories?: Category[], parentLink?: string): string[] {
   if (!categories?.length) return [];
-  // console.log('parentLink:', parentLink + ' categories:', categories.length);
   const res: string[] = [];
+  
+  // 创建英文到中文的映射函数
+  const getCategoryMapKey = (categoryName: string): string | undefined => {
+    // 如果直接在 categoryMap 中存在，返回该键对应的值
+    if (categoryMap[categoryName]) {
+      return categoryMap[categoryName];
+    }
+    
+    // 尝试从 i18n 配置中找到对应的中文名称
+    const enCategoryNames = i18nUI.en?.categoryNames as Record<string, string> || {};
+    const zhKey = Object.keys(categoryMap).find(key => {
+      return enCategoryNames[key] === categoryName;
+    });
+    
+    return zhKey ? categoryMap[zhKey] : undefined;
+  };
+  
   categories.forEach((category: Category) => {
-    const link = categoryMap[category.name];
+    const link = getCategoryMapKey(category.name);
     // 添加检查确保 link 不是 undefined
     if (!link) {
       console.warn(`警告: 分类 "${category.name}" 没有在 _config.yml 中定义映射`);
@@ -372,7 +411,7 @@ export function getCategoryByLink(categories: Category[], link?: string): Catego
   const linkParts = link.split('/').filter((part) => part.length > 0 && part !== 'categories');
   if (linkParts.length === 0) return null;
 
-  // 将链接部分转换为分类名称
+  // 将链接部分转换为分类名称（中文）
   const categoryNames = linkParts.map((part) => {
     // 首先尝试通过值查找键（英文路径到中文名称）
     const categoryName = Object.keys(categoryMap).find((key) => categoryMap[key] === part);
@@ -392,12 +431,23 @@ export function getCategoryByLink(categories: Category[], link?: string): Catego
 
   if (categoryNames.length === 0) return null;
 
-  // 递归查找分类
+  // 递归查找分类，同时支持中英文分类名称
   function findCategory(cats: Category[], names: string[]): Category | null {
     if (names.length === 0) return null;
 
     const firstName = names[0];
-    const category = cats.find((cat) => cat.name === firstName);
+    
+    // 先尝试直接匹配
+    let category = cats.find((cat) => cat.name === firstName);
+    
+    // 如果没有直接匹配，尝试通过 i18n 映射匹配
+    if (!category) {
+      const enCategoryNames = i18nUI.en?.categoryNames as Record<string, string> || {};
+      const enName = enCategoryNames[firstName];
+      if (enName) {
+        category = cats.find((cat) => cat.name === enName);
+      }
+    }
 
     if (!category) return null;
 

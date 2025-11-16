@@ -74,7 +74,7 @@ const categoryLinks: CategoryLink[] = categories.map((category: Category) => {
         <>
           <CategoryTitle
             title={category.name}
-            count={countMap[originalName]}
+            count={undefined}
             href={`${categoryLinkPrefix}${link ? '/' + link : ''}`}
             className={category?.children?.length ? 'has-children' : ''}
           />

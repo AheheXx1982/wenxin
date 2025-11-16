@@ -4,7 +4,7 @@ date: 2025-01-03
 description: 'Learn how to implement the covered call strategy to generate additional income from your existing stock positions while managing risk.'
 lang: en
 categories:
-  - ['期权研究院', '策略分析']
+  - ['Options Academy', 'Strategy Analysis']
 catalog: true
 tags:
   - Options Strategy

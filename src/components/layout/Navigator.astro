@@ -28,6 +28,23 @@ const uiText = getUIText(currentLang);
           const isCryptoWiki = name === '加密百科' || name === 'Crypto Wiki';
           const isExternal = path.startsWith('http');
 
+          // 外部链接直接使用 a 标签,不用 ButtonLink
+          if (isExternal) {
+            return (
+              <a
+                href={path}
+                target="_blank"
+                rel="noopener noreferrer"
+                class={cn(
+                  'relative text-base tracking-wider after:absolute after:bottom-1 after:left-1/2 after:block after:h-0.5 after:w-0 after:-translate-x-1/2 after:transition-all after:duration-300',
+                  'hover:after:w-9/12'
+                )}
+              >
+                {name}
+              </a>
+            );
+          }
+
           return (
             <ButtonLink
               url={path}
@@ -41,13 +58,7 @@ const uiText = getUIText(currentLang);
                 },
               )}
             >
-              {isExternal ? (
-                <a href={path} target="_blank" rel="noopener noreferrer" class="block">
-                  {name}
-                </a>
-              ) : (
-                name
-              )}
+              {name}
             </ButtonLink>
           );
         })

@@ -52,7 +52,7 @@ export const i18nSiteConfig = {
       { name: '首页', href: '/' },
       { name: '期权课程', href: '/categories/options/course' },
       { name: '加密百科', href: 'https://crypto.silentxx.com' },
-      { name: '关于', href: '/about' },
+      { name: '认识猎手', href: '/about' },
       { name: '幻念集', href: '/illusionary-thoughts' },
     ],
     featuredCategories: [
@@ -105,7 +105,7 @@ export const i18nSiteConfig = {
       { name: 'Home', href: '/en' },
       { name: 'Options Course', href: '/en/categories/options/course' },
       { name: 'Crypto Wiki', href: 'https://crypto.silentxx.com' },
-      { name: 'About', href: '/en/about' },
+      { name: 'About SilentXx', href: '/en/about' },
       { name: 'Thoughts', href: '/en/illusionary-thoughts' },
     ],
     featuredCategories: [
@@ -355,10 +355,6 @@ export const i18nUI = {
       期权卖方策略: 'Option Selling Strategy',
       全球高息股轮动: 'Global High-Yield Stock Rotation',
       资产配置: 'Asset Allocation',
-      新世界探索: 'New World Exploration',
-      智能进化: 'AI Evolution',
-      量子宇宙: 'Quantum Universe',
-      加密风向标: 'Crypto Trends',
     },
   },
 } as const;
