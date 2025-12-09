@@ -96,7 +96,7 @@ catalog: true
 - **炒股**是"炒房客",只能指望房价暴涨赚差价。
 - **卖期权**是"房东",我们不在乎房价今天涨跌 1%,只要房子还在,**每个月我就能收到租金。**
 
-![时间价值流逝](/img/options/course/The-Passing-of-Time- Value.webp)
+![时间价值流逝](/img/options/course/The-Passing-of-Time-Value.webp)
 
 这种"睡觉时账户也在增值"的感觉,就是 Theta 带来的魔力。
 

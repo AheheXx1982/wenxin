@@ -67,7 +67,8 @@ catalog: true
 
 **这就是 Covered Call (CC) —— 散户最好的养老策略。**
 
-![备兑看涨期权损益图](/img/options/course/Covered-Call-P&L-with-income-buffer.webp)
+**备兑看涨期权损益图示意:**
+当你持有 100 股股票并卖出看涨期权时,权利金收入为你的持仓建立了缓冲区。即使股价小幅下跌,这笔"房租"收入也能抵消部分损失。
 
 ---
 
