@@ -10,6 +10,7 @@ tags:
   - 被动收入
   - 巴菲特策略
 lang: zh
+catalog: true
 ---
 
 ![印钞机概念图](/images/blog/awakening-03-cover.jpg)

@@ -9,6 +9,7 @@ tags:
   - 风险控制
   - 交易心理
 lang: zh
+catalog: true
 ---
 
 ![安全带与赛车](/images/blog/awakening-02-cover.jpg)
