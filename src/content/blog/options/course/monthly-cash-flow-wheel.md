@@ -13,8 +13,7 @@ lang: zh
 catalog: true
 ---
 
-![印钞机概念图](/images/blog/awakening-03-cover.jpg)
-_> 图片提示词:A minimalist digital art. A simplified stock chart turning into a conveyor belt, dropping gold coins into a wallet. Bright, clean background._
+![印钞机概念图](/img/options/course/monthly-cash-flow-wheel.webp)
 
 ## 告别"过山车",拥抱"印钞机"
 
@@ -68,7 +67,7 @@ _> 图片提示词:A minimalist digital art. A simplified stock chart turning in
 
 **这就是 Covered Call (CC) —— 散户最好的养老策略。**
 
-[Image of Covered Call P&L diagram showing income buffer]
+![备兑看涨期权损益图](/img/options/course/Covered-Call-P&L-with-income-buffer.webp)
 
 ---
 

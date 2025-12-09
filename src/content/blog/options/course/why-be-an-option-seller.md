@@ -12,6 +12,8 @@ lang: zh
 catalog: true
 ---
 
+![赌徒与庄家的对比](/img/options/course/Gambler-vs-House.webp)
+
 ## 为什么你的账户总是拿不住利润?
 
 你是否熟悉这个剧本:
@@ -76,6 +78,8 @@ catalog: true
 - 股票跌了一点点?只要没跌穿你的防守线,权利金依然归你。
   > **你的胜率 ≈ 66% ~ 80%+**
 
+![胜率对比图](/img/options/course/Winning-rate-comparison.webp)
+
 **做卖方,意味着你站在了概率优势这一边。**
 
 ---
@@ -91,6 +95,8 @@ catalog: true
 
 - **炒股**是"炒房客",只能指望房价暴涨赚差价。
 - **卖期权**是"房东",我们不在乎房价今天涨跌 1%,只要房子还在,**每个月我就能收到租金。**
+
+![时间价值流逝](/img/options/course/The-Passing-of-Time- Value.webp)
 
 这种"睡觉时账户也在增值"的感觉,就是 Theta 带来的魔力。
 
