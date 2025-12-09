@@ -12,7 +12,7 @@ lang: zh
 catalog: true
 ---
 
-![安全带与赛车](/images/blog/awakening-02-cover.jpg)
+![安全带与赛车](/img/options/course/options-safety-belt-cover.webp)
 
 _> 图片提示词:A split screen. Left: A reckless driver in a burning car (gambler). Right: A professional F1 driver adjusting his safety belt calmly (risk manager). Cinematic style._
 
@@ -74,7 +74,7 @@ _"做股票最多被套,做期权是会家破人亡的!"_
 
 **只有卖方,才能在亏损的交易中,依然全身而退。**
 
-![移仓修补示意图](/images/blog/rolling-options.jpg)
+![移仓修补示意图](/img/options/course/rolling-options.webp)
 
 _> 图片提示词:A mechanic repairing a damaged robot arm with glowing energy tools, making it stronger. Sci-fi style._
 
