@@ -4,6 +4,7 @@
 
 # Category & Tag
 category_map:
+  # 中文分类映射
   期权研究院: options
   期权课程: course
   策略分析: strategy
@@ -18,3 +19,20 @@ category_map:
   期权卖方策略: option-selling
   全球高息股轮动: drip
   资产配置: asset-allocation
+  
+  # 英文分类映射（必须与中文保持一致的路径）
+  Options Institute: options
+  Options Academy: options
+  Options Course: course
+  Strategy Analysis: strategy
+  Live Trading: trading-journal
+  
+  Crypto Lab: crypto
+  Crypto Wiki: crypto-wiki
+  Futures Trading: futures
+  Grid Strategy: grid
+  
+  Cash Flow Utopia: cashflow-utopia
+  Option Selling Strategy: option-selling
+  Global High-Yield Stock Rotation: drip
+  Asset Allocation: asset-allocation
