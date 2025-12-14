@@ -13,7 +13,11 @@ lang: en
 catalog: true
 ---
 
+import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
+
 ![Safety Belt and Race Car](/img/options/course/options-safety-belt-cover.webp)
+
+<OptionsBrandBanner lang="en" />
 
 ## "Options? Never Touch Them, That Stuff is Toxic!"
 

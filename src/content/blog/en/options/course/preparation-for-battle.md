@@ -13,8 +13,12 @@ lang: en
 catalog: true
 ---
 
+import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
+
 ![Trader's Arsenal](/img/options/course/awakening-04-cover.webp)
 _> Image prompt: A futuristic armory room. A trader is selecting high-tech gadgets (representing tools/broker/capital) from a glowing wall. Cyberpunk vibes._
+
+<OptionsBrandBanner lang="en" />
 
 ## Can You Enter Battle With Just a Gun?
 

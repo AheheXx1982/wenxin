@@ -14,7 +14,11 @@ tags:
 catalog: true
 ---
 
+import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
+
 ![2025年第1周实盘交易](/img/options/trading-journal/1.webp)
+
+<OptionsBrandBanner lang="zh" />
 
 ## 交易概况
 

@@ -12,7 +12,11 @@ lang: zh
 catalog: true
 ---
 
+import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
+
 ![解构期权](/img/options/course/ultimate-guide-cover.webp)
+
+<OptionsBrandBanner lang="zh" />
 
 ## 忘掉教科书,我们来聊聊"生意"
 

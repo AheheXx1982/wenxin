@@ -12,8 +12,12 @@ lang: zh
 catalog: true
 ---
 
+import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
+
 ![交易员的装备库](/img/options/course/awakening-04-cover.webp)
 _> 图片提示词：A futuristic armory room. A trader is selecting high-tech gadgets (representing tools/broker/capital) from a glowing wall. Cyberpunk vibes._
+
+<OptionsBrandBanner lang="zh" />
 
 ## 只要有一把枪，你就可以上战场吗？
 

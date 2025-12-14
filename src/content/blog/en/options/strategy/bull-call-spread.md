@@ -13,7 +13,11 @@ tags:
 catalog: true
 ---
 
+import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
+
 ![Bull Call Spread Strategy](/img/options/strategy/1.webp)
+
+<OptionsBrandBanner lang="en" />
 
 ## Strategy Overview
 

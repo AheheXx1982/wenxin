@@ -12,7 +12,11 @@ tags:
 catalog: true
 ---
 
+import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
+
 ![Options Strategy Selection](/img/options/strategy/3.webp)
+
+<OptionsBrandBanner lang="en" />
 
 ## Introduction
 

@@ -12,7 +12,11 @@ lang: zh
 catalog: true
 ---
 
+import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
+
 ![安全带与赛车](/img/options/course/options-safety-belt-cover.webp)
+
+<OptionsBrandBanner lang="zh" />
 
 ## "期权?千万别碰,那东西有毒!"
 
