@@ -1,7 +1,7 @@
 ---
 title: "How Much Capital Do You Need to Be the 'House'? Final Equipment Check Before Entering (Options Awakening 04·Launch)"
 description: 'Many are intimidated by options trading barriers. This article reveals the real threshold: how to start with small capital, how to apply for broker permissions, and how to avoid the first pitfall every beginner hits.'
-date: 2025-12-11
+date: 2025-12-10
 categories:
   - - Options Institute
     - Options Course
