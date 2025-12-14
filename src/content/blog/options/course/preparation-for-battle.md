@@ -1,5 +1,5 @@
 ---
-title: 想做"庄家"需要多少本金？进场前的最后一次装备检查(期权觉醒篇04)
+title: 想做"庄家"需要多少本金？进场前的最后一次装备检查
 description: 很多人被期权的门槛劝退。本文告诉你启动期权交易的真实门槛：如何用小资金起步，如何申请券商权限，以及如何避开新手的第一个坑。
 date: 2025-12-11
 categories:
@@ -13,6 +13,7 @@ catalog: true
 ---
 
 ![交易员的装备库](/img/options/course/awakening-04-cover.webp)
+_> 图片提示词：A futuristic armory room. A trader is selecting high-tech gadgets (representing tools/broker/capital) from a glowing wall. Cyberpunk vibes._
 
 ## 只要有一把枪，你就可以上战场吗？
 
@@ -30,7 +31,7 @@ catalog: true
 
 ## 一、本金焦虑：我是穷人，能玩期权吗？
 
-这是我后台收到最多的私信：_"Silent，我只有 2000 美金，是不是不配做期权？"_
+这是我后台收到最多的私信：_"SilentXx，我只有 2000 美金，是不是不配做期权？"_
 
 外界的误解是：期权是富人的游戏。
 **真相是：期权是"穷人"翻身（或者翻车）最快的工具。**

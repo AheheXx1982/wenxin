@@ -1,5 +1,5 @@
 ---
-title: "How Much Capital Do You Need to Be the 'House'? Final Equipment Check Before Entering (Options Awakening 04)"
+title: "How Much Capital Do You Need to Be the 'House'? Final Equipment Check Before Entering"
 description: 'Many are intimidated by options trading barriers. This article reveals the real threshold: how to start with small capital, how to apply for broker permissions, and how to avoid the first pitfall every beginner hits.'
 date: 2025-12-11
 categories:
@@ -14,6 +14,7 @@ catalog: true
 ---
 
 ![Trader's Arsenal](/img/options/course/awakening-04-cover.webp)
+_> Image prompt: A futuristic armory room. A trader is selecting high-tech gadgets (representing tools/broker/capital) from a glowing wall. Cyberpunk vibes._
 
 ## Can You Enter Battle With Just a Gun?
 
@@ -31,7 +32,7 @@ As the final chapter of the "Awakening Series," let's talk about the most realis
 
 ## I. Capital Anxiety: Am I Too Poor to Trade Options?
 
-This is the most common DM I receive: _"Silent, I only have $2000 USD, am I not qualified to do options?"_
+This is the most common DM I receive: _"SilentXx, I only have $2000 USD, am I not qualified to do options?"_
 
 The outside misconception is: options are a rich man's game.
 **The truth is: options are the fastest tool for the "poor" to turn things around (or crash).**
