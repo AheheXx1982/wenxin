@@ -12,7 +12,7 @@ lang: zh
 catalog: true
 ---
 
-![交易员的装备库](/img/options/course/Trader's Armory.webp)
+![交易员的装备库](/img/options/course/Traders-Armory.webp)
 
 ## 只要有一把枪，你就可以上战场吗？
 
