@@ -1,5 +1,5 @@
 ---
-title: "Stop Dreaming of Getting Rich, Let's Talk About How to Pay Yourself a 'Monthly Salary' (Options Awakening 03)"
+title: "Stop Dreaming of Getting Rich, Let's Talk About How to Pay Yourself a 'Monthly Salary' (Options Awakening 03·Cash Flow)"
 description: "Still holding stocks waiting to break even? This article reveals option sellers' 'rent collection model'. Through CSP and CC strategies, whether stock prices rise or fall, you can receive steady cash flow from the market."
 date: 2025-12-09
 categories:

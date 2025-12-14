@@ -1,5 +1,5 @@
 ---
-title: "Why Does Your Stock Drop Right After You Buy? Unveiling Wall Street's 'House Thinking' That Profits Even When Markets Are Flat (Options Awakening 01)"
+title: "Why Does Your Stock Drop Right After You Buy? Unveiling Wall Street's 'House Thinking' That Profits Even When Markets Are Flat (Options Awakening 01·Mindset)"
 description: "Why are 90% of retail investors losing money? Because you're playing a game with only 33% win rate. This article helps you switch from 'gambler' perspective to 'house' perspective, building an 80% win rate cash flow system with options."
 date: 2025-12-07
 categories:
