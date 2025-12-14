@@ -4,7 +4,7 @@ date: 2025-01-04
 description: 'Master the grid trading strategy for cryptocurrency markets. Learn how to profit from market volatility with automated trading systems.'
 lang: en
 categories:
-  - ['Crypto Lab', 'Grid Strategy']
+  - ['加密实验室', '网格策略']
 catalog: true
 tags:
   - Cryptocurrency
@@ -35,13 +35,14 @@ Grid trading involves:
 ### Visual Example
 
 ``plain
-Price Level    Action       Quantity    Status
-$52,000       SELL         0.1 BTC     Pending
-$51,000       SELL         0.1 BTC     Pending
-$50,000       CURRENT      -           -
-$49,000       BUY          0.1 BTC     Pending
-$48,000       BUY          0.1 BTC     Pending
-```
+Price Level Action Quantity Status
+$52,000 SELL 0.1 BTC Pending
+$51,000 SELL 0.1 BTC Pending
+$50,000 CURRENT - -
+$49,000 BUY 0.1 BTC Pending
+$48,000 BUY 0.1 BTC Pending
+
+```plain
 
 ## Types of Grid Trading
 

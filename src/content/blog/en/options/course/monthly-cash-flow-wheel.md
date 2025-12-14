@@ -3,8 +3,8 @@ title: "Stop Dreaming of Getting Rich, Let's Talk About How to Pay Yourself a 'M
 description: "Still holding stocks waiting to break even? This article reveals option sellers' 'rent collection model'. Through CSP and CC strategies, whether stock prices rise or fall, you can receive steady cash flow from the market."
 date: 2025-12-09
 categories:
-  - - Options Institute
-    - Options Course
+  - - 期权研究院
+    - 期权课程
 tags:
   - Cash Flow
   - The Wheel

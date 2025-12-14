@@ -4,7 +4,7 @@ date: 2025-01-05
 description: 'In-depth analysis of bull call spread strategy construction, profit/loss characteristics, and applicable scenarios'
 lang: en
 categories:
-  - ['Options Academy', 'Strategy Analysis']
+  - ['期权研究院', '策略分析']
 tags:
   - Options Strategy
   - Bull Strategy

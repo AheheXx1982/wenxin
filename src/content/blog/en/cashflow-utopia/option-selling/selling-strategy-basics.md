@@ -4,7 +4,7 @@ date: 2025-01-10
 description: 'Core concepts and implementation methods of option selling strategies'
 lang: en
 categories:
-  - ['Cash Flow Utopia', 'Option Selling Strategy']
+  - ['现金流乌托邦', '期权卖方策略']
 tags:
   - Options Strategy
   - Selling Strategy

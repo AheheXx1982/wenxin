@@ -3,8 +3,8 @@ title: 'Warning: Options Will Bankrupt You? Only Drunk Gamblers Think So (Option
 description: "In the public eye, options are high-leverage gambling; in experts' eyes, options are precision risk control shields. This article teaches you how to use 'defined risk' and 'adjustment techniques' to cage the black swan."
 date: 2025-12-08
 categories:
-  - - Options Institute
-    - Options Course
+  - - 期权研究院
+    - 期权课程
 tags:
   - Advanced Options
   - Risk Control

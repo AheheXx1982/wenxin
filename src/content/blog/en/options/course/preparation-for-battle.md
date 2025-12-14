@@ -3,8 +3,8 @@ title: "How Much Capital Do You Need to Be the 'House'? Final Equipment Check Be
 description: 'Many are intimidated by options trading barriers. This article reveals the real threshold: how to start with small capital, how to apply for broker permissions, and how to avoid the first pitfall every beginner hits.'
 date: 2025-12-10
 categories:
-  - - Options Institute
-    - Options Course
+  - - 期权研究院
+    - 期权课程
 tags:
   - Trading Account
   - Capital Management

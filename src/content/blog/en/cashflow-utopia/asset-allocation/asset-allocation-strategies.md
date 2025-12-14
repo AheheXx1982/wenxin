@@ -4,7 +4,7 @@ date: 2025-01-13
 description: 'Rational asset allocation and investment portfolio optimization strategies'
 lang: en
 categories:
-  - ['Cash Flow Utopia', 'Asset Allocation']
+  - ['现金流乌托邦', '资产配置']
 catalog: true
 tags:
   - Asset Allocation

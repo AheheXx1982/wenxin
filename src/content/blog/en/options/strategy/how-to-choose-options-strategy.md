@@ -4,7 +4,7 @@ date: 2025-01-15
 description: 'Guide to selecting appropriate options strategies based on market expectations and risk preferences'
 lang: en
 categories:
-  - ['Options Academy', 'Strategy Analysis']
+  - ['期权研究院', '策略分析']
 tags:
   - Options Strategy
   - Investment Decisions

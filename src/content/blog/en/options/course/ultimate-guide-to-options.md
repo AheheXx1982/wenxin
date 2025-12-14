@@ -3,8 +3,8 @@ title: "Options Trading Handbook: Stop Memorizing Formulas - This May Be the Onl
 description: "Options are hard? That's because they're not speaking human. This article uses the most intuitive 'insurance' and 'rental' logic to help you thoroughly understand Call, Put, and how to use them to build cash flow."
 date: 2025-12-11
 categories:
-  - - Options Institute
-    - Options Course
+  - - 期权研究院
+    - 期权课程
 tags:
   - Options Basics
   - Tutorial

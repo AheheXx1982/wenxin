@@ -4,7 +4,7 @@ date: 2025-01-11
 description: 'Build stable cash flow through global high-dividend stock investments'
 lang: en
 categories:
-  - ['Cash Flow Utopia', 'Global High-Yield Stock Rotation']
+  - ['现金流乌托邦', '全球高息股轮动']
 catalog: true
 tags:
   - Dividend Investment
