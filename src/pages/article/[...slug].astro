@@ -11,6 +11,7 @@ import { parseDate } from '@lib/datetime';
 import { Icon } from 'astro-icon/components';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 import { getLanguageFromAstroUrl } from '@lib/i18n';
+import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
 
 export async function getStaticPaths() {
   const postCollections = await getSortedPosts('zh', true);
@@ -93,6 +94,9 @@ const currentLang = lang || getLanguageFromAstroUrl(Astro.url);
 const categoryArr = getCategoryArr(categories?.[0]);
 const categoryStr = categoryArr?.length ? ` | ${categoryArr.join(' / ')}` : '';
 
+// Check if this article belongs to Options Institute (期权研究院)
+const isOptionsArticle = categoryArr?.length > 0 && categoryArr[0] === '期权研究院';
+
 // Generate breadcrumb data for categories
 const breadcrumbCategories = [];
 if (categoryArr?.length) {
@@ -148,6 +152,7 @@ if (categoryArr?.length) {
       <article
         class="prose md:prose-sm dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl"
       >
+        {isOptionsArticle && <OptionsBrandBanner lang={currentLang} />}
         <CustomContent Content={Content} />
       </article>
     </div>

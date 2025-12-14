@@ -13,11 +13,7 @@ lang: en
 catalog: true
 ---
 
-import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
-
 ![Deconstructing Options](/img/options/course/ultimate-guide-cover.webp)
-
-<OptionsBrandBanner lang="en" />
 
 ## Forget the Textbooks, Let's Talk Business
 

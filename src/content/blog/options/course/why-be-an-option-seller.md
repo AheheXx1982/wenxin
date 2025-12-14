@@ -12,11 +12,7 @@ lang: zh
 catalog: true
 ---
 
-import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
-
 ![赌徒与庄家的对比](/img/options/course/Gambler-vs-House.webp)
-
-<OptionsBrandBanner lang="zh" />
 
 ## 为什么你的账户总是拿不住利润?
 

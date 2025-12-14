@@ -14,11 +14,7 @@ tags:
 catalog: true
 ---
 
-import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
-
 ![备兑看涨策略](/img/options/strategy/2.webp)
-
-<OptionsBrandBanner lang="zh" />
 
 ## 策略概述
 

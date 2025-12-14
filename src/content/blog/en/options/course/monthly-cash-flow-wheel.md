@@ -14,11 +14,7 @@ lang: en
 catalog: true
 ---
 
-import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
-
 ![Money Printer Concept](/img/options/course/monthly-cash-flow-wheel.webp)
-
-<OptionsBrandBanner lang="en" />
 
 ## Say Goodbye to "Roller Coaster", Embrace "Money Printer"
 

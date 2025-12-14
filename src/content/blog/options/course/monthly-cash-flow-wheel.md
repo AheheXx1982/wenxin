@@ -13,11 +13,7 @@ lang: zh
 catalog: true
 ---
 
-import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
-
 ![印钞机概念图](/img/options/course/monthly-cash-flow-wheel.webp)
-
-<OptionsBrandBanner lang="zh" />
 
 ## 告别"过山车",拥抱"印钞机"
 

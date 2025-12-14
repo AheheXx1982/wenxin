@@ -14,11 +14,7 @@ tags:
   - Investment Strategy
 ---
 
-import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
-
 ![Covered Call Strategy](/img/options/strategy/1.webp)
-
-<OptionsBrandBanner lang="en" />
 
 ## Introduction to Covered Call Strategy
 

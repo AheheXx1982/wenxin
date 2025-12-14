@@ -13,11 +13,7 @@ tags:
 catalog: true
 ---
 
-import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
-
 ![牛市价差策略](/img/options/strategy/1.webp)
-
-<OptionsBrandBanner lang="zh" />
 
 ## 策略概述
 

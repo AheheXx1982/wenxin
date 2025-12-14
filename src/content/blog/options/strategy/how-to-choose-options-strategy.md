@@ -12,11 +12,7 @@ tags:
 catalog: true
 ---
 
-import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
-
 ![期权策略选择](/img/options/strategy/3.webp)
-
-<OptionsBrandBanner lang="zh" />
 
 ## 引言
 

@@ -13,11 +13,7 @@ lang: en
 catalog: true
 ---
 
-import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
-
 ![Gambler vs House Comparison](/img/options/course/Gambler-vs-House.webp)
-
-<OptionsBrandBanner lang="en" />
 
 ## Why Can't Your Account Hold Onto Profits?
 

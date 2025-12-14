@@ -5,10 +5,11 @@ import CustomContent from '@components/common/CustomContent.astro';
 import { HomeSiderType } from '@constants/enum';
 import Layout from '@layouts/Layout.astro';
 import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
-import { getSortedPosts } from '@lib/content';
+import { getSortedPosts, getCategoryArr } from '@lib/content';
 import { getSiteConfig } from '@lib/i18n';
 import { Icon } from 'astro-icon/components';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
+import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
 
 export async function getStaticPaths() {
   const posts = await getSortedPosts('en', true);
@@ -25,8 +26,12 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
-const { title, description } = post.data;
+const { title, description, categories = [] } = post.data;
 const siteConfig = getSiteConfig('en');
+
+// Check if this article belongs to Options Institute (期权研究院)
+const categoryArr = getCategoryArr(categories?.[0]);
+const isOptionsArticle = categoryArr?.length > 0 && categoryArr[0] === '期权研究院';
 ---
 
 <Layout title={`${title} | ${siteConfig.title}`} description={description} siderType={HomeSiderType.POST}>
@@ -46,6 +51,7 @@ const siteConfig = getSiteConfig('en');
       <article
         class="prose md:prose-sm dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl"
       >
+        {isOptionsArticle && <OptionsBrandBanner lang="en" />}
         <CustomContent Content={Content} />
       </article>
     </div>

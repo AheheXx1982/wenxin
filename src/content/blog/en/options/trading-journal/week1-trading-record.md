@@ -14,11 +14,7 @@ tags:
   - Strategy Analysis
 ---
 
-import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
-
 ![Week 1 2025 Live Trading](/img/options/trading-journal/1.webp)
-
-<OptionsBrandBanner lang="en" />
 
 ## Trading Overview
 
