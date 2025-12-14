@@ -13,7 +13,7 @@ lang: en
 catalog: true
 ---
 
-![Trader's Arsenal](/img/options/course/awakening-04-cover.webp)
+![Trader's Arsenal](/img/options/course/Trader's Armory.webp)
 _> Image prompt: A futuristic armory room. A trader is selecting high-tech gadgets (representing tools/broker/capital) from a glowing wall. Cyberpunk vibes._
 
 ## Can You Enter Battle With Just a Gun?
