@@ -3,37 +3,43 @@ import type { CoverImageMap } from '../types/cover';
 
 // 定义分类到图片目录的映射
 const categoryImageMap: CoverImageMap = {
-  'options/course': 'options/course',
   'options/strategy': 'options/strategy',
   'options/trading-journal': 'options/trading-journal',
-  'options/option-selling': 'options/option-selling', // 期权卖方策略现在在options目录下
-  'crypto/grid': 'crypto/grid',
-  'crypto/futures': 'crypto/futures',
-  'crypto/crypto-wiki': 'crypto/crypto-wiki',
+  'options/option-selling': 'options/option-selling',
   'cashflow-utopia/drip': 'cashflow-utopia/drip',
   'cashflow-utopia/asset-allocation': 'cashflow-utopia/asset-allocation',
-  'cashflow-utopia/option-selling': 'options/option-selling', // 添加现金流乌托邦/期权卖方策略的映射
+  'cashflow-utopia/option-selling': 'options/option-selling',
 
-  // 添加一级分类映射
+  // 一级分类映射
   'cashflow-utopia': 'cashflow-utopia',
+  'options-basics': 'options-basics',
+  'strategies': 'strategies',
+  'cashflow-system': 'cashflow-system',
+  'tools': 'tools',
   options: 'options',
-  crypto: 'crypto',
-  // 添加单级分类映射
+  
+  // 单级分类映射
   strategy: 'options/strategy',
   'asset-allocation': 'cashflow-utopia/asset-allocation',
-  'option-selling': 'options/option-selling', // 期权卖方策略现在在options目录下
-  期权卖方策略: 'options/option-selling', // 添加期权卖方策略的直接映射
+  'option-selling': 'options/option-selling',
+  期权卖方策略: 'options/option-selling',
   drip: 'cashflow-utopia/drip',
-  futures: 'crypto/futures',
-  'crypto-wiki': 'crypto/crypto-wiki',
-  grid: 'crypto/grid',
-  网格策略: 'crypto/grid', // 添加网格策略的直接映射
-  course: 'options/course',
   'trading-journal': 'options/trading-journal',
-  实盘分享: 'options/trading-journal', // 添加实盘分享的直接映射
-  // 添加合约交易分类映射
-  合约交易: 'crypto/futures',
-  // 可以根据需要添加更多分类映射
+  实盘分享: 'options/trading-journal',
+  
+  // 子分类映射
+  'mindset': 'options-basics',
+  'metrics': 'options-basics',
+  'pitfalls': 'options-basics',
+  'seller-strategies': 'strategies',
+  'hedging-strategies': 'strategies',
+  'trade-review': 'strategies',
+  'philosophy': 'cashflow-system',
+  'tactics': 'cashflow-system',
+  'rotation': 'cashflow-system',
+  'platforms': 'tools',
+  'screeners': 'tools',
+  'templates': 'tools',
 };
 
 // 根据分类路径获取该分类下的图片列表，按照新的优先级顺序：子目录 -> articles目录（仅无分类文章）
@@ -43,21 +49,29 @@ export function getDefaultCoversForPath(path: string): string[] {
 
   // 特殊处理：将中文分类名转换为英文路径
   const pathMapping: Record<string, string> = {
-    加密实验室: 'crypto',
-    加密百科: 'crypto-wiki',
     现金流乌托邦: 'cashflow-utopia',
     全球高息股轮动: 'drip',
     期权卖方策略: 'option-selling',
     资产配置: 'asset-allocation',
-    合约交易: 'futures',
     策略分析: 'strategy',
-    期权课程: 'course',
-    交易日志: 'trading-journal',
-    网格交易: 'grid',
-    网格策略: 'grid', // 添加网格策略映射
-    实盘分享: 'trading-journal', // 添加实盘分享映射
+    期权基础认知: 'mindset',
+    期权核心参数: 'metrics',
+    新手避坑与认知升级: 'pitfalls',
+    实盘分享: 'trading-journal',
     // 添加缺失的一级分类映射
-    期权研究院: 'options',
+    期权入门与基础: 'options-basics',
+    期权策略与实战: 'strategies',
+    卖方核心策略: 'seller-strategies',
+    买方与对冲策略: 'hedging-strategies',
+    实盘拆解与复盘: 'trade-review',
+    稳定现金流系统: 'cashflow-system',
+    现金流底层逻辑: 'philosophy',
+    核心现金流策略: 'tactics',
+    组合构建与轮动: 'rotation',
+    期权工具箱: 'tools',
+    交易平台与模拟器: 'platforms',
+    行情筛选与数据: 'screeners',
+    模板与效率清单: 'templates',
   };
 
   // 如果路径包含中文分类名，进行转换
@@ -66,18 +80,8 @@ export function getDefaultCoversForPath(path: string): string[] {
     mappedPath = mappedPath.replace(chinese, pathMapping[chinese]);
   });
 
-  // 特殊处理：如果分类是数组格式 ['加密实验室', '合约交易']，提取具体的子分类
-  if (mappedPath.includes('加密实验室') && mappedPath.includes('合约交易')) {
-    mappedPath = '合约交易';
-  }
-
-  // 特殊处理：如果分类是数组格式 ['加密实验室', '网格策略']，提取具体的子分类
-  if (mappedPath.includes('加密实验室') && mappedPath.includes('网格策略')) {
-    mappedPath = '网格策略';
-  }
-
-  // 特殊处理：如果分类是数组格式 ['期权研究院', '实盘分享']，提取具体的子分类
-  if (mappedPath.includes('期权研究院') && mappedPath.includes('实盘分享')) {
+  // 特殊处理：如果分类是数组格式 ['期权入门与基础', '实盘分享']，提取具体的子分类
+  if (mappedPath.includes('期权入门与基础') && mappedPath.includes('实盘分享')) {
     mappedPath = '实盘分享';
   }
 
@@ -110,21 +114,29 @@ export function getFeaturedCoversForPath(path: string): string[] {
 
   // 特殊处理：将中文分类名转换为英文路径
   const pathMapping: Record<string, string> = {
-    加密实验室: 'crypto',
-    加密百科: 'crypto-wiki',
     现金流乌托邦: 'cashflow-utopia',
     全球高息股轮动: 'drip',
     期权卖方策略: 'option-selling',
     资产配置: 'asset-allocation',
-    合约交易: 'futures',
     策略分析: 'strategy',
-    期权课程: 'course',
-    交易日志: 'trading-journal',
-    网格交易: 'grid',
-    网格策略: 'grid', // 添加网格策略映射
+    期权基础认知: 'mindset',
+    期权核心参数: 'metrics',
+    新手避坑与认知升级: 'pitfalls',
     实盘分享: 'trading-journal', // 添加实盘分享映射
     // 添加缺失的一级分类映射
-    期权研究院: 'options',
+    期权入门与基础: 'options-basics',
+    期权策略与实战: 'strategies',
+    卖方核心策略: 'seller-strategies',
+    买方与对冲策略: 'hedging-strategies',
+    实盘拆解与复盘: 'trade-review',
+    稳定现金流系统: 'cashflow-system',
+    现金流底层逻辑: 'philosophy',
+    核心现金流策略: 'tactics',
+    组合构建与轮动: 'rotation',
+    期权工具箱: 'tools',
+    交易平台与模拟器: 'platforms',
+    行情筛选与数据: 'screeners',
+    模板与效率清单: 'templates',
   };
 
   // 如果路径包含中文分类名，进行转换
@@ -133,18 +145,8 @@ export function getFeaturedCoversForPath(path: string): string[] {
     mappedPath = mappedPath.replace(chinese, pathMapping[chinese]);
   });
 
-  // 特殊处理：如果分类是数组格式 ['加密实验室', '合约交易']，提取具体的子分类
-  if (mappedPath.includes('加密实验室') && mappedPath.includes('合约交易')) {
-    mappedPath = '合约交易';
-  }
-
-  // 特殊处理：如果分类是数组格式 ['加密实验室', '网格策略']，提取具体的子分类
-  if (mappedPath.includes('加密实验室') && mappedPath.includes('网格策略')) {
-    mappedPath = '网格策略';
-  }
-
-  // 特殊处理：如果分类是数组格式 ['期权研究院', '实盘分享']，提取具体的子分类
-  if (mappedPath.includes('期权研究院') && mappedPath.includes('实盘分享')) {
+  // 特殊处理：如果分类是数组格式 ['期权入门与基础', '实盘分享']，提取具体的子分类
+  if (mappedPath.includes('期权入门与基础') && mappedPath.includes('实盘分享')) {
     mappedPath = '实盘分享';
   }
 
@@ -193,7 +195,7 @@ export function getFeaturedCoversForPath(path: string): string[] {
 // 根据目录名称获取该目录下的图片列表
 function getImagesForDirectory(dir: string): string[] {
   switch (dir) {
-    case 'options/course':
+    case 'Option-Basics/course':
       return [
         '/img/options/course/1.webp',
         '/img/options/course/2.webp',
@@ -225,51 +227,6 @@ function getImagesForDirectory(dir: string): string[] {
         '/img/options/trading-journal/5.webp',
         '/img/options/trading-journal/6.webp',
         '/img/options/trading-journal/7.webp',
-      ];
-    case 'crypto/grid':
-      return [
-        '/img/crypto/grid/1.webp',
-        '/img/crypto/grid/2.webp',
-        '/img/crypto/grid/3.webp',
-        '/img/crypto/grid/4.webp',
-        '/img/crypto/grid/5.webp',
-        '/img/crypto/grid/6.webp',
-        '/img/crypto/grid/7.webp',
-        '/img/crypto/grid/8.webp',
-        '/img/crypto/grid/9.webp',
-      ];
-    case 'crypto/futures':
-      return [
-        '/img/crypto/futures/1.webp',
-        '/img/crypto/futures/2.webp',
-        '/img/crypto/futures/3.webp',
-        '/img/crypto/futures/4.webp',
-        '/img/crypto/futures/5.webp',
-        '/img/crypto/futures/6.webp',
-        '/img/crypto/futures/7.webp',
-        '/img/crypto/futures/8.webp',
-      ];
-    case 'crypto/crypto-wiki':
-      return [
-        '/img/crypto/crypto-wiki/1.webp',
-        '/img/crypto/crypto-wiki/2.webp',
-        '/img/crypto/crypto-wiki/3.webp',
-        '/img/crypto/crypto-wiki/4.webp',
-        '/img/crypto/crypto-wiki/5.webp',
-        '/img/crypto/crypto-wiki/6.webp',
-        '/img/crypto/crypto-wiki/7.webp',
-        '/img/crypto/crypto-wiki/8.webp',
-      ];
-
-    case 'crypto':
-      return [
-        '/img/crypto/1.webp',
-        '/img/crypto/2.webp',
-        '/img/crypto/3.webp',
-        '/img/crypto/4.webp',
-        '/img/crypto/5.webp',
-        '/img/crypto/6.webp',
-        '/img/crypto/7.webp',
       ];
     case 'options/option-selling':
       return [
@@ -313,6 +270,31 @@ function getImagesForDirectory(dir: string): string[] {
       ];
     case 'options':
       return ['/img/options/1.webp', '/img/options/2.webp', '/img/options/3.webp'];
+    case 'options-basics':
+      return [
+        '/img/options-basics/1.webp',
+        '/img/options-basics/2.webp',
+        '/img/options-basics/3.webp',
+      ];
+    case 'strategies':
+      return [
+        '/img/strategies/1.webp',
+        '/img/strategies/2.webp',
+        '/img/strategies/3.webp',
+      ];
+    case 'cashflow-system':
+      return [
+        '/img/cashflow-system/1.webp',
+        '/img/cashflow-system/2.webp',
+        '/img/cashflow-system/3.webp',
+        '/img/cashflow-system/4.webp',
+      ];
+    case 'tools':
+      return [
+        '/img/tools/1.webp',
+        '/img/tools/2.webp',
+        '/img/tools/3.webp',
+      ];
     case 'stock':
     default:
       // 如果找不到特定目录的图片，返回空数组

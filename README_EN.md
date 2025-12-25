@@ -79,7 +79,6 @@ SilentXx/
 - Node.js >= 18.x
 - pnpm >= 10.x
 - Git
-- Docker (Optional, for containerized development)
 
 ---
 
@@ -114,26 +113,6 @@ pnpm build
 # 5. Preview build
 pnpm preview
 ```
-
----
-
-## 🐳 Docker Development Environment
-
-The project has integrated Docker development environment. You can choose to use Docker for development:
-
-```bash
-# Start development environment using Docker Compose
-docker-compose up
-
-# Access the application: http://localhost:5173/
-```
-
-Docker environment features:
-
-- Automatic hot reload
-- File synchronization
-- Consistent development environment
-- No local Node.js environment required
 
 ---
 
@@ -194,9 +173,18 @@ These features help search engines better index your website content and provide
 
 ## 📈 Changelog
 
-🎯 Latest: v0.2.8 (2025-01-XX)
+🎯 Latest: v0.5.0 (2025-12-26)
 
 ✨ **Version Update**
+
+✅ **v0.5.0** - System Cleanup and Optimization Major Version
+
+- ✅ **Content Cleanup**: Completely removed cryptocurrency-related content, focus on US stock options trading
+- ✅ **Docker Cleanup**: Removed Docker environment configuration, simplified development environment to Node.js+pnpm
+- ✅ **Documentation Update**: Updated all technical documentation and configuration guides
+- ✅ **Category System**: Improved options-related four major category system
+- ✅ **Brand Consistency**: Unified brand identity as SilentXx｜寂静猎手
+- ✅ **System Robustness**: 183 pages successfully built, no errors or warnings
 
 ✅ **v0.28.1** - FloatingColorBalls component audio file 404 errors fixed
 

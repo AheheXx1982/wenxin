@@ -25,7 +25,11 @@ import { capitalize } from 'es-toolkit';
             data-tooltip-placement="top"
             aria-label={capitalize(key)}
           >
-            <Icon name={icon} class="inline-block size-6" />
+            {icon.startsWith('/') ? (
+              <img src={icon} alt={capitalize(key)} class="inline-block size-6" />
+            ) : (
+              <Icon name={icon} class="inline-block size-6" />
+            )}
             <span class="absolute inset-0 -z-10 -translate-x-full translate-y-full rounded-xl transition-transform duration-300 group-hover:translate-x-0 group-hover:translate-y-0" />
           </a>
         </div>

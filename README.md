@@ -88,7 +88,6 @@ SilentXx/
 - Node.js >= 18.x
 - pnpm >= 10.x
 - Git
-- Docker (可选，用于容器化开发) / Docker (Optional, for containerized development)
 
 ---
 
@@ -138,26 +137,6 @@ pnpm build
 # 5. 预览构建结果 / Preview build
 pnpm preview
 ```
-
----
-
-## 🐳 Docker 开发环境 / Docker Development Environment
-
-项目已集成 Docker 开发环境，您可以选择使用 Docker 进行开发：
-
-```bash
-# 使用 Docker Compose 启动开发环境
-docker-compose up
-
-# 访问应用: http://localhost:5173/
-```
-
-Docker 环境特点：
-
-- 自动热重载 / Automatic hot reload
-- 文件同步 / File synchronization
-- 一致的开发环境 / Consistent development environment
-- 无需本地 Node.js 环境 / No local Node.js environment required
 
 ---
 
@@ -213,9 +192,18 @@ tags: ['标签 1 / Tag1', '标签 2 / Tag2']
 
 ## 📈 更新日志 / Changelog
 
-🎯 最新版本 / Latest: v0.2.8 (2025-01-XX)
+🎯 最新版本 / Latest: v0.5.0 (2025-12-26)
 
 ✨ **版本更新** / **Version Update**
+
+✅ **v0.5.0** - 系统清理与优化大版本 / System Cleanup and Optimization Major Version
+
+- ✅ **内容清理**: 彻底移除加密货币相关内容，聚焦美股期权交易 / Completely removed cryptocurrency-related content, focus on US stock options trading
+- ✅ **Docker清理**: 移除Docker环境配置，简化开发环境为Node.js+pnpm / Removed Docker environment, simplified to Node.js+pnpm
+- ✅ **文档更新**: 更新所有技术文档和配置说明 / Updated all technical documentation and configuration guides
+- ✅ **分类体系**: 完善期权相关四大分类体系 / Improved options-related four major category system
+- ✅ **品牌一致**: 统一品牌标识为SilentXx｜寂静猎手 / Unified brand identity as SilentXx｜寂静猎手
+- ✅ **系统健壮**: 183个页面成功构建，无错误无警告 / 183 pages successfully built, no errors or warnings
 
 ✅ **v0.28.1** - 彩色球组件音频文件 404 错误修复 / FloatingColorBalls component audio file 404 errors fixed
 

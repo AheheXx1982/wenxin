@@ -95,8 +95,8 @@ const currentLang = lang || getLanguageFromAstroUrl(Astro.url);
 const categoryArr = getCategoryArr(categories?.[0]);
 const categoryStr = categoryArr?.length ? ` | ${categoryArr.join(' / ')}` : '';
 
-// Check if this article belongs to Options Institute (期权研究院)
-const isOptionsArticle = categoryArr?.length > 0 && categoryArr[0] === '期权研究院';
+// Check if this article belongs to Options Basics (期权入门与基础)
+const isOptionsArticle = categoryArr?.length > 0 && categoryArr[0] === '期权入门与基础';
 
 // Get all posts for series navigation
 const allPosts = await getSortedPosts(currentLang as 'zh' | 'en', true);
@@ -106,7 +106,7 @@ let prevPost = null;
 let nextPost = null;
 
 if (categoryArr && categoryArr.length >= 2) {
-  // Get the second level category (e.g., '期权课程')
+  // Get the second level category (e.g., '为什么要学习期权')
   const seriesCategory = categoryArr[1];
 
   // Filter posts with the same series category

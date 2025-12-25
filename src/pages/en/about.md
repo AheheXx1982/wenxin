@@ -17,13 +17,13 @@ description: 'SilentXx｜寂静猎手'
 
 <div class="pl-4">
 
-> **Focus on Options · Crypto · Stable Cash Flow System Building**
+> **Focus on Options · Stable Cash Flow System Building**
 
 </div>
 
 <div class="mt-4">
 Adhering to the investment philosophy of <span class="font-bold text-purple-600 dark:text-purple-400">"System Thinking + Low-Risk Strategy"</span>,
-dedicated to deep cultivation in US stock options and digital currency trading.
+dedicated to deep cultivation in US stock options trading.
 Through blogs, courses, tools and community,
 we create replicable strategy frameworks for ordinary investors,
 helping you get rid of emotional trading, establish a solid discipline system,
@@ -58,11 +58,8 @@ and move towards true trading freedom.
 - **Options Knowledge System**  
   Create practical, systematic options learning paths to make complexity simple.
 
-- **US Stock + Crypto Rotation Arbitrage**  
-  Combine advantages of dual markets to explore stable arbitrage and cash flow opportunities.
-
 - **Live Strategy Sharing**  
-  Including Covered Call, Cash-Secured Put, Grid Trading, etc. Practice is king.
+  Including Covered Call, Cash-Secured Put, etc. Practice is king.
 
 </div>
 
@@ -98,7 +95,7 @@ and move towards true trading freedom.
 </div>
 <div>
 <h4 class="font-bold text-gray-800 dark:text-white">Education System</h4>
-<p class="text-gray-600 dark:text-gray-400 text-sm">Establish complete options and cryptocurrency education courses</p>
+<p class="text-gray-600 dark:text-gray-400 text-sm">Establish complete options education courses</p>
 </div>
 </div>
 
@@ -149,9 +146,6 @@ and move towards true trading freedom.
 
 - **SilentXx｜Silent Hunter - Main Site**  
   [SilentXx.com](https://www.silentxx.com)
-
-- **Crypto Wiki**  
-  <a href="https://crypto.silentxx.com" target="_blank" rel="noopener noreferrer">crypto.silentxx.com</a>
 
 ### 🌐 Social Media
 

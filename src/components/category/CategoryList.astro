@@ -17,6 +17,7 @@ interface CategoryLink {
   category: Category;
   originalName: string;
   link: string;
+  totalCount: number;
 }
 
 const { categories, countMap, totalCount, lang } = Astro.props;
@@ -43,13 +44,39 @@ const translateCategoryName = (categoryName: string): string => {
   return categoryName;
 };
 
+// 计算一级分类的文章总数（累加所有子分类的数量）
+const getCategoryTotalCount = (category: Category): number => {
+  if (!category.children || category.children.length === 0) {
+    // 如果没有子分类，直接返回该分类的数量
+    return countMap[category.name] || 0;
+  }
+  // 如果有子分类，累加所有子分类的数量
+  return category.children.reduce((total, child) => {
+    return total + (countMap[child.name] || 0);
+  }, 0);
+};
+
 const categoryLinks: CategoryLink[] = categories.map((category: Category) => {
   const links = getCategoryLinks([category]);
   const translatedName = translateCategoryName(category.name);
+  
+  // 优先使用 getCategoryLinks，其次是 categoryMap，最后使用安全的英文默认值
+  let link = '';
+  if (links.length > 0) {
+    link = links[0];
+  } else if (categoryMap[category.name]) {
+    link = categoryMap[category.name];
+  } else {
+    // 如果都没找到，移除中文字符并生成安全的英文占位符
+    console.warn(`[CategoryList] No mapping found for: "${category.name}"`);
+    link = 'category-' + Math.random().toString(36).substr(2, 9);
+  }
+  
   return {
     category: { ...category, name: translatedName },
     originalName: category.name, // 保存原始分类名称用于SubCategory
-    link: links.length > 0 ? links[0] : categoryMap[category.name] || category.name,
+    link,
+    totalCount: getCategoryTotalCount(category), // 计算总数量
   };
 });
 ---
@@ -70,11 +97,11 @@ const categoryLinks: CategoryLink[] = categories.map((category: Category) => {
 
   <div class="flex w-full flex-col">
     {
-      categoryLinks.map(({ category, originalName, link }: CategoryLink) => (
+      categoryLinks.map(({ category, originalName, link, totalCount }: CategoryLink) => (
         <>
           <CategoryTitle
             title={category.name}
-            count={undefined}
+            count={totalCount}
             href={`${categoryLinkPrefix}${link ? '/' + link : ''}`}
             className={category?.children?.length ? 'has-children' : ''}
           />

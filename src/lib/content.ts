@@ -571,8 +571,11 @@ export async function getCategoryLink(categories: string[]): Promise<string> {
         if (mapped) {
           linkParts.push(mapped);
         } else {
-          // 如果没有映射，则使用类别名称的小写形式并替换空格为连字符
-          linkParts.push(category.toLowerCase().replace(/\s+/g, '-'));
+          // 如果没有映射，记录警告并使用安全的英文占位符
+          console.warn(`[getCategoryLink] No mapping found for: "${category}"`);
+          // 移除中文字符，只保留英文、数字和连字符
+          const safeName = category.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase() || 'category';
+          linkParts.push(safeName);
         }
       }
     }

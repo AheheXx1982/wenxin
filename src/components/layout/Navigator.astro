@@ -24,9 +24,7 @@ const uiText = getUIText(currentLang);
           const path = item.href;
           const { name } = item;
           
-          // 加密百科特殊处理:新窗口打开
-          const isCryptoWiki = name === '加密百科' || name === 'Crypto Wiki';
-          const isExternal = path.startsWith('http');
+          const isExternal = path?.startsWith('http');
 
           // 外部链接直接使用 a 标签,不用 ButtonLink
           if (isExternal) {

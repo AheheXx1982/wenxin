@@ -53,11 +53,7 @@ const parentLink = getCategorySlug(parentName);
 const childLink = getCategorySlug(category.name);
 const categoryLink = `${parentLink}/${childLink}`;
 
-// 加密百科特殊处理:直接链接到外部网站(中英文)
-const isCryptoWiki = category.name === '加密百科' || category.name === 'Crypto Wiki';
-const categoryHref = isCryptoWiki ? 'https://crypto.silentxx.com/' : `${categoryLinkPrefix}/${categoryLink}`;
-const categoryTarget = isCryptoWiki ? '_blank' : '_self';
-const showLinkIcon = isCryptoWiki; // 加密百科显示链接图标而不是数字
+const categoryHref = `${categoryLinkPrefix}/${categoryLink}`;
 const grandChildLinks = await Promise.all(
   (category.children || []).map(async (grandChild) => {
     const parentLink = getCategorySlug(parentName);
@@ -77,8 +73,6 @@ const grandChildLinks = await Promise.all(
   title={translatedCategoryName}
   count={countMap[category.name] ?? 0}
   href={categoryHref}
-  target={categoryTarget}
-  showLinkIcon={showLinkIcon}
   level="h3"
 />
 {

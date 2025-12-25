@@ -71,14 +71,20 @@ src/pages/
 src/content/blog/
 ├── (中文文章)/
 │   ├── cashflow-utopia/          # 现金流乌托邦分类
-│   ├── crypto/                   # 加密实验室分类
 │   ├── new-world-explore/        # 新世界探索分类
-│   └── options/                  # 期权研究院分类
+│   ├── options/                  # 期权相关分类（旧结构）
+│   ├── options-basics/           # 期权入门与基础分类
+│   ├── strategies/               # 策略与实战分类
+│   ├── cashflow-system/          # 现金流系统分类
+│   └── tools/                    # 期权工具箱分类
 └── en/                           # 英文文章
     ├── cashflow-utopia/
-    ├── crypto/
     ├── new-world-explore/
     ├── options/
+    ├── options-basics/
+    ├── strategies/
+    ├── cashflow-system/
+    ├── tools/
     └── (独立英文文章)/
 ```
 
@@ -137,9 +143,11 @@ src/content/blog/
 #### 6.2 分类名称翻译
 
 - 现金流乌托邦 ↔ Cash Flow Utopia
-- 加密实验室 ↔ Crypto Lab
 - 新世界探索 ↔ New World Exploration
-- 期权研究院 ↔ Options Academy
+- 期权入门与基础 ↔ Options Basics
+- 策略与实战 ↔ Strategies & Practice
+- 现金流系统 ↔ Cash Flow System
+- 期权工具箱 ↔ Options Toolbox
 
 ## 实现特色功能
 
@@ -303,6 +311,6 @@ src/content/blog/
 
 ---
 
-**最后更新**: 2025-01-16
-**版本**: 0.21 (多语言完整支持版本)
+**最后更新**: 2025-12-26
+**版本**: 0.5.0 (系统清理与优化大版本)
 **维护者**: SilentXx Team

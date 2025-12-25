@@ -17,13 +17,13 @@ description: 'SilentXx｜寂静猎手'
 
 <div class="pl-4">
 
-> **专注于期权 · 加密 · 稳定现金流系统构建**
+> **专注于期权 · 稳定现金流系统构建**
 
 </div>
 
 <div class="mt-4">
 坚守<span class="font-bold text-purple-600 dark:text-purple-400">"系统思维 + 低风险策略"</span>的投资理念，
-致力于深耕美股期权与数字货币交易。
+致力于深耕美股期权交易。
 通过博客、课程，工具和社区,
 为普通投资者打造可复制的策略框架，
 帮助你摆脱情绪化交易，建立坚实的纪律体系，
@@ -58,11 +58,8 @@ description: 'SilentXx｜寂静猎手'
 - **期权知识系统**  
   打造落地、系统化的期权学习路径，让复杂变简单。
 
-- **美股+加密轮动套利**  
-  融合双市场优势，开拓稳健的套利和现金流机会。
-
 - **实盘策略分享**  
-  包括 Covered Call（备兑看涨）、Cash-Secured Put（现金担保看跌）、网格交易等，实操为王。
+  包括 Covered Call（备兌看涨）、Cash-Secured Put（现金担保看跌）等，实操为王。
 
 </div>
 
@@ -98,7 +95,7 @@ description: 'SilentXx｜寂静猎手'
 </div>
 <div>
 <h4 class="font-bold text-gray-800 dark:text-white">教育体系</h4>
-<p class="text-gray-600 dark:text-gray-400 text-sm">建立完整的期权和加密货币教育课程</p>
+<p class="text-gray-600 dark:text-gray-400 text-sm">建立完整的期权教育课程</p>
 </div>
 </div>
 
@@ -149,9 +146,6 @@ description: 'SilentXx｜寂静猎手'
 
 - **SilentXx｜寂静猎手 - 主站**  
   [SilentXx.com](https://www.silentxx.com)
-
-- **加密百科**  
-  <a href="https://crypto.silentxx.com" target="_blank" rel="noopener noreferrer">crypto.silentxx.com</a>
 
 ### 🌐 社交媒体
 

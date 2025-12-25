@@ -71,7 +71,7 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
     </div>
   </div>
 
-  <p class="mt-2">{siteConfig?.name}</p>
+  <p class="mt-2">{siteConfig?.alternate}｜{siteConfig?.title}</p>
   <p class="text-muted-foreground mt-3">{i18nSiteConfig?.description}</p>
   <Social />
   <div
@@ -118,8 +118,6 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
           return null;
         }
         
-        // 加密百科特殊处理:新窗口打开
-        const isCryptoWiki = name === '加密百科' || name === 'Crypto Wiki';
         const isExternal = path?.startsWith('http');
 
         if (children?.length) {
@@ -156,7 +154,7 @@ const navLinks = i18nSiteConfig.navLinks && i18nSiteConfig.navLinks.length > 0 ?
           );
         }
         
-        // 对于外部链接(加密百科),使用普通 a 标签新窗口打开
+        // 对于外部链接,使用普通 a 标签新窗口打开
         if (isExternal) {
           return (
             <a

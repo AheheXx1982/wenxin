@@ -24,7 +24,7 @@ description: 'SilentXx｜寂静猎手 - 投资分享'
 <div class="mt-4">
 作为一个拥有十余年多市场投资经验的投资者，我经历过从爆仓小王子到收益率超500%的投资历程。投资路上，既有斩获也有挫折，最大的成绩，应该是摸爬滚打多年，终于寻得一条适合自己的投资道路。
 
-我始终坚持<span class="font-bold text-purple-600 dark:text-purple-400">"系统思维 + 低风险策略"</span>的投资理念，致力于深耕美股期权与数字货币交易。通过博客、课程、工具和实盘记录，为普通投资者打造可复制的策略框架，帮助你摆脱情绪化交易，建立坚实的纪律体系，走向真正的交易自由。
+我始终坚持<span class="font-bold text-purple-600 dark:text-purple-400">"系统思维 + 低风险策略"</span>的投资理念，致力于深耕美股期权交易。通过博客、课程、工具和实盘记录，为普通投资者打造可复制的策略框架，帮助你摆脱情绪化交易，建立坚实的纪律体系，走向真正的交易自由。
 
 </div>
 
@@ -53,16 +53,6 @@ description: 'SilentXx｜寂静猎手 - 投资分享'
 <span class="text-blue-700 dark:text-blue-300 font-bold">2</span>
 </div>
 <div>
-<h4 class="font-bold text-gray-800 dark:text-white">加密货币</h4>
-<p class="text-gray-600 dark:text-gray-400 text-sm">网格交易、合约交易等策略</p>
-</div>
-</div>
-
-<div class="flex items-start">
-<div class="bg-blue-100 dark:bg-blue-900/30 rounded-full p-2 mr-3">
-<span class="text-blue-700 dark:text-blue-300 font-bold">3</span>
-</div>
-<div>
 <h4 class="font-bold text-gray-800 dark:text-white">全球高息股轮动</h4>
 <p class="text-gray-600 dark:text-gray-400 text-sm">寻找全球市场高息股机会</p>
 </div>
@@ -70,7 +60,7 @@ description: 'SilentXx｜寂静猎手 - 投资分享'
 
 <div class="flex items-start">
 <div class="bg-blue-100 dark:bg-blue-900/30 rounded-full p-2 mr-3">
-<span class="text-blue-700 dark:text-blue-300 font-bold">4</span>
+<span class="text-blue-700 dark:text-blue-300 font-bold">3</span>
 </div>
 <div>
 <h4 class="font-bold text-gray-800 dark:text-white">资产配置</h4>
@@ -109,7 +99,7 @@ description: 'SilentXx｜寂静猎手 - 投资分享'
 <span class="text-cyan-700 dark:text-cyan-300 font-bold">1</span>
 </div>
 <div>
-<h4 class="font-bold text-gray-800 dark:text-white">期权课程</h4>
+<h4 class="font-bold text-gray-800 dark:text-white">为什么要学习期权</h4>
 <p class="text-gray-600 dark:text-gray-400 text-sm">系统化的期权学习路径</p>
 </div>
 </div>
@@ -127,16 +117,6 @@ description: 'SilentXx｜寂静猎手 - 投资分享'
 <div class="flex items-start">
 <div class="bg-cyan-100 dark:bg-cyan-900/30 rounded-full p-2 mr-3">
 <span class="text-cyan-700 dark:text-cyan-300 font-bold">3</span>
-</div>
-<div>
-<h4 class="font-bold text-gray-800 dark:text-white">加密百科</h4>
-<p class="text-gray-600 dark:text-gray-400 text-sm">加密货币基础知识</p>
-</div>
-</div>
-
-<div class="flex items-start">
-<div class="bg-cyan-100 dark:bg-cyan-900/30 rounded-full p-2 mr-3">
-<span class="text-cyan-700 dark:text-cyan-300 font-bold">4</span>
 </div>
 <div>
 <h4 class="font-bold text-gray-800 dark:text-white">投资心得</h4>

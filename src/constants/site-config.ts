@@ -35,6 +35,7 @@ type SocialConfig = {
   github?: SocialPlatform;
   google?: SocialPlatform;
   twitter?: SocialPlatform;
+  X?: SocialPlatform;
   zhihu?: SocialPlatform;
   music?: SocialPlatform;
   weibo?: SocialPlatform;
@@ -57,9 +58,9 @@ type SocialConfig = {
 export const siteConfig: SiteConfig = {
   title: '寂静猎手', // 网站名称
   alternate: 'SilentXx', // 网站名称
-  subtitle: '期权加密实战 · 理性现金流系统', // 副标题
+  subtitle: '美股期权实战与稳定现金流系统', // 副标题
   name: 'SilentXx',
-  description: '聚焦美股期权与加密货币交易，分享真实、低风险、可复制的现金流投资策略，带你走进理性与纪律构建的投资世界。', // 站点简介（一段话）
+  description: '聚焦美股期权交易，分享真实、低风险、可复制的现金流投资策略，带你走进理性与纪律构建的投资世界。', // 站点简介（一段话）
   avatar: '/img/SilentXx.webp', // 站点头像 logo.png or url
   showLogo: true, // 是否显示 logo 否则用 title
   author: 'SilentXx', // 作者名称
@@ -70,43 +71,18 @@ export const siteConfig: SiteConfig = {
   // 添加 navLinks 配置
   navLinks: [
     { name: '首页', href: '/' },
-    { name: '课程', href: '/categories/options/course' },
-    { name: '实盘', href: '/categories/options/trading-journal' },
-    { name: '新闻', href: '/categories/crypto-news' },
+    { name: '课程', href: '/categories/options-basics/course' },
+    { name: '实盘', href: '/categories/options-basics/trading-journal' },
     { name: '关于', href: '/about' },
     { name: '幻念集', href: '/illusionary-thoughts' },
   ],
 
   featuredCategories: [
     {
-      link: '/categories/options/course',
-      label: '期权课程',
-      image: '/img/options/1.webp',
-      description: '期权课程',
-    },
-    {
-      link: '/categories/options/trading-journal',
+      link: '/categories/options-basics/trading-journal',
       label: '实盘分享',
       image: '/img/options/2.webp',
       description: '实盘交易记录',
-    },
-    {
-      link: 'https://crypto.silentxx.com/',
-      label: '加密百科',
-      image: '/img/crypto/1.webp',
-      description: '加密货币百科全书',
-    },
-    {
-      link: '/categories/crypto/grid',
-      label: '网格策略',
-      image: '/img/crypto/grid/1.webp',
-      description: '网格策略',
-    },
-    {
-      link: '/categories/crypto/futures',
-      label: '合约交易',
-      image: '/img/crypto/7.webp',
-      description: '合约交易',
     },
     {
       link: '/categories/cashflow-utopia/option-selling',
@@ -126,35 +102,20 @@ export const siteConfig: SiteConfig = {
 // 社交媒体配置
 // https://icon-sets.iconify.design/ri/
 export const socialConfig: SocialConfig = {
-  github: {
-    url: 'https://github.com/ahehexx1982/SilentXx',
-    icon: 'ri:github-fill',
-    color: '#191717',
-  },
-  bilibili: {
-    url: 'https://www.gateweb.xyz/share/VLRAXQONUW',
-    icon: 'ri:btc-fill',
-    color: '#1e88e5',
+  X: {
+    url: 'https://x.com/AheheXx?s=09',
+    icon: 'ri:twitter-x-fill',
+    color: '#000000',
   },
   Tiger: {
     url: 'https://www.laohu8.com/personal/3565567621777483/',
-    icon: 'ri:stock-fill', // 使用股票线性图标
+    icon: '/Tiger.svg', // 使用本地SVG图标
     color: '#da708a',
   },
   music: {
     url: 'https://music.douyin.com/qishui/share/playlist?playlist_id=7310550250141696009',
     icon: 'ri:netease-cloud-music-line', // 使用通用音乐线性图标
     color: '#e60026',
-  },
-  twitter: {
-    url: 'https://x.com/AheheXx?s=09',
-    icon: 'ri:twitter-fill',
-    color: '#4b9ae4',
-  },
-  rss: {
-    url: '/rss.xml',
-    icon: 'ri:rss-line',
-    color: '#ff6600',
   },
   // #google: https://plus.google.com/yourname || google
   // # about: https://about.me/amehime || address-card || "#3b5998"
@@ -169,9 +130,9 @@ export const socialConfig: SocialConfig = {
 
 const { title, alternate, subtitle } = siteConfig;
 export const seoConfig = {
-  title: `${alternate ? alternate + '｜' : ''}${title}${subtitle ? ' - ' + subtitle : ''}`,
-  description: '聚焦美股期权与加密货币交易，分享真实、低风险、可复制的现金流投资策略，带你走进理性与纪律构建的投资世界。',
-  keywords: 'SilentXx, 寂静猎手, 期权交易, 加密货币, 现金流投资, 美股期权, 投资策略, 金融博客',
+  title: `${alternate ? alternate + '｜' : ''}${title}${subtitle ? ' · ' + subtitle : ''}`,
+  description: '聚焦美股期权交易，分享真实、低风险、可复制的现金流投资策略，带你走进理性与纪律构建的投资世界。',
+  keywords: 'SilentXx, 寂静猎手, 期权交易, 现金流投资, 美股期权, 投资策略, 金融博客',
   url: 'https://www.silentxx.com/',
 };
 
