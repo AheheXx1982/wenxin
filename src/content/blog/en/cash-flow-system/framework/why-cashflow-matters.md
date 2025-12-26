@@ -4,7 +4,7 @@ description: "Stock doubled but afraid to spend? Million on paper but still anxi
 date: 2025-12-25
 categories:
   - - 稳定现金流系统
-    - 现金流底层逻辑
+    - 现金流系统构建
 tags:
   - Cash Flow Mindset
   - Wealth Philosophy

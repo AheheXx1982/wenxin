@@ -3,40 +3,26 @@ import type { CoverImageMap } from '../types/cover';
 
 // 定义分类到图片目录的映射
 const categoryImageMap: CoverImageMap = {
-  'options/strategy': 'options/strategy',
-  'options/trading-journal': 'options/trading-journal',
-  'options/option-selling': 'options/option-selling',
-  'cashflow-utopia/drip': 'cashflow-utopia/drip',
-  'cashflow-utopia/asset-allocation': 'cashflow-utopia/asset-allocation',
-  'cashflow-utopia/option-selling': 'options/option-selling',
-
   // 一级分类映射
-  'cashflow-utopia': 'cashflow-utopia',
   'options-basics': 'options-basics',
   'strategies': 'strategies',
   'cashflow-system': 'cashflow-system',
   'tools': 'tools',
   options: 'options',
   
-  // 单级分类映射
-  strategy: 'options/strategy',
-  'asset-allocation': 'cashflow-utopia/asset-allocation',
-  'option-selling': 'options/option-selling',
-  期权卖方策略: 'options/option-selling',
-  drip: 'cashflow-utopia/drip',
-  'trading-journal': 'options/trading-journal',
-  实盘分享: 'options/trading-journal',
-  
   // 子分类映射
   'mindset': 'options-basics',
   'metrics': 'options-basics',
   'pitfalls': 'options-basics',
-  'seller-strategies': 'strategies',
-  'hedging-strategies': 'strategies',
+  'selling': 'strategies',
+  'hedging': 'strategies',
   'trade-review': 'strategies',
   'philosophy': 'cashflow-system',
   'tactics': 'cashflow-system',
   'rotation': 'cashflow-system',
+  'framework': 'cashflow-system',
+  'allocation': 'cashflow-system',
+  'risk-control': 'cashflow-system',
   'platforms': 'tools',
   'screeners': 'tools',
   'templates': 'tools',
@@ -49,25 +35,19 @@ export function getDefaultCoversForPath(path: string): string[] {
 
   // 特殊处理：将中文分类名转换为英文路径
   const pathMapping: Record<string, string> = {
-    现金流乌托邦: 'cashflow-utopia',
-    全球高息股轮动: 'drip',
-    期权卖方策略: 'option-selling',
-    资产配置: 'asset-allocation',
-    策略分析: 'strategy',
     期权基础认知: 'mindset',
     期权核心参数: 'metrics',
     新手避坑与认知升级: 'pitfalls',
-    实盘分享: 'trading-journal',
     // 添加缺失的一级分类映射
     期权入门与基础: 'options-basics',
     期权策略与实战: 'strategies',
-    卖方核心策略: 'seller-strategies',
-    买方与对冲策略: 'hedging-strategies',
+    卖方核心策略: 'selling',
+    买方与对冲策略: 'hedging',
     实盘拆解与复盘: 'trade-review',
     稳定现金流系统: 'cashflow-system',
-    现金流底层逻辑: 'philosophy',
-    核心现金流策略: 'tactics',
-    组合构建与轮动: 'rotation',
+    现金流系统构建: 'framework',
+    策略组合与轮动: 'allocation',
+    风险管理与回撤控制: 'risk-control',
     期权工具箱: 'tools',
     交易平台与模拟器: 'platforms',
     行情筛选与数据: 'screeners',
@@ -114,11 +94,6 @@ export function getFeaturedCoversForPath(path: string): string[] {
 
   // 特殊处理：将中文分类名转换为英文路径
   const pathMapping: Record<string, string> = {
-    现金流乌托邦: 'cashflow-utopia',
-    全球高息股轮动: 'drip',
-    期权卖方策略: 'option-selling',
-    资产配置: 'asset-allocation',
-    策略分析: 'strategy',
     期权基础认知: 'mindset',
     期权核心参数: 'metrics',
     新手避坑与认知升级: 'pitfalls',
@@ -130,9 +105,9 @@ export function getFeaturedCoversForPath(path: string): string[] {
     买方与对冲策略: 'hedging-strategies',
     实盘拆解与复盘: 'trade-review',
     稳定现金流系统: 'cashflow-system',
-    现金流底层逻辑: 'philosophy',
-    核心现金流策略: 'tactics',
-    组合构建与轮动: 'rotation',
+    现金流系统构建: 'framework',
+    策略组合与轮动: 'allocation',
+    风险管理与回撤控制: 'risk-control',
     期权工具箱: 'tools',
     交易平台与模拟器: 'platforms',
     行情筛选与数据: 'screeners',

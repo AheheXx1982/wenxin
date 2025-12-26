@@ -9,50 +9,35 @@ category_map:
   期权基础认知: mindset
   期权核心参数: metrics
   新手避坑与认知升级: pitfalls
-  策略分析: strategy
-  实盘分享: trading-journal
   
   期权策略与实战: strategies
-  卖方核心策略: seller-strategies
-  买方与对冲策略: hedging-strategies
+  卖方核心策略: selling
+  买方与对冲策略: hedging
   实盘拆解与复盘: trade-review
   稳定现金流系统: cashflow-system
-  现金流底层逻辑: philosophy
-  核心现金流策略: tactics
-  组合构建与轮动: rotation
+  现金流系统构建: framework
+  策略组合与轮动: allocation
+  风险管理与回撤控制: risk-control
   期权工具箱: tools
   交易平台与模拟器: platforms
   行情筛选与数据: screeners
   模板与效率清单: templates
-  
-  现金流乌托邦: cashflow-utopia
-  期权卖方策略: option-selling
-  全球高息股轮动: drip
-  资产配置: asset-allocation
   
   # 英文分类映射（必须与中文保持一致的路径）
   Options Basics: options-basics
   Options Mindset: mindset
   Options Metrics: metrics
   Options Pitfalls: pitfalls
-  Options Academy: options
-  Strategy Analysis: strategy
-  Live Trading: trading-journal
   
   Strategies & Practice: strategies
-  Seller Strategies: seller-strategies
-  Hedging Strategies: hedging-strategies
+  Seller Strategies: selling
+  Hedging Strategies: hedging
   Trade Review: trade-review
   Stable Cash Flow System: cashflow-system
-  Cash Flow Philosophy: philosophy
-  Cash Flow Strategies: tactics
-  Portfolio Rotation: rotation
+  Cash Flow System Framework: framework
+  Strategy Allocation & Rotation: allocation
+  Risk Management & Drawdown Control: risk-control
   Options Toolbox: tools
   Trading Platforms & Simulation: platforms
   Screeners & Data: screeners
   Templates & Checklists: templates
-  
-  Cash Flow Utopia: cashflow-utopia
-  Option Selling Strategy: option-selling
-  Global High-Yield Stock Rotation: drip
-  Asset Allocation: asset-allocation

@@ -4,7 +4,7 @@ description: "Bull market, bear market, range-bound — how to adjust your cash 
 date: 2025-12-25
 categories:
   - - 稳定现金流系统
-    - 组合构建与轮动
+    - 风险管理与回撤控制
 tags:
   - Sector Rotation
   - Asset Allocation

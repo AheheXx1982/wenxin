@@ -3,7 +3,7 @@ title: The Wheel策略：期权现金流的永动机（核心策略01·轮动策
 description: 月入2%的现金流如何持续产生？The Wheel策略将CSP和Covered Call完美结合，构建永不停歇的现金流引擎。本文手把手教你实操。
 date: 2025-12-25
 categories:
-  - ['稳定现金流系统', '核心现金流策略']
+  - ['稳定现金流系统', '策略组合与轮动']
 tags:
   - The Wheel
   - 期权策略

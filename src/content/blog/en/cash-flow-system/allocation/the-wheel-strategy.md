@@ -4,7 +4,7 @@ description: "How to generate 2% monthly cash flow consistently? The Wheel perfe
 date: 2025-12-25
 categories:
   - - 稳定现金流系统
-    - 核心现金流策略
+    - 策略组合与轮动
 tags:
   - The Wheel
   - Options Strategy
