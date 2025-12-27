@@ -26,12 +26,17 @@ const { categories, countMap, totalCount, lang } = Astro.props;
 const currentLang = lang || getLanguageFromAstroUrl(Astro.url);
 const uiText = getUIText(currentLang);
 
+// 过滤掉期权精品课分类（仅在左侧导航显示）
+const filteredCategories = categories.filter(category => 
+  category.name !== '期权精品课' && category.name !== 'Premium Course'
+);
+
 // 根据语言生成首页链接
 const homeLink = currentLang === 'en' ? '/en' : '/';
 const categoryLinkPrefix = currentLang === 'en' ? '/en/categories' : '/categories';
 
 // 计算子分类总数
-const subCategoryCount = categories.reduce((total, category) => {
+const subCategoryCount = filteredCategories.reduce((total, category) => {
   return total + (category?.children?.length || 0);
 }, 0);
 
@@ -56,7 +61,7 @@ const getCategoryTotalCount = (category: Category): number => {
   }, 0);
 };
 
-const categoryLinks: CategoryLink[] = categories.map((category: Category) => {
+const categoryLinks: CategoryLink[] = filteredCategories.map((category: Category) => {
   const links = getCategoryLinks([category]);
   const translatedName = translateCategoryName(category.name);
   

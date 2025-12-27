@@ -50,12 +50,11 @@ export const i18nSiteConfig = {
     author: 'SilentXx',
     navLinks: [
       { name: '首页', href: '/' },
-      { name: '入门与基础', href: '/categories/options-basics' },
-      { name: '策略与实战', href: '/categories/strategies' },
+      { name: '新手入门', href: '/categories/options-basics' },
+      { name: '策略进阶', href: '/categories/strategies' },
       { name: '现金流系统', href: '/categories/cashflow-system' },
-      { name: '期权工具箱', href: '/categories/tools' },
-      { name: '认识猎手', href: '/about' },
-      { name: '幻念集', href: '/illusionary-thoughts' },
+      { name: '期权精品课', href: '/premium-course', hot: true },
+      { name: '工具与资源', href: '/categories/tools' },
     ],
     featuredCategories: [
       {
@@ -105,12 +104,11 @@ export const i18nSiteConfig = {
     author: 'SilentXx',
     navLinks: [
       { name: 'Home', href: '/en' },
-      { name: 'Options Basics', href: '/en/categories/options-basics' },
-      { name: 'Strategies & Practice', href: '/en/categories/strategies' },
-      { name: 'Stable Cash Flow System', href: '/en/categories/cashflow-system' },
-      { name: 'Options Toolbox', href: '/en/categories/tools' },
-      { name: 'About SilentXx', href: '/en/about' },
-      { name: 'Thoughts', href: '/en/illusionary-thoughts' },
+      { name: 'Getting Started', href: '/en/categories/options-basics' },
+      { name: 'Advanced Strategies', href: '/en/categories/strategies' },
+      { name: 'Cash Flow System', href: '/en/categories/cashflow-system' },
+      { name: 'Premium Course', href: '/en/premium-course', hot: true },
+      { name: 'Tools & Resources', href: '/en/categories/tools' },
     ],
     featuredCategories: [
       {
