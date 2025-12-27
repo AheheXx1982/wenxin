@@ -175,19 +175,43 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
   // 获取指定语言的文章，默认为中文
   const allBlogPosts = await getSortedPosts(lang, false);
 
-  // 确保始终有数组进行处理
-  if (!allBlogPosts || !Array.isArray(allBlogPosts)) {
-    return { categories: [], countMap: {} };
-  }
-
   const countMap: { [key: string]: number } = {};
   const resCategories: Category[] = [];
+
+  // 首先，根据 categoryMap 创建所有分类结构
+  const orderedCategoryNames = Object.keys(categoryMap);
+  
+  // 构建分类层级结构映射
+  const categoryHierarchy: { [key: string]: string[] } = {
+    '期权入门与基础': ['期权基础认知', '期权核心参数', '新手避坑与认知升级'],
+    '期权策略与实战': ['卖方核心策略', '买方与对冲策略', '实盘拆解与复盘'],
+    '稳定现金流系统': ['现金流系统构建', '策略组合与轮动', '风险管理与回撤控制'],
+    '期权工具箱': ['交易平台与模拟器', '行情筛选与数据', '模板与效率清单']
+  };
+
+  // 创建所有一级分类
+  for (const parentName of orderedCategoryNames) {
+    if (categoryHierarchy[parentName]) {
+      // 这是一级分类（有子分类）
+      addCategoryRecursively(resCategories, [], parentName);
+      // 添加所有子分类
+      for (const childName of categoryHierarchy[parentName]) {
+        addCategoryRecursively(resCategories, [parentName], childName);
+      }
+    }
+  }
+
+  // 确保始终有数组进行处理
+  if (!allBlogPosts || !Array.isArray(allBlogPosts)) {
+    return { categories: resCategories, countMap };
+  }
 
   // 统计每个分类的文章数量，排除介绍文章
   for (let i = 0; i < allBlogPosts.length; ++i) {
     const post = allBlogPosts[i];
-    const { catalog, categories } = post.data;
-    if (!catalog || !categories?.length) {
+    const { categories } = post.data;
+    // 移除 catalog 字段的检查，只要有 categories 就统计
+    if (!categories?.length) {
       continue;
     }
 
@@ -218,18 +242,6 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
       if (!isIntroArticle) {
         countMap[deepestCategory] = (countMap[deepestCategory] || 0) + 1;
       }
-      
-      // 为所有层级的分类创建结构
-      for (let j = 0; j < categories[0].length; ++j) {
-        const name = categories[0][j];
-        
-        if (j === 0) {
-          addCategoryRecursively(resCategories, [], name);
-        } else {
-          const parentNames = categories[0].slice(0, j);
-          addCategoryRecursively(resCategories, parentNames, name);
-        }
-      }
     } else {
       // categories[0] = '工具'
       const name = categories[0] as string;
@@ -238,14 +250,9 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
       if (!isIntroArticle) {
         countMap[name] = (countMap[name] || 0) + 1;
       }
-      
-      addCategoryRecursively(resCategories, [], name);
     }
   }
 
-  // 根据 categoryMap 中的顺序对 resCategories 进行排序
-  const orderedCategoryNames = Object.keys(categoryMap);
-  
   // 创建英文到中文的映射函数
   const getCategoryKey = (categoryName: string): string => {
     // 如果直接在 categoryMap 中存在，返回原名称
