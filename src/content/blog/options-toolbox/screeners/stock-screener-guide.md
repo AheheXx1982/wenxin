@@ -13,6 +13,8 @@ lang: zh
 catalog: true
 ---
 
+![Screener](/img/tools/Screener.webp)
+
 每天美股开盘前，新手在看新闻，赌徒在看涨幅榜。
 而猎手，只会打开一样东西——**筛选器 (Screener)**。
 
@@ -73,10 +75,9 @@ SilentXx 的交易哲学是：**数据不会骗人。**
 **"好公司 + 倒霉时刻 = 黄金坑"。**
 我们要在好公司因为短期情绪回调时进场接盘，而不是在它涨到天上时去高位站岗。
 
----
+![funnel-filter](/img/tools/funnel-filter.webp)
 
-## ⚠️ 最后的排雷：财报检查 (Earnings Check)
-
+## ⚠️ 最后的排雷：财报检查 (Earnings Chefunnel-filter
 筛选器选出来的股票，最后必须人工确认一件事：
 **未来 30 天内有没有财报？**
 
