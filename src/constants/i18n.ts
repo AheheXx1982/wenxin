@@ -50,8 +50,8 @@ export const i18nSiteConfig = {
     author: 'SilentXx',
     navLinks: [
       { name: '首页', href: '/' },
-      { name: '新手入门', href: '/categories/options-basics' },
-      { name: '策略进阶', href: '/categories/strategies' },
+      { name: '按摩那点事', href: '/categories/options-basics' },
+      { name: '何处觅知音', href: '/categories/strategies' },
       { name: '现金流系统', href: '/categories/cashflow-system' },
       { name: '期权精品课', href: '/premium-course', hot: true },
       { name: '工具与资源', href: '/categories/tools' },
@@ -104,8 +104,8 @@ export const i18nSiteConfig = {
     author: 'SilentXx',
     navLinks: [
       { name: 'Home', href: '/en' },
-      { name: 'Getting Started', href: '/en/categories/options-basics' },
-      { name: 'Advanced Strategies', href: '/en/categories/strategies' },
+      { name: '按摩那点事', href: '/en/categories/options-basics' },
+      { name: '何处觅知音', href: '/en/categories/strategies' },
       { name: 'Cash Flow System', href: '/en/categories/cashflow-system' },
       { name: 'Premium Course', href: '/en/premium-course', hot: true },
       { name: 'Tools & Resources', href: '/en/categories/tools' },

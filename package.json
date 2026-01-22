@@ -91,7 +91,7 @@
     "typescript": "^5.9.2",
     "vite-plugin-svgr": "^4.3.0"
   },
-  "packageManager": "pnpm@10.18.0",
+  "packageManager": "pnpm@10.28.1",
   "lint-staged": {
     "*.{js,jsx,ts,tsx,astro}": [
       "prettier --write"
