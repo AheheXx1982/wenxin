@@ -9,6 +9,7 @@ import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
 import { getCategoryArr, getSortedPosts, getCategoryLink } from '@lib/content';
 import SeriesNavigation from '@components/post/SeriesNavigation.astro';
 import { parseDate } from '@lib/datetime';
+import readingTime from 'reading-time';
 import { Icon } from 'astro-icon/components';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 import { getLanguageFromAstroUrl } from '@lib/i18n';
@@ -75,6 +76,7 @@ if (!post) {
 
 const { Content } = await post.render();
 const { title, description, categories = [], tags = [], date, lang } = post?.data ?? {};
+const readState = readingTime(post?.body ?? '');
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -155,9 +157,34 @@ if (categoryArr?.length) {
     <Cover slot="cover" />
     <HomeSider slot="sider" type={HomeSiderType.POST} lang={currentLang} />
     <QuoteMarquee />
-    <div class="shadow-box bg-gradient-start flex flex-col gap-2 p-4 pt-6 md:px-5 md:py-4">
+    <div class="article-enhanced shadow-box bg-gradient-start flex flex-col gap-2 p-4 pt-6 md:px-5 md:py-4">
+      <!-- Article Title -->
+      <h1 class="article-title text-center mb-8">{title}</h1>
+      
+      <!-- Article Meta Info -->
+      <div class="article-meta mb-8">
+        <div class="meta-item">
+          <Icon name="fa6-solid:calendar-days" class="icon h-4 w-4" />
+          <span class="text">发表于 {parseDate(date, 'YYYY-MM-DD')}</span>
+        </div>
+        <div class="meta-item">
+          <Icon name="fa6-solid:pen-nib" class="icon h-4 w-4" />
+          <span class="text">{readState?.words || 0} 字</span>
+        </div>
+        <div class="meta-item">
+          <Icon name="fa6-solid:clock" class="icon h-4 w-4" />
+          <span class="text">{readState?.text || '阅读时间'}</span>
+        </div>
+        {categories && categories.length > 0 && (
+          <div class="meta-item">
+            <Icon name="ri:folder-2-line" class="icon h-4 w-4" />
+            <span class="text">{categoryArr.join(' / ')}</span>
+          </div>
+        )}
+      </div>
+      
       <!-- Breadcrumb Navigation -->
-      <nav class="text-muted-foreground flex items-center gap-2 text-sm">
+      <nav class="breadcrumb text-muted-foreground flex items-center gap-2 text-sm">
         <div class="flex items-center gap-1">
           <!-- Home Icon and Link -->
           <Icon name="fa6-solid:house-chimney" class="h-4 w-4" />

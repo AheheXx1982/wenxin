@@ -1,0 +1,279 @@
+/* 文章页面增强样式 */
+.article-enhanced {
+  /* 文章容器美化 */
+  .article-container {
+    @apply max-w-4xl mx-auto px-4 py-8;
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  /* 标题美化 */
+  .article-title {
+    @apply text-4xl font-bold text-center mb-6 pb-4;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    
+    &::after {
+      content: '';
+      @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1;
+      background: linear-gradient(90deg, transparent, hsl(var(--primary)), transparent);
+      border-radius: 1px;
+    }
+  }
+
+  /* 文章正文美化 */
+  .article-content {
+    @apply prose prose-lg max-w-none;
+    
+    /* 段落美化 */
+    p {
+      @apply leading-loose mb-6;
+      text-indent: 2em;
+      color: hsl(var(--foreground) / 0.95);
+      
+      &:first-child {
+        text-indent: 0;
+        font-size: 1.1em;
+        line-height: 1.8;
+      }
+    }
+
+    /* 标题美化 */
+    h1, h2, h3, h4, h5, h6 {
+      @apply font-bold mt-8 mb-4 relative;
+      color: hsl(var(--primary));
+      
+      &::before {
+        content: '▍';
+        @apply absolute -left-4 text-primary;
+      }
+    }
+
+    h1 {
+      @apply text-3xl border-b-2 pb-2;
+      border-color: hsl(var(--primary) / 0.3);
+    }
+
+    h2 {
+      @apply text-2xl pl-4 border-l-4;
+      border-color: hsl(var(--primary));
+    }
+
+    h3 {
+      @apply text-xl;
+    }
+
+    /* 引用块美化 */
+    blockquote {
+      @apply border-l-4 pl-6 py-4 my-6;
+      border-color: hsl(var(--primary));
+      background: linear-gradient(90deg, hsl(var(--muted) / 0.5), transparent);
+      border-radius: 0 0.5rem 0.5rem 0;
+      
+      p {
+        @apply italic text-foreground/80;
+        text-indent: 0;
+      }
+    }
+
+    /* 列表美化 */
+    ul, ol {
+      @apply space-y-2 ml-6;
+      
+      li {
+        @apply relative pl-2;
+        
+        &::before {
+          content: '•';
+          @apply absolute -left-4 text-primary font-bold;
+        }
+      }
+    }
+
+    /* 代码块美化 */
+    pre {
+      @apply rounded-xl p-6 my-6 relative overflow-hidden;
+      background: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--accent)));
+      border: 1px solid hsl(var(--border));
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+      
+      &::before {
+        content: '';
+        @apply absolute top-0 left-0 right-0 h-1;
+        background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--primary)));
+      }
+    }
+
+    code:not(pre code) {
+      @apply px-2 py-1 rounded-lg text-sm;
+      background: hsl(var(--primary) / 0.1);
+      border: 1px solid hsl(var(--primary) / 0.2);
+      color: hsl(var(--primary));
+    }
+
+    /* 链接美化 */
+    a {
+      @apply text-primary hover:text-secondary transition-all duration-300;
+      border-bottom: 1px dotted hsl(var(--primary) / 0.5);
+      
+      &:hover {
+        @apply border-b-2;
+        transform: translateY(-1px);
+      }
+    }
+
+    /* 图片美化 */
+    img {
+      @apply rounded-2xl shadow-2xl my-8 mx-auto;
+      max-width: 100%;
+      height: auto;
+      border: 8px solid hsl(var(--background));
+      transition: all 0.3s ease;
+      
+      &:hover {
+        @apply shadow-2xl scale-105;
+        border-color: hsl(var(--primary) / 0.2);
+      }
+    }
+
+    /* 表格美化 */
+    table {
+      @apply w-full rounded-xl overflow-hidden my-6;
+      border-collapse: separate;
+      border-spacing: 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      
+      th {
+        @apply bg-primary text-primary-foreground font-bold p-4 text-left;
+      }
+      
+      td {
+        @apply p-4 border-t border-muted;
+      }
+      
+      tr:nth-child(even) {
+        background: hsl(var(--muted) / 0.3);
+      }
+      
+      tr:hover {
+        background: hsl(var(--accent));
+      }
+    }
+
+    /* 分隔线美化 */
+    hr {
+      @apply my-12 border-0 h-1 rounded-full;
+      background: linear-gradient(90deg, transparent, hsl(var(--primary)), transparent);
+      position: relative;
+      
+      &::after {
+        content: '❦';
+        @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary text-xl;
+      }
+    }
+  }
+
+  /* 元信息美化 */
+  .article-meta {
+    @apply flex flex-wrap items-center justify-center gap-6 py-6 mb-8;
+    background: linear-gradient(90deg, hsl(var(--muted) / 0.3), hsl(var(--accent) / 0.3));
+    border-radius: 1rem;
+    border: 1px solid hsl(var(--border));
+    
+    .meta-item {
+      @apply flex items-center gap-2 px-4 py-2 rounded-full;
+      background: hsl(var(--background) / 0.8);
+      backdrop-filter: blur(10px);
+      
+      .icon {
+        @apply text-primary;
+      }
+      
+      .text {
+        @apply text-sm font-medium;
+        color: hsl(var(--foreground) / 0.8);
+      }
+    }
+  }
+
+  /* 面包屑导航美化 */
+  .breadcrumb {
+    @apply flex items-center gap-2 text-sm mb-6;
+    
+    .separator {
+      @apply text-muted-foreground mx-1;
+    }
+    
+    a {
+      @apply text-muted-foreground hover:text-primary transition-colors;
+      border: none;
+      
+      &:hover {
+        @apply underline;
+      }
+    }
+  }
+
+  /* 响应式优化 */
+  @media (max-width: 768px) {
+    .article-container {
+      @apply px-2 py-4 rounded-xl;
+    }
+    
+    .article-title {
+      @apply text-2xl;
+    }
+    
+    .article-content {
+      p {
+        text-indent: 1em;
+        
+        &:first-child {
+          font-size: 1em;
+        }
+      }
+    }
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.article-enhanced {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* 滚动条美化 */
+.article-enhanced ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.article-enhanced ::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+.article-enhanced ::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 4px;
+  
+  &:hover {
+    background: hsl(var(--secondary));
+  }
+}

@@ -4,40 +4,12 @@
 
 # Category & Tag
 category_map:
-  # 中文分类映射
-  期权入门与基础: options-basics
-  期权基础认知: mindset
-  期权核心参数: metrics
-  新手避坑与认知升级: pitfalls
+  # 中文分类映射 - 新建分类结构
+  按摩那点事: massage
+  何处觅知音: friendship
+  新加坡往事: singapore
   
-  期权策略与实战: strategies
-  卖方核心策略: selling
-  买方与对冲策略: hedging
-  实盘拆解与复盘: trade-review
-  稳定现金流系统: cashflow-system
-  现金流系统构建: framework
-  策略组合与轮动: allocation
-  风险管理与回撤控制: risk-control
-  期权工具箱: tools
-  交易平台与模拟器: platforms
-  行情筛选与数据: screeners
-  模板与效率清单: templates
-  
-  # 英文分类映射（必须与中文保持一致的路径）
-  Options Basics: options-basics
-  Options Mindset: mindset
-  Options Metrics: metrics
-  Options Pitfalls: pitfalls
-  
-  Strategies & Practice: strategies
-  Seller Strategies: selling
-  Hedging Strategies: hedging
-  Trade Review: trade-review
-  Stable Cash Flow System: cashflow-system
-  Cash Flow System Framework: framework
-  Strategy Allocation & Rotation: allocation
-  Risk Management & Drawdown Control: risk-control
-  Options Toolbox: tools
-  Trading Platforms & Simulation: platforms
-  Screeners & Data: screeners
-  Templates & Checklists: templates
+  # 英文分类映射
+  Massage Stories: massage
+  Friendship: friendship
+  Singapore Stories: singapore
