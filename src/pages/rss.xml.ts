@@ -88,7 +88,7 @@ async function generateZhRSS(context: APIContext) {
           const pubDate = post.data.date && !isNaN(new Date(post.data.date).getTime()) ? post.data.date : new Date();
 
           // 生成链接，确保不会出现 undefined
-          const postLink = post.data.link ? `/article/${post.data.link}` : `/article/${post.slug.split('/').pop() ?? 'post'}`;
+          const postLink = post.data.link ? `/article/${post.data.link}` : `/article/${(post.slug || '').split('/').pop() ?? 'post'}`;
 
           return {
             title: title,

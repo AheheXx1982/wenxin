@@ -1,6 +1,5 @@
 ---
 import { getLanguageFromAstroUrl } from '@lib/i18n';
-import FloatingColorBalls from '@components/fun/FloatingColorBalls.astro';
 
 // 获取当前语言
 const currentLang = getLanguageFromAstroUrl(Astro.url);
@@ -97,7 +96,6 @@ const THEME_COLORS = [
     
     <!-- 颜色球组件 - 直接在二级菜单圆盘内部 -->
     <div class="absolute inset-0 rounded-full z-35 pointer-events-auto p-4">
-      <FloatingColorBalls />
     </div>
     
     <!-- 音乐播放器 -->

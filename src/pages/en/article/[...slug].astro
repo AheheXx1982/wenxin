@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 
   return posts.map((post) => {
     // 使用文件名作为 slug，不包含路径
-    const slug = post.slug.split('/').pop() || post.slug;
+    const slug = (post.slug || '').split('/').pop() || post.slug;
     return {
       params: { slug },
       props: { post },
@@ -26,7 +26,7 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+// Astro 7: render() removed, use post.body directly
 const { title, description, categories = [] } = post.data;
 const siteConfig = getSiteConfig('en');
 
@@ -56,8 +56,8 @@ if (categoryArr && categoryArr.length >= 2) {
 
   // Find current post index
   const currentIndex = seriesPosts.findIndex((p) => {
-    const currentSlug = post.data?.link ?? (typeof post.slug === 'string' ? post.slug.split('/').pop() : post.slug);
-    const pSlug = p.data?.link ?? (typeof p.slug === 'string' ? p.slug.split('/').pop() : p.slug);
+    const currentSlug = post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
+    const pSlug = p.data?.link ?? (typeof p.slug === 'string' ? (p.slug || '').split('/').pop() : p.slug);
     return currentSlug === pSlug;
   });
 
@@ -86,7 +86,7 @@ if (categoryArr && categoryArr.length >= 2) {
         class="prose md:prose-sm dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl"
       >
         {isOptionsArticle && <OptionsBrandBanner lang="en" />}
-        <CustomContent Content={Content} />
+        <Fragment set:html={post.body} />
       </article>
       <!-- Series Navigation -->
       <SeriesNavigation prevPost={prevPost} nextPost={nextPost} lang="en" />

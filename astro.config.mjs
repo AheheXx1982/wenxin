@@ -19,9 +19,7 @@ export default defineConfig({
     }
   },
   markdown: {
-    // Enable GitHub Flavored Markdown
     gfm: true,
-    // Configure rehype plugins for automatic heading IDs and anchor links
     rehypePlugins: [
       rehypeSlug,
       [

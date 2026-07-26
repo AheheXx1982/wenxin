@@ -10,7 +10,7 @@ export function routeBuilder<T extends Routes>(route: T, param: RouteParams<type
   switch (route) {
     case Routes.Post:
       // 使用自定义链接或slug的最后一部分作为文章标识符
-      const articlePath = `/article/${param?.data?.link ?? param?.slug.split('/').pop() ?? param?.slug}`;
+      const articlePath = `/article/${param?.data?.link ?? (param?.slug || '').split('/').pop() ?? param?.slug}`;
       // 如果是英文，添加语言前缀
       href = lang === 'en' ? `/en${articlePath}` : articlePath;
       break;

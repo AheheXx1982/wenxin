@@ -74,7 +74,7 @@ if (!post) {
   throw new Error('未找到文章内容');
 }
 
-const { Content } = await post.render();
+// Astro 7: render() removed, use post.body directly for markdown
 const { title, description, categories = [], tags = [], date, lang } = post?.data ?? {};
 const readState = readingTime(post?.body ?? '');
 const jsonLd = {
@@ -122,8 +122,8 @@ if (categoryArr && categoryArr.length >= 2) {
 
   // Find current post index
   const currentIndex = seriesPosts.findIndex((p) => {
-    const currentSlug = post.data?.link ?? (typeof post.slug === 'string' ? post.slug.split('/').pop() : post.slug);
-    const pSlug = p.data?.link ?? (typeof p.slug === 'string' ? p.slug.split('/').pop() : p.slug);
+    const currentSlug = post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
+    const pSlug = p.data?.link ?? (typeof p.slug === 'string' ? (p.slug || '').split('/').pop() : p.slug);
     return currentSlug === pSlug;
   });
 
@@ -214,7 +214,7 @@ if (categoryArr?.length) {
         class="prose md:prose-sm dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl"
       >
         {isOptionsArticle && <OptionsBrandBanner lang={currentLang} />}
-        <CustomContent Content={Content} />
+        <Fragment set:html={post.body} />
       </article>
       <!-- Series Navigation -->
       <SeriesNavigation prevPost={prevPost} nextPost={nextPost} lang={currentLang} />

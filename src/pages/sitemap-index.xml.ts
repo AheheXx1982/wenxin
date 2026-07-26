@@ -36,8 +36,8 @@ export async function GET(context: APIContext) {
   const validPosts = allPosts && Array.isArray(allPosts) ? allPosts : [];
 
   // 分离中英文文章
-  const zhPosts = validPosts.filter((post) => !post.slug.startsWith('en/'));
-  const enPosts = validPosts.filter((post) => post.slug.startsWith('en/'));
+  const zhPosts = validPosts.filter((post) => !(post.slug || '').startsWith('en/'));
+  const enPosts = validPosts.filter((post) => (post.slug || '').startsWith('en/'));
 
   // 获取静态页面
   const staticPages = ['', 'about', 'investment', 'illusionary-thoughts', 'rss.xml'];
@@ -45,7 +45,7 @@ export async function GET(context: APIContext) {
 
   // 生成中文文章URL列表
   const zhPostUrls = zhPosts.map((post) => {
-    const postUrl = `${site}article/${post.data.link ?? post.slug.split('/').pop() ?? post.slug}/`;
+    const postUrl = `${site}article/${post.data.link ?? (post.slug || '').split('/').pop() ?? post.slug}/`;
     const lastMod = post.data.date.toISOString().split('T')[0];
     return {
       loc: postUrl,

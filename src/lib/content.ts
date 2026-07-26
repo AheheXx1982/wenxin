@@ -28,7 +28,7 @@ export async function getSortedPosts(lang?: Language, excludeIntro: boolean = fa
   // 排除介绍文章（如果需要）
   const finalPosts = excludeIntro 
     ? filteredPosts.filter((post) => {
-        const isIntroArticle = post.slug.endsWith('/index') || post.slug.includes('/index');
+        const isIntroArticle = post.slug?.endsWith('/index') || post.slug?.includes('/index');
         return !isIntroArticle;
       })
     : filteredPosts;
@@ -220,14 +220,14 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
     if (Array.isArray(categories[0]) && categories[0].length > 0) {
       // 对于嵌套分类，检查slug的最后一部分是否与分类的最后一部分相同
       const deepestCategory = categories[0][categories[0].length - 1];
-      const slugParts = post.slug.split('/');
+      const slugParts = (post.slug || '').split('/');
       const lastSlugPart = slugParts[slugParts.length - 1];
       
       // 如果slug的最后一部分与分类名称相同，则为介绍文章
       isIntroArticle = lastSlugPart === deepestCategory;
     } else if (typeof categories[0] === 'string') {
       // 对于简单分类，检查slug的最后一部分是否与分类名称相同
-      const slugParts = post.slug.split('/');
+      const slugParts = (post.slug || '').split('/');
       const lastSlugPart = slugParts[slugParts.length - 1];
       isIntroArticle = lastSlugPart === categories[0];
     }
@@ -476,7 +476,7 @@ export async function getPostsByCategory(categoryName: string, lang?: Language):
     if (!categories?.length) return false;
 
     // 排除介绍文章（通常是index.md文件）
-    const isIntroArticle = post.slug.endsWith('/index') || post.slug.includes('/index');
+    const isIntroArticle = post.slug?.endsWith('/index') || post.slug?.includes('/index');
     if (isIntroArticle) return false;
 
     // 处理两种分类格式
@@ -509,7 +509,7 @@ export async function getPostsByCategoryPath(categoryPath: string[], lang?: Lang
     if (!categories?.length) return false;
 
     // 排除介绍文章（通常是index.md文件）
-    const isIntroArticle = post.slug.endsWith('/index') || post.slug.includes('/index');
+    const isIntroArticle = post.slug?.endsWith('/index') || post.slug?.includes('/index');
     if (isIntroArticle) return false;
 
     // 只处理嵌套分类格式
