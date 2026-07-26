@@ -50,22 +50,22 @@ export const i18nSiteConfig = {
     author: '问心剑',
     navLinks: [
       { name: '首页', href: '/' },
-      { name: '按摩那点事', href: '/categories/massage' },
-      { name: '何处觅知音', href: '/categories/friendship' },
+      { name: '随笔', href: '/categories/massage' },
+      { name: '阅读', href: '/categories/friendship' },
       { name: '新加坡往事', href: '/categories/singapore', hot: true },
     ],
     featuredCategories: [
       {
         link: '/categories/massage',
-        label: '按摩那点事',
+        label: '随笔',
         image: '/img/massage/1.webp',
-        description: '一个按摩师傅的成长故事与心得体会',
+        description: '随手写下的文字与思考',
       },
       {
         link: '/categories/friendship',
-        label: '何处觅知音',
+        label: '阅读',
         image: '/img/friendship/1.webp',
-        description: '人生路上的知音难觅与情感故事',
+        description: '读书笔记与心得感悟',
       },
       {
         link: '/categories/singapore',
@@ -84,9 +84,9 @@ export const i18nSiteConfig = {
     author: 'WenXinJian',
     navLinks: [
       { name: 'Home', href: '/en' },
-      { name: '按摩那点事', href: '/en/categories/massage' },
-      { name: '何处觅知音', href: '/en/categories/friendship' },
-      { name: '新加坡往事', href: '/en/categories/singapore', hot: true },
+      { name: 'Essays', href: '/en/categories/massage' },
+      { name: 'Reading', href: '/en/categories/friendship' },
+      { name: 'Singapore', href: '/en/categories/singapore', hot: true },
     ],
     featuredCategories: [
       {
