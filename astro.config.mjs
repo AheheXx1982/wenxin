@@ -5,8 +5,6 @@ import { defineConfig } from 'astro/config';
 import svgr from 'vite-plugin-svgr';
 import umami from '@yeskunall/astro-umami';
 import tailwindcss from '@tailwindcss/vite';
-import rehypeSlug from 'rehype-slug';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,18 +18,6 @@ export default defineConfig({
   },
   markdown: {
     gfm: true,
-    rehypePlugins: [
-      rehypeSlug,
-      [
-        rehypeAutolinkHeadings,
-        {
-          behavior: 'append',
-          properties: {
-            className: ['anchor-link'],
-          },
-        },
-      ],
-    ],
     shikiConfig: {
       themes: {
         light: 'github-light',

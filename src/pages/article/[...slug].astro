@@ -11,6 +11,9 @@ import SeriesNavigation from '@components/post/SeriesNavigation.astro';
 import { parseDate } from '@lib/datetime';
 import readingTime from 'reading-time';
 import { Icon } from 'astro-icon/components';
+import MarkdownIt from 'markdown-it';
+
+const md = new MarkdownIt({ html: true, breaks: true });
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 import { getLanguageFromAstroUrl } from '@lib/i18n';
 import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
@@ -214,7 +217,7 @@ if (categoryArr?.length) {
         class="prose md:prose-sm dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl"
       >
         {isOptionsArticle && <OptionsBrandBanner lang={currentLang} />}
-        <Fragment set:html={post.body} />
+        <Fragment set:html={md.render(post.body)} />
       </article>
       <!-- Series Navigation -->
       <SeriesNavigation prevPost={prevPost} nextPost={nextPost} lang={currentLang} />
