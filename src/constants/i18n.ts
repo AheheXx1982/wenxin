@@ -46,7 +46,7 @@ export const i18nSiteConfig = {
     title: '问心',
     alternate: '问心剑',
     subtitle: 'AI · 生活 · 随笔',
-    description: '以心为镜，以剑为锋，\n既问本心，亦斩执念。\nAI · 生活 · 随笔',
+    description: '以心为镜，以剑为锋，\n既问本心，亦斩执念。',
     author: '问心剑',
     navLinks: [
       { name: '首页', href: '/' },
