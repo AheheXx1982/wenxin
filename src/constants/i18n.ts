@@ -45,25 +45,25 @@ export const i18nSiteConfig = {
   zh: {
     title: '问心',
     alternate: '问心剑',
-    subtitle: '投资 · AI · 写作 · 生活',
-    description: '以心为镜，以剑为锋，\n既问本心，亦斩执念。\nAI｜生活｜写作｜随笔',
+    subtitle: 'AI · 生活 · 随笔',
+    description: '以心为镜，以剑为锋，\n既问本心，亦斩执念。\nAI · 生活 · 随笔',
     author: '问心剑',
     navLinks: [
       { name: '首页', href: '/' },
-      { name: '随笔', href: '/categories/massage' },
-      { name: '阅读', href: '/categories/friendship' },
+      { name: '按摩那点事', href: '/categories/massage' },
+      { name: '何处觅知音', href: '/categories/friendship' },
       { name: '新加坡往事', href: '/categories/singapore', hot: true },
     ],
     featuredCategories: [
       {
         link: '/categories/massage',
-        label: '随笔',
+        label: '按摩那点事',
         image: '/img/massage/1.webp',
         description: '随手写下的文字与思考',
       },
       {
         link: '/categories/friendship',
-        label: '阅读',
+        label: '何处觅知音',
         image: '/img/friendship/1.webp',
         description: '读书笔记与心得感悟',
       },
