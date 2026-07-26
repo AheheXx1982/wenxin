@@ -33,8 +33,14 @@ export async function getSortedPosts(lang?: Language, excludeIntro: boolean = fa
       })
     : filteredPosts;
 
+  // Astro 7 compat: glob loader uses 'id' instead of 'slug'
+  const normalizedPosts = finalPosts.map((post) => ({
+    ...post,
+    slug: post.slug || post.id || '',
+  }));
+
   // 按日期排序
-  const sortedPosts = finalPosts.sort((a: BlogPost, b: BlogPost) => {
+  const sortedPosts = normalizedPosts.sort((a: BlogPost, b: BlogPost) => {
     return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
   });
 
