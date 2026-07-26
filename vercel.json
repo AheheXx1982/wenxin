@@ -8,5 +8,8 @@
       "ENABLE_FILE_SYSTEM_API": "1",
       "NODE_OPTIONS": "--max-old-space-size=4096"
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/:path*", "destination": "/personal/:path*" }
+  ]
 }
