@@ -16,7 +16,6 @@ import '@fontsource/open-sans';
 import '@fontsource/playfair-display';
 import '@fontsource/noto-sans';
 import 'font-smiley-sans/style.css';
-import { ClientRouter } from 'astro:transitions';
 import LoadingIndicator from 'astro-loading-indicator/component';
 import Header from '@components/layout/Header.astro';
 import Footer from '@components/layout/Footer.astro';
@@ -61,7 +60,6 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
       rel="stylesheet"
     />
     
-    <ClientRouter />
     <LoadingIndicator color="red" />
     <Tooltips />
     <!-- metadata -->
