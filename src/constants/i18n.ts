@@ -115,7 +115,7 @@ export const i18nSiteConfig = {
 export const i18nSeoConfig = {
   zh: {
     title: '问心 · 问心剑的个人笔记',
-    description: '问心剑的个人笔记——投资、AI、写作与生活。先问心，再出剑。',
+    description: '以心为镜，以剑为锋，\n既问本心，亦斩执念。\n生活｜写作｜随笔｜AI',
     keywords: '问心剑, 问心, 个人博客, 投资, AI, 写作, 生活',
   },
   en: {
