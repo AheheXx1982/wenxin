@@ -56,11 +56,11 @@ type SocialConfig = {
 
 // https://shoka.lostyu.me/computer-science/note/theme-shoka-doc/config/
 export const siteConfig: SiteConfig = {
-  title: '寂静猎手', // 网站名称
-  alternate: '问心剑', // 网站名称
+  title: '问心剑', // 网站名称
+  alternate: '问心剑', // 网站别名
   subtitle: '以心为镜，以剑为锋，既问本心，亦斩执念', // 副标题
   name: '问心剑',
-  description: '生活｜写作｜随笔｜AI\n以心为镜，以剑为锋，既问本心，亦斩执念。', // 站点简介
+  description: 'AI｜生活｜写作｜随笔\n以心为镜，以剑为锋，既问本心，亦斩执念。', // 站点简介
   avatar: '/img/wenxin.png', // 站点头像
   showLogo: true, // 是否显示 logo 否则用 title
   author: '问心剑', // 作者名称
