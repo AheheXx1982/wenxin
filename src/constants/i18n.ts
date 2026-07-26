@@ -43,11 +43,11 @@ export const removeLanguagePrefix = (path: string): string => {
 // 多语言站点配置
 export const i18nSiteConfig = {
   zh: {
-    title: '大叔',
-    alternate: '大叔',
-    subtitle: '记录平凡的生活故事',
-    description: '记录生活',
-    author: '大叔',
+    title: '问心',
+    alternate: '问心剑',
+    subtitle: '投资 · AI · 写作 · 生活',
+    description: '问心剑的个人笔记。先问心，再出剑。',
+    author: '问心剑',
     navLinks: [
       { name: '首页', href: '/' },
       { name: '按摩那点事', href: '/categories/massage' },
@@ -76,12 +76,12 @@ export const i18nSiteConfig = {
     ],
   },
   en: {
-    title: '大叔',
-    alternate: '大叔',
-    subtitle: 'Options Trading & Stable Cash Flow System',
+    title: 'WenXin',
+    alternate: 'WenXinJian',
+    subtitle: 'Investing · AI · Writing · Life',
     description:
-      'Focus on US stock options trading, sharing real, low-risk, replicable cash flow investment strategies, leading you into the investment world built by rationality and discipline.',
-    author: '大叔',
+      'Personal notes by WenXinJian — investing, AI, writing, and life.',
+    author: 'WenXinJian',
     navLinks: [
       { name: 'Home', href: '/en' },
       { name: '按摩那点事', href: '/en/categories/massage' },
@@ -114,16 +114,14 @@ export const i18nSiteConfig = {
 // 多语言 SEO 配置
 export const i18nSeoConfig = {
   zh: {
-    title: '按摩大叔｜寂静猎手 · 美股期权实战与稳定现金流系统',
-    description: '聚焦美股期权交易，分享真实、低风险、可复制的现金流投资策略，带你走进理性与纪律构建的投资世界。',
-    keywords: 'SilentXx, 寂静猎手, 期权交易, 现金流投资, 美股期权, 投资策略, 金融博客',
+    title: '问心 · 问心剑的个人笔记',
+    description: '问心剑的个人笔记——投资、AI、写作与生活。先问心，再出剑。',
+    keywords: '问心剑, 问心, 个人博客, 投资, AI, 写作, 生活',
   },
   en: {
-    title: '按摩大叔｜寂静猎手 · Options Trading & Stable Cash Flow System',
-    description:
-      'Focus on US stock options trading, sharing real, low-risk, replicable cash flow investment strategies, leading you into the investment world built by rationality and discipline.',
-    keywords:
-      'SilentXx, 寂静猎手, Options Trading, Cash Flow Investment, US Stock Options, Investment Strategy, Financial Blog',
+    title: 'WenXin · Notes by WenXinJian',
+    description: 'Personal notes by WenXinJian — investing, AI, writing, and life.',
+    keywords: 'WenXinJian, WenXin, personal blog, investing, AI, writing, life',
   },
 } as const;
 
