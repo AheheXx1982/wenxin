@@ -1,6 +1,39 @@
 @import 'tailwindcss';
 
-@config '../../../tailwind.config.mjs';
+@plugin "@tailwindcss/typography";
+
+@custom-variant tablet (@media (max-width: 992px));
+@custom-variant desktop (@media (min-width: 1480px));
+@custom-variant xs (@media (max-width: 480px));
+
+@theme {
+  --color-blue: hsl(var(--shoka-blue));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-grey-4: hsl(var(--grey-4));
+  --color-gradient-start: var(--gradient-bg-start);
+  --background-image-gradient: var(--gradient-bg);
+  --background-image-gradient-pink: var(--gradient-pink);
+  --background-image-gradient-header: var(--gradient-header);
+  --background-image-gradient-shoka-button: var(--gradient-shoka-button);
+}
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
