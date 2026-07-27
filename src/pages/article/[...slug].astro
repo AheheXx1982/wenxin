@@ -216,7 +216,7 @@ if (categoryArr?.length) {
         }
       </nav>
       <article
-        class="prose md:prose-sm dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl"
+        class="prose prose-lg md:prose-sm dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl"
       >
         {isOptionsArticle && <OptionsBrandBanner lang={currentLang} />}
         <Fragment set:html={md.render(post.body)} />
