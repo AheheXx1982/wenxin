@@ -32,7 +32,7 @@ const text = uiText[lang as keyof typeof uiText];
 
 // 获取文章链接
 function getArticleLink(post: BlogPost, currentLang: string) {
-  const slug = post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
+  const slug = post.data?.slug ?? post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
   const prefix = currentLang === 'en' ? '/en' : '';
   return `${prefix}/article/${slug}`;
 }

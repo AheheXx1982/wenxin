@@ -32,7 +32,7 @@ const { posts } = Astro.props;
         posts.map((post) => (
           <article class="article-item">
             <h2>
-              <a href={`/article/${post.slug}`}>{post.data.title}</a>
+              <a href={`/article/${post.data.slug || post.slug}`}>{post.data.title}</a>
             </h2>
             <time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString()}</time>
             {post.data.description && <p class="description">{post.data.description}</p>}

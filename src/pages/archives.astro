@@ -62,7 +62,7 @@ const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
                   <p class="shoka-decoration-circle group text-primary hover:text-blue relative px-7.5 py-2 text-base/9 md:flex md:flex-col md:items-stretch md:text-sm/9">
                     <span class="text-muted-foreground mr-2 text-xs">{parseDate(post.data.date, 'YYYY-MM-DD')}</span>
                     <a
-                      href={`/article/${post.data?.link ?? (post.slug || '').split('/').pop() ?? post.slug}`}
+                      href={`/article/${post.data?.slug ?? post.data?.link ?? (post.slug || '').split('/').pop()}`}
                       class="dashed-border text-primary hover:text-blue truncate transition-colors"
                     >
                       {post.data.title}

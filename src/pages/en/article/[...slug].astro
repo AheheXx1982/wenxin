@@ -20,7 +20,7 @@ export async function getStaticPaths() {
 
   return posts.map((post) => {
     // 使用文件名作为 slug，不包含路径
-    const slug = (post.slug || '').split('/').pop() || post.slug;
+    const slug = post.data?.slug ?? (post.slug || '').split('/').pop() || post.slug;
     return {
       params: { slug },
       props: { post },
@@ -59,7 +59,7 @@ if (categoryArr && categoryArr.length >= 2) {
 
   // Find current post index
   const currentIndex = seriesPosts.findIndex((p) => {
-    const currentSlug = post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
+    const currentSlug = post.data?.slug ?? post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
     const pSlug = p.data?.link ?? (typeof p.slug === 'string' ? (p.slug || '').split('/').pop() : p.slug);
     return currentSlug === pSlug;
   });

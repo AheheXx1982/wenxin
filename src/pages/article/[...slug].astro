@@ -47,9 +47,11 @@ export async function getStaticPaths() {
       slug = 'untitled';
     }
 
-    // 使用自定义链接或slug作为文章标识符，而不是完整路径
+    // 使用自定义 slug/link 作为文章标识符，而不是文件路径
     let link: string;
-    if (post.data?.link) {
+    if (post.data?.slug) {
+      link = post.data.slug;
+    } else if (post.data?.link) {
       link = post.data.link;
     } else if (typeof slug === 'string') {
       const parts = slug.split('/');
@@ -125,7 +127,7 @@ if (categoryArr && categoryArr.length >= 2) {
 
   // Find current post index
   const currentIndex = seriesPosts.findIndex((p) => {
-    const currentSlug = post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
+    const currentSlug = post.data?.slug ?? post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
     const pSlug = p.data?.link ?? (typeof p.slug === 'string' ? (p.slug || '').split('/').pop() : p.slug);
     return currentSlug === pSlug;
   });
