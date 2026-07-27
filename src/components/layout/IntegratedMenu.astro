@@ -73,17 +73,18 @@ const THEME_COLORS = [
 </style>
 
 <div class="integrated-menu group relative">
-  <!-- 问心剑 · 剑柄触发按钮 -->
+  <!-- 集成菜单触发按钮 - 使用whirlwind图标 -->
   <button
     type="button"
-    class="sword-hilt-btn relative z-20 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 border-cyan-400/60 bg-slate-900/70 text-white shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:border-cyan-300/80 hover:bg-slate-800/80 hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] focus:ring-2 focus:ring-cyan-400/50 focus:outline-none"
+    class="relative z-20 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 border-white/60 bg-white/30 text-white shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-white/40 focus:ring-2 focus:ring-white/50 focus:outline-none"
     id="menu-trigger"
   >
     <div class="flex h-8 w-8 items-center justify-center">
+      <!-- 使用本地whirlwind图标并保持旋转效果，增强视觉效果和可见性 -->
       <img
-        src="/sword-hilt.svg"
-        alt="问心剑"
-        class="integrated-menu-icon main-menu-rotation h-full w-full object-contain drop-shadow-[0_0_6px_rgba(6,182,212,0.9)]"
+        src="/whirlwind.svg"
+        alt="菜单"
+        class="integrated-menu-icon main-menu-rotation h-full w-full object-contain drop-shadow-[0_0_4px_rgba(255,255,255,0.8)]"
         loading="eager"
       />
     </div>
@@ -97,31 +98,27 @@ const THEME_COLORS = [
     <img src="/ghost.svg" alt="幽灵目标" class="h-10 w-10" />
   </div>
 
-  <!-- 问心剑 · 剑气圆盘菜单 -->
+  <!-- 二级菜单大圆盘 - 逆时针旋转 -->
   <div
     id="circular-menu"
-    class="draggable-menu planet-rotation-level2 pointer-events-none fixed z-50 h-80 w-80 rounded-full border-2 border-cyan-400/30 bg-gradient-to-br from-slate-900/95 via-slate-800/90 to-cyan-950/90 opacity-0 shadow-2xl backdrop-blur-xl"
-    style="top: -9999px; left: -9999px; box-shadow: 0 0 40px rgba(6,182,212,0.15), 0 0 80px rgba(6,182,212,0.08), inset 0 0 30px rgba(6,182,212,0.05);"
+    class="draggable-menu planet-rotation-level2 pointer-events-none fixed z-50 h-80 w-80 rounded-full border-4 border-white/30 bg-gradient-to-br from-white/95 via-purple-50/90 to-blue-50/90 opacity-0 shadow-2xl backdrop-blur-lg"
+    style="top: -9999px; left: -9999px;"
   >
-    <!-- 圆盘中心的问心剑图标 -->
+    <!-- 圆盘中心的幽灵图标 - 最简单实现 -->
     <a
       href={thoughtsLink}
-      class="sword-center-container group absolute top-1/2 left-1/2 z-50 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer items-center justify-center transition-all duration-300"
+      class="ghost-icon-container group absolute top-1/2 left-1/2 z-50 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer items-center justify-center transition-all duration-300"
       style="pointer-events: auto !important;"
     >
-      <img
-        src="/sword-center.svg"
-        alt={thoughtsText}
-        class="sword-center-icon h-16 w-16 drop-shadow-[0_0_12px_rgba(6,182,212,0.6)]"
-      />
+      <img src="/ghost.svg" alt={thoughtsText} class="ghost-icon h-12 w-12 drop-shadow-[0_0_8px_rgba(255,0,0,0.6)]" />
       <span
-        class="pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 transform text-xs font-medium whitespace-nowrap text-cyan-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        class="pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 transform text-xs font-medium whitespace-nowrap text-gray-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       >
         {thoughtsText}
       </span>
     </a>
 
-    <!-- 颜色球组件 -->
+    <!-- 颜色球组件 - 直接在二级菜单圆盘内部 -->
     <div class="pointer-events-auto absolute inset-0 z-35 rounded-full p-4"></div>
 
     <!-- 音乐播放器 -->
@@ -132,10 +129,10 @@ const THEME_COLORS = [
       style="pointer-events: auto !important;"
     >
       <div
-        class="menu-button-content music-icon-rotation relative flex h-14 w-14 flex-col items-center justify-center rounded-full border border-cyan-400/30 bg-slate-800/70 p-3 shadow-lg backdrop-blur-sm hover:border-cyan-300/60 hover:bg-cyan-900/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)]"
+        class="menu-button-content music-icon-rotation relative flex h-14 w-14 flex-col items-center justify-center rounded-full border border-pink-200/50 bg-white/60 p-3 shadow-lg backdrop-blur-sm hover:bg-pink-100/70 hover:shadow-xl"
       >
         <svg
-          class="h-6 w-6 text-cyan-400 transition-colors hover:text-cyan-200"
+          class="h-6 w-6 text-pink-600 transition-colors hover:text-pink-800"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -147,7 +144,7 @@ const THEME_COLORS = [
             d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
           ></path>
         </svg>
-        <span class="mt-1 text-xs font-medium text-cyan-300">音乐</span>
+        <span class="mt-1 text-xs font-medium text-pink-700">音乐</span>
       </div>
     </button>
 
@@ -159,10 +156,10 @@ const THEME_COLORS = [
       style="pointer-events: auto !important;"
     >
       <div
-        class="menu-button-content theme-icon-rotation relative flex h-14 w-14 flex-col items-center justify-center rounded-full border border-blue-400/30 bg-slate-800/70 p-3 shadow-lg backdrop-blur-sm hover:border-blue-300/60 hover:bg-blue-900/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)]"
+        class="menu-button-content theme-icon-rotation relative flex h-14 w-14 flex-col items-center justify-center rounded-full border border-blue-200/50 bg-white/60 p-3 shadow-lg backdrop-blur-sm hover:bg-blue-100/70 hover:shadow-xl"
       >
         <svg
-          class="h-6 w-6 text-blue-400 transition-colors hover:text-blue-200"
+          class="h-6 w-6 text-blue-600 transition-colors hover:text-blue-800"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -174,7 +171,7 @@ const THEME_COLORS = [
             d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
           ></path>
         </svg>
-        <span class="mt-1 text-xs font-medium text-blue-300">主题</span>
+        <span class="mt-1 text-xs font-medium text-blue-700">主题</span>
       </div>
     </button>
 
@@ -186,10 +183,10 @@ const THEME_COLORS = [
       style="pointer-events: auto !important;"
     >
       <div
-        class="menu-button-content language-icon-rotation relative flex h-14 w-14 flex-col items-center justify-center rounded-full border border-violet-400/30 bg-slate-800/70 p-3 shadow-lg backdrop-blur-sm hover:border-violet-300/60 hover:bg-violet-900/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)]"
+        class="menu-button-content language-icon-rotation relative flex h-14 w-14 flex-col items-center justify-center rounded-full border border-purple-200/50 bg-white/60 p-3 shadow-lg backdrop-blur-sm hover:bg-purple-100/70 hover:shadow-xl"
       >
         <svg
-          class="h-6 w-6 text-violet-400 transition-colors hover:text-violet-200"
+          class="h-6 w-6 text-purple-600 transition-colors hover:text-purple-800"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -201,7 +198,7 @@ const THEME_COLORS = [
             d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
           ></path>
         </svg>
-        <span class="mt-1 text-xs font-medium text-violet-300">语言</span>
+        <span class="mt-1 text-xs font-medium text-purple-700">语言</span>
       </div>
     </button>
 
@@ -213,10 +210,10 @@ const THEME_COLORS = [
       style="pointer-events: auto !important;"
     >
       <div
-        class="font-icon-rotation relative flex h-14 w-14 flex-col items-center justify-center rounded-full border border-amber-400/30 bg-slate-800/70 p-3 shadow-lg backdrop-blur-sm hover:border-amber-300/60 hover:bg-amber-900/50 hover:shadow-[0_0_15px_rgba(245,158,11,0.4)]"
+        class="font-icon-rotation relative flex h-14 w-14 flex-col items-center justify-center rounded-full border border-orange-200/50 bg-white/60 p-3 shadow-lg backdrop-blur-sm hover:bg-orange-100/70 hover:shadow-xl"
       >
         <svg
-          class="h-6 w-6 text-amber-400 transition-colors hover:text-amber-200"
+          class="h-6 w-6 text-orange-600 transition-colors hover:text-orange-800"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -228,7 +225,7 @@ const THEME_COLORS = [
             d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
           ></path>
         </svg>
-        <span class="mt-1 text-xs font-medium text-amber-300">字体</span>
+        <span class="mt-1 text-xs font-medium text-orange-700">字体</span>
       </div>
     </button>
 
@@ -237,6 +234,8 @@ const THEME_COLORS = [
       class="drag-handle absolute top-1/2 left-1/2 z-40 h-16 w-16 -translate-x-1/2 -translate-y-1/2 transform cursor-move rounded-full"
     >
     </div>
+
+    <!-- 其他菜单项可以按需添加 -->
   </div>
 </div>
 
@@ -254,9 +253,9 @@ const THEME_COLORS = [
 
   /* 二级菜单内容反向补偿旋转，保持可读性 - 但不影响各菜单项的独立旋转 */
   .secondary-menu-rotation .drag-handle,
-  .secondary-menu-rotation a:not(.ghost-icon-container):not(.sword-center-container),
+  .secondary-menu-rotation a:not(.ghost-icon-container),
   .secondary-menu-rotation button:not([class*='-toggle']),
-  .secondary-menu-rotation span:not(.ghost-icon-container span):not(.sword-center-container span):not([class*='font-medium']) {
+  .secondary-menu-rotation span:not(.ghost-icon-container span):not([class*='font-medium']) {
     animation: rotate-clockwise 12s linear infinite;
   }
 
@@ -387,81 +386,9 @@ const THEME_COLORS = [
     animation: rotate-counter-clockwise 5s linear infinite;
   }
 
-  /* 问心剑 · 剑柄按钮特效 */
-  .sword-hilt-btn {
-    animation: sword-pulse 3s ease-in-out infinite;
-  }
-
-  @keyframes sword-pulse {
-    0%,
-    100% {
-      box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
-    }
-    50% {
-      box-shadow:
-        0 0 25px rgba(6, 182, 212, 0.6),
-        0 0 40px rgba(6, 182, 212, 0.2);
-    }
-  }
-
-  /* 剑心图标动画 */
-  .sword-center-icon {
-    animation:
-      sword-glow 2.5s ease-in-out infinite,
-      rotate-counter-clockwise 6s linear infinite !important;
-    transition:
-      transform 0.3s ease,
-      filter 0.3s ease;
-  }
-
-  .sword-center-container:hover .sword-center-icon {
-    transform: scale(1.3);
-    animation:
-      sword-glow 1s ease-in-out infinite,
-      rotate-counter-clockwise 2s linear infinite !important;
-    filter: drop-shadow(0 0 20px rgba(6, 182, 212, 1)) brightness(1.5);
-  }
-
-  @keyframes sword-glow {
-    0%,
-    100% {
-      filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.5));
-    }
-    50% {
-      filter: drop-shadow(0 0 18px rgba(6, 182, 212, 0.9)) drop-shadow(0 0 30px rgba(6, 182, 212, 0.3));
-    }
-  }
-
-  /* 剑气波纹 - 圆盘展开时 */
-  @keyframes sword-energy-wave {
-    0% {
-      box-shadow:
-        0 0 30px rgba(6, 182, 212, 0.1),
-        0 0 60px rgba(6, 182, 212, 0.05);
-    }
-    50% {
-      box-shadow:
-        0 0 50px rgba(6, 182, 212, 0.25),
-        0 0 100px rgba(6, 182, 212, 0.1);
-    }
-    100% {
-      box-shadow:
-        0 0 30px rgba(6, 182, 212, 0.1),
-        0 0 60px rgba(6, 182, 212, 0.05);
-    }
-  }
-
-  /* 剑气流转边框动画 */
-  @keyframes sword-border-flow {
-    0% {
-      border-color: rgba(6, 182, 212, 0.3);
-    }
-    50% {
-      border-color: rgba(6, 182, 212, 0.7);
-    }
-    100% {
-      border-color: rgba(6, 182, 212, 0.3);
-    }
+  /* 圆盘整体逆时针旋转 */
+  .circular-menu-rotation {
+    animation: rotate-counter-clockwise 20s linear infinite;
   }
 
   /* 悬停时加速旋转 */
@@ -474,9 +401,8 @@ const THEME_COLORS = [
     animation: none !important;
   }
 
-  /* 剑心/幽灵图标动画效果 - 独立逆时针旋转 + 浮动 */
-  .ghost-icon,
-  .sword-center-icon {
+  /* 幽灵图标动画效果 - 独立逆时针旋转 + 浮动 */
+  .ghost-icon {
     animation:
       ghost-float 3s ease-in-out infinite,
       rotate-counterclockwise 3.2s linear infinite !important;
@@ -485,14 +411,13 @@ const THEME_COLORS = [
       filter 0.3s ease;
   }
 
-  /* 剑心/幽灵图标悬停效果 - 放大和加速旋转 */
-  .ghost-icon-container:hover .ghost-icon,
-  .sword-center-container:hover .sword-center-icon {
+  /* 幽灵图标悬停效果 - 放大和加速旋转 */
+  .ghost-icon-container:hover .ghost-icon {
     transform: scale(1.3);
     animation:
       ghost-float 1.5s ease-in-out infinite,
       rotate-counterclockwise 1.2s linear infinite !important;
-    filter: drop-shadow(0 0 16px rgba(6, 182, 212, 1)) brightness(1.3);
+    filter: drop-shadow(0 0 16px rgba(147, 51, 234, 1)) brightness(1.3);
   }
 
   .ghost-glow {
@@ -933,14 +858,14 @@ const THEME_COLORS = [
     animation: ball-glow 2s ease-in-out infinite;
   }
 
-  /* 剑气轨迹背景 */
+  /* 激光轨迹背景 - 强制可见 */
   .laser-trail {
     position: fixed !important;
     height: 16px;
-    background: linear-gradient(90deg, rgba(6, 182, 212, 0.7) 0%, rgba(6, 182, 212, 0.9) 50%, rgba(6, 182, 212, 0.7) 100%);
+    background: linear-gradient(90deg, rgba(255, 0, 0, 0.7) 0%, rgba(255, 0, 0, 0.9) 50%, rgba(255, 0, 0, 0.7) 100%);
     box-shadow:
-      0 0 30px rgba(6, 182, 212, 0.9),
-      0 0 60px rgba(6, 182, 212, 0.5);
+      0 0 30px rgba(255, 0, 0, 0.9),
+      0 0 60px rgba(255, 0, 0, 0.5);
     transform-origin: left center;
     z-index: 9998 !important;
     opacity: 1 !important;
@@ -949,7 +874,7 @@ const THEME_COLORS = [
     pointer-events: none;
   }
 
-  /* 剑气束样式 */
+  /* 激光束样式 - 强制可见 */
   .laser-beam {
     position: fixed !important;
     height: 8px;
@@ -957,16 +882,16 @@ const THEME_COLORS = [
       90deg,
       rgba(255, 255, 255, 1) 0%,
       rgba(255, 255, 255, 1) 20%,
-      rgba(6, 182, 212, 1) 40%,
+      rgba(255, 0, 0, 1) 40%,
       rgba(255, 255, 255, 1) 60%,
-      rgba(6, 182, 212, 1) 80%,
+      rgba(255, 0, 0, 1) 80%,
       rgba(255, 255, 255, 1) 100%
     );
     box-shadow:
       0 0 12px rgba(255, 255, 255, 1),
-      0 0 24px rgba(6, 182, 212, 1),
+      0 0 24px rgba(255, 0, 0, 1),
       0 0 36px rgba(255, 255, 255, 0.8),
-      0 0 48px rgba(6, 182, 212, 0.7);
+      0 0 48px rgba(255, 0, 0, 0.7);
     transform-origin: left center;
     z-index: 9999 !important;
     opacity: 1 !important;
@@ -3116,23 +3041,23 @@ const THEME_COLORS = [
     // showPlaylist, closePlaylist 函数已删除 - 左侧播放器已移除
     window.selectTrack = selectTrack;
 
-    // 剑心图标点击反馈效果
+    // 幽灵图标点击反馈效果（简化版，无音效）
     function playGhostClickEffect() {
-      const swordIcon = document.querySelector('.sword-center-icon');
-      const swordContainer = document.querySelector('.sword-center-container');
+      const ghostIcon = document.querySelector('.ghost-icon');
+      const ghostContainer = document.querySelector('.ghost-icon-container');
 
-      if (swordIcon && swordContainer) {
+      if (ghostIcon && ghostContainer) {
         // 添加点击动画类
-        swordIcon.classList.add('ghost-click-effect');
-        swordContainer.classList.add('ghost-container-click');
+        ghostIcon.classList.add('ghost-click-effect');
+        ghostContainer.classList.add('ghost-container-click');
 
         // 创建点击波纹效果
-        createGhostClickRipple(swordContainer);
+        createGhostClickRipple(ghostContainer);
 
         // 移除动画类
         setTimeout(() => {
-          swordIcon.classList.remove('ghost-click-effect');
-          swordContainer.classList.remove('ghost-container-click');
+          ghostIcon.classList.remove('ghost-click-effect');
+          ghostContainer.classList.remove('ghost-container-click');
         }, 600);
       }
     }
@@ -4629,7 +4554,7 @@ const THEME_COLORS = [
       whirlwindIcon.style.animationDelay = '0s';
     }
 
-    // 剑心能量聚集效果 - 寒光配色
+    // 创建能量聚集效果 - 简洁版（红色配色）- 挂载到全局作用域
     window.createEnergyChargeEffect = function createEnergyChargeEffect() {
       const menuTrigger = document.getElementById('menu-trigger');
       if (!menuTrigger) return;
@@ -4650,16 +4575,16 @@ const THEME_COLORS = [
         z-index: 9999;
       `;
 
-      // 创建中心能量球 - 寒光配色
+      // 创建中心能量球
       const energyCore = document.createElement('div');
       energyCore.style.cssText = `
         position: absolute;
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(6,182,212,0.8) 60%, rgba(6,182,212,0.3) 100%);
+        background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,0,0,0.8) 100%);
         animation: energy-charge 1.2s ease-in-out;
-        box-shadow: 0 0 8px rgba(255,255,255,0.8), 0 0 20px rgba(6,182,212,0.8), 0 0 40px rgba(6,182,212,0.4);
+        box-shadow: 0 0 8px rgba(255,255,255,0.6), 0 0 16px rgba(255,0,0,0.7);
       `;
 
       energyContainer.appendChild(energyCore);
@@ -4687,7 +4612,7 @@ const THEME_COLORS = [
       }, 1200);
     };
 
-    // 剑光击中闪光效果
+    // 创建击中闪光效果
     function createHitFlash(x, y) {
       const flash = document.createElement('div');
       flash.style.cssText = `
@@ -4697,11 +4622,11 @@ const THEME_COLORS = [
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(6,182,212,0.9) 30%, rgba(6,182,212,0) 100%);
+        background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,0,0,0.9) 30%, rgba(255,255,255,0) 100%);
         box-shadow: 
           0 0 20px rgba(255,255,255,1),
-          0 0 40px rgba(6,182,212,0.9),
-          0 0 60px rgba(6,182,212,0.3);
+          0 0 40px rgba(255,0,0,0.9),
+          0 0 60px rgba(255,255,255,0.6);
         pointer-events: none;
         z-index: 9999;
         animation: hit-flash 0.3s ease-out;
