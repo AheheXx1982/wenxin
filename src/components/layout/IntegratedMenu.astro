@@ -118,8 +118,8 @@ const THEME_COLORS = [
       </span>
     </a>
 
-    <!-- 颜色球组件 - 直接在二级菜单圆盘内部 -->
-    <div class="pointer-events-auto absolute inset-0 z-35 rounded-full p-4"></div>
+    <!-- 颜色球组件 -->
+    <div id="color-balls-container" class="pointer-events-auto absolute inset-0 z-35 rounded-full p-4"></div>
 
     <!-- 音乐播放器 -->
     <button
@@ -1868,7 +1868,7 @@ const THEME_COLORS = [
     const ghostTarget = document.getElementById('ghost-target');
     const circularMenu = document.getElementById('circular-menu');
     const dragHandle = document.querySelector('.drag-handle');
-    const colorBallsContainer = null; // 颜色球现在使用单独组件处理
+    let colorBallsContainer = document.getElementById('color-balls-container');
 
     // 获取二级菜单项
     const languageToggle = document.getElementById('language-toggle');
