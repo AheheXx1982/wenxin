@@ -86,7 +86,7 @@ if (categoryArr && categoryArr.length >= 2) {
         </div>
       </nav>
       <article
-        class="prose prose-lg md:prose-sm dark:prose-invert tablet:max-w-[calc(100vw-2.5rem)] tablet:w-auto w-[calc(100vw-20rem)] max-w-5xl"
+        class="prose prose-lg md:prose-sm dark:prose-invert px-4 tablet:px-2 max-w-5xl mx-auto w-full"
       >
         {isOptionsArticle && <OptionsBrandBanner lang="en" />}
         <Fragment set:html={md.render(post.body)} />
