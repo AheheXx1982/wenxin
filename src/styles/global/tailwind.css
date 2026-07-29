@@ -121,6 +121,7 @@
     navigation: auto; /* enabled! */
   }
   body {
+    overflow-x: hidden;
     overscroll-behavior-y: none;
     background: var(--gradient-bg);
     scroll-behavior: smooth;

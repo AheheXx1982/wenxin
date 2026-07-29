@@ -127,7 +127,8 @@ if (categoryArr && categoryArr.length >= 2) {
 
   // Find current post index
   const currentIndex = seriesPosts.findIndex((p) => {
-    const currentSlug = post.data?.slug ?? post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
+    const currentSlug =
+      post.data?.slug ?? post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
     const pSlug = p.data?.link ?? (typeof p.slug === 'string' ? (p.slug || '').split('/').pop() : p.slug);
     return currentSlug === pSlug;
   });
@@ -164,8 +165,8 @@ if (categoryArr?.length) {
     <QuoteMarquee />
     <div class="article-enhanced shadow-box bg-gradient-start flex flex-col gap-2 p-4 pt-6 md:px-5 md:py-4">
       <!-- Article Title -->
-      <h1 class="article-title text-center mb-8">{title}</h1>
-      
+      <h1 class="article-title mb-8 text-center">{title}</h1>
+
       <!-- Article Meta Info -->
       <div class="article-meta mb-8">
         <div class="meta-item">
@@ -180,14 +181,16 @@ if (categoryArr?.length) {
           <Icon name="fa6-solid:clock" class="icon h-4 w-4" />
           <span class="text">{readState?.text || '阅读时间'}</span>
         </div>
-        {categories && categories.length > 0 && (
-          <div class="meta-item">
-            <Icon name="ri:folder-2-line" class="icon h-4 w-4" />
-            <span class="text">{categoryArr.join(' / ')}</span>
-          </div>
-        )}
+        {
+          categories && categories.length > 0 && (
+            <div class="meta-item">
+              <Icon name="ri:folder-2-line" class="icon h-4 w-4" />
+              <span class="text">{categoryArr.join(' / ')}</span>
+            </div>
+          )
+        }
       </div>
-      
+
       <!-- Breadcrumb Navigation -->
       <nav class="breadcrumb text-muted-foreground flex items-center gap-2 text-sm">
         <div class="flex items-center gap-1">
@@ -215,9 +218,7 @@ if (categoryArr?.length) {
             : null
         }
       </nav>
-      <article
-        class="prose prose-lg md:prose-sm dark:prose-invert px-4 tablet:px-2 max-w-5xl mx-auto w-full"
-      >
+      <article class="prose prose-lg dark:prose-invert tablet:px-2 mx-auto w-full max-w-5xl overflow-x-hidden px-4">
         {isOptionsArticle && <OptionsBrandBanner lang={currentLang} />}
         <Fragment set:html={md.render(post.body)} />
       </article>

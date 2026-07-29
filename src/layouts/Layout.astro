@@ -42,7 +42,7 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
 <html transition:name="root" lang={lang === 'en' ? 'en' : 'zh-CN'}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- 为不同浏览器和设备提供多种尺寸的favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -51,15 +51,15 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    
+
     <!-- Google Fonts - preconnect for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&family=Tirra:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Nunito:wght@300;400;600;700&family=Fira+Sans:wght@300;400;500;600&family=Source+Sans+Pro:wght@300;400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Merriweather:wght@300;400;700&family=Lora:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&family=Pacifico&family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&display=swap"
       rel="stylesheet"
     />
-    
+
     <LoadingIndicator color="red" />
     <Tooltips />
     <!-- metadata -->
@@ -94,7 +94,7 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
       }
-      
+
       // 立即执行主题颜色检查
       const savedColor = localStorage.getItem('theme-color') || 'pink';
       document.documentElement.setAttribute('data-theme-color', savedColor);
@@ -111,16 +111,16 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
           document.documentElement.classList.remove('dark');
           document.documentElement.classList.add('light');
         }
-        
+
         // 检查并应用主题颜色
         const savedColor = localStorage.getItem('theme-color') || 'pink';
         document.documentElement.setAttribute('data-theme-color', savedColor);
       }
       // 在每次页面加载时检查
       document.addEventListener('astro:page-load', checkTheme);
-      
+
       // 监听主题颜色变更事件
-      document.addEventListener('theme-color-changed', function(event) {
+      document.addEventListener('theme-color-changed', function (event) {
         const customEvent = event as CustomEvent;
         const { color, colorHex, colorName, colorData } = customEvent.detail;
         if (color) {
