@@ -1,15 +1,3 @@
----
-title: '黑心二手房东不退房租还想跑，看我兄弟三人如何将他拿下'
-slug: 'evil-landlord-rent-dispute'
-description: '一场斗智斗勇的讨租大战——房东跑路，房客围堵，惊心动魄'
-date: 2022-05-20
-updated: 2026-07-29
-tags: ['租房纠纷', '生活斗争', '兄弟情义', '社会现实']
-categories: ['新加坡往事']
-lang: 'zh'
-cover: '/images/posts/evil-landlord/img-01.jpg'
----
-
 ![配图1](/images/posts/evil-landlord/img-01.jpg)
 
 昨天一场讨房租大戏从早上一直唱到下午两三点，中午饥肠辘辘全靠半根黄瓜充饥，整个过程跌宕起伏，惊心动魄，令人叹为观止。
