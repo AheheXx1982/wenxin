@@ -142,6 +142,9 @@
   /* 图片 */
   img {
     @apply rounded-lg shadow-md;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     max-width: 100%;
