@@ -22,22 +22,22 @@ cover: '/images/posts/zalora-scam/cover.jpg'
 
 我这都还没遁入空门，就已经想要普渡众生的人，佛性真的是太高太高了～
 
-![配图01](/images/posts/zalora-scam/img-01.jpg)
+![配图01](/images/posts/zalora-scam/img-01.webp)
 
-![配图02](/images/posts/zalora-scam/img-02.jpg)
+![配图02](/images/posts/zalora-scam/img-02.webp)
 
-![配图03](/images/posts/zalora-scam/img-03.jpg)
+![配图03](/images/posts/zalora-scam/img-03.webp)
 
-![配图04](/images/posts/zalora-scam/img-04.jpg)
+![配图04](/images/posts/zalora-scam/img-04.webp)
 
-![配图05](/images/posts/zalora-scam/img-05.jpg)
+![配图05](/images/posts/zalora-scam/img-05.webp)
 
-![配图06](/images/posts/zalora-scam/img-06.jpg)
+![配图06](/images/posts/zalora-scam/img-06.webp)
 
-![配图07](/images/posts/zalora-scam/img-07.jpg)
+![配图07](/images/posts/zalora-scam/img-07.webp)
 
-![配图08](/images/posts/zalora-scam/img-08.jpg)
+![配图08](/images/posts/zalora-scam/img-08.webp)
 
-![配图09](/images/posts/zalora-scam/img-09.jpg)
+![配图09](/images/posts/zalora-scam/img-09.webp)
 
 当一个男人真心觉得抠脚比那个还舒服的时候，就基本上已经领悟到色即是空的精髓了，这个时候的法力值即将到达顶峰，再迷人的妖精都骗不了你，南无阿弥陀佛~🦧‍‍‍‍‍‍‍‍

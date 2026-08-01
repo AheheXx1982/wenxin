@@ -61,7 +61,7 @@ export const siteConfig: SiteConfig = {
   subtitle: 'AI · 生活 · 随笔', // 副标题
   name: '问心剑',
   description: '以心为镜，以剑为锋，\n既问本心，亦斩执念。',
-  avatar: '/img/wenxin.png', // 站点头像
+  avatar: '/img/wenxin.webp', // 站点头像
   showLogo: true, // 是否显示 logo 否则用 title
   author: '问心剑', // 作者名称
 
@@ -142,15 +142,15 @@ export const seoConfig = {
 // 一级目录的图片正在更新中，以确保与各主题的相关性并避免与其他目录重复
 // 请参见 src/lib/cover.ts 中的 getDefaultCoversForPath 和 getRandomCoverForPath 函数
 export const defaultCoverList = [
-  '/img/articles/1.jpg',
-  '/img/articles/2.jpg',
-  '/img/articles/3.jpg',
-  '/img/articles/4.jpg',
-  '/img/articles/5.jpg',
-  '/img/articles/6.jpg',
-  '/img/articles/7.jpg',
-  '/img/articles/8.jpg',
-  '/img/articles/9.jpg',
-  '/img/articles/10.jpg',
-  '/img/articles/11.jpg',
+  '/img/articles/1.webp',
+  '/img/articles/2.webp',
+  '/img/articles/3.webp',
+  '/img/articles/4.webp',
+  '/img/articles/5.webp',
+  '/img/articles/6.webp',
+  '/img/articles/7.webp',
+  '/img/articles/8.webp',
+  '/img/articles/9.webp',
+  '/img/articles/10.webp',
+  '/img/articles/11.webp',
 ];

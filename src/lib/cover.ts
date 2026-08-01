@@ -98,21 +98,21 @@ function getImagesForDirectory(dir: string): string[] {
   switch (dir) {
     case 'massage':
       return [
-        '/img/massage/1.jpg',
-        '/img/massage/2.jpg',
-        '/img/massage/3.jpg',
+        '/img/massage/1.webp',
+        '/img/massage/2.webp',
+        '/img/massage/3.webp',
       ];
     case 'friendship':
       return [
-        '/img/friendship/1.jpg',
-        '/img/friendship/2.jpg',
-        '/img/friendship/3.jpg',
+        '/img/friendship/1.webp',
+        '/img/friendship/2.webp',
+        '/img/friendship/3.webp',
       ];
     case 'singapore':
       return [
-        '/img/singapore/1.jpg',
-        '/img/singapore/2.jpg',
-        '/img/singapore/3.jpg',
+        '/img/singapore/1.webp',
+        '/img/singapore/2.webp',
+        '/img/singapore/3.webp',
       ];
     default:
       // 如果找不到特定目录的图片，返回空数组
