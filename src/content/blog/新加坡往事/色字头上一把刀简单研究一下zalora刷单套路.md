@@ -7,7 +7,7 @@ updated: 2026-07-31
 tags: ['新加坡', '诈骗', '刷单', '警示']
 categories: ['新加坡往事']
 lang: 'zh'
-cover: '/images/posts/zalora-scam/cover.jpg'
+cover: '/images/posts/zalora-scam/img-01.webp'
 ---
 
 最近Facebook推出了个“友缘”交友项目，妹子很多，个个都很漂亮，风情万种，虽然我对美色已经有了较强的免疫力，但是养养眼总没有什么坏处，相当于做了一次眼保健操～，而且，把她们看成美景，当成诗画，用心去品，而不是仅用肉眼去看，境界不就提高了么？
