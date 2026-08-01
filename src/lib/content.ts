@@ -122,11 +122,17 @@ export async function getRandomLatestPosts(count: number, lang?: Language): Prom
   return shuffled.slice(0, count);
 }
 
-// 为文章获取对应分类的固定封面图片（基于文章slug生成固定索引，避免刷新时图片变化）
+// 为文章获取封面图片：优先从正文提取第一张图片，其次 frontmatter cover，最后分类固定封面
 export function getPostCoverImage(post: BlogPost): string {
   const { categories, cover } = post.data;
 
-  // 优先使用文章 frontmatter 中指定的 cover 图片
+  // 优先从文章正文提取第一张图片作为封面
+  const bodyImg = post.body?.match(/!\[[^\]]*\]\((\/[^)\s]+\.(?:webp|jpg|jpeg|png|gif))\)/);
+  if (bodyImg && bodyImg[1]) {
+    return bodyImg[1];
+  }
+
+  // 其次使用文章 frontmatter 中指定的 cover 图片
   if (cover) {
     return cover;
   }
