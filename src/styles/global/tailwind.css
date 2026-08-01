@@ -29,6 +29,9 @@
   --color-card-foreground: hsl(var(--card-foreground));
   --color-grey-4: hsl(var(--grey-4));
   --color-gradient-start: var(--gradient-bg-start);
+  --color-gradient-end: var(--gradient-bg-end);
+  --color-gradient-shoka-button-start: var(--gradient-shoka-button-start);
+  --color-gradient-shoka-button-end: var(--gradient-shoka-button-end);
   --background-image-gradient: var(--gradient-bg);
   --background-image-gradient-pink: var(--gradient-pink);
   --background-image-gradient-header: var(--gradient-header);
