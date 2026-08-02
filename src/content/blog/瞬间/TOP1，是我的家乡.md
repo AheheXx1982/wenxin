@@ -2,7 +2,7 @@
 title: 'TOP1，是我的家乡'
 slug: 'hometown-top1'
 description: '你可能没听过——不是不够好，而是我们一直很低调。'
-date: 2026-08-02
+date: 2026-04-25
 updated: 2026-08-02
 tags: ['家乡', '漳州', '情感']
 categories: ['瞬间']

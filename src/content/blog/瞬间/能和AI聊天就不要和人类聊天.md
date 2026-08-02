@@ -2,7 +2,7 @@
 title: '能和AI聊天就不要和人类聊天'
 slug: 'sunyuchen-ai'
 description: '孙宇晨说能和 AI 聊天，就不要和人类聊天，我觉得挺有道理，我和孙哥的智慧其实只差那么一点点。'
-date: 2026-08-02
+date: 2026-03-13
 updated: 2026-08-02
 tags: ['AI', '孙宇晨', '人际关系']
 categories: ['瞬间']

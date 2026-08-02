@@ -2,7 +2,7 @@
 title: '加了冰激凌的McCafe'
 slug: 'mcd-life'
 description: '生活大体上总是会变好，但是不会太快，它总是慢慢的，悄悄的变好。'
-date: 2026-08-02
+date: 2022-07-07
 updated: 2026-08-02
 tags: ['麦当劳', '慢生活', '回忆']
 categories: ['瞬间']
