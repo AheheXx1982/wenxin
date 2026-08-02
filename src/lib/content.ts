@@ -203,7 +203,7 @@ export async function getCategoryList(
     投资随笔: [],
     开心乐园: [],
     神级音乐: [],
-    领悟: [],
+    瞬间: [],
   };
 
   // 创建所有一级分类
