@@ -52,6 +52,15 @@ if (!category) {
 // 如果是子分类，只展示当前分类的内容
 const displayCategories = category ? [category] : allCategories;
 
+// 分类头部图标
+const categoryIcons: { [key: string]: string } = {
+  按摩那点事: '💆',
+  何处觅知音: '🎵',
+  新加坡往事: '🌏',
+  投资随笔: '📈',
+  瞬间: '✨',
+};
+
 // 瞬间分类：小红书风格瀑布流视图（默认）+ 列表视图切换
 const isInsight = category?.name === '瞬间';
 const insightPosts = isInsight ? await getPostsByCategory('瞬间', 'zh') : [];
@@ -64,8 +73,11 @@ const insightPosts = isInsight ? await getPostsByCategory('瞬间', 'zh') : [];
     <QuoteMarquee />
     {
       category?.description && (
-        <div class="category-description border-primary/60 mx-auto mb-4 max-w-3xl rounded-lg border-l-4 bg-white/60 px-5 py-3 text-sm leading-relaxed text-gray-600 shadow-sm backdrop-blur">
-          {category.description}
+        <div class="mb-6 w-full rounded-r-lg border-l-4 border-purple-500 bg-purple-50 px-6 py-4 text-left dark:bg-purple-950/30">
+          <h2 class="mb-3 text-left text-2xl font-bold text-purple-600 dark:text-purple-400">
+            {categoryIcons[category.name] ?? '✦'} {category.name}
+          </h2>
+          <p class="text-muted-foreground text-left leading-relaxed">{category.description}</p>
         </div>
       )
     }
