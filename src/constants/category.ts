@@ -4,7 +4,7 @@ export const categoryMap: { [name: string]: string } = {
   按摩那点事: 'massage',
   何处觅知音: 'friendship',
   新加坡往事: 'singapore',
-  投资随笔: 'invest',
+  '投资 × AI': 'invest',
   瞬间: 'insight',
 
   // 英文分类映射
