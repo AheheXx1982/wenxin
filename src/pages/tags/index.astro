@@ -15,6 +15,15 @@ const sortedTags = Object.entries(tags)
   .sort(([, a], [, b]) => b - a)
   .map(([tag, count]) => ({ tag, count }));
 
+// 标签云多彩色（蓝/粉/紫/绿/橙 循环）
+const CLOUD_COLORS = [
+  'from-sky-400/10 to-blue-300/10 text-sky-500 hover:from-sky-400/80 hover:to-blue-300/80 hover:text-white',
+  'from-pink-400/10 to-rose-300/10 text-pink-500 hover:from-pink-400/80 hover:to-rose-300/80 hover:text-white',
+  'from-violet-400/10 to-purple-300/10 text-violet-500 hover:from-violet-400/80 hover:to-purple-300/80 hover:text-white',
+  'from-emerald-400/10 to-teal-300/10 text-emerald-500 hover:from-emerald-400/80 hover:to-teal-300/80 hover:text-white',
+  'from-amber-400/10 to-orange-300/10 text-amber-500 hover:from-amber-400/80 hover:to-orange-300/80 hover:text-white',
+];
+
 // 构建标签共现图：同篇文章中的标签两两相连
 type GraphNode = { id: string; count: number; links: Set<string> };
 const graphMap = new Map<string, GraphNode>();
@@ -102,16 +111,18 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
         </div>
       </div>
 
-      {/* 标签云视图（原样式） */}
+      {/* 标签云视图（多彩色） */}
       <div id="cloud-view" class="flex hidden flex-wrap gap-3 p-4">
         {
-          sortedTags.map(({ tag, count }) => (
+          sortedTags.map(({ tag, count }, index) => (
             <a
               href={`/tags/${tag.replace(/\//g, '-')}`}
-              class="group relative flex items-center rounded-lg bg-linear-to-r from-sky-400/10 to-blue-300/10 px-3 py-1.5 text-sm text-sky-500 transition-all duration-300 hover:-translate-y-0.5 hover:from-sky-400/80 hover:to-blue-300/80 hover:text-white hover:shadow-lg"
+              class={`group relative flex items-center rounded-lg bg-linear-to-r px-3 py-1.5 text-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${
+                CLOUD_COLORS[index % CLOUD_COLORS.length]
+              }`}
             >
               <span class="font-medium">{tag}</span>
-              <span class="ml-1.5 rounded-full bg-white/10 px-1.5 text-xs">{count}</span>
+              <span class="ml-1.5 rounded-full bg-white/20 px-1.5 text-xs">{count}</span>
             </a>
           ))
         }
