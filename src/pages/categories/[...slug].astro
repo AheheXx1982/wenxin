@@ -64,7 +64,7 @@ const insightPosts = isInsight ? await getPostsByCategory('瞬间', 'zh') : [];
     <QuoteMarquee />
     {
       category?.description && (
-        <div class="category-description border-primary/60 bg-surface mx-auto mb-4 max-w-3xl rounded-lg border-l-4 px-5 py-3 text-sm leading-relaxed text-gray-600">
+        <div class="category-description border-primary/60 mx-auto mb-4 max-w-3xl rounded-lg border-l-4 bg-white/60 px-5 py-3 text-sm leading-relaxed text-gray-600 shadow-sm backdrop-blur">
           {category.description}
         </div>
       )
