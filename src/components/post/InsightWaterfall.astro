@@ -1,0 +1,184 @@
+---
+// 小红书风格瀑布流：双列 masonry、图片卡片、无标题
+import { getPostCoverImage } from '@lib/content';
+import { getLanguageFromAstroUrl } from '@lib/i18n';
+import { parseDate } from '@lib/datetime';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  lang?: string;
+}
+
+const { posts = [] } = Astro.props;
+const currentLang = (Astro.props.lang || getLanguageFromAstroUrl(Astro.url)) as 'zh' | 'en';
+
+// 无图卡片的渐变兜底色系（小红书风多巴胺色）
+const GRADIENTS = [
+  'linear-gradient(135deg,#fdf2f8,#fce7f3)',
+  'linear-gradient(135deg,#eff6ff,#dbeafe)',
+  'linear-gradient(135deg,#f0fdf4,#dcfce7)',
+  'linear-gradient(135deg,#fffbeb,#fef3c7)',
+  'linear-gradient(135deg,#faf5ff,#f3e8ff)',
+  'linear-gradient(135deg,#f8fafc,#e2e8f0)',
+  'linear-gradient(135deg,#fef2f2,#fee2e2)',
+  'linear-gradient(135deg,#ecfeff,#cffafe)',
+];
+
+const pickGradient = (seed: string) => {
+  let h = 0;
+  for (const c of seed) h = (h * 31 + c.charCodeAt(0)) % 997;
+  return GRADIENTS[h % GRADIENTS.length];
+};
+
+// 提取正文纯文本摘要（无标题卡片用正文片段填充）
+const plainText = (post: CollectionEntry<'blog'>): string =>
+  (post.body || '')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/#{1,6}\s*/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const cards = posts.map((post) => ({
+  post,
+  cover: getPostCoverImage(post),
+  text: plainText(post),
+  date: parseDate(post.data.date, 'YYYY-MM-DD'),
+}));
+---
+
+<div class="insight-waterfall" data-lang={currentLang}>
+  <style is:global>
+    .insight-waterfall {
+      --gap: 0.75rem;
+      columns: 2;
+      column-gap: var(--gap);
+      width: 100%;
+    }
+
+    @media (min-width: 1024px) {
+      .insight-waterfall {
+        --gap: 1rem;
+        columns: 3;
+      }
+    }
+
+    .iw-card {
+      break-inside: avoid;
+      margin-bottom: var(--gap);
+      border-radius: 0.875rem;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+      display: block;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .dark .iw-card {
+      background: #1f2937;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .iw-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+    }
+
+    .iw-media {
+      display: block;
+      width: 100%;
+      object-fit: cover;
+      aspect-ratio: 3 / 4;
+    }
+
+    .iw-media-landscape {
+      aspect-ratio: 4 / 3;
+    }
+
+    .iw-media-square {
+      aspect-ratio: 1 / 1;
+    }
+
+    /* 无图卡片：渐变底 + 正文摘要 */
+    .iw-text-card {
+      padding: 1.1rem 1.1rem 0.9rem;
+      min-height: 8.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .iw-text-card p {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #374151;
+      display: -webkit-box;
+      -webkit-line-clamp: 6;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .dark .iw-text-card p {
+      color: #d1d5db;
+    }
+
+    .iw-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0.85rem;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .dark .iw-meta {
+      border-top-color: rgba(255, 255, 255, 0.06);
+      color: #6b7280;
+    }
+
+    .iw-cat {
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #6b7280;
+      font-size: 0.7rem;
+    }
+
+    .dark .iw-cat {
+      background: #374151;
+      color: #9ca3af;
+    }
+  </style>
+
+  {
+    cards.map(({ post, cover, text, date }) => {
+      const hasCover = cover && cover !== '/img/banner.webp' && !cover.includes('banner');
+      const seed = post.slug || post.id || 'x';
+      const ratio = (seed.length + date.length) % 3; // 高度错落：3/4、4/3、1/1
+      const ratioClass = ratio === 0 ? 'iw-media' : ratio === 1 ? 'iw-media iw-media-landscape' : 'iw-media iw-media-square';
+      return (
+        <a class="iw-card" href={`/article/${post.slug || post.id}`}>
+          {hasCover ? (
+            <img class={ratioClass} src={cover} alt="" loading="lazy" />
+          ) : (
+            <div class="iw-text-card" style={`background:${pickGradient(seed)}`}>
+              <p>{text || '……'}</p>
+            </div>
+          )}
+          <div class="iw-meta">
+            <span>{date}</span>
+            <span class="iw-cat">{post.data.categories?.[0] ?? ''}</span>
+          </div>
+        </a>
+      );
+    })
+  }
+</div>

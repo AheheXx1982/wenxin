@@ -1,0 +1,111 @@
+---
+// 视图切换按钮：瀑布流 / 列表
+// 默认瀑布流，选择记忆在 localStorage
+interface Props {
+  storageKey?: string;
+  targetId?: string; // 需要切换的容器 id（配合客户端 JS）
+}
+
+const { storageKey = 'wenxin-view-mode', targetId = '' } = Astro.props;
+---
+
+<div class="view-toggle" data-storage-key={storageKey} data-target-id={targetId}>
+  <style is:global>
+    .view-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.2rem;
+      border-radius: 999px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+    }
+    .dark .view-toggle {
+      background: #1f2937;
+      border-color: #374151;
+    }
+    .view-toggle button {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: #6b7280;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s ease;
+      line-height: 1.2;
+    }
+    .dark .view-toggle button {
+      color: #9ca3af;
+    }
+    .view-toggle button.active {
+      background: #fff;
+      color: #111827;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .dark .view-toggle button.active {
+      background: #374151;
+      color: #f9fafb;
+    }
+    .view-toggle button svg {
+      width: 0.9rem;
+      height: 0.9rem;
+    }
+  </style>
+
+  <button type="button" data-mode="waterfall" title="瀑布流">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <rect x="3" y="3" width="8" height="10" rx="1.5"></rect>
+      <rect x="13" y="3" width="8" height="6" rx="1.5"></rect>
+      <rect x="13" y="11" width="8" height="10" rx="1.5"></rect>
+      <rect x="3" y="15" width="8" height="6" rx="1.5"></rect>
+    </svg>
+    瀑布流
+  </button>
+  <button type="button" data-mode="list" title="列表">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="4" y1="6" x2="20" y2="6"></line>
+      <line x1="4" y1="12" x2="20" y2="12"></line>
+      <line x1="4" y1="18" x2="20" y2="18"></line>
+    </svg>
+    列表
+  </button>
+
+  <script>
+    (function () {
+      // Astro <script> 是独立模块，无法访问组件作用域变量，需从 DOM 读取
+      const toggle = document.querySelector('.view-toggle');
+      if (!toggle) return;
+      const storageKey = toggle.dataset.storageKey || 'wenxin-view-mode';
+      const targetId = toggle.dataset.targetId || '';
+      const target = targetId ? document.getElementById(targetId) : null;
+
+      const btns = toggle.querySelectorAll('button[data-mode]');
+      const applyMode = (mode: string) => {
+        btns.forEach((b) => b.classList.toggle('active', b.dataset.mode === mode));
+        if (target) {
+          target.dataset.view = mode;
+          // 用 class 控制显示（两个视图并存，CSS 切换 display）
+          const views = target.querySelectorAll('[data-view-pane]');
+          views.forEach((v: HTMLElement) => {
+            v.style.display = v.dataset.viewPane === mode ? '' : 'none';
+          });
+        }
+      };
+
+      const saved = localStorage.getItem(storageKey) || 'waterfall';
+      applyMode(saved);
+
+      btns.forEach((b) => {
+        b.addEventListener('click', () => {
+          const mode = b.dataset.mode || 'waterfall';
+          localStorage.setItem(storageKey, mode);
+          applyMode(mode);
+        });
+      });
+    })();
+  </script>
+</div>
