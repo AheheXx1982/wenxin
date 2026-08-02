@@ -26,7 +26,7 @@ export async function getSortedPosts(lang?: Language, excludeIntro: boolean = fa
       });
 
   // 排除介绍文章（如果需要）
-  const finalPosts = excludeIntro 
+  const finalPosts = excludeIntro
     ? filteredPosts.filter((post) => {
         const isIntroArticle = post.slug?.endsWith('/index') || post.slug?.includes('/index');
         return !isIntroArticle;
@@ -183,7 +183,9 @@ export type Category = {
   children?: Category[];
 };
 
-export async function getCategoryList(lang?: Language): Promise<{ categories: Category[]; countMap: { [key: string]: number } }> {
+export async function getCategoryList(
+  lang?: Language,
+): Promise<{ categories: Category[]; countMap: { [key: string]: number } }> {
   // 获取指定语言的文章，默认为中文
   const allBlogPosts = await getSortedPosts(lang, false);
 
@@ -192,12 +194,13 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
 
   // 首先，根据 categoryMap 创建所有分类结构
   const orderedCategoryNames = Object.keys(categoryMap);
-  
+
   // 构建分类层级结构映射
   const categoryHierarchy: { [key: string]: string[] } = {
-    '按摩那点事': [],
-    '何处觅知音': [],
-    '新加坡往事': []
+    按摩那点事: [],
+    何处觅知音: [],
+    新加坡往事: [],
+    开心乐园: [],
   };
 
   // 创建所有一级分类
@@ -234,7 +237,7 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
       const deepestCategory = categories[0][categories[0].length - 1];
       const slugParts = (post.slug || '').split('/');
       const lastSlugPart = slugParts[slugParts.length - 1];
-      
+
       // 如果slug的最后一部分与分类名称相同，则为介绍文章
       isIntroArticle = lastSlugPart === deepestCategory;
     } else if (typeof categories[0] === 'string') {
@@ -248,7 +251,7 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
       // 对于嵌套分类，只统计最深层的分类
       // categories[0] = ['期权研究院', '实盘分享'] 只统计 '实盘分享'
       const deepestCategory = categories[0][categories[0].length - 1];
-      
+
       // 只有非介绍文章才计入统计
       if (!isIntroArticle) {
         countMap[deepestCategory] = (countMap[deepestCategory] || 0) + 1;
@@ -256,7 +259,7 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
     } else {
       // categories[0] = '工具'
       const name = categories[0] as string;
-      
+
       // 只有非介绍文章才计入统计
       if (!isIntroArticle) {
         countMap[name] = (countMap[name] || 0) + 1;
@@ -270,17 +273,17 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
     if (categoryMap[categoryName]) {
       return categoryName;
     }
-    
+
     // 尝试从 i18n 配置中找到对应的中文名称
     // 通过英文名称查找中文键
-    const enCategoryNames = i18nUI.en?.categoryNames as Record<string, string> || {};
-    const zhKey = orderedCategoryNames.find(key => {
+    const enCategoryNames = (i18nUI.en?.categoryNames as Record<string, string>) || {};
+    const zhKey = orderedCategoryNames.find((key) => {
       return enCategoryNames[key] === categoryName;
     });
-    
+
     return zhKey || categoryName;
   };
-  
+
   resCategories.sort((a, b) => {
     const keyA = getCategoryKey(a.name);
     const keyB = getCategoryKey(b.name);
@@ -293,7 +296,7 @@ export async function getCategoryList(lang?: Language): Promise<{ categories: Ca
 
   // 递归对子分类进行排序
   function sortChildrenCategories(categories: Category[]) {
-    categories.forEach(category => {
+    categories.forEach((category) => {
       if (category.children && category.children.length > 0) {
         category.children.sort((a, b) => {
           const keyA = getCategoryKey(a.name);
@@ -362,23 +365,23 @@ export function getCategoryArr(categories?: string[] | string) {
 export function getCategoryLinks(categories?: Category[], parentLink?: string): string[] {
   if (!categories?.length) return [];
   const res: string[] = [];
-  
+
   // 创建英文到中文的映射函数
   const getCategoryMapKey = (categoryName: string): string | undefined => {
     // 如果直接在 categoryMap 中存在，返回该键对应的值
     if (categoryMap[categoryName]) {
       return categoryMap[categoryName];
     }
-    
+
     // 尝试从 i18n 配置中找到对应的中文名称
-    const enCategoryNames = i18nUI.en?.categoryNames as Record<string, string> || {};
-    const zhKey = Object.keys(categoryMap).find(key => {
+    const enCategoryNames = (i18nUI.en?.categoryNames as Record<string, string>) || {};
+    const zhKey = Object.keys(categoryMap).find((key) => {
       return enCategoryNames[key] === categoryName;
     });
-    
+
     return zhKey ? categoryMap[zhKey] : undefined;
   };
-  
+
   categories.forEach((category: Category) => {
     const link = getCategoryMapKey(category.name);
     // 添加检查确保 link 不是 undefined
@@ -440,13 +443,13 @@ export function getCategoryByLink(categories: Category[], link?: string): Catego
     if (names.length === 0) return null;
 
     const firstName = names[0];
-    
+
     // 先尝试直接匹配
     let category = cats.find((cat) => cat.name === firstName);
-    
+
     // 如果没有直接匹配，尝试通过 i18n 映射匹配
     if (!category) {
-      const enCategoryNames = i18nUI.en?.categoryNames as Record<string, string> || {};
+      const enCategoryNames = (i18nUI.en?.categoryNames as Record<string, string>) || {};
       const enName = enCategoryNames[firstName];
       if (enName) {
         category = cats.find((cat) => cat.name === enName);

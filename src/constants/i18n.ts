@@ -53,6 +53,9 @@ export const i18nSiteConfig = {
       { name: '按摩那点事', href: '/categories/massage' },
       { name: '何处觅知音', href: '/categories/friendship' },
       { name: '新加坡往事', href: '/categories/singapore', hot: true },
+      { name: '投资随笔', href: '/categories/invest' },
+      { name: '开心乐园', href: '/categories/happy' },
+      { name: '神级音乐', href: '/categories/music' },
     ],
     featuredCategories: [
       {
@@ -79,21 +82,23 @@ export const i18nSiteConfig = {
     title: 'WenXin',
     alternate: 'WenXinJian',
     subtitle: 'Investing · AI · Writing · Life',
-    description:
-      'Personal notes by WenXinJian — investing, AI, writing, and life.',
+    description: 'Personal notes by WenXinJian — investing, AI, writing, and life.',
     author: 'WenXinJian',
     navLinks: [
       { name: 'Home', href: '/en' },
       { name: 'Essays', href: '/en/categories/massage' },
       { name: 'Reading', href: '/en/categories/friendship' },
       { name: 'Singapore', href: '/en/categories/singapore', hot: true },
+      { name: 'Investment', href: '/en/categories/invest' },
+      { name: 'Happy Land', href: '/en/categories/happy' },
+      { name: 'Music', href: '/en/categories/music' },
     ],
     featuredCategories: [
       {
         link: '/en/categories/massage',
         label: 'Massage Stories',
         image: '/img/massage/1.webp',
-        description: 'A massage therapist\'s growth stories and insights',
+        description: "A massage therapist's growth stories and insights",
       },
       {
         link: '/en/categories/friendship',
@@ -224,6 +229,9 @@ export const i18nUI = {
       交易平台与模拟器: '交易平台与模拟器',
       行情筛选与数据: '行情筛选与数据',
       模板与效率清单: '模板与效率清单',
+      投资随笔: '投资随笔',
+      开心乐园: '开心乐园',
+      神级音乐: '神级音乐',
     },
   },
   en: {
@@ -323,6 +331,9 @@ export const i18nUI = {
       交易平台与模拟器: 'Trading Platforms & Simulation',
       行情筛选与数据: 'Screeners & Data',
       模板与效率清单: 'Templates & Checklists',
+      投资随笔: 'Investment Notes',
+      开心乐园: 'Happy Land',
+      神级音乐: 'Music',
     },
   },
 } as const;

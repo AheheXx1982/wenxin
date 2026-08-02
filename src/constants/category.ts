@@ -1,12 +1,18 @@
 // 手动设置的分类映射 - 新建分类结构
 export const categoryMap: { [name: string]: string } = {
   // 中文分类映射
-  '按摩那点事': 'massage',
-  '何处觅知音': 'friendship',
-  '新加坡往事': 'singapore',
-  
+  按摩那点事: 'massage',
+  何处觅知音: 'friendship',
+  新加坡往事: 'singapore',
+  投资随笔: 'invest',
+  开心乐园: 'happy',
+  神级音乐: 'music',
+
   // 英文分类映射
   'Massage Stories': 'massage',
-  'Friendship': 'friendship',
-  'Singapore Stories': 'singapore'
+  Friendship: 'friendship',
+  'Singapore Stories': 'singapore',
+  'Investment Notes': 'invest',
+  'Happy Land': 'happy',
+  Music: 'music',
 };
