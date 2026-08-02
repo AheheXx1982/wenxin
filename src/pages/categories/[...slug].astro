@@ -4,9 +4,11 @@ import HomeSider from '@components/layout/HomeSider.astro';
 import Cover from '@components/ui/cover/Cover.astro';
 import Layout from '@layouts/Layout.astro';
 import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
-import { getCategoryByLink, getCategoryLinks, getCategoryList } from '@lib/content';
+import { getCategoryByLink, getCategoryLinks, getCategoryList, getPostsByCategory } from '@lib/content';
 import { getSeoConfig, getUIText } from '@lib/i18n';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
+import InsightWaterfall from '@components/post/InsightWaterfall.astro';
+import ViewToggle from '@components/post/ViewToggle.astro';
 
 // 获取分类页面
 export async function getStaticPaths() {
@@ -49,6 +51,10 @@ if (!category) {
 
 // 如果是子分类，只展示当前分类的内容
 const displayCategories = category ? [category] : allCategories;
+
+// 瞬间分类：小红书风格瀑布流视图（默认）+ 列表视图切换
+const isInsight = category?.name === '瞬间';
+const insightPosts = isInsight ? await getPostsByCategory('瞬间', 'zh') : [];
 ---
 
 <Layout title={`${uiText.categoriesTitle} - ${category?.name} | ${seoConfig.title}`}>
@@ -56,6 +62,31 @@ const displayCategories = category ? [category] : allCategories;
     <Cover slot="cover" title={`${uiText.categoriesTitle}于"${category?.name}"的文章`} />
     <HomeSider slot="sider" lang="zh" />
     <QuoteMarquee />
-    <CategoryPostList rootCategory={category} categories={displayCategories} countMap={countMap} lang="zh" />
+    {
+      category?.description && (
+        <div class="category-description border-primary/60 bg-surface mx-auto mb-4 max-w-3xl rounded-lg border-l-4 px-5 py-3 text-sm leading-relaxed text-gray-600">
+          {category.description}
+        </div>
+      )
+    }
+    {
+      isInsight && (
+        <div class="flex justify-end pb-2">
+          <ViewToggle storageKey="wenxin-insight-view" targetId="insight-view-root" />
+        </div>
+      )
+    }
+    <div id="insight-view-root">
+      <div data-view-pane="list" style={isInsight ? 'display:none' : ''}>
+        <CategoryPostList rootCategory={category} categories={displayCategories} countMap={countMap} lang="zh" />
+      </div>
+      {
+        isInsight && (
+          <div data-view-pane="waterfall">
+            <InsightWaterfall posts={insightPosts} lang="zh" />
+          </div>
+        )
+      }
+    </div>
   </TwoColumnLayout>
 </Layout>

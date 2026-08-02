@@ -180,6 +180,7 @@ export const getPostCount = async () => {
 
 export type Category = {
   name: string;
+  description?: string;
   children?: Category[];
 };
 
@@ -201,8 +202,6 @@ export async function getCategoryList(
     何处觅知音: [],
     新加坡往事: [],
     投资随笔: [],
-    开心乐园: [],
-    神级音乐: [],
     瞬间: [],
   };
 
@@ -332,14 +331,14 @@ export async function getCategoryList(
 export function addCategoryRecursively(rootCategories: Category[], parentNames: string[], name: string) {
   if (parentNames.length === 0) {
     const index = rootCategories.findIndex((c) => c.name === name); // 如果当前分类已存在，则直接返回
-    if (index === -1) rootCategories.push({ name });
+    if (index === -1) rootCategories.push({ name, description: getCategoryDescription(name) });
     return;
   } else {
     const rootParentName = parentNames[0];
     const index = rootCategories.findIndex((c) => c.name === rootParentName);
     if (index === -1) {
       // 如果父级分类不存在，则创建
-      const rootParentCategory = { name: rootParentName, children: [] };
+      const rootParentCategory = { name: rootParentName, description: getCategoryDescription(rootParentName), children: [] };
       rootCategories.push(rootParentCategory);
       addCategoryRecursively(rootParentCategory.children, parentNames.slice(1), name);
     } else {
@@ -349,6 +348,20 @@ export function addCategoryRecursively(rootCategories: Category[], parentNames: 
       addCategoryRecursively(rootParentCategory.children, parentNames.slice(1), name);
     }
   }
+}
+
+// 分类头部说明文案（zh）
+const categoryDescriptions: { [key: string]: string } = {
+  按摩那点事: '十年职业生涯',
+  何处觅知音: '关于人生、认知、爱情、哲学，以及成长。',
+  新加坡往事: '南洋生活与见闻',
+  投资随笔: '',
+  瞬间: '记录当下、灵感和日常，不追求完整，只追求真实。',
+};
+
+function getCategoryDescription(name: string): string | undefined {
+  const desc = categoryDescriptions[name];
+  return desc && desc.length > 0 ? desc : undefined;
 }
 
 // 统一 ['分类1', '分类2'] 和 '分类'
