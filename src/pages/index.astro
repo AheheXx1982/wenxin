@@ -10,6 +10,8 @@ import { getRandomLatestPosts } from '@lib/content';
 import { getSeoConfig } from '@lib/i18n';
 import { Icon } from 'astro-icon/components';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
+import InsightWaterfall from '@components/post/InsightWaterfall.astro';
+import ViewToggle from '@components/post/ViewToggle.astro';
 
 const posts = await getRandomLatestPosts(5, 'zh');
 const seoConfig = getSeoConfig('zh');
@@ -20,8 +22,18 @@ const seoConfig = getSeoConfig('zh');
     <Cover slot="cover" lang="zh" />
     <HomeSider slot="sider" lang="zh" />
     <QuoteMarquee lang="zh" />
+    <div class="flex justify-end pb-2">
+      <ViewToggle storageKey="wenxin-home-view" targetId="home-view-root" />
+    </div>
     <div class="shadow-box bg-gradient-start tablet:shadow-none flex flex-col gap-4 overflow-hidden p-4 pt-6 md:px-1 md:py-2">
-      <PostList posts={posts} showPaginator={false} />
+      <div id="home-view-root">
+        <div data-view-pane="waterfall">
+          <InsightWaterfall posts={posts} lang="zh" />
+        </div>
+        <div data-view-pane="list" style="display:none">
+          <PostList posts={posts} showPaginator={false} />
+        </div>
+      </div>
     </div>
     <div class="flex w-full flex-col items-center">
       <ButtonLink variant="gradient-shoka" url="/articles" size="lg" label="所有文章" className="mt-10 items-center">
