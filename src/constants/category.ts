@@ -7,6 +7,7 @@ export const categoryMap: { [name: string]: string } = {
   投资随笔: 'invest',
   开心乐园: 'happy',
   神级音乐: 'music',
+  领悟: 'insight',
 
   // 英文分类映射
   'Massage Stories': 'massage',
@@ -15,4 +16,5 @@ export const categoryMap: { [name: string]: string } = {
   'Investment Notes': 'invest',
   'Happy Land': 'happy',
   Music: 'music',
+  Insight: 'insight',
 };

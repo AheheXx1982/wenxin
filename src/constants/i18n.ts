@@ -56,6 +56,7 @@ export const i18nSiteConfig = {
       { name: '投资随笔', href: '/categories/invest' },
       { name: '开心乐园', href: '/categories/happy' },
       { name: '神级音乐', href: '/categories/music' },
+      { name: '领悟', href: '/categories/insight' },
     ],
     featuredCategories: [
       {
@@ -92,6 +93,7 @@ export const i18nSiteConfig = {
       { name: 'Investment', href: '/en/categories/invest' },
       { name: 'Happy Land', href: '/en/categories/happy' },
       { name: 'Music', href: '/en/categories/music' },
+      { name: 'Insight', href: '/en/categories/insight' },
     ],
     featuredCategories: [
       {
@@ -232,6 +234,7 @@ export const i18nUI = {
       投资随笔: '投资随笔',
       开心乐园: '开心乐园',
       神级音乐: '神级音乐',
+      领悟: '领悟',
     },
   },
   en: {
@@ -334,6 +337,7 @@ export const i18nUI = {
       投资随笔: 'Investment Notes',
       开心乐园: 'Happy Land',
       神级音乐: 'Music',
+      领悟: 'Insight',
     },
   },
 } as const;
