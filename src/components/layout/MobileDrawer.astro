@@ -147,8 +147,19 @@ const uiText = getUIText(currentLang);
 
   let drawerController: DrawerController;
 
-  document.addEventListener('astro:page-load', () => {
+  function initDrawerController() {
     drawerController?.destroy();
     drawerController = new DrawerController();
-  });
+  }
+
+  // 立即初始化（module script 在 DOM 解析后执行，drawer 元素已存在）
+  // 修复：ClientRouter 移除后 astro:page-load 不再触发，原逻辑导致抽屉永不初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDrawerController);
+  } else {
+    initDrawerController();
+  }
+
+  // 兼容客户端路由：未来恢复 ClientRouter 时页面切换重建
+  document.addEventListener('astro:page-load', initDrawerController);
 </script>

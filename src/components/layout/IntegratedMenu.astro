@@ -121,32 +121,7 @@ const THEME_COLORS = [
     <!-- 颜色球组件 -->
     <div id="color-balls-container" class="pointer-events-auto absolute inset-0 z-35 rounded-full p-4"></div>
 
-    <!-- 音乐播放器 -->
-    <button
-      type="button"
-      class="menu-item-container absolute top-1/2 left-4 z-50 -translate-y-1/2 transform cursor-pointer transition-all duration-300 hover:scale-110"
-      id="music-toggle"
-      style="pointer-events: auto !important;"
-    >
-      <div
-        class="menu-button-content music-icon-rotation relative flex h-14 w-14 flex-col items-center justify-center rounded-full border border-pink-200/50 bg-white/60 p-3 shadow-lg backdrop-blur-sm hover:bg-pink-100/70 hover:shadow-xl"
-      >
-        <svg
-          class="h-6 w-6 text-pink-600 transition-colors hover:text-pink-800"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
-          ></path>
-        </svg>
-        <span class="mt-1 text-xs font-medium text-pink-700">音乐</span>
-      </div>
-    </button>
+    <!-- 音乐播放器已剥离为独立右侧组件（GlobalMusicPlayer），不再内嵌在菜单中 -->
 
     <!-- 主题样式选择器 -->
     <button
