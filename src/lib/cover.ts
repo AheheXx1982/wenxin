@@ -1,7 +1,7 @@
 import { defaultCoverList } from '@constants/site-config';
 import type { CoverImageMap } from '../types/cover';
 
-// 定义分类到图片目录的映射（问心剑：按摩那点事 / 何处觅知音 / 新加坡往事）
+// 定义分类到图片目录的映射（问心剑：按摩大叔 / 何处觅知音 / 南洋往事）
 const categoryImageMap: CoverImageMap = {
   massage: 'massage',
   friendship: 'friendship',
@@ -15,9 +15,9 @@ export function getDefaultCoversForPath(path: string): string[] {
 
   // 中文分类名 -> 英文路径
   const pathMapping: Record<string, string> = {
-    按摩那点事: 'massage',
+    按摩大叔: 'massage',
     何处觅知音: 'friendship',
-    新加坡往事: 'singapore',
+    南洋往事: 'singapore',
     'Massage Stories': 'massage',
     Friendship: 'friendship',
     'Singapore Stories': 'singapore',
@@ -53,9 +53,9 @@ export function getFeaturedCoversForPath(path: string): string[] {
 
   // 中文分类名 -> 英文路径
   const pathMapping: Record<string, string> = {
-    按摩那点事: 'massage',
+    按摩大叔: 'massage',
     何处觅知音: 'friendship',
-    新加坡往事: 'singapore',
+    南洋往事: 'singapore',
     'Massage Stories': 'massage',
     Friendship: 'friendship',
     'Singapore Stories': 'singapore',
@@ -97,23 +97,11 @@ export function getFeaturedCoversForPath(path: string): string[] {
 function getImagesForDirectory(dir: string): string[] {
   switch (dir) {
     case 'massage':
-      return [
-        '/img/massage/1.webp',
-        '/img/massage/2.webp',
-        '/img/massage/3.webp',
-      ];
+      return ['/img/massage/1.webp', '/img/massage/2.webp', '/img/massage/3.webp'];
     case 'friendship':
-      return [
-        '/img/friendship/1.webp',
-        '/img/friendship/2.webp',
-        '/img/friendship/3.webp',
-      ];
+      return ['/img/friendship/1.webp', '/img/friendship/2.webp', '/img/friendship/3.webp'];
     case 'singapore':
-      return [
-        '/img/singapore/1.webp',
-        '/img/singapore/2.webp',
-        '/img/singapore/3.webp',
-      ];
+      return ['/img/singapore/1.webp', '/img/singapore/2.webp', '/img/singapore/3.webp'];
     default:
       // 如果找不到特定目录的图片，返回空数组
       return [];
@@ -139,16 +127,16 @@ export function getRandomFeaturedCoverForPath(path: string): string {
 // 根据分类路径和文章slug获取固定图片（避免刷新时图片变化）
 export function getFixedCoverForPath(path: string, slug: string): string {
   const covers = getDefaultCoversForPath(path);
-  
+
   // 基于slug生成一个固定的索引
   let hash = 0;
   const slugStr = typeof slug === 'string' ? slug : String(slug);
   for (let i = 0; i < slugStr.length; i++) {
     const char = slugStr.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash; // 转换为32位整数
   }
-  
+
   // 确保索引为非负数
   const fixedIndex = Math.abs(hash) % covers.length;
   const cover = covers[fixedIndex];

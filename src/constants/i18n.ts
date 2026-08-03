@@ -50,16 +50,16 @@ export const i18nSiteConfig = {
     author: '问心剑',
     navLinks: [
       { name: '首页', href: '/' },
-      { name: '按摩那点事', href: '/categories/massage' },
+      { name: '按摩大叔', href: '/categories/massage' },
       { name: '何处觅知音', href: '/categories/friendship' },
-      { name: '新加坡往事', href: '/categories/singapore', hot: true },
+      { name: '南洋往事', href: '/categories/singapore', hot: true },
       { name: '投资 × AI', href: '/categories/invest' },
       { name: '瞬间', href: '/categories/insight' },
     ],
     featuredCategories: [
       {
         link: '/categories/massage',
-        label: '按摩那点事',
+        label: '按摩大叔',
         image: '/img/massage/1.webp',
         description: '随手写下的文字与思考',
       },
@@ -71,7 +71,7 @@ export const i18nSiteConfig = {
       },
       {
         link: '/categories/singapore',
-        label: '新加坡往事',
+        label: '南洋往事',
         image: '/img/singapore/1.webp',
         description: '在异国他乡的奋斗经历与人生感悟',
       },

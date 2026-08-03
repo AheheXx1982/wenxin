@@ -198,9 +198,9 @@ export async function getCategoryList(
 
   // 构建分类层级结构映射
   const categoryHierarchy: { [key: string]: string[] } = {
-    按摩那点事: [],
+    按摩大叔: [],
     何处觅知音: [],
-    新加坡往事: [],
+    南洋往事: [],
     '投资 × AI': [],
     瞬间: [],
   };
@@ -352,9 +352,9 @@ export function addCategoryRecursively(rootCategories: Category[], parentNames: 
 
 // 分类头部说明文案（zh）
 const categoryDescriptions: { [key: string]: string } = {
-  按摩那点事: '十年职业生涯',
+  按摩大叔: '十年职业生涯',
   何处觅知音: '关于人生、认知、爱情、哲学，以及成长。',
-  新加坡往事: '南洋生活与见闻',
+  南洋往事: '南洋生活与见闻',
   '投资 × AI': '投资、AI、量化与自动化实践。',
   瞬间: '记录当下、灵感和日常，不追求完整，只追求真实。',
 };
