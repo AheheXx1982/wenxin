@@ -117,12 +117,12 @@ export const i18nSiteConfig = {
 // 多语言 SEO 配置
 export const i18nSeoConfig = {
   zh: {
-    title: '问心｜AI · 生活 · 随笔',
+    title: '问心｜一个纯血天蝎的精神自留地',
     description: '以心为镜，以剑为锋，\n既问本心，亦斩执念。',
     keywords: '问心剑, 问心, 个人博客, 投资, AI, 写作, 生活',
   },
   en: {
-    title: 'WenXin · Notes by WenXinJian',
+    title: "WenXin · A Scorpio's Spiritual Sanctuary",
     description: 'Personal notes by WenXinJian — investing, AI, writing, and life.',
     keywords: 'WenXinJian, WenXin, personal blog, investing, AI, writing, life',
   },
