@@ -4,8 +4,8 @@ import type { CoverImageMap } from '../types/cover';
 // 定义分类到图片目录的映射（问心剑：按摩大叔 / 何处觅知音 / 南洋往事）
 const categoryImageMap: CoverImageMap = {
   massage: 'massage',
-  friendship: 'friendship',
-  singapore: 'singapore',
+  kindred: 'kindred',
+  nanyang: 'nanyang',
 };
 
 // 根据分类路径获取该分类下的图片列表
@@ -16,11 +16,11 @@ export function getDefaultCoversForPath(path: string): string[] {
   // 中文分类名 -> 英文路径
   const pathMapping: Record<string, string> = {
     按摩大叔: 'massage',
-    何处觅知音: 'friendship',
-    南洋往事: 'singapore',
+    何处觅知音: 'kindred',
+    南洋往事: 'nanyang',
     'Massage Stories': 'massage',
-    Friendship: 'friendship',
-    'Singapore Stories': 'singapore',
+    Friendship: 'kindred',
+    'Singapore Stories': 'nanyang',
   };
 
   // 如果路径包含中文分类名，进行转换
@@ -54,11 +54,11 @@ export function getFeaturedCoversForPath(path: string): string[] {
   // 中文分类名 -> 英文路径
   const pathMapping: Record<string, string> = {
     按摩大叔: 'massage',
-    何处觅知音: 'friendship',
-    南洋往事: 'singapore',
+    何处觅知音: 'kindred',
+    南洋往事: 'nanyang',
     'Massage Stories': 'massage',
-    Friendship: 'friendship',
-    'Singapore Stories': 'singapore',
+    Friendship: 'kindred',
+    'Singapore Stories': 'nanyang',
   };
 
   // 如果路径包含中文分类名，进行转换
@@ -98,10 +98,10 @@ function getImagesForDirectory(dir: string): string[] {
   switch (dir) {
     case 'massage':
       return ['/img/massage/1.webp', '/img/massage/2.webp', '/img/massage/3.webp'];
-    case 'friendship':
-      return ['/img/friendship/1.webp', '/img/friendship/2.webp', '/img/friendship/3.webp'];
-    case 'singapore':
-      return ['/img/singapore/1.webp', '/img/singapore/2.webp', '/img/singapore/3.webp'];
+    case 'kindred':
+      return ['/img/kindred/1.webp', '/img/kindred/2.webp', '/img/kindred/3.webp'];
+    case 'nanyang':
+      return ['/img/nanyang/1.webp', '/img/nanyang/2.webp', '/img/nanyang/3.webp'];
     default:
       // 如果找不到特定目录的图片，返回空数组
       return [];
