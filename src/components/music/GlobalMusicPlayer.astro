@@ -397,12 +397,26 @@
           player.style.bottom = 'auto';
           player.style.transform = 'none';
 
-          // 保存默认位置
-          this.playerPosition = {
-            left: defaultLeft,
-            top: defaultTop,
-            isDocked: false,
-          };
+          if (window.innerWidth <= 768) {
+            // 📱 手机端：默认吸附右侧半隐藏（不完全展开占屏）
+            console.log('手机端：播放器默认吸附右侧半隐藏');
+            player.classList.add('docked', 'docked-right');
+            this.playerPosition = {
+              left: defaultLeft,
+              top: defaultTop,
+              isDocked: true,
+              dockedSide: 'right',
+            };
+            // 绑定半隐藏展开/收缩（内部会初始 collapse 只露出边缘）
+            this.setupDockingHoverEvents(player);
+          } else {
+            // 桌面端：普通悬浮
+            this.playerPosition = {
+              left: defaultLeft,
+              top: defaultTop,
+              isDocked: false,
+            };
+          }
         }
       }
     }
@@ -453,32 +467,60 @@
         e.preventDefault();
       });
 
-      document.addEventListener('mousemove', (e) => {
+      // 触摸拖拽（手机端）
+      draggableArea.addEventListener(
+        'touchstart',
+        (e) => {
+          if (e.target.closest('button')) return;
+          const touch = e.touches[0];
+          if (!touch) return;
+          isDragging = true;
+          startX = touch.clientX;
+          startY = touch.clientY;
+          const rect = element.getBoundingClientRect();
+          startLeft = rect.left;
+          startTop = rect.top;
+          e.preventDefault();
+        },
+        { passive: false },
+      );
+
+      const handleDragMove = (clientX, clientY) => {
         if (!isDragging) return;
-
-        const deltaX = e.clientX - startX;
-        const deltaY = e.clientY - startY;
-
+        const deltaX = clientX - startX;
+        const deltaY = clientY - startY;
         let newLeft = startLeft + deltaX;
         let newTop = startTop + deltaY;
-
         // 边界检查
         newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - element.offsetWidth));
         newTop = Math.max(0, Math.min(newTop, window.innerHeight - element.offsetHeight));
-
         element.style.left = newLeft + 'px';
         element.style.top = newTop + 'px';
         element.style.right = 'auto';
         element.style.bottom = 'auto';
-      });
-
-      document.addEventListener('mouseup', () => {
+      };
+      const handleDragEnd = () => {
         if (isDragging) {
           isDragging = false;
           element.style.cursor = '';
           draggableArea.style.cursor = this.isMinimized ? 'move' : '';
         }
-      });
+      };
+
+      document.addEventListener('mousemove', (e) => handleDragMove(e.clientX, e.clientY));
+      document.addEventListener('mouseup', handleDragEnd);
+      document.addEventListener(
+        'touchmove',
+        (e) => {
+          const touch = e.touches[0];
+          if (!touch) return;
+          e.preventDefault();
+          handleDragMove(touch.clientX, touch.clientY);
+        },
+        { passive: false },
+      );
+      document.addEventListener('touchend', handleDragEnd);
+      document.addEventListener('touchcancel', handleDragEnd);
     }
 
     makeDraggableWithDocking(element) {
@@ -499,6 +541,10 @@
         dragArea.removeEventListener('mousedown', dragArea._dragHandlers.mousedown);
         document.removeEventListener('mousemove', dragArea._dragHandlers.mousemove);
         document.removeEventListener('mouseup', dragArea._dragHandlers.mouseup);
+        dragArea.removeEventListener('touchstart', dragArea._dragHandlers.touchstart);
+        document.removeEventListener('touchmove', dragArea._dragHandlers.touchmove);
+        document.removeEventListener('touchend', dragArea._dragHandlers.touchend);
+        document.removeEventListener('touchcancel', dragArea._dragHandlers.touchcancel);
       }
 
       // 设置拖拽区域的样式
@@ -576,16 +622,48 @@
         }
       };
 
-      // 添加事件监听器
+      // 添加事件监听器（鼠标）
       dragArea.addEventListener('mousedown', handleMouseDown);
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
+
+      // 添加触摸事件监听器（手机端拖拽，passive:false 阻止页面滚动）
+      const handleTouchStart = (e) => {
+        // 如果点击的是按钮，不启动拖拽
+        if (e.target.closest('button')) return;
+        const touch = e.touches[0];
+        if (!touch) return;
+        handleMouseDown({
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+          preventDefault: () => e.preventDefault(),
+          stopPropagation: () => e.stopPropagation(),
+        });
+      };
+      const handleTouchMove = (e) => {
+        if (!isDragging) return;
+        const touch = e.touches[0];
+        if (!touch) return;
+        e.preventDefault();
+        handleMouseMove({ clientX: touch.clientX, clientY: touch.clientY });
+      };
+      const handleTouchEnd = () => {
+        handleMouseUp();
+      };
+      dragArea.addEventListener('touchstart', handleTouchStart, { passive: false });
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
+      document.addEventListener('touchcancel', handleTouchEnd);
 
       // 保存事件引用以便清理
       dragArea._dragHandlers = {
         mousedown: handleMouseDown,
         mousemove: handleMouseMove,
         mouseup: handleMouseUp,
+        touchstart: handleTouchStart,
+        touchmove: handleTouchMove,
+        touchend: handleTouchEnd,
+        touchcancel: handleTouchEnd,
       };
 
       console.log('带吸附功能的拖拽设置完成');
@@ -735,11 +813,14 @@
         isExpanded = false;
 
         const dockedSide = element.classList.contains('docked-left') ? 'left' : 'right';
+        // 按元素宽度动态计算位移：只露出 25px 边缘（兼容 300px 展开态与 60px 最小化态）
+        const peekWidth = 25;
+        const offset = element.offsetWidth - peekWidth;
 
         if (dockedSide === 'left') {
-          element.style.transform = 'translateX(-255px)'; // 只露出25px
+          element.style.transform = `translateX(-${offset}px)`;
         } else {
-          element.style.transform = 'translateX(255px)'; // 只露出25px
+          element.style.transform = `translateX(${offset}px)`;
         }
 
         element.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -790,9 +871,53 @@
       // 添加全局鼠标移动监听
       document.addEventListener('mousemove', handleMouseMove);
 
+      // 📱 触摸支持：触摸播放器露出的边缘区域 → 展开；触摸别处 → 延迟收缩
+      const handleTouchStart = (event) => {
+        const touch = event.touches[0];
+        if (!touch) return;
+        // 用触摸位置判断是否靠近播放器
+        checkMousePosition({ clientX: touch.clientX, clientY: touch.clientY });
+      };
+      const handleTouchEnd = (event) => {
+        // 触摸结束：如果手指不在播放器上，延迟收缩
+        const touch = event.changedTouches[0];
+        if (!touch) return;
+        const rect = element.getBoundingClientRect();
+        const dockedSide = element.classList.contains('docked-left') ? 'left' : 'right';
+        const buffer = 50;
+        let isNear = false;
+        if (dockedSide === 'left') {
+          isNear =
+            touch.clientX <= rect.right + buffer && touch.clientY >= rect.top - buffer && touch.clientY <= rect.bottom + buffer;
+        } else {
+          isNear =
+            touch.clientX >= rect.left - buffer && touch.clientY >= rect.top - buffer && touch.clientY <= rect.bottom + buffer;
+        }
+        if (isNear) {
+          isMouseNear = true;
+          if (hoverTimer) {
+            clearTimeout(hoverTimer);
+            hoverTimer = null;
+          }
+          expandPlayer();
+        } else {
+          isMouseNear = false;
+          if (hoverTimer) {
+            clearTimeout(hoverTimer);
+          }
+          hoverTimer = setTimeout(() => {
+            collapsePlayer();
+          }, 800);
+        }
+      };
+      document.addEventListener('touchstart', handleTouchStart, { passive: true });
+      document.addEventListener('touchend', handleTouchEnd, { passive: true });
+
       // 清理函数
       element._cleanupHoverEvents = () => {
         document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('touchstart', handleTouchStart);
+        document.removeEventListener('touchend', handleTouchEnd);
         if (hoverTimer) {
           clearTimeout(hoverTimer);
         }
@@ -801,9 +926,15 @@
         }
       };
 
-      // 初始状态：收缩
+      // 初始状态：收缩（半隐藏，只露出 25px 边缘）
+      // 注意：不能用 collapsePlayer()——其 isExpanded 守卫会拦截首次调用
       setTimeout(() => {
-        collapsePlayer();
+        const dockedSide = element.classList.contains('docked-left') ? 'left' : 'right';
+        const peekWidth = 25;
+        const offset = element.offsetWidth - peekWidth;
+        element.style.transform = dockedSide === 'left' ? `translateX(-${offset}px)` : `translateX(${offset}px)`;
+        element.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        element.style.zIndex = '50';
       }, 100);
     }
 
