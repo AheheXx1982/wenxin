@@ -122,7 +122,7 @@ export const i18nSeoConfig = {
     keywords: '问心剑, 问心, 个人博客, 投资, AI, 写作, 生活',
   },
   en: {
-    title: "WenXin · A Scorpio's Spiritual Sanctuary",
+    title: "WenXin · A Scorpio's Personal Haven",
     description: 'Personal notes by WenXinJian — investing, AI, writing, and life.',
     keywords: 'WenXinJian, WenXin, personal blog, investing, AI, writing, life',
   },
