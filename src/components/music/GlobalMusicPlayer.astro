@@ -1855,21 +1855,21 @@
             
             <!-- 环绕式控制按钮 - 无边框无背景，完全融入球体 -->
             <div class="absolute inset-0 pointer-events-none z-40">
-              <!-- 最小化按钮 - 完全透明背景，只显示眼睛 -->
-              <button id="minimize-btn" class="absolute top-2 left-2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group pointer-events-auto cursor-pointer z-50" title="展开播放器" style="pointer-events: auto; cursor: pointer; background: transparent; border: none;" onclick="window.musicPlayer?.expandPlayer(); console.log('最小化按钮点击');">
+              <!-- 最小化按钮（左眼）- 完全透明背景，只显示眼睛 -->
+              <button id="minimize-btn" class="absolute top-1 left-1 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group pointer-events-auto cursor-pointer z-50" title="展开播放器" style="pointer-events: auto; cursor: pointer; background: transparent; border: none;" onclick="window.musicPlayer?.expandPlayer(); console.log('最小化按钮点击');">
                 <!-- 逼真的眼睛 -->
-                <div class="realistic-eye" id="minimized-minimize-eye" style="width:20px;height:20px;background:#ffffff;border-radius:50%;border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 2px 6px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.9);">
-                  <div class="eye-pupil" style="width:8px;height:8px;background:#000000;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.3s ease;">
+                <div class="realistic-eye" id="minimized-minimize-eye" style="width:18px;height:18px;background:#ffffff;border-radius:50%;border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 2px 6px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.9);">
+                  <div class="eye-pupil" style="width:7px;height:7px;background:#000000;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.3s ease;">
                     <div class="eye-highlight" style="position:absolute;top:20%;left:30%;width:2px;height:2px;background:rgba(255,255,255,0.9);border-radius:50%;"></div>
                   </div>
                 </div>
               </button>
               
-              <!-- 关闭按钮 - 完全透明背景，只显示眼睛 -->
-              <button id="close-btn" class="absolute top-2 right-2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group pointer-events-auto cursor-pointer z-50" title="关闭播放器" style="pointer-events: auto; cursor: pointer; background: transparent; border: none;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
+              <!-- 关闭按钮（右眼）- 完全透明背景，只显示眼睛 -->
+              <button id="close-btn" class="absolute top-1 right-1 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group pointer-events-auto cursor-pointer z-50" title="关闭播放器" style="pointer-events: auto; cursor: pointer; background: transparent; border: none;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
                 <!-- 逼真的眼睛 -->
-                <div class="realistic-eye" id="minimized-close-eye" style="width:20px;height:20px;background:#ffffff;border-radius:50%;border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 2px 6px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.9);">
-                  <div class="eye-pupil" style="width:8px;height:8px;background:#000000;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.3s ease;">
+                <div class="realistic-eye" id="minimized-close-eye" style="width:18px;height:18px;background:#ffffff;border-radius:50%;border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 2px 6px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.9);">
+                  <div class="eye-pupil" style="width:7px;height:7px;background:#000000;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.3s ease;">
                     <div class="eye-highlight" style="position:absolute;top:20%;left:30%;width:2px;height:2px;background:rgba(255,255,255,0.9);border-radius:50%;"></div>
                   </div>
                 </div>
@@ -1886,10 +1886,10 @@
             <!-- 视觉动效：脉冲波纹 -->
             <div class="absolute inset-0 rounded-full pulse-ring ${this.isPlaying ? 'playing' : ''}"></div>
             
-            <!-- 中心播放按钮（在拖拽区域上方） -->
-            <button id="play-pause-btn" class="relative w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-full text-white hover:from-green-600 hover:to-green-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 z-50 rotating-play-btn ${this.isPlaying ? 'playing spinning-button' : ''}" style="pointer-events: auto; position: relative; z-index: 50; cursor: pointer;" onclick="window.musicPlayer?.handleMinimizedPlayerClick(event); console.log('最小化播放按钮点击');">
+            <!-- 中心播放按钮（嘴巴）- 缩小放底部中央，眼睛露出 -->
+            <button id="play-pause-btn" class="absolute bottom-1 left-1/2 -translate-x-1/2 w-7 h-7 bg-gradient-to-br from-green-500 to-green-700 rounded-full text-white hover:from-green-600 hover:to-green-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 z-50 rotating-play-btn ${this.isPlaying ? 'playing spinning-button' : ''}" style="pointer-events: auto; position: absolute; z-index: 50; cursor: pointer;" onclick="window.musicPlayer?.handleMinimizedPlayerClick(event); console.log('最小化播放按钮点击');">
               <div class="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent opacity-50"></div>
-              <span class="relative z-10 text-lg font-bold play-pause-icon ${this.isPlaying ? 'rotating' : ''}">${this.isPlaying ? '⏸' : '▶'}</span>
+              <span class="relative z-10 text-sm font-bold play-pause-icon ${this.isPlaying ? 'rotating' : ''}">${this.isPlaying ? '⏸' : '▶'}</span>
               
               <!-- 播放时的额外视觉效果 -->
               ${
