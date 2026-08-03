@@ -990,8 +990,9 @@
       if (!player) return;
 
       const playerRect = player.getBoundingClientRect();
-      const playlistWidth = 384; // w-96 = 384px
-      const playlistHeight = 512; // max-h-[32rem] = 512px
+      // 自适应宽度：桌面 384px，窄屏手机按视口收窄（两侧各留 12px）
+      const playlistWidth = Math.min(384, window.innerWidth - 24);
+      const playlistHeight = Math.min(512, window.innerHeight - 24); // max-h-[32rem] = 512px
 
       // 计算播放列表位置（播放器左侧，如果空间不够则在播放器前端）
       let playlistLeft, playlistTop;
@@ -999,24 +1000,26 @@
       if (playerRect.left >= playlistWidth + 20) {
         // 播放器左侧有足够空间
         playlistLeft = playerRect.left - playlistWidth - 20;
-        playlistTop = Math.max(20, playerRect.top - (playlistHeight - playerRect.height) / 2);
+        playlistTop = Math.max(12, playerRect.top - (playlistHeight - playerRect.height) / 2);
       } else {
         // 空间不够，在播放器前端显示
-        playlistLeft = Math.max(20, (window.innerWidth - playlistWidth) / 2);
-        playlistTop = Math.max(20, (window.innerHeight - playlistHeight) / 2);
+        playlistLeft = Math.max(12, (window.innerWidth - playlistWidth) / 2);
+        playlistTop = Math.max(12, (window.innerHeight - playlistHeight) / 2);
       }
 
-      // 确保不超出屏幕边界
-      playlistLeft = Math.min(playlistLeft, window.innerWidth - playlistWidth - 20);
-      playlistTop = Math.min(playlistTop, window.innerHeight - playlistHeight - 20);
+      // 确保不超出屏幕边界（两侧各留 12px 边距）
+      playlistLeft = Math.min(playlistLeft, Math.max(12, window.innerWidth - playlistWidth - 12));
+      playlistTop = Math.min(playlistTop, Math.max(12, window.innerHeight - playlistHeight - 12));
 
       // 创建美观的播放列表窗口（采用与播放器一致的设计风格）
       const playlistWindow = document.createElement('div');
       playlistWindow.id = 'beautiful-playlist-window';
       playlistWindow.className =
-        'fixed w-96 max-h-[32rem] bg-gradient-to-br from-amber-50/90 via-white/90 to-amber-100/90 rounded-2xl flex flex-col overflow-hidden backdrop-blur-xl border border-amber-200/50 shadow-2xl z-50';
+        'fixed max-h-[32rem] bg-gradient-to-br from-amber-50/90 via-white/90 to-amber-100/90 rounded-2xl flex flex-col overflow-hidden backdrop-blur-xl border border-amber-200/50 shadow-2xl z-50';
       playlistWindow.style.left = playlistLeft + 'px';
       playlistWindow.style.top = playlistTop + 'px';
+      playlistWindow.style.width = playlistWidth + 'px';
+      playlistWindow.style.maxWidth = 'calc(100vw - 24px)';
 
       let playlistHTML = `
         <!-- 标题栏 -->
