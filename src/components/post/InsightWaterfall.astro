@@ -1,5 +1,5 @@
 ---
-// 小红书风格瀑布流：双列 masonry、图片卡片、无标题
+// 小红书风格瀑布流：双列 masonry、图片卡片 + 标题 + 正文摘要
 import { getPostCoverImage } from '@lib/content';
 import { getLanguageFromAstroUrl } from '@lib/i18n';
 import { parseDate } from '@lib/datetime';
@@ -90,6 +90,41 @@ const cards = posts.map((post) => ({
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
     }
 
+    .iw-body {
+      padding: 0.8rem 0.9rem 0.5rem;
+    }
+
+    .iw-title {
+      margin: 0 0 0.4rem;
+      font-size: 0.98rem;
+      font-weight: 700;
+      line-height: 1.45;
+      color: #111827;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .dark .iw-title {
+      color: #f3f4f6;
+    }
+
+    .iw-excerpt {
+      margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: #6b7280;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .dark .iw-excerpt {
+      color: #9ca3af;
+    }
+
     .iw-media {
       display: block;
       width: 100%;
@@ -173,6 +208,10 @@ const cards = posts.map((post) => ({
               <p>{text || '……'}</p>
             </div>
           )}
+          <div class="iw-body">
+            <h3 class="iw-title">{post.data.title}</h3>
+            {hasCover && text && <p class="iw-excerpt">{text}</p>}
+          </div>
           <div class="iw-meta">
             <span>{date}</span>
             <span class="iw-cat">{post.data.categories?.[0] ?? ''}</span>
