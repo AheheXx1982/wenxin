@@ -317,8 +317,8 @@
                   </svg>
                 </button>
                 
-                <!-- 播放按钮 -->
-                <button id="play-btn" class="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.togglePlay(); console.log('播放按钮点击');">
+                <!-- 播放按钮（播放时与唱片反向旋转） -->
+                <button id="play-btn" class="expanded-play-btn absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.togglePlay(); console.log('播放按钮点击');">
                   <svg id="play-icon" class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
                   </svg>
@@ -1565,6 +1565,16 @@
         }
       }
 
+      // 展开态绿色播放按钮：与唱片反向旋转（唱片顺时针，按钮逆时针）
+      const expandedPlayBtn = document.getElementById('play-btn');
+      if (expandedPlayBtn) {
+        if (this.isPlaying) {
+          expandedPlayBtn.classList.add('playing');
+        } else {
+          expandedPlayBtn.classList.remove('playing');
+        }
+      }
+
       // 唱针动画（播放时缓慢放下，暂停时抬起）
       this.updateTonearmPosition(this.isPlaying);
 
@@ -1974,14 +1984,16 @@
 
     // 生成随机动效
     generateRandomEffects() {
-      const effectTypes = ['sparkles', 'orbits', 'waves', 'particles', 'galaxy', 'lightning', 'rainbow', 'matrix'];
-      const selectedEffect = effectTypes[Math.floor(Math.random() * effectTypes.length)];
+      // 统一水波/声波扩散效果（不再随机——避免手机与电脑看到不同效果）
+      // 原随机类型：sparkles/orbits/waves/particles/galaxy/lightning/rainbow/matrix
+      // 2026-08-03 用户要求：最小化吸附侧边栏播放时，统一为向外扩散的水波/声波效果
+      const selectedEffect = 'waves';
 
       let backgroundRings = '';
       let soundWaves = '';
       let particles = '';
 
-      console.log('生成随机动效类型:', selectedEffect); // 调试日志
+      console.log('生成动效类型(统一):', selectedEffect); // 调试日志
 
       switch (selectedEffect) {
         case 'sparkles':
@@ -2186,8 +2198,11 @@
   document.addEventListener('astro:page-load', initPlayer);
 </script>
 
-<style>
+<style is:global>
   /* 眼睛基础显示样式 - 让现有眼睛能够正确显示 */
+  /* 注意：播放器 HTML 全部由 JS 动态生成（无 data-astro-cid 属性），
+     所以此样式块必须 is:global，否则所有类选择器都不匹配动态元素。
+     裸 button 选择器已限定到 #music-player 内，避免污染全站。 */
   .realistic-eye {
     width: 16px !important;
     height: 16px !important;
@@ -2672,11 +2687,11 @@
     transform: rotate(18deg);
   }
 
-  button {
+  #music-player button {
     transition: all 0.2s ease;
   }
 
-  button:hover {
+  #music-player button:hover {
     transform: scale(1.1);
   }
 
@@ -3387,21 +3402,29 @@
   }
 
   .wave-ring {
-    animation: waveExpand 3s ease-in-out infinite;
+    /* 默认隐藏，播放时（容器带 playing class）才向外扩散 */
+    opacity: 0;
+  }
+
+  .minimized-player-container.playing .wave-ring,
+  .wave-ring.playing {
+    opacity: 1;
+    animation: waveExpand 2.4s ease-out infinite;
+    border-width: 2px;
   }
 
   @keyframes waveExpand {
     0% {
-      transform: scale(0.8);
-      opacity: 0.8;
+      transform: scale(0.5);
+      opacity: 0.9;
     }
-    50% {
-      transform: scale(1.2);
-      opacity: 0.3;
+    70% {
+      transform: scale(1.6);
+      opacity: 0.35;
     }
     100% {
-      transform: scale(0.8);
-      opacity: 0.8;
+      transform: scale(2.1);
+      opacity: 0;
     }
   }
 
@@ -3614,6 +3637,20 @@
   /* 旋转播放按钮动画 */
   .rotating-play-btn.playing {
     animation: buttonRotateAndPulse 3s ease-in-out infinite;
+  }
+
+  /* 展开态绿色播放按钮：与唱片反向旋转（唱片顺时针，按钮逆时针） */
+  .expanded-play-btn.playing {
+    animation: playBtnReverseSpin 3s linear infinite;
+  }
+
+  @keyframes playBtnReverseSpin {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(-360deg);
+    }
   }
 
   .rotating-play-btn.spinning-button {
