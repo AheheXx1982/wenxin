@@ -81,12 +81,45 @@
           this.audioElement.src = this.resolveAudioPath(this.currentTrack.src);
         }
 
-        // 剥离独立模式：始终创建播放器UI，默认常驻浏览器右侧
-        // （不再依赖历史状态 hasPlayerState，也不依赖菜单按钮触发）
-        this.createPlayerUI();
-        this.setupEvents();
+        // 恢复上次播放状态：上次在播放则自动继续（跨页面保持）
+        if (this.isPlaying && this.audioElement && this.currentTrack) {
+          // 自动播放需要浏览器手势上下文；若被拦截则保持暂停状态但记录意图
+          const playPromise = this.audioElement.play();
+          if (playPromise) {
+            playPromise.catch(() => {
+              console.log('自动恢复播放被浏览器拦截，保持暂停（用户点击播放按钮即可继续）');
+              this.isPlaying = false;
+            });
+          }
+        }
+
+        // 独立模式：默认创建播放器UI常驻浏览器右侧；
+        // 但用户手动关闭过（shouldShowPlayer=false）则不显示，直到下次显式打开
+        if (this.shouldShowPlayer()) {
+          this.createPlayerUI();
+          this.setupEvents();
+
+          // 恢复最小化状态（跨页面保持：上次最小化则创建后立即最小化）
+          if (this.isMinimized) {
+            this.minimizePlayer();
+          }
+        } else {
+          // 用户上次手动关闭 → 保持关闭状态，后续 savePlayerState 不覆盖
+          this._userClosed = true;
+        }
 
         console.log('音乐播放器初始化成功, 播放列表:', this.playlist.length, '首');
+
+        // 页面切换/关闭前保存完整状态（跨页面续播的关键）
+        if (!this._pageHideBound) {
+          this._pageHideBound = true;
+          window.addEventListener('pagehide', () => {
+            this.savePlayerState();
+          });
+          window.addEventListener('beforeunload', () => {
+            this.savePlayerState();
+          });
+        }
       } catch (error) {
         console.error('播放列表加载失败:', error);
         // 即使加载失败也不自动创建UI
@@ -130,9 +163,15 @@
         this.updateProgressDisplay();
       });
 
-      // 添加播放进度更新事件
+      // 添加播放进度更新事件 + 节流保存进度（跨页面续播）
       this.audioElement.addEventListener('timeupdate', () => {
         this.updateProgressDisplay();
+        // 每 5 秒保存一次进度，避免频繁写 localStorage
+        const now = Date.now();
+        if (!this._lastSaveTime || now - this._lastSaveTime > 5000) {
+          this._lastSaveTime = now;
+          this.savePlayerState();
+        }
       });
 
       this.audioElement.addEventListener('error', (e) => {
@@ -166,7 +205,12 @@
             if (this.currentTrack && this.audioElement) {
               this.audioElement.src = this.resolveAudioPath(this.currentTrack.src);
               this.audioElement.currentTime = state.currentTime || 0;
-              this.audioElement.volume = state.volume || 0.7;
+              this.audioElement.volume = state.volume ?? 0.7;
+            }
+
+            // 恢复播放器位置/吸附状态（跨页面保持位置）
+            if (state.playerPosition) {
+              this.playerPosition = state.playerPosition;
             }
           }
         }
@@ -189,7 +233,23 @@
       }
     }
 
+    // 独立模式显示判断：无历史状态（首次访问）→ 显示；有状态 → 按 shouldShowPlayer 标记
+    // 用户手动关闭后 shouldShowPlayer=false → 刷新不显示
+    shouldShowPlayer() {
+      try {
+        const savedState = localStorage.getItem('musicPlayerDetailedState');
+        if (!savedState) return true; // 首次访问，默认显示
+        const state = JSON.parse(savedState);
+        return state.shouldShowPlayer !== false;
+      } catch (error) {
+        return true;
+      }
+    }
+
     showPlayer() {
+      // 用户主动打开播放器 → 清除关闭标记
+      this._userClosed = false;
+
       // 如果播放器已经存在，直接显示
       const existingPlayer = document.getElementById('music-player');
       if (existingPlayer) {
@@ -229,13 +289,13 @@
       container.innerHTML = `
         <div id="music-player" class="fixed bg-gradient-to-br from-amber-900/20 to-amber-700/20 backdrop-blur-md border border-amber-500/30 shadow-2xl z-50 group" style="width: 300px; height: 300px; pointer-events: auto; border-radius: 50%; right: 20px; top: 50%; transform: translateY(-50%);">
           <div class="relative w-full h-full flex items-center justify-center">
-            <!-- 拖拽区域（透明且在顶部，不包含按钮区域） -->
-            <div id="drag-area" class="absolute top-0 left-0 right-0 h-12 z-10 cursor-move" style="background: transparent; border-radius: 50%;" title="拖拽移动播放器"></div>
+            <!-- 拖拽区域（覆盖整个圆盘，z-30 高于进度条；按钮 z-40+ 仍可点击） -->
+            <div id="drag-area" class="absolute inset-0 z-30 cursor-move" style="background: transparent; border-radius: 50%;" title="拖拽移动播放器"></div>
             
             <!-- 唱片机主体（圆形设计） -->
             <div class="relative flex items-center justify-center">
-              <!-- 外围控制按钮圆环 -->
-              <div class="absolute w-64 h-64 rounded-full border-2 border-amber-500/50 z-10">
+              <!-- 外围控制按钮圆环（z-40 高于拖拽区，保持可点击） -->
+              <div class="absolute w-64 h-64 rounded-full border-2 border-amber-500/50 z-40">
                 <!-- 上一首按钮 -->
                 <button id="prev-btn" class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-amber-600 hover:bg-amber-700 rounded-full flex items-center justify-center transition-colors shadow-lg" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.previousTrack(); console.log('上一首按钮点击');">
                   <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -268,7 +328,7 @@
               <!-- 环绕式控制按钮 -->
               <div class="absolute inset-0 pointer-events-none">
                 <!-- 最小化按钮 - 环绕在播放器左上方 -->
-                <button id="minimize-btn" class="absolute top-2 left-2 w-8 h-8 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20 eye-button" title="最小化" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.minimizePlayer(); console.log('最小化按钮点击');">
+                <button id="minimize-btn" class="absolute top-2 left-2 w-8 h-8 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-50 eye-button" title="最小化" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.minimizePlayer(); console.log('最小化按钮点击');">
                   <!-- 逼真的眼睛 -->
                   <div class="realistic-eye" id="minimize-eye" style="width:20px;height:20px;background:#ffffff;border-radius:50%;border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 2px 6px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.9);">
                     <div class="eye-pupil" style="width:8px;height:8px;background:#000000;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.3s ease;">
@@ -278,7 +338,7 @@
                 </button>
                 
                 <!-- 关闭按钮 - 环绕在播放器右上方 -->
-                <button id="close-btn" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-20 eye-button" title="关闭" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
+                <button id="close-btn" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-amber-700/80 backdrop-blur-sm border border-amber-500/50 flex items-center justify-center transition-all duration-300 hover:bg-amber-600/90 hover:scale-110 group pointer-events-auto cursor-pointer z-50 eye-button" title="关闭" style="pointer-events: auto; cursor: pointer;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
                   <!-- 逼真的眼睛 -->
                   <div class="realistic-eye" id="close-eye" style="width:20px;height:20px;background:#ffffff;border-radius:50%;border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 2px 6px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,0.9);">
                     <div class="eye-pupil" style="width:8px;height:8px;background:#000000;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.3s ease;">
@@ -2022,6 +2082,8 @@
     }
 
     expandPlayer() {
+      // 用户主动展开 → 清除关闭标记
+      this._userClosed = false;
       this.isMinimized = false;
       this.createPlayerUI();
       this.setupEvents();
@@ -2029,6 +2091,9 @@
     }
 
     closePlayer() {
+      // 标记用户手动关闭（savePlayerState 将保持 shouldShowPlayer=false，刷新后不显示）
+      this._userClosed = true;
+
       // 彻底停止音频播放
       if (this.audioElement) {
         this.audioElement.pause();
@@ -2078,7 +2143,8 @@
           currentTime: this.audioElement ? this.audioElement.currentTime : 0,
           playlist: this.playlist,
           isMinimized: this.isMinimized,
-          shouldShowPlayer: true,
+          // 用户手动关闭过 → 保持隐藏；否则总是显示（跨页续播）
+          shouldShowPlayer: this._userClosed ? false : true,
           playerPosition: this.playerPosition,
         };
 
