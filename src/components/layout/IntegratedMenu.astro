@@ -680,6 +680,84 @@ const THEME_COLORS = [
     }
   }
 
+  /* 颜色球播放音乐时的发光/波纹效果（2026-08-03 从 FloatingColorBalls 移植） */
+  .color-ball-random.playing,
+  .snake-ball.playing {
+    animation: musicPlaying 1.5s ease-in-out infinite;
+    z-index: 55;
+  }
+
+  .color-ball-random.playing::before,
+  .snake-ball.playing::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    animation: musicRipple 2s linear infinite;
+    opacity: 0.6;
+  }
+
+  .color-ball-random.playing::after,
+  .snake-ball.playing::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    animation: musicRipple 2s linear infinite 1s;
+    opacity: 0.3;
+  }
+
+  @keyframes musicPlaying {
+    0%,
+    100% {
+      transform: scale(1.1);
+      box-shadow:
+        0 0 20px currentColor,
+        0 0 40px rgba(255, 255, 255, 0.3),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+    25% {
+      transform: scale(1.3);
+      box-shadow:
+        0 0 30px currentColor,
+        0 0 60px rgba(255, 255, 255, 0.4),
+        inset 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+      transform: scale(1.2);
+      box-shadow:
+        0 0 25px currentColor,
+        0 0 50px rgba(255, 255, 255, 0.35),
+        inset 0 0 12px rgba(255, 255, 255, 0.25);
+    }
+    75% {
+      transform: scale(1.25);
+      box-shadow:
+        0 0 35px currentColor,
+        0 0 70px rgba(255, 255, 255, 0.45),
+        inset 0 0 18px rgba(255, 255, 255, 0.35);
+    }
+  }
+
+  @keyframes musicRipple {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+
   /* 气球漂浯动效 */
   @keyframes balloon-animation {
     0%,
@@ -5244,6 +5322,26 @@ const THEME_COLORS = [
       console.log('调试:', message);
     }
 
+    // 十六进制颜色 → 色系 key（用于颜色球音乐播放器）
+    function colorToThemeKey(hexColor) {
+      const colorKeyMap = {
+        '#ef4444': 'red',
+        '#22c55e': 'green',
+        '#3b82f6': 'blue',
+        '#eab308': 'yellow',
+        '#f97316': 'orange',
+        '#ed6ea0': 'pink',
+        '#8b5cf6': 'purple',
+        '#06b6d4': 'cyan',
+        '#10b981': 'green',
+        '#6366f1': 'purple',
+        '#64748b': 'blue',
+        '#f59e0b': 'orange',
+      };
+      const normalized = String(hexColor || '').toLowerCase();
+      return colorKeyMap[normalized] || 'red';
+    }
+
     // 在二级菜单圆盘内创建随机分布的动态颜色球
     function createSimpleColorBalls() {
       showDebugInfo('在二级菜单圆盘内创建动态颜色球...');
@@ -5394,12 +5492,18 @@ const THEME_COLORS = [
         // 添加事件处理
         ball.addEventListener('click', function (e) {
           e.stopPropagation();
-          console.log('频牱球点击事件触发:', color, '元素:', ball);
+          console.log('颜色球点击事件触发:', color, '元素:', ball);
 
           // 显示调试信息
           showDebugInfo(`点击了颜色球: ${color}`);
 
           changeTextColor(color);
+
+          // 🎵 播放该色系的音乐（2026-08-03 恢复：点击颜色球播放对应色系音乐）
+          const colorKey = colorToThemeKey(color);
+          if (window.colorBallMusicPlayer) {
+            window.colorBallMusicPlayer.playColorMusic(colorKey, ball);
+          }
 
           // 点击动效 - 根据球大小调整
           const scaleEffect = 1.3 + ballSize / 100; // 大球放大更多
@@ -5524,6 +5628,12 @@ const THEME_COLORS = [
             console.log('贪吃蛇球点击事件触发:', color);
             showDebugInfo(`贪吃蛇球点击: ${color}`);
             changeTextColor(color);
+
+            // 🎵 播放该色系的音乐（2026-08-03 恢复）
+            const colorKey = colorToThemeKey(color);
+            if (window.colorBallMusicPlayer) {
+              window.colorBallMusicPlayer.playColorMusic(colorKey, ball);
+            }
 
             // 点击动效
             ball.style.transform = 'scale(1.5)';
@@ -6789,5 +6899,181 @@ const THEME_COLORS = [
       }
       console.log('⏹️ 已停止颜色球特效定时器');
     };
+
+    // ============ 颜色球音乐播放器（2026-08-03 修复：从 FloatingColorBalls 移植，因 Astro 7 编译问题无法导入） ============
+    // 原实现位于 src/components/fun/FloatingColorBalls.astro 的 ColorBallMusicPlayer 类，
+    // 该组件 is:inline 脚本在 Astro 7 + Rolldown 下被误解析为 CSS，无法导入。
+    // 此处提供等价的轻量实现，点击颜色球播放对应色系音乐。
+    window.colorBallMusicPlayer = {
+      currentAudio: null,
+      currentPlayingBall: null,
+      isPlaying: false,
+      volume: 0.7,
+      colorMusicGroups: {},
+
+      init() {
+        const savedVolume = localStorage.getItem('colorball-volume');
+        if (savedVolume) {
+          this.volume = parseFloat(savedVolume) || 0.7;
+        }
+        this.buildColorGroups();
+      },
+
+      buildColorGroups() {
+        const genericFiles = [
+          'generic-background.mp3',
+          'Nikolaj Egelund-Arrival Manor House.mp3',
+          'Painless Destiny-Lost control.mp3',
+        ];
+        const actualMusicFiles = {
+          red: ['red.mp3', ...genericFiles],
+          pink: ['pink1.mp3', ...genericFiles],
+          blue: ['blue1.mp3', ...genericFiles],
+          green: ['green2.mp3', ...genericFiles],
+          purple: ['purple.mp3', ...genericFiles],
+          yellow: ['yellow2.mp3', ...genericFiles],
+          orange: ['orange1.mp3', ...genericFiles],
+          lavender: ['lavender1.mp3', ...genericFiles],
+          cyan: ['cyan.mp3', ...genericFiles],
+        };
+        const colorSystemMapping = {
+          red: 'red',
+          coral: 'red',
+          peach: 'red',
+          pink: 'pink',
+          rose: 'pink',
+          fuchsia: 'pink',
+          blue: 'blue',
+          sky: 'blue',
+          cyan: 'cyan',
+          teal: 'cyan',
+          green: 'green',
+          emerald: 'green',
+          jade: 'green',
+          lime: 'green',
+          purple: 'purple',
+          violet: 'purple',
+          indigo: 'purple',
+          lavender: 'lavender',
+          yellow: 'yellow',
+          gold: 'yellow',
+          amber: 'yellow',
+          orange: 'orange',
+        };
+        this.colorMusicGroups = {};
+        for (const [colorValue, systemKey] of Object.entries(colorSystemMapping)) {
+          if (actualMusicFiles[systemKey]) {
+            this.colorMusicGroups[colorValue] = actualMusicFiles[systemKey];
+          }
+        }
+        console.log('🎵 颜色球音乐播放器初始化完成，支持色系:', Object.keys(this.colorMusicGroups).length);
+      },
+
+      async playColorMusic(colorValue, ball) {
+        console.log('🎨 点击颜色球播放音乐:', colorValue);
+
+        // 暂停全局音乐播放器（GlobalMusicPlayer）
+        const globalMusicPlayer = window.musicPlayer;
+        if (globalMusicPlayer && globalMusicPlayer.isPlaying && globalMusicPlayer.audioElement) {
+          console.log('🎧 暂停全局音乐播放器');
+          globalMusicPlayer.audioElement.pause();
+          globalMusicPlayer.isPlaying = false;
+          if (typeof globalMusicPlayer.updateUI === 'function') {
+            globalMusicPlayer.updateUI();
+          }
+        }
+
+        // 停止之前的颜色球音乐
+        this.stopMusic();
+
+        const candidates = this.colorMusicGroups[colorValue] || this.colorMusicGroups.red;
+        if (!candidates || candidates.length === 0) {
+          console.warn('⚠️ 未找到颜色音乐，仅显示视觉反馈');
+          return;
+        }
+
+        const selectedMusic = candidates[Math.floor(Math.random() * candidates.length)];
+        const musicPath = '/colorball-music/' + selectedMusic;
+        console.log('🎵 播放:', selectedMusic);
+
+        const volumeCoefficients = {
+          'red.mp3': 0.8,
+          'pink1.mp3': 0.7,
+          'blue1.mp3': 0.9,
+          'green2.mp3': 0.8,
+          'purple.mp3': 0.85,
+          'yellow2.mp3': 0.75,
+          'orange1.mp3': 0.8,
+          'lavender1.mp3': 0.7,
+          'cyan.mp3': 0.8,
+          'generic-background.mp3': 0.8,
+          'Nikolaj Egelund-Arrival Manor House.mp3': 0.75,
+          'Painless Destiny-Lost control.mp3': 0.8,
+        };
+
+        try {
+          const audio = new Audio(musicPath);
+          this.currentAudio = audio;
+          this.currentPlayingBall = ball;
+          audio.volume = this.volume * (volumeCoefficients[selectedMusic] || 1.0);
+          audio.loop = false;
+
+          // 播放结束清理
+          audio.addEventListener('ended', () => {
+            console.log('🎵 颜色球音乐播放结束');
+            this.isPlaying = false;
+            this.removeVisualFeedback();
+            this.currentPlayingBall = null;
+            this.currentAudio = null;
+          });
+          audio.addEventListener('error', () => {
+            console.error('❌ 颜色球音乐播放失败:', selectedMusic);
+            this.isPlaying = false;
+            this.removeVisualFeedback();
+          });
+          audio.addEventListener('play', () => {
+            this.isPlaying = true;
+          });
+          audio.addEventListener('pause', () => {
+            this.isPlaying = false;
+          });
+
+          this.addVisualFeedback(ball);
+          await audio.play();
+          console.log('🎶 播放成功:', selectedMusic);
+        } catch (err) {
+          console.error('❌ 颜色球音乐播放异常:', err);
+          this.isPlaying = false;
+          this.removeVisualFeedback();
+        }
+      },
+
+      stopMusic() {
+        if (this.currentAudio) {
+          this.currentAudio.pause();
+          this.currentAudio.currentTime = 0;
+          this.currentAudio = null;
+        }
+        this.isPlaying = false;
+        this.removeVisualFeedback();
+        this.currentPlayingBall = null;
+      },
+
+      addVisualFeedback(ball) {
+        ball.classList.add('playing');
+        const allBalls = document.querySelectorAll('.color-ball-random, .snake-ball');
+        allBalls.forEach((other) => {
+          if (other !== ball) other.classList.remove('playing');
+        });
+      },
+
+      removeVisualFeedback() {
+        const allBalls = document.querySelectorAll('.color-ball-random, .snake-ball');
+        allBalls.forEach((ball) => ball.classList.remove('playing'));
+      },
+    };
+
+    // 初始化颜色球音乐播放器
+    window.colorBallMusicPlayer.init();
   })(); // IIFE 结束
 </script>
