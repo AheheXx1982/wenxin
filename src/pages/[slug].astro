@@ -1,0 +1,97 @@
+---
+import CategoryPostList from '@components/category/CategoryPostList.astro';
+import HomeSider from '@components/layout/HomeSider.astro';
+import Cover from '@components/ui/cover/Cover.astro';
+import Layout from '@layouts/Layout.astro';
+import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
+import { getCategoryByLink, getCategoryList, getPostsByCategory } from '@lib/content';
+import { getSeoConfig, getSiteConfig, getUIText } from '@lib/i18n';
+import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
+import InsightWaterfall from '@components/post/InsightWaterfall.astro';
+import ViewToggle from '@components/post/ViewToggle.astro';
+import { categoryMap } from '@constants/category';
+
+// 顶级栏目页 — 与主站一致的无 categories 前缀 URL 结构
+// /massage、/nanyang、/kindred、/invest、/insight
+// 次级分类仍走 /categories/[...slug]
+
+export async function getStaticPaths() {
+  const { categories } = await getCategoryList('zh');
+  const topLevelSlugs = Object.values(categoryMap);
+
+  return topLevelSlugs.map((slug) => {
+    const category = getCategoryByLink(categories, slug);
+    return {
+      params: { slug },
+      props: { category },
+    };
+  });
+}
+
+const { category } = Astro.props;
+const { categories: allCategories, countMap } = await getCategoryList('zh');
+const seoConfig = getSeoConfig('zh');
+const siteConfig = getSiteConfig('zh');
+const uiText = getUIText('zh');
+
+// 不存在的 slug 返回 404
+if (!category) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found',
+  });
+}
+
+// 如果是子分类，只展示当前分类的内容
+const displayCategories = category ? [category] : allCategories;
+
+// 分类头部图标
+const categoryIcons: { [key: string]: string } = {
+  按摩大叔: '💆',
+  何处觅知音: '🎵',
+  南洋往事: '🌏',
+  '投资 × AI': '📈',
+  瞬间: '✨',
+};
+
+// 瞬间分类：小红书风格瀑布流视图（默认）+ 列表视图切换
+const isInsight = category?.name === '瞬间';
+const insightPosts = isInsight ? await getPostsByCategory('瞬间', 'zh') : [];
+---
+
+<Layout title={`${category?.name || uiText.categoriesTitle} | ${siteConfig.title}`}>
+  <TwoColumnLayout>
+    <Cover slot="cover" title={`${uiText.categoriesTitle}于"${category?.name}"的文章`} />
+    <HomeSider slot="sider" lang="zh" />
+    <QuoteMarquee />
+    {
+      category?.description && (
+        <div class="mb-6 w-full rounded-r-lg border-l-4 border-purple-500 bg-purple-50 px-6 py-4 text-left dark:bg-purple-950/30">
+          <h2 class="mb-3 text-left text-2xl font-bold text-purple-600 dark:text-purple-400">
+            {categoryIcons[category.name] ?? '✦'} {category.name}
+          </h2>
+          <p class="text-muted-foreground text-left leading-relaxed">{category.description}</p>
+        </div>
+      )
+    }
+    {
+      isInsight && (
+        <div class="flex justify-end pb-2">
+          <ViewToggle storageKey="wenxin-insight-view" targetId="insight-view-root" />
+        </div>
+      )
+    }
+    <div id="insight-view-root">
+      <div data-view-pane="list" style={isInsight ? 'display:none' : ''}>
+        <CategoryPostList rootCategory={category} categories={displayCategories} countMap={countMap} lang="zh" />
+      </div>
+      {
+        isInsight && (
+          <div data-view-pane="waterfall">
+            <InsightWaterfall posts={insightPosts} lang="zh" />
+          </div>
+        )
+      }
+    </div>
+  </TwoColumnLayout>
+</Layout>

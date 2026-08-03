@@ -566,10 +566,11 @@ export function getPostLastCategory(post: BlogPost): { link: string; name: strin
   if (Array.isArray(categories[0])) {
     if (!categories[0]?.length) return { link: '', name: '' };
     const arr = categories[0];
-    const link = '/categories/' + arr.map((c) => categoryMap[c]).join('/');
+    // 顶级栏目无 categories 前缀（与主站一致）；次级分类保留完整路径
+    const link = arr.length === 1 ? '/' + categoryMap[arr[0]] : '/categories/' + arr.map((c) => categoryMap[c]).join('/');
     return { link, name: arr[arr.length - 1] };
   } else {
-    return { link: '/categories/' + categoryMap[categories[0] as string], name: categories[0] as string };
+    return { link: '/' + categoryMap[categories[0] as string], name: categories[0] as string };
   }
 }
 

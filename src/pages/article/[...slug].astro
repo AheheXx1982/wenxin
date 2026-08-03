@@ -149,7 +149,8 @@ if (categoryArr?.length) {
     const link = await getCategoryLink(partialCategories);
     breadcrumbCategories.push({
       name: categoryArr[i],
-      link: `/categories/${link}`,
+      // 顶级栏目无 categories 前缀（与主站一致）
+      link: partialCategories.length === 1 ? `/${link}` : `/categories/${link}`,
     });
   }
 }

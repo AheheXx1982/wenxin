@@ -30,8 +30,12 @@ const finalCover = cover ?? randomCover ?? defaultCoverList[0];
 const href = routeBuilder(Routes.Post, data as BlogPost, lang as 'zh' | 'en');
 
 const categoryArr = getCategoryArr(categories?.[0]);
-// 修复分类链接生成逻辑，确保添加/categories/前缀
-const categoryLink = categoryArr?.length ? `/categories/${await getCategoryLink(categoryArr)}` : '';
+// 分类链接：顶级栏目无 categories 前缀（与主站一致）；次级分类保留完整路径
+const categoryLink = categoryArr?.length
+  ? categoryArr.length === 1
+    ? `/${await getCategoryLink(categoryArr)}`
+    : `/categories/${await getCategoryLink(categoryArr)}`
+  : '';
 const categoryStr = categoryArr?.length ? categoryArr[categoryArr.length - 1] : '';
 ---
 
