@@ -50,11 +50,11 @@ export const i18nSiteConfig = {
     author: '问心剑',
     navLinks: [
       { name: '首页', href: '/' },
-      { name: '按摩大叔', href: '/massage' },
-      { name: '何处觅知音', href: '/kindred' },
-      { name: '南洋往事', href: '/nanyang', hot: true },
       { name: '投资 × AI', href: '/invest' },
       { name: '瞬间', href: '/insight' },
+      { name: '按摩大叔', href: '/massage' },
+      { name: '南洋往事', href: '/nanyang', hot: true },
+      { name: '何处觅知音', href: '/kindred' },
     ],
     featuredCategories: [
       {
@@ -85,11 +85,11 @@ export const i18nSiteConfig = {
     author: 'WenXinJian',
     navLinks: [
       { name: 'Home', href: '/en' },
-      { name: 'Essays', href: '/en/massage' },
-      { name: 'Reading', href: '/en/kindred' },
-      { name: 'Singapore', href: '/en/nanyang', hot: true },
       { name: 'Investment × AI', href: '/en/invest' },
       { name: 'Moments', href: '/en/insight' },
+      { name: 'Essays', href: '/en/massage' },
+      { name: 'Singapore', href: '/en/nanyang', hot: true },
+      { name: 'Reading', href: '/en/kindred' },
     ],
     featuredCategories: [
       {
