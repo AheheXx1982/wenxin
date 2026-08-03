@@ -5,7 +5,7 @@ import Cover from '@components/ui/cover/Cover.astro';
 import Layout from '@layouts/Layout.astro';
 import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
 import { getCategoryByLink, getCategoryLinks, getCategoryList, getPostsByCategory } from '@lib/content';
-import { getSeoConfig, getUIText } from '@lib/i18n';
+import { getSeoConfig, getSiteConfig, getUIText } from '@lib/i18n';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 import InsightWaterfall from '@components/post/InsightWaterfall.astro';
 import ViewToggle from '@components/post/ViewToggle.astro';
@@ -33,6 +33,7 @@ export async function getStaticPaths() {
 const { category } = Astro.props;
 const { categories: allCategories, countMap } = await getCategoryList('zh');
 const seoConfig = getSeoConfig('zh');
+const siteConfig = getSiteConfig('zh');
 const uiText = getUIText('zh');
 
 // 如果请求的路径不对应任何实际分类，则返回404
@@ -66,7 +67,7 @@ const isInsight = category?.name === '瞬间';
 const insightPosts = isInsight ? await getPostsByCategory('瞬间', 'zh') : [];
 ---
 
-<Layout title={`${uiText.categoriesTitle} - ${category?.name} | ${seoConfig.title}`}>
+<Layout title={`${category?.name || uiText.categoriesTitle} | ${siteConfig.title}`}>
   <TwoColumnLayout>
     <Cover slot="cover" title={`${uiText.categoriesTitle}于"${category?.name}"的文章`} />
     <HomeSider slot="sider" lang="zh" />

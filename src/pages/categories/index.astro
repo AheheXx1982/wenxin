@@ -5,16 +5,17 @@ import Cover from '@components/ui/cover/Cover.astro';
 import Layout from '@layouts/Layout.astro';
 import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
 import { getCategoryLinks, getCategoryList } from '@lib/content';
-import { getSeoConfig, getUIText } from '@lib/i18n';
+import { getSeoConfig, getSiteConfig, getUIText } from '@lib/i18n';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
 const { categories, countMap } = await getCategoryList('zh');
 const links = getCategoryLinks(categories, '');
 const seoConfig = getSeoConfig('zh');
+const siteConfig = getSiteConfig('zh');
 const uiText = getUIText('zh');
 ---
 
-<Layout title={`${uiText.categoriesTitle} | ${seoConfig.title}`}>
+<Layout title={`${uiText.categoriesTitle} | ${siteConfig.title}`}>
   <TwoColumnLayout>
     <Cover slot="cover" title={uiText.categoriesTitle} />
     <HomeSider slot="sider" lang="zh" />

@@ -15,7 +15,7 @@ import MarkdownIt from 'markdown-it';
 
 const md = new MarkdownIt({ html: true, breaks: true });
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
-import { getLanguageFromAstroUrl } from '@lib/i18n';
+import { getLanguageFromAstroUrl, getSiteConfig } from '@lib/i18n';
 import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
 
 export async function getStaticPaths() {
@@ -98,6 +98,8 @@ const jsonLd = {
 
 // 获取当前语言
 const currentLang = lang || getLanguageFromAstroUrl(Astro.url);
+const i18nSiteConfig = getSiteConfig(currentLang as 'zh' | 'en');
+const siteShortName = i18nSiteConfig.title; // '问心' / 'WenXin' — 标题后缀用短站名，避免与首页品牌标题重复
 
 const categoryArr = getCategoryArr(categories?.[0]);
 const categoryStr = categoryArr?.length ? ` | ${categoryArr.join(' / ')}` : '';
@@ -153,11 +155,7 @@ if (categoryArr?.length) {
 }
 ---
 
-<Layout
-  title={`${post.data.title}${categoryStr} | ${siteConfig.title}`}
-  description={description}
-  siderType={HomeSiderType.POST}
->
+<Layout title={`${post.data.title}${categoryStr} | ${siteShortName}`} description={description} siderType={HomeSiderType.POST}>
   <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <TwoColumnLayout>
     <Cover slot="cover" />
