@@ -1486,7 +1486,9 @@
       // 更新最小化播放器中的播放按钮
       const playPauseBtn = document.getElementById('play-pause-btn');
       if (playPauseBtn) {
-        // 更新按钮文字
+        // 蝎子嘴巴按钮：无文字图标，更新 title 提示 + playing 类控制跳舞动画
+        playPauseBtn.title = this.isPlaying ? '暂停' : '播放';
+        // 更新按钮文字（兼容旧结构）
         const buttonText = playPauseBtn.querySelector('.play-pause-icon');
         if (buttonText) {
           buttonText.textContent = this.isPlaying ? '⏸' : '▶';
@@ -1886,20 +1888,20 @@
             <!-- 视觉动效：脉冲波纹 -->
             <div class="absolute inset-0 rounded-full pulse-ring ${this.isPlaying ? 'playing' : ''}"></div>
             
-            <!-- 中心播放按钮（嘴巴）- 缩小放底部中央，眼睛露出 -->
-            <button id="play-pause-btn" class="absolute bottom-1 left-1/2 -translate-x-1/2 w-7 h-7 bg-gradient-to-br from-green-500 to-green-700 rounded-full text-white hover:from-green-600 hover:to-green-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 z-50 rotating-play-btn ${this.isPlaying ? 'playing spinning-button' : ''}" style="pointer-events: auto; position: absolute; z-index: 50; cursor: pointer;" onclick="window.musicPlayer?.handleMinimizedPlayerClick(event); console.log('最小化播放按钮点击');">
-              <div class="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent opacity-50"></div>
-              <span class="relative z-10 text-sm font-bold play-pause-icon ${this.isPlaying ? 'rotating' : ''}">${this.isPlaying ? '⏸' : '▶'}</span>
-              
-              <!-- 播放时的额外视觉效果 -->
-              ${
-                this.isPlaying
-                  ? `
-                <div class="absolute -inset-2 rounded-full border-2 border-green-400/30 animate-ping"></div>
-                <div class="absolute -inset-1 rounded-full bg-green-400/10 animate-pulse"></div>
-              `
-                  : ''
-              }
+            <!-- 中心播放按钮（嘴巴）= 天蝎座小蝎子：未播放安静趴着，播放时摇摆跳舞 -->
+            <button id="play-pause-btn" class="absolute bottom-1 left-1/2 -translate-x-1/2 w-9 h-8 flex items-center justify-center z-50 scorpion-mouth-btn ${this.isPlaying ? 'playing' : ''}" style="pointer-events: auto; position: absolute; z-index: 50; cursor: pointer; background: transparent; border: none;" title="${this.isPlaying ? '暂停' : '播放'}" onclick="window.musicPlayer?.handleMinimizedPlayerClick(event); console.log('最小化播放按钮点击');">
+              <!-- 蝎子剪影：头(左) + 双钳 + 身体 + 弯尾毒刺(右上)，播放时整只摇摆 -->
+              <svg class="scorpion-icon ${this.isPlaying ? 'dancing' : ''}" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                <g class="scorpion-tail">
+                  <path d="M14.2 16.2 C 16.2 17.4, 18.2 15.2, 17.6 12.4 C 17.2 10.3, 15.2 9.6, 14.4 10.9" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M14.4 10.9 l -1.7 -0.3 l 0.7 -1.7 z" fill="#ffffff"/>
+                </g>
+                <ellipse cx="11" cy="13.6" rx="3.8" ry="4.4" fill="#ffffff"/>
+                <circle cx="7.6" cy="12.4" r="2.3" fill="#ffffff"/>
+                <circle cx="8.4" cy="11.6" r="0.55" fill="#14532d"/>
+                <path d="M6.4 10.8 C 4.6 9.6, 2.9 10.1, 2.7 11.3 C 2.5 12.3, 4 12.7, 5.6 12" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M6.4 14.2 C 4.6 15.4, 2.9 14.9, 2.7 13.7 C 2.5 12.7, 4 12.3, 5.6 13" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
             </button>
             
             <!-- 音波效果（始终存在，CSS控制显示） -->
@@ -1925,6 +1927,8 @@
       // 更新按钮状态
       const playPauseBtn = document.getElementById('play-pause-btn');
       if (playPauseBtn) {
+        // 蝎子嘴巴按钮：无文字图标，更新 title 提示 + playing 类控制跳舞动画
+        playPauseBtn.title = this.isPlaying ? '暂停' : '播放';
         const icon = playPauseBtn.querySelector('.play-pause-icon');
         if (icon) {
           icon.textContent = this.isPlaying ? '⏸' : '▶';
@@ -1932,10 +1936,10 @@
 
         if (this.isPlaying) {
           playPauseBtn.classList.add('playing', 'spinning-button');
-          icon.classList.add('rotating');
+          if (icon) icon.classList.add('rotating');
         } else {
           playPauseBtn.classList.remove('playing', 'spinning-button');
-          icon.classList.remove('rotating');
+          if (icon) icon.classList.remove('rotating');
         }
       }
 
@@ -3667,6 +3671,61 @@
     }
     to {
       transform: rotate(360deg);
+    }
+  }
+
+  /* 天蝎座嘴巴（小蝎子）：未播放安静呼吸，播放时摇摆跳舞 + 尾巴摆动 */
+  .scorpion-mouth-btn {
+    transition: transform 0.25s ease;
+  }
+  .scorpion-mouth-btn:hover {
+    transform: scale(1.12);
+  }
+  .scorpion-icon {
+    display: block;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  }
+  .scorpion-icon:not(.dancing) {
+    animation: scorpionBreathe 2.4s ease-in-out infinite;
+  }
+  .scorpion-icon.dancing {
+    animation: scorpionDance 1.1s ease-in-out infinite;
+  }
+  .scorpion-tail {
+    transform-box: fill-box;
+    transform-origin: 15% 85%;
+  }
+  .scorpion-icon.dancing .scorpion-tail {
+    animation: scorpionTailWag 0.7s ease-in-out infinite;
+  }
+
+  @keyframes scorpionBreathe {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.08);
+    }
+  }
+
+  @keyframes scorpionDance {
+    0%,
+    100% {
+      transform: rotate(-7deg) translateY(0);
+    }
+    50% {
+      transform: rotate(7deg) translateY(-1px);
+    }
+  }
+
+  @keyframes scorpionTailWag {
+    0%,
+    100% {
+      transform: rotate(-18deg);
+    }
+    50% {
+      transform: rotate(18deg);
     }
   }
 
