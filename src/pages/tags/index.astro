@@ -190,6 +190,7 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
       const SPRING_K = 0.004;
       const CENTER_K = 0.01;
       const DAMPING = 0.88;
+      const DRIFT = 0.05; // 持续微动幅度：让图谱永远保持呼吸感
 
       function step() {
         // 斥力
@@ -229,8 +230,10 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
           n.vx += (W / 2 - n.x) * CENTER_K;
           n.vy += (H / 2 - n.y) * CENTER_K;
         }
-        // 积分 + 阻尼
+        // 积分 + 阻尼（附加轻微随机漂移，让图谱永远保持动效）
         for (const n of nodes) {
+          n.vx += (Math.random() - 0.5) * DRIFT;
+          n.vy += (Math.random() - 0.5) * DRIFT;
           n.vx *= DAMPING;
           n.vy *= DAMPING;
           n.x += n.vx;
@@ -245,19 +248,26 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
       let edgeEls = [];
       let nodeEls = [];
       let labelEls = [];
+      let viewport = null;
+      let panX = 0,
+        panY = 0,
+        zoom = 1; // 平移与缩放状态（Obsidian 式交互）
 
       function build() {
         svg.innerHTML = '';
+        viewport = document.createElementNS(NS, 'g');
+        svg.appendChild(viewport);
         edgeEls = edges.map((e) => {
           const line = document.createElementNS(NS, 'line');
           line.setAttribute('stroke', '#d1d5db');
           line.setAttribute('stroke-width', '0.8');
           line.setAttribute('opacity', '0.6');
-          svg.appendChild(line);
+          viewport.appendChild(line);
           return line;
         });
         nodeEls = nodes.map((n) => {
           const g = document.createElementNS(NS, 'g');
+          g.setAttribute('class', 'node');
           const circle = document.createElementNS(NS, 'circle');
           circle.setAttribute('r', String(n.r));
           circle.setAttribute('fill', '#1f2937');
@@ -266,6 +276,7 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
           circle.style.cursor = 'pointer';
           g.appendChild(circle);
           g.addEventListener('click', () => {
+            if (moved) return; // 拖拽平移后不触发跳转
             window.location.href = `/tags/${n.id.replace(/\//g, '-')}`;
           });
           g.addEventListener('mouseenter', () => {
@@ -292,12 +303,13 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
           t.setAttribute('x', String(n.r + 5));
           t.setAttribute('y', '3');
           t.textContent = n.id;
-          svg.appendChild(t);
+          viewport.appendChild(t);
           return t;
         });
       }
 
       function tick() {
+        viewport.setAttribute('transform', `translate(${panX},${panY}) scale(${zoom})`);
         step();
         edges.forEach((e, i) => {
           edgeEls[i].setAttribute('x1', e.source.x);
@@ -312,17 +324,59 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
       }
 
       build();
-      // 力导向动画：速度收敛后自然停止（最多 600 帧保护）
-      let frames = 0;
+      // 持续动画（Obsidian 风格）：永不停止，靠轻微漂移保持呼吸感
       function animate() {
         tick();
-        frames++;
-        // 计算总动能，低于阈值视为收敛
-        let energy = 0;
-        for (const n of nodes) energy += n.vx * n.vx + n.vy * n.vy;
-        if (frames < 600 && energy > 0.02) requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
       }
       animate();
+
+      // ---- 滚轮缩放（以光标为锚点）----
+      graphView.addEventListener(
+        'wheel',
+        (ev) => {
+          ev.preventDefault();
+          const rect = graphView.getBoundingClientRect();
+          const mx = ev.clientX - rect.left;
+          const my = ev.clientY - rect.top;
+          const factor = Math.exp(-ev.deltaY * 0.0012);
+          const newZoom = Math.min(4, Math.max(0.3, zoom * factor));
+          panX = mx - ((mx - panX) / zoom) * newZoom;
+          panY = my - ((my - panY) / zoom) * newZoom;
+          zoom = newZoom;
+        },
+        { passive: false },
+      );
+
+      // ---- 鼠标拖拽平移 ----
+      let dragging = false;
+      let moved = false;
+      let startX = 0,
+        startY = 0,
+        startPanX = 0,
+        startPanY = 0;
+      svg.style.cursor = 'grab';
+      svg.addEventListener('mousedown', (ev) => {
+        dragging = true;
+        moved = false;
+        startX = ev.clientX;
+        startY = ev.clientY;
+        startPanX = panX;
+        startPanY = panY;
+        svg.style.cursor = 'grabbing';
+      });
+      window.addEventListener('mousemove', (ev) => {
+        if (!dragging) return;
+        const dx = ev.clientX - startX;
+        const dy = ev.clientY - startY;
+        if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
+        panX = startPanX + dx;
+        panY = startPanY + dy;
+      });
+      window.addEventListener('mouseup', () => {
+        dragging = false;
+        svg.style.cursor = 'grab';
+      });
     }
 
     // 页面加载后自动初始化（图谱为默认视图）
