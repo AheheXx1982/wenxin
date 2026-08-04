@@ -281,9 +281,17 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
             window.location.href = `/tags/${n.id.replace(/\//g, '-')}`;
           });
           g.addEventListener('mouseenter', () => {
-            circle.setAttribute('fill', '#0ea5e9');
+            circle.setAttribute('fill', '#a855f7');
             tooltip.classList.remove('hidden');
             tooltip.textContent = `${n.id} · ${n.count} 篇`;
+            // 关联直线同步高亮为紫色
+            edges.forEach((e, i) => {
+              if (e.source.id === n.id || e.target.id === n.id) {
+                edgeEls[i].setAttribute('stroke', '#a855f7');
+                edgeEls[i].setAttribute('stroke-width', '1.6');
+                edgeEls[i].setAttribute('opacity', '0.9');
+              }
+            });
           });
           g.addEventListener('mousemove', (ev) => {
             const rect = graphView.getBoundingClientRect();
@@ -293,6 +301,12 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
           g.addEventListener('mouseleave', () => {
             circle.setAttribute('fill', '#1f2937');
             tooltip.classList.add('hidden');
+            // 恢复直线默认样式
+            edges.forEach((e, i) => {
+              edgeEls[i].setAttribute('stroke', '#d1d5db');
+              edgeEls[i].setAttribute('stroke-width', '0.8');
+              edgeEls[i].setAttribute('opacity', '0.6');
+            });
           });
           viewport.appendChild(g);
           return g;
