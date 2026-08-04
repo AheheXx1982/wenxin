@@ -191,7 +191,7 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
       const CENTER_K = 0.01;
       const DAMPING = 0.88;
       const DRIFT = 0.05; // 持续微动幅度：让图谱永远保持呼吸感
-      const LABEL_GAP = 6; // 标签与圆点的恒定屏幕间距(px)，缩放时不变
+      const LABEL_GAP = 6; // 标签与圆点底部的恒定屏幕间距(px)，标签固定字号不随缩放
 
       function step() {
         // 斥力
@@ -254,6 +254,41 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
         panY = 0,
         zoom = 1; // 平移与缩放状态（Obsidian 式交互）
 
+      // Obsidian 式高亮：聚焦节点+直接关联保持清晰，其余节点/标签/连线淡出
+      function setHover(node, on) {
+        if (on) {
+          const neighbor = new Set([node.id]);
+          edges.forEach((e) => {
+            if (e.source.id === node.id) neighbor.add(e.target.id);
+            if (e.target.id === node.id) neighbor.add(e.source.id);
+          });
+          edges.forEach((e, i) => {
+            if (e.source.id === node.id || e.target.id === node.id) {
+              edgeEls[i].setAttribute('stroke', '#a855f7');
+              edgeEls[i].setAttribute('stroke-width', '1.6');
+              edgeEls[i].setAttribute('opacity', '0.9');
+            } else {
+              edgeEls[i].setAttribute('opacity', '0.15');
+            }
+          });
+          nodes.forEach((nd, i) => {
+            const lit = nd.id === node.id || neighbor.has(nd.id);
+            nodeEls[i].setAttribute('opacity', lit ? '1' : '0.18');
+            labelEls[i].setAttribute('opacity', lit ? '1' : '0.18');
+          });
+        } else {
+          edges.forEach((e, i) => {
+            edgeEls[i].setAttribute('stroke', '#d1d5db');
+            edgeEls[i].setAttribute('stroke-width', '0.8');
+            edgeEls[i].setAttribute('opacity', '0.6');
+          });
+          nodes.forEach((nd, i) => {
+            nodeEls[i].setAttribute('opacity', '1');
+            labelEls[i].setAttribute('opacity', '1');
+          });
+        }
+      }
+
       function build() {
         svg.innerHTML = '';
         viewport = document.createElementNS(NS, 'g');
@@ -266,6 +301,7 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
           viewport.appendChild(line);
           return line;
         });
+        const nodeHandlers = [];
         nodeEls = nodes.map((n) => {
           const g = document.createElementNS(NS, 'g');
           g.setAttribute('class', 'node');
@@ -276,52 +312,51 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
           circle.setAttribute('stroke-width', '1');
           circle.style.cursor = 'pointer';
           g.appendChild(circle);
-          g.addEventListener('click', () => {
+          const click = () => {
             if (moved) return; // 拖拽平移后不触发跳转
             window.location.href = `/tags/${n.id.replace(/\//g, '-')}`;
-          });
-          g.addEventListener('mouseenter', () => {
+          };
+          const enter = () => {
             circle.setAttribute('fill', '#a855f7');
             tooltip.classList.remove('hidden');
             tooltip.textContent = `${n.id} · ${n.count} 篇`;
-            // 关联直线同步高亮为紫色
-            edges.forEach((e, i) => {
-              if (e.source.id === n.id || e.target.id === n.id) {
-                edgeEls[i].setAttribute('stroke', '#a855f7');
-                edgeEls[i].setAttribute('stroke-width', '1.6');
-                edgeEls[i].setAttribute('opacity', '0.9');
-              }
-            });
-          });
-          g.addEventListener('mousemove', (ev) => {
+            setHover(n, true);
+          };
+          const move = (ev) => {
             const rect = graphView.getBoundingClientRect();
             tooltip.style.left = ev.clientX - rect.left + 14 + 'px';
             tooltip.style.top = ev.clientY - rect.top - 10 + 'px';
-          });
-          g.addEventListener('mouseleave', () => {
+          };
+          const leave = () => {
             circle.setAttribute('fill', '#1f2937');
             tooltip.classList.add('hidden');
-            // 恢复直线默认样式
-            edges.forEach((e, i) => {
-              edgeEls[i].setAttribute('stroke', '#d1d5db');
-              edgeEls[i].setAttribute('stroke-width', '0.8');
-              edgeEls[i].setAttribute('opacity', '0.6');
-            });
-          });
+            setHover(n, false);
+          };
+          nodeHandlers.push({ click, enter, move, leave });
+          g.addEventListener('click', click);
+          g.addEventListener('mouseenter', enter);
+          g.addEventListener('mousemove', move);
+          g.addEventListener('mouseleave', leave);
           viewport.appendChild(g);
           return g;
         });
-        labelEls = nodes.map((n) => {
+        labelEls = nodes.map((n, i) => {
           const t = document.createElementNS(NS, 'text');
           t.setAttribute('font-size', '11');
           t.setAttribute('fill', '#374151');
-          // 标签偏移不再写死在世界坐标，改为随 zoom 反算（见 tick），
-          // 保证任意缩放级别下标签与圆点保持恒定屏幕间距
-          t.setAttribute('dominant-baseline', 'middle');
+          // 标签在屏幕空间定位（见 tick）：恒定字号，贴在圆点正下方中间
+          t.setAttribute('text-anchor', 'middle');
+          t.setAttribute('dominant-baseline', 'hanging');
           t.setAttribute('x', '0');
           t.setAttribute('y', '0');
           t.textContent = n.id;
-          viewport.appendChild(t);
+          // 悬停/点击标签与圆点行为一致
+          const h = nodeHandlers[i];
+          t.addEventListener('click', h.click);
+          t.addEventListener('mouseenter', h.enter);
+          t.addEventListener('mousemove', h.move);
+          t.addEventListener('mouseleave', h.leave);
+          svg.appendChild(t);
           return t;
         });
       }
@@ -337,8 +372,10 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
         });
         nodes.forEach((n, i) => {
           nodeEls[i].setAttribute('transform', `translate(${n.x},${n.y})`);
-          // 标签贴在圆点右侧：屏幕间距恒为 LABEL_GAP px（世界偏移 = r + GAP/zoom）
-          labelEls[i].setAttribute('transform', `translate(${n.x + n.r + LABEL_GAP / zoom},${n.y})`);
+          // 标签固定在屏幕空间：恒定字号，贴在圆点正下方中间，间距恒为 LABEL_GAP px
+          labelEls[i].setAttribute('transform', `translate(${panX + n.x * zoom},${panY + (n.y + n.r) * zoom + LABEL_GAP})`);
+          // 缩得太小时隐藏标签（Obsidian 行为），避免文字互相遮挡
+          labelEls[i].setAttribute('visibility', zoom < 0.5 ? 'hidden' : 'visible');
         });
       }
 
