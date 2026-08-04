@@ -1842,8 +1842,10 @@
       this.isMinimized = true;
       const player = document.getElementById('music-player');
       if (player) {
-        player.style.width = '60px';
-        player.style.height = '60px';
+        player.style.width = '88px';
+        player.style.height = '64px';
+        // 横向蝎子造型：取消圆形裁切，展开时由 createPlayerUI 恢复 50%
+        player.style.borderRadius = '10px';
 
         console.log('创建最小化播放器');
 
@@ -1854,8 +1856,46 @@
           <div class="w-full h-full flex items-center justify-center relative minimized-player-container ${this.isPlaying ? 'playing' : ''}" data-draggable="true">
             <!-- 拖拽区域（透明且在中层） -->
             <div id="drag-area" class="absolute inset-0 z-30 cursor-move" style="background: transparent;"></div>
-            
-            <!-- 环绕式控制按钮 - 无边框无背景，完全融入球体 -->
+
+            <!-- 俯视天蝎座蝎子本体：头胸 + 两只大螯 + 分节腹部 + 腿 + 上翘带刺长尾 -->
+            <svg class="scorpion-body ${this.isPlaying ? 'playing' : ''}" viewBox="0 0 88 64" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+              <!-- 腿（身体两侧） -->
+              <g class="scorpion-legs" fill="none" stroke="#22c55e" stroke-width="2.4" stroke-linecap="round">
+                <path d="M26 25 q -7 -4 -9 -7"/>
+                <path d="M35 23 q -6 -5 -8 -8"/>
+                <path d="M26 39 q -7 4 -9 7"/>
+                <path d="M35 41 q -6 5 -8 8"/>
+                <path d="M46 26 q 6 -4 8 -6"/>
+                <path d="M53 25 q 6 -4 8 -6"/>
+                <path d="M46 38 q 6 4 8 6"/>
+                <path d="M53 39 q 6 4 8 6"/>
+              </g>
+              <!-- 尾巴（右端向上翘，分节带毒刺） -->
+              <g class="scorpion-tail-svg">
+                <path d="M62 34 C 70 36, 79 32, 82 24 C 84 18, 84 14, 81 11" fill="none" stroke="#22c55e" stroke-width="4.5" stroke-linecap="round"/>
+                <path d="M81 11 l -5.5 0.6 l -0.3 -5.5 z" fill="#22c55e"/>
+                <path d="M69 35.5 l 1.4 4" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M76 32.5 l 3 3.4" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M80.5 25.5 l 3.8 2" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"/>
+              </g>
+              <!-- 分节腹部（从后向前渐大） -->
+              <g fill="rgba(34,197,94,0.28)" stroke="#22c55e" stroke-width="2.4">
+                <ellipse cx="35" cy="32" rx="8.5" ry="10.5"/>
+                <ellipse cx="47" cy="32" rx="7" ry="9"/>
+                <ellipse cx="58" cy="33" rx="5.5" ry="7"/>
+              </g>
+              <!-- 头胸 -->
+              <ellipse cx="20" cy="32" rx="9" ry="11" fill="rgba(34,197,94,0.35)" stroke="#22c55e" stroke-width="2.4"/>
+              <!-- 两只大螯（头部前方张开） -->
+              <g class="scorpion-claw-svg" fill="none" stroke="#22c55e" stroke-linecap="round">
+                <path d="M16 25 C 9 21, 4 19, 2 22 C 1 24, 2 27, 6 27" stroke-width="4.2"/>
+                <path d="M6 22 C 3 22, 1 24, 3 26" stroke-width="3.2"/>
+                <path d="M16 39 C 9 43, 4 45, 2 42 C 1 40, 2 37, 6 37" stroke-width="4.2"/>
+                <path d="M6 42 C 3 42, 1 40, 3 38" stroke-width="3.2"/>
+              </g>
+            </svg>
+
+            <!-- 环绕式控制按钮 - 无边框无背景，融入蝎子头部区域 -->
             <div class="absolute inset-0 pointer-events-none z-40">
               <!-- 最小化按钮（左眼）- 完全透明背景，只显示眼睛 -->
               <button id="minimize-btn" class="absolute top-1 left-1 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group pointer-events-auto cursor-pointer z-50" title="展开播放器" style="pointer-events: auto; cursor: pointer; background: transparent; border: none;" onclick="window.musicPlayer?.expandPlayer(); console.log('最小化按钮点击');">
@@ -1866,7 +1906,7 @@
                   </div>
                 </div>
               </button>
-              
+
               <!-- 关闭按钮（右眼）- 完全透明背景，只显示眼睛 -->
               <button id="close-btn" class="absolute top-1 right-1 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group pointer-events-auto cursor-pointer z-50" title="关闭播放器" style="pointer-events: auto; cursor: pointer; background: transparent; border: none;" onclick="window.musicPlayer?.closePlayer(); console.log('关闭按钮点击');">
                 <!-- 逼真的眼睛 -->
@@ -1877,48 +1917,28 @@
                 </div>
               </button>
             </div>
-            
+
             <!-- 随机动效元素 -->
             ${randomEffects.backgroundRings}
-            
+
             <!-- 视觉动效：旋转光环 -->
             <div class="absolute inset-0 rounded-full animated-ring ${this.isPlaying ? 'playing' : ''}"></div>
             <div class="absolute inset-1 rounded-full animated-ring-inner ${this.isPlaying ? 'playing' : ''}"></div>
-            
+
             <!-- 视觉动效：脉冲波纹 -->
             <div class="absolute inset-0 rounded-full pulse-ring ${this.isPlaying ? 'playing' : ''}"></div>
-            
-            <!-- 中心播放按钮（嘴巴）= 表情：未播放微笑，播放时 O 形唱歌 -->
-            <button id="play-pause-btn" class="absolute bottom-1 left-1/2 -translate-x-1/2 w-9 h-8 flex items-center justify-center z-50 scorpion-mouth-btn ${this.isPlaying ? 'playing' : ''}" style="pointer-events: auto; position: absolute; z-index: 50; cursor: pointer; background: transparent; border: none;" title="${this.isPlaying ? '暂停' : '播放'}" onclick="window.musicPlayer?.handleMinimizedPlayerClick(event); console.log('最小化播放按钮点击');">
+
+            <!-- 嘴巴（播放按钮）：未播放微笑，播放时 O 形唱歌 -->
+            <button id="play-pause-btn" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-9 h-8 flex items-center justify-center z-50 scorpion-mouth-btn ${this.isPlaying ? 'playing' : ''}" style="pointer-events: auto; position: absolute; z-index: 50; cursor: pointer; background: transparent; border: none;" title="${this.isPlaying ? '暂停' : '播放'}" onclick="window.musicPlayer?.handleMinimizedPlayerClick(event); console.log('最小化播放按钮点击');">
               <span class="mouth-shape mouth-smile"></span>
               <span class="mouth-shape mouth-open"></span>
             </button>
 
-            <!-- 天蝎座附件：左右螯钳 + 卷尾毒刺（最小化播放器整体就是一只蝎子） -->
-            <div class="scorpion-claw scorpion-claw-left ${this.isPlaying ? 'playing' : ''}" aria-hidden="true">
-              <svg viewBox="0 0 26 26" width="22" height="22">
-                <path d="M23 3 C 12 2, 4 6, 3 13" fill="none" stroke="#ffffff" stroke-width="4.4" stroke-linecap="round"/>
-                <path d="M23 11 C 15 10, 8 13, 6 17" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="scorpion-claw scorpion-claw-right ${this.isPlaying ? 'playing' : ''}" aria-hidden="true">
-              <svg viewBox="0 0 26 26" width="22" height="22">
-                <path d="M23 3 C 12 2, 4 6, 3 13" fill="none" stroke="#ffffff" stroke-width="4.4" stroke-linecap="round"/>
-                <path d="M23 11 C 15 10, 8 13, 6 17" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="scorpion-tail ${this.isPlaying ? 'playing' : ''}" aria-hidden="true">
-              <svg viewBox="0 0 36 30" width="34" height="28">
-                <path d="M3 24 C 12 27, 25 26, 30 15 C 33 9, 31 4, 27 3" fill="none" stroke="#ffffff" stroke-width="4.4" stroke-linecap="round"/>
-                <path d="M27 3 l -3.6 -1.7 l 0.8 -3.6 z" fill="#ffffff"/>
-              </svg>
-            </div>
-            
             <!-- 音波效果（始终存在，CSS控制显示） -->
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none sound-wave-container ${this.isPlaying ? 'playing' : ''}">
               ${randomEffects.soundWaves}
             </div>
-            
+
             <!-- 随机粒子效果 -->
             ${randomEffects.particles}
           </div>
@@ -3730,69 +3750,62 @@
     }
   }
 
-  /* 螯钳（左右各一，白色描边，从球体两侧伸出） */
-  .scorpion-claw {
+  /* 俯视蝎子主体动画：播放时尾巴摆动、螯开合、腿微动 */
+  .scorpion-body {
     position: absolute;
-    top: 16px;
-    z-index: 25;
+    inset: 0;
+    z-index: 20;
     pointer-events: none;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.25));
   }
-  .scorpion-claw-left {
-    left: -11px;
-  }
-  .scorpion-claw-right {
-    right: -11px;
-  }
-  .scorpion-claw-right svg {
-    transform: scaleX(-1);
-  }
-  .scorpion-claw.playing {
-    animation: clawWag 1.2s ease-in-out infinite;
-  }
-  .scorpion-claw-right.playing {
-    animation: clawWagR 1.2s ease-in-out infinite;
-  }
-  @keyframes clawWag {
-    0%,
-    100% {
-      transform: rotate(-5deg);
-    }
-    50% {
-      transform: rotate(7deg);
-    }
-  }
-  @keyframes clawWagR {
-    0%,
-    100% {
-      transform: rotate(5deg);
-    }
-    50% {
-      transform: rotate(-7deg);
-    }
-  }
-
-  /* 卷尾毒刺（从球体右下伸出向上卷） */
-  .scorpion-tail {
-    position: absolute;
-    right: -14px;
-    bottom: -4px;
-    z-index: 25;
-    pointer-events: none;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
-    transform-origin: 8% 85%;
+  .scorpion-tail-svg {
+    transform-box: fill-box;
+    transform-origin: 12% 80%;
     transition: transform 0.3s ease;
   }
-  .scorpion-tail.playing {
+  .scorpion-body.playing .scorpion-tail-svg {
     animation: tailWag 0.8s ease-in-out infinite;
+  }
+  .scorpion-claw-svg {
+    transform-box: fill-box;
+    transform-origin: 90% 50%;
+    transition: transform 0.3s ease;
+  }
+  .scorpion-body.playing .scorpion-claw-svg {
+    animation: clawWag 1.2s ease-in-out infinite;
+  }
+  .scorpion-legs {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
+  .scorpion-body.playing .scorpion-legs {
+    animation: legsTwitch 0.9s ease-in-out infinite;
   }
   @keyframes tailWag {
     0%,
     100% {
-      transform: rotate(-16deg);
+      transform: rotate(-8deg);
     }
     50% {
-      transform: rotate(18deg);
+      transform: rotate(10deg);
+    }
+  }
+  @keyframes clawWag {
+    0%,
+    100% {
+      transform: rotate(-4deg) scale(1);
+    }
+    50% {
+      transform: rotate(5deg) scale(1.06);
+    }
+  }
+  @keyframes legsTwitch {
+    0%,
+    100% {
+      transform: scaleY(1);
+    }
+    50% {
+      transform: scaleY(1.08);
     }
   }
 
@@ -3875,20 +3888,12 @@
     z-index: 35;
   }
 
-  /* 最小化播放器容器样式 - 完整的球形背景 */
+  /* 最小化播放器容器样式 - 透明底，蝎子身体由 SVG 绘制 */
   .minimized-player-container {
     position: relative;
-    border-radius: 50%;
-    /* 溢出可见：让螯钳/尾巴伸出球体，整体呈蝎子造型 */
+    border-radius: 10px;
     overflow: visible;
-    /* 单一的绿色球形背景，无边框无阴影 */
-    background: radial-gradient(
-      circle at 30% 30%,
-      rgba(34, 197, 94, 0.4) 0%,
-      rgba(34, 197, 94, 0.3) 40%,
-      rgba(34, 197, 94, 0.25) 70%,
-      rgba(34, 197, 94, 0.2) 100%
-    );
+    background: transparent;
   }
 
   /* 移除所有伪元素和额外的背景层 */
