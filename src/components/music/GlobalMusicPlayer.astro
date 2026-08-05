@@ -653,15 +653,25 @@
         this.showDockingHint(element, newLeft, newTop);
       };
 
-      const handleMouseUp = () => {
+      const handleMouseUp = (e) => {
         if (isDragging) {
           console.log('结束拖拽');
+          // 位移小于阈值视为点击球体（播放/暂停或双击展开），否则为拖拽
+          const ex = e && typeof e.clientX === 'number' ? e.clientX : startX;
+          const ey = e && typeof e.clientY === 'number' ? e.clientY : startY;
+          const isClick = Math.abs(ex - startX) + Math.abs(ey - startY) < 5;
           isDragging = false;
           element.style.cursor = '';
           dragArea.style.cursor = 'move';
 
           // 隐藏吸附提示
           this.hideDockingHint();
+
+          // 点击球体任意处 = 播放/暂停（双击展开），与旧播放按钮行为一致
+          if (isClick) {
+            window.musicPlayer?.handleMinimizedPlayerClick(e || { preventDefault: () => {}, stopPropagation: () => {} });
+            return;
+          }
 
           // 检查是否需要吸附
           const rect = element.getBoundingClientRect();
@@ -1886,21 +1896,12 @@
             <!-- 视觉动效：脉冲波纹 -->
             <div class="absolute inset-0 rounded-full pulse-ring ${this.isPlaying ? 'playing' : ''}"></div>
             
-            <!-- 中心播放按钮（嘴巴）- 缩小放底部中央，眼睛露出 -->
-            <button id="play-pause-btn" class="absolute bottom-1 left-1/2 -translate-x-1/2 w-7 h-7 bg-gradient-to-br from-green-500 to-green-700 rounded-full text-white hover:from-green-600 hover:to-green-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 z-50 rotating-play-btn ${this.isPlaying ? 'playing spinning-button' : ''}" style="pointer-events: auto; position: absolute; z-index: 50; cursor: pointer;" onclick="window.musicPlayer?.handleMinimizedPlayerClick(event); console.log('最小化播放按钮点击');">
-              <div class="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent opacity-50"></div>
-              <span class="relative z-10 text-sm font-bold play-pause-icon ${this.isPlaying ? 'rotating' : ''}">${this.isPlaying ? '⏸' : '▶'}</span>
-              
-              <!-- 播放时的额外视觉效果 -->
-              ${
-                this.isPlaying
-                  ? `
-                <div class="absolute -inset-2 rounded-full border-2 border-green-400/30 animate-ping"></div>
-                <div class="absolute -inset-1 rounded-full bg-green-400/10 animate-pulse"></div>
-              `
-                  : ''
-              }
-            </button>
+            <!-- 表情（装饰，不可点击）：鼻子三条竖纹 + 闭合小嘴，播放时小嘴张开唱歌 -->
+            <div id="play-pause-btn" class="absolute bottom-1 left-1/2 -translate-x-1/2 w-9 h-8 flex flex-col items-center justify-center z-10 ${this.isPlaying ? 'playing' : ''}" style="pointer-events: none; position: absolute; z-index: 10; background: transparent; border: none;">
+              <span class="nose-marks"><i></i><i></i><i></i></span>
+              <span class="mouth-shape mouth-closed"></span>
+              <span class="mouth-shape mouth-open"></span>
+            </div>
             
             <!-- 音波效果（始终存在，CSS控制显示） -->
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none sound-wave-container ${this.isPlaying ? 'playing' : ''}">
@@ -3754,6 +3755,8 @@
     position: relative;
     border-radius: 50%;
     overflow: hidden;
+    /* 金色描边（参考图玻璃质感小精灵风格） */
+    border: 2px solid rgba(251, 191, 36, 0.65);
     /* 单一的绿色球形背景，无边框无阴影 */
     background: radial-gradient(
       circle at 30% 30%,
@@ -3762,6 +3765,55 @@
       rgba(34, 197, 94, 0.25) 70%,
       rgba(34, 197, 94, 0.2) 100%
     );
+  }
+
+  /* 小精灵表情（参考图风格）：鼻子三条竖纹 + 闭合小嘴，播放时小嘴张开唱歌 */
+  .nose-marks {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 1px;
+  }
+  .nose-marks i {
+    width: 2px;
+    height: 5px;
+    background: rgba(21, 128, 61, 0.85);
+    border-radius: 1px;
+  }
+  .mouth-shape {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+  }
+  .mouth-closed {
+    width: 7px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 3px;
+    transform: translate(-50%, -50%);
+  }
+  .mouth-open {
+    display: none;
+    width: 7px;
+    height: 7px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  #play-pause-btn.playing .mouth-closed {
+    display: none;
+  }
+  #play-pause-btn.playing .mouth-open {
+    display: block;
+    animation: mouthSing 0.6s ease-in-out infinite;
+  }
+  @keyframes mouthSing {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) scaleY(1);
+    }
+    50% {
+      transform: translate(-50%, -50%) scaleY(1.5);
+    }
   }
 
   /* 移除所有伪元素和额外的背景层 */
