@@ -1896,7 +1896,6 @@
 
             <!-- 方案1：十字外圈控制按钮（悬停浮现，参考黑胶唱片机布局） -->
             <div class="player-controls">
-              <div class="progress-arc ${this.isPlaying ? 'playing' : ''}"></div>
               <button class="ctrl c-top" title="上一首" onclick="window.musicPlayer?.previousTrack()">⏮</button>
               <button class="ctrl c-left menu-play" title="播放/暂停" onclick="window.musicPlayer?.togglePlay()">${this.isPlaying ? '⏸' : '▶'}</button>
               <button class="ctrl c-bottom" title="下一首" onclick="window.musicPlayer?.nextTrack()">⏭</button>
@@ -4012,37 +4011,6 @@
     top: 50%;
     margin-top: -6px;
     background: linear-gradient(180deg, #60a5fa, #2563eb);
-  }
-  /* 顶部弧形进度条 */
-  .progress-arc {
-    position: absolute;
-    top: -7px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 24px;
-    height: 9px;
-    border-radius: 50% 50% 0 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    pointer-events: none;
-  }
-  .minimized-player-container:hover .progress-arc {
-    opacity: 1;
-  }
-  .progress-arc::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 2px;
-    width: 0;
-    background: linear-gradient(90deg, #fbbf24, #f97316);
-    border-radius: 999px;
-    transition: width 0.3s ease;
-  }
-  .progress-arc.playing::before {
-    width: 65%;
   }
 
   /* 状态切换：待机眼睛 / 播放 */
