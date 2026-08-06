@@ -3857,6 +3857,25 @@
       0 1px 3px rgba(0, 0, 0, 0.3);
   }
 
+  /* 待机眨眼动效：大眼睛每隔数秒眨一下（可爱） */
+  .screen-eyes .realistic-eye {
+    animation: eyeBlink 4.6s ease-in-out infinite;
+    transform-origin: center;
+  }
+  @keyframes eyeBlink {
+    0%,
+    90%,
+    100% {
+      transform: scaleY(1);
+    }
+    93% {
+      transform: scaleY(0.1);
+    }
+    96% {
+      transform: scaleY(1);
+    }
+  }
+
   /* 播放层：歌名滚动 + EQ 音浪 */
   .screen-play {
     position: absolute;
