@@ -188,9 +188,10 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
       // 力导向模拟（斥力 + 弹簧 + 中心引力，参数调慢保证平滑）
       const REPULSION = 1200;
       const SPRING_K = 0.004;
-      const CENTER_K = 0.03;
+      const CENTER_K = 0.05;
       const DAMPING = 0.88;
-      const DRIFT = 0.05; // 持续微动幅度：让图谱永远保持呼吸感
+      const DRIFT = 0.006; // 持续微动幅度：极轻微呼吸感，避免乱跳
+      const MAX_SPEED = 0.5; // 速度上限：防止节点震荡失控
       const LABEL_GAP = 6; // 标签与圆点底部的恒定屏幕间距(px)，标签固定字号不随缩放
 
       function step() {
@@ -237,6 +238,9 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
           n.vy += (Math.random() - 0.5) * DRIFT;
           n.vx *= DAMPING;
           n.vy *= DAMPING;
+          // 速度钳制：防止节点震荡失控（乱跳）
+          n.vx = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, n.vx));
+          n.vy = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, n.vy));
           n.x += n.vx;
           n.y += n.vy;
           // 边界约束
