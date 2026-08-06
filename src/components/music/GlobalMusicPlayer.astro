@@ -1138,6 +1138,34 @@
       console.log('上一首:', this.currentTrack.title, '- 自动播放');
     }
 
+    // 播放列表弹出面板：显示/隐藏歌单（小播放器右侧 ≡ 按钮）
+    togglePlaylist() {
+      const panel = document.getElementById('minimized-playlist');
+      if (!panel) return;
+      if (panel.style.display !== 'none') {
+        panel.style.display = 'none';
+        return;
+      }
+      const items = panel.querySelector('.playlist-items');
+      if (items && this.playlist.length > 0) {
+        items.innerHTML = this.playlist
+          .map(
+            (t, i) =>
+              `<div class="playlist-item${i === this.currentTrackIndex ? ' active' : ''}" onclick="window.musicPlayer?.playTrackByIndex(${i}); window.musicPlayer?.hidePlaylist();">${t.title} - ${t.artist}</div>`,
+          )
+          .join('');
+      } else if (items) {
+        items.innerHTML = '<div class="playlist-item" style="opacity:0.5;">暂无歌曲</div>';
+      }
+      panel.style.display = 'block';
+    }
+
+    // 关闭播放列表面板
+    hidePlaylist() {
+      const panel = document.getElementById('minimized-playlist');
+      if (panel) panel.style.display = 'none';
+    }
+
     nextTrack() {
       if (this.playlist.length === 0) {
         alert('没有播放列表');
@@ -1897,7 +1925,13 @@
               <button class="ctrl c-top" title="上一首" onclick="window.musicPlayer?.previousTrack()">⏮</button>
               <button class="ctrl c-left menu-play" title="播放/暂停" onclick="window.musicPlayer?.togglePlay()">${this.isPlaying ? '⏸' : '▶'}</button>
               <button class="ctrl c-bottom" title="下一首" onclick="window.musicPlayer?.nextTrack()">⏭</button>
-              <button class="ctrl c-right" title="更多" onclick="window.musicPlayer?.expandPlayer()">☰</button>
+              <button class="ctrl c-right" title="播放列表" onclick="window.musicPlayer?.togglePlaylist()">≡</button>
+            </div>
+
+            <!-- 播放列表弹出面板（点击右侧 ≡ 按钮显示） -->
+            <div class="playlist-panel" id="minimized-playlist" style="display:none;">
+              <div class="playlist-header">播放列表</div>
+              <div class="playlist-items"></div>
             </div>
             
             <!-- 随机动效元素 -->
@@ -4010,6 +4044,57 @@
     top: 50%;
     margin-top: -6px;
     background: linear-gradient(180deg, #60a5fa, #2563eb);
+  }
+
+  /* 播放列表弹出面板（小播放器右侧 ≡ 按钮） */
+  .playlist-panel {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    right: 0;
+    width: 180px;
+    max-height: 190px;
+    overflow-y: auto;
+    background: rgba(13, 16, 28, 0.96);
+    border: 1px solid rgba(192, 132, 252, 0.4);
+    border-radius: 10px;
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.45),
+      0 0 12px rgba(192, 132, 252, 0.15);
+    z-index: 60;
+    padding: 6px;
+    pointer-events: auto;
+  }
+  .playlist-header {
+    font-size: 10px;
+    font-weight: 600;
+    color: #c4b5fd;
+    padding: 2px 4px 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 4px;
+  }
+  .playlist-item {
+    font-size: 9.5px;
+    color: #e2e8f0;
+    padding: 4px 6px;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 0.15s ease;
+  }
+  .playlist-item:hover {
+    background: rgba(192, 132, 252, 0.18);
+  }
+  .playlist-item.active {
+    color: #fbbf24;
+  }
+  .playlist-panel::-webkit-scrollbar {
+    width: 3px;
+  }
+  .playlist-panel::-webkit-scrollbar-thumb {
+    background: rgba(192, 132, 252, 0.4);
+    border-radius: 2px;
   }
 
   /* 状态切换：待机眼睛 / 播放 */
