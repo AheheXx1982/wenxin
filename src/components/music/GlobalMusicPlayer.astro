@@ -1866,8 +1866,6 @@
             <!-- 淡紫呼吸光环（头盔外圈） -->
             <div class="halo" aria-hidden="true"></div>
 
-            <!-- 头盔顶部高光弧（glossy 反射） -->
-            <div class="visor-highlight"></div>
             <!-- 头盔屏幕（黑玻璃：待机=眼睛，播放=歌名+EQ，悬停=菜单） -->
             <div class="visor-screen">
                 <!-- 待机：两只眼睛按钮（左展开/右关闭） -->
@@ -3808,24 +3806,6 @@
     }
   }
 
-  /* 顶部高光弧（glossy 反射，卡哇伊） */
-  .visor-highlight {
-    position: absolute;
-    top: 2px;
-    left: 10%;
-    width: 80%;
-    height: 9px;
-    border-radius: 50%;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.85) 0%,
-      rgba(255, 255, 255, 0.3) 65%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    transform: none;
-    z-index: 2;
-    pointer-events: none;
-  }
   .visor-screen {
     position: absolute;
     inset: 5px;
