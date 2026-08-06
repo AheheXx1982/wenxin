@@ -1863,10 +1863,13 @@
             <!-- 拖拽区域（透明且在中层） -->
             <div id="drag-area" class="absolute inset-0 z-30 cursor-move" style="background: transparent;"></div>
             
-            <!-- 宇航员面罩（LCD 显示屏：待机=眼睛，播放=歌名+EQ音浪，悬停=操作菜单） -->
-            <div class="astronaut-visor ${this.isPlaying ? 'playing' : ''}">
-              <div class="visor-highlight"></div>
-              <div class="visor-screen">
+            <!-- 淡紫呼吸光环（头盔外圈） -->
+            <div class="halo" aria-hidden="true"></div>
+
+            <!-- 头盔顶部高光弧（glossy 反射） -->
+            <div class="visor-highlight"></div>
+            <!-- 头盔屏幕（黑玻璃：待机=眼睛，播放=歌名+EQ，悬停=菜单） -->
+            <div class="visor-screen">
                 <!-- 待机：两只眼睛按钮（左展开/右关闭） -->
                 <div class="screen-eyes">
                   <button id="minimize-btn" class="visor-eye-btn" title="展开播放器" style="pointer-events: auto; cursor: pointer; background: transparent; border: none;" onclick="window.musicPlayer?.expandPlayer(); console.log('最小化按钮点击');">
@@ -1898,23 +1901,6 @@
                   <button class="menu-btn" title="关闭" onclick="window.musicPlayer?.closePlayer()">✕</button>
                 </div>
               </div>
-            </div>
-
-            <!-- 宇航服淡紫腰带（卡哇伊饰带） -->
-            <div class="suit-band" aria-hidden="true"></div>
-            <!-- 胸前控制面板（蓝灯+红灯+小屏，播放时灯闪） -->
-            <div class="chest-panel ${this.isPlaying ? 'playing' : ''}" aria-hidden="true">
-              <i class="panel-light panel-blue"></i>
-              <i class="panel-light panel-blue"></i>
-              <i class="panel-screen"></i>
-              <i class="panel-light panel-red"></i>
-            </div>
-
-            <!-- 金色新月底座（球体下方，球坐月牙上） -->
-            <div class="crescent-moon" aria-hidden="true">
-              <div class="moon-crater"></div>
-              <div class="moon-crater moon-crater-2"></div>
-            </div>
             
             <!-- 随机动效元素 -->
             ${randomEffects.backgroundRings}
@@ -1925,9 +1911,6 @@
             
             <!-- 视觉动效：脉冲波纹 -->
             <div class="absolute inset-0 rounded-full pulse-ring ${this.isPlaying ? 'playing' : ''}"></div>
-            
-            <!-- 星星魔法棒（右上角，播放时旋转闪烁，id 兼容 JS 状态切换） -->
-            <div id="play-pause-btn" class="magic-star ${this.isPlaying ? 'playing' : ''}" style="pointer-events: none;" title="${this.isPlaying ? '暂停' : '播放'}">★</div>
             
             <!-- 音波效果（始终存在，CSS控制显示） -->
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none sound-wave-container ${this.isPlaying ? 'playing' : ''}">
@@ -1960,34 +1943,22 @@
         }
       }
 
-      // 更新宇航员面罩显示屏状态（播放=歌名+EQ，悬停=菜单，待机=眼睛）
-      const visor = container.querySelector('.astronaut-visor');
-      if (visor) {
-        if (this.isPlaying) {
-          visor.classList.add('playing');
-        } else {
-          visor.classList.remove('playing');
-        }
-        // 歌名（播放时在屏内显示/滚动）
-        const trackText = visor.querySelector('.track-text');
-        if (trackText && this.currentTrack) {
-          trackText.textContent = `${this.currentTrack.title} - ${this.currentTrack.artist}`;
-        }
-        // 悬停菜单里的播放/暂停按钮图标
-        const menuPlay = visor.querySelector('.menu-play');
-        if (menuPlay) {
-          menuPlay.textContent = this.isPlaying ? '⏸' : '▶';
-        }
+      // 更新头盔屏幕状态（播放=歌名+EQ，悬停=菜单，待机=眼睛）
+      // 容器本身携带 playing 类驱动屏幕层切换
+      if (this.isPlaying) {
+        container.classList.add('playing');
+      } else {
+        container.classList.remove('playing');
       }
-
-      // 胸前控制面板灯闪烁状态
-      const chestPanel = container.querySelector('.chest-panel');
-      if (chestPanel) {
-        if (this.isPlaying) {
-          chestPanel.classList.add('playing');
-        } else {
-          chestPanel.classList.remove('playing');
-        }
+      // 歌名（播放时在屏内显示/滚动）
+      const trackText = container.querySelector('.track-text');
+      if (trackText && this.currentTrack) {
+        trackText.textContent = `${this.currentTrack.title} - ${this.currentTrack.artist}`;
+      }
+      // 悬停菜单里的播放/暂停按钮图标
+      const menuPlay = container.querySelector('.menu-play');
+      if (menuPlay) {
+        menuPlay.textContent = this.isPlaying ? '⏸' : '▶';
       }
 
       // 更新眼睛按钮动画状态
@@ -3800,37 +3771,43 @@
     z-index: 35;
   }
 
-  /* 最小化播放器容器样式 - 白色宇航服球体 */
+  /* 最小化播放器容器 = 太空人头盔（黑玻璃 + 淡紫描边，无白球） */
   .minimized-player-container {
     position: relative;
     border-radius: 50%;
-    overflow: hidden;
-    /* 宇航服质感：白-浅灰渐变 + 浅描边 */
-    border: 1px solid rgba(148, 163, 184, 0.4);
-    background: radial-gradient(circle at 32% 28%, #ffffff 0%, #eef2f6 45%, #c9d2da 100%);
+    /* 溢出可见：紫光环伸出头盔外圈；屏幕内容由 .visor-screen 自行裁切 */
+    overflow: visible;
+    border: 2px solid rgba(192, 132, 252, 0.55);
+    background: radial-gradient(circle at 50% 16%, #2a2a3a 0%, #15151e 55%, #08080c 100%);
     box-shadow:
-      inset 0 -3px 8px rgba(100, 116, 139, 0.25),
-      0 2px 8px rgba(0, 0, 0, 0.18);
+      inset 0 -4px 12px rgba(255, 255, 255, 0.06),
+      inset 0 4px 16px rgba(0, 0, 0, 0.6),
+      0 0 14px rgba(192, 132, 252, 0.22),
+      0 2px 8px rgba(0, 0, 0, 0.35);
   }
 
-  /* 宇航员面罩（卡哇伊 glossy 黑玻璃 + 淡紫描边）：待机=眼睛，播放=歌名+EQ，悬停=菜单 */
-  .astronaut-visor {
+  /* 淡紫呼吸光环（头盔外圈，V3 方案） */
+  .halo {
     position: absolute;
-    left: 50%;
-    top: 44%;
-    transform: translate(-50%, -50%);
-    width: 44px;
-    height: 36px;
-    border-radius: 48%;
-    background: radial-gradient(circle at 50% 18%, #2a2a3a 0%, #15151e 55%, #08080c 100%);
-    border: 2px solid rgba(192, 132, 252, 0.55);
-    box-shadow:
-      inset 0 -2px 6px rgba(255, 255, 255, 0.06),
-      inset 0 2px 8px rgba(0, 0, 0, 0.6),
-      0 0 10px rgba(192, 132, 252, 0.18),
-      0 1px 4px rgba(0, 0, 0, 0.35);
-    z-index: 35;
+    inset: -7px;
+    border-radius: 50%;
+    border: 2px solid rgba(192, 132, 252, 0.25);
+    z-index: 0;
+    pointer-events: none;
+    animation: haloPulse 2.6s ease-in-out infinite;
   }
+  @keyframes haloPulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: scale(1.08);
+      opacity: 1;
+    }
+  }
+
   /* 顶部高光弧（glossy 反射，卡哇伊） */
   .visor-highlight {
     position: absolute;
@@ -3851,12 +3828,14 @@
   }
   .visor-screen {
     position: absolute;
-    inset: 3px;
-    border-radius: 40%;
+    inset: 5px;
+    border-radius: 44%;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    /* 高于拖拽区(z-30)：保证屏幕内眼睛/菜单按钮可点击 */
+    z-index: 35;
     background: rgba(2, 6, 23, 0.85);
   }
   /* 扫描线效果（科技感） */
@@ -3995,156 +3974,18 @@
   }
 
   /* 状态切换：待机眼睛 / 播放 / 悬停菜单 */
-  .astronaut-visor.playing .screen-eyes {
+  .minimized-player-container.playing .screen-eyes {
     display: none;
   }
-  .astronaut-visor.playing .screen-play {
+  .minimized-player-container.playing .screen-play {
     display: flex;
   }
-  .astronaut-visor:hover .screen-eyes,
-  .astronaut-visor.playing:hover .screen-play {
+  .minimized-player-container:hover .screen-eyes,
+  .minimized-player-container.playing:hover .screen-play {
     display: none;
   }
-  .astronaut-visor:hover .screen-menu {
+  .minimized-player-container:hover .screen-menu {
     display: flex;
-  }
-
-  /* 宇航服淡紫腰带（卡哇伊饰带） */
-  .suit-band {
-    position: absolute;
-    bottom: 17px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 46px;
-    height: 5px;
-    border-radius: 50%;
-    background: rgba(192, 132, 252, 0.35);
-    z-index: 12;
-    pointer-events: none;
-  }
-  /* 胸前控制面板（蓝灯+红灯+小屏，播放时灯闪） */
-  .chest-panel {
-    position: absolute;
-    bottom: 9px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 15px;
-    height: 9px;
-    background: linear-gradient(180deg, #475569, #1e293b);
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: 1px;
-    padding: 1px 2px;
-    z-index: 12;
-    pointer-events: none;
-    box-shadow:
-      inset 0 1px 2px rgba(255, 255, 255, 0.15),
-      0 1px 2px rgba(0, 0, 0, 0.3);
-  }
-  .panel-light {
-    width: 2.5px;
-    height: 2.5px;
-    border-radius: 50%;
-  }
-  .panel-blue {
-    background: #38bdf8;
-    box-shadow: 0 0 3px rgba(56, 189, 248, 0.8);
-  }
-  .panel-red {
-    background: #f87171;
-    box-shadow: 0 0 3px rgba(248, 113, 113, 0.8);
-  }
-  .panel-screen {
-    width: 4px;
-    height: 3px;
-    background: #052e16;
-    border-radius: 1px;
-    box-shadow: inset 0 0 1px rgba(74, 222, 128, 0.6);
-  }
-  .chest-panel.playing .panel-blue {
-    animation: panelBlink 1s ease-in-out infinite;
-  }
-  .chest-panel.playing .panel-red {
-    animation: panelBlink 1.4s ease-in-out infinite reverse;
-  }
-  @keyframes panelBlink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.3;
-    }
-  }
-
-  /* 金色新月底座（球坐月牙上） */
-  .crescent-moon {
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 58px;
-    height: 30px;
-    z-index: 5;
-    pointer-events: none;
-    background: radial-gradient(circle at 30% 35%, #fef08a 0%, #fbbf24 55%, #d97706 100%);
-    border-radius: 50%;
-    box-shadow:
-      inset -6px -8px 12px rgba(180, 83, 9, 0.5),
-      0 2px 8px rgba(0, 0, 0, 0.25);
-  }
-  .moon-crater {
-    position: absolute;
-    left: 10px;
-    top: 8px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(217, 119, 6, 0.55);
-  }
-  .moon-crater-2 {
-    left: 22px;
-    top: 15px;
-    width: 4px;
-    height: 4px;
-  }
-
-  /* 星星魔法棒（右上角，播放时旋转闪烁） */
-  .magic-star {
-    position: absolute;
-    top: -5px;
-    right: -3px;
-    z-index: 35;
-    pointer-events: none;
-    color: #fbbf24;
-    font-size: 17px;
-    line-height: 1;
-    text-shadow: 0 0 8px rgba(251, 191, 36, 0.9);
-    animation: starTwinkle 2.2s ease-in-out infinite;
-  }
-  .magic-star.playing {
-    animation: starSpin 1.3s linear infinite;
-  }
-  @keyframes starTwinkle {
-    0%,
-    100% {
-      opacity: 0.55;
-      transform: scale(0.88) rotate(0deg);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.12) rotate(12deg);
-    }
-  }
-  @keyframes starSpin {
-    from {
-      transform: rotate(0deg) scale(1);
-    }
-    to {
-      transform: rotate(360deg) scale(1.06);
-    }
   }
 
   /* 移除所有伪元素和额外的背景层 */
