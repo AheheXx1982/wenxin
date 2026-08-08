@@ -75,6 +75,12 @@ export const i18nSiteConfig = {
         image: '/img/nanyang/1.webp',
         description: '在异国他乡的奋斗经历与人生感悟',
       },
+      {
+        link: '/invest',
+        label: '投资 × AI',
+        image: '/images/posts/retail-investor/cover.webp',
+        description: '投资、AI、量化与自动化实践',
+      },
     ],
   },
   en: {
@@ -109,6 +115,12 @@ export const i18nSiteConfig = {
         label: 'Singapore Memories',
         image: '/img/nanyang/1.webp',
         description: 'Struggles and reflections in a foreign land',
+      },
+      {
+        link: '/en/invest',
+        label: 'Investment × AI',
+        image: '/images/posts/retail-investor/cover.webp',
+        description: 'Investing, AI, quant, and automation in practice',
       },
     ],
   },

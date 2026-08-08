@@ -290,7 +290,7 @@
       if (!container) return;
 
       container.innerHTML = `
-        <div id="music-player" class="fixed bg-gradient-to-br from-amber-900/20 to-amber-700/20 backdrop-blur-md border border-amber-500/30 shadow-2xl z-50 group" style="width: 300px; height: 300px; pointer-events: auto; border-radius: 50%; right: 20px; top: 50%; transform: translateY(-50%);">
+        <div id="music-player" class="fixed bg-gradient-to-br from-amber-900/20 to-amber-700/20 backdrop-blur-md shadow-2xl z-50 group" style="width: 300px; height: 300px; pointer-events: auto; border-radius: 50%; right: 20px; top: 50%; transform: translateY(-50%);">
           <div class="relative w-full h-full flex items-center justify-center">
             <!-- 拖拽区域（覆盖整个圆盘，z-30 高于进度条；按钮 z-40+ 仍可点击） -->
             <div id="drag-area" class="absolute inset-0 z-30 cursor-move" style="background: transparent; border-radius: 50%;" title="拖拽移动播放器"></div>
@@ -2026,6 +2026,32 @@
 
       // 设置带吸附功能的拖拽，按钮事件由HTML onclick处理
       this.makeDraggableWithDocking(player);
+
+      // 球心区域（visor-screen，z-35 盖在 drag-area 之上）点击 = 播放/暂停
+      // 排除按钮（眼睛展开/关闭、十字控制按钮），避免与其他命令冲突
+      const visorScreen = player.querySelector('.visor-screen');
+      if (visorScreen) {
+        const handleVisorClick = (e) => {
+          if (e.target.closest('button')) return;
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('球心点击: 播放/暂停');
+          this.togglePlay();
+        };
+        visorScreen.addEventListener('click', handleVisorClick);
+        // 触摸支持（防止页面滚动并避免与按钮冲突）
+        visorScreen.addEventListener(
+          'touchstart',
+          (e) => {
+            if (e.target.closest('button')) return;
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('球心触摸: 播放/暂停');
+            this.togglePlay();
+          },
+          { passive: false },
+        );
+      }
 
       console.log('最小化播放器交互功能设置完成');
     }
@@ -4120,14 +4146,10 @@
   }
 
   .docked-left {
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
     box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3) !important;
   }
 
   .docked-right {
-    border-top-right-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
     box-shadow: -2px 0 20px rgba(0, 0, 0, 0.3) !important;
   }
 

@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@config '../../../tailwind.config.mjs';
+
 @plugin "@tailwindcss/typography";
 
 @custom-variant tablet (@media (max-width: 992px));
