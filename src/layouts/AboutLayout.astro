@@ -26,18 +26,21 @@ const uiText = getUIText(currentLang as any);
 const isIllusionaryThoughts = frontmatter.title === '幻念集' || frontmatter.title === 'Thoughts';
 
 // 获取本地化的页面标题
-const localizedPageTitle = currentLang === 'en' ? {
-  'About': 'About',
-  '幻念集': 'Illusionary Thoughts',
-  'Thoughts': 'Illusionary Thoughts'
-}[frontmatter.title] || frontmatter.title : frontmatter.title;
+const localizedPageTitle =
+  currentLang === 'en'
+    ? {
+        About: 'About',
+        幻念集: 'Illusionary Thoughts',
+        Thoughts: 'Illusionary Thoughts',
+      }[frontmatter.title] || frontmatter.title
+    : frontmatter.title;
 ---
 
 <Layout title={`${localizedPageTitle} | ${localizedSeoConfig.title}`}>
   <TwoColumnLayout>
     <Cover slot="cover" title={localizedPageTitle} lang={currentLang} showSiteInfo={true} />
     <HomeSider slot="sider" lang={currentLang} />
-    <QuoteMarquee alwaysShowCultural={isIllusionaryThoughts} lang={currentLang} />
+    <QuoteMarquee lang={currentLang} />
     <div class="shadow-box bg-gradient-start mx-0 flex w-full flex-col gap-8 p-4 pt-6 md:px-3 md:py-2">
       {
         isIllusionaryThoughts ? (
@@ -49,7 +52,6 @@ const localizedPageTitle = currentLang === 'en' ? {
         )
       }
     </div>
-
   </TwoColumnLayout>
 </Layout>
 
@@ -59,13 +61,13 @@ const localizedPageTitle = currentLang === 'en' ? {
     // 如果是幻念集页面，触发一次更新
     const path = window.location.pathname;
     const isIllusionaryThoughts = path.includes('illusionary-thoughts');
-    
+
     if (isIllusionaryThoughts) {
       // 不再触发空的更新事件，让IllusionaryThoughtsContent组件自己处理更新
       console.log('Illusionary Thoughts page loaded, waiting for component to update content');
     }
   });
-  
+
   // 监听路由切换事件
   document.addEventListener('astro:after-swap', () => {
     console.log('Route changed, triggering content update if needed');

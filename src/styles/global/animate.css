@@ -273,8 +273,8 @@
   transform-origin: center center;
 }
 
-/* 跑马灯效果 */
-@keyframes marquee {
+/* 摇摆效果（原名 marquee，与 QuoteMarquee 跑马灯 keyframes 冲突，已改名 sway） */
+@keyframes sway {
   0% {
     transform: translateX(0) rotate(0deg);
   }
@@ -292,8 +292,8 @@
   }
 }
 
-.marquee {
-  animation: marquee 3s ease-in-out infinite;
+.sway {
+  animation: sway 3s ease-in-out infinite;
   transform-origin: center center;
 }
 
