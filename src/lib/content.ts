@@ -352,7 +352,7 @@ export function addCategoryRecursively(rootCategories: Category[], parentNames: 
 
 // 分类头部说明文案（zh）
 const categoryDescriptions: { [key: string]: string } = {
-  按摩大叔: '十年职业生涯',
+  按摩大叔: '按摩那点事',
   何处觅知音: '关于人生、认知、爱情、哲学，以及成长。',
   南洋往事: '南洋生活与见闻',
   '投资 × AI': '投资、AI、量化与自动化实践。',

@@ -213,6 +213,9 @@
               this.playerPosition = state.playerPosition;
             }
           }
+        } else {
+          // 首次访问（无保存状态）：默认最小化显示
+          this.isMinimized = true;
         }
       } catch (error) {
         console.error('状态恢复失败:', error);
@@ -457,26 +460,17 @@
           player.style.bottom = 'auto';
           player.style.transform = 'none';
 
-          if (window.innerWidth <= 768) {
-            // 📱 手机端：默认吸附右侧半隐藏（不完全展开占屏）
-            console.log('手机端：播放器默认吸附右侧半隐藏');
-            player.classList.add('docked', 'docked-right');
-            this.playerPosition = {
-              left: defaultLeft,
-              top: defaultTop,
-              isDocked: true,
-              dockedSide: 'right',
-            };
-            // 绑定半隐藏展开/收缩（内部会初始 collapse 只露出边缘）
-            this.setupDockingHoverEvents(player);
-          } else {
-            // 桌面端：普通悬浮
-            this.playerPosition = {
-              left: defaultLeft,
-              top: defaultTop,
-              isDocked: false,
-            };
-          }
+          // 所有设备（桌面 + 手机）：默认吸附右侧半隐藏（不完全展开占屏）
+          console.log('播放器默认吸附右侧半隐藏');
+          player.classList.add('docked', 'docked-right');
+          this.playerPosition = {
+            left: defaultLeft,
+            top: defaultTop,
+            isDocked: true,
+            dockedSide: 'right',
+          };
+          // 绑定半隐藏展开/收缩（内部会初始 collapse 只露出边缘）
+          this.setupDockingHoverEvents(player);
         }
       }
     }
