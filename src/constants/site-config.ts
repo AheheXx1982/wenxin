@@ -50,6 +50,7 @@ type SocialConfig = {
   bilibili?: SocialPlatform;
   rss?: SocialPlatform;
   Tiger?: SocialPlatform;
+  silentxx?: SocialPlatform;
 };
 
 // TODO: change to backend
@@ -102,6 +103,11 @@ export const siteConfig: SiteConfig = {
 // 社交媒体配置
 // https://icon-sets.iconify.design/ri/
 export const socialConfig: SocialConfig = {
+  silentxx: {
+    url: 'https://silentxx.com',
+    icon: '/silentxx-favicon.svg', // 主站标识（靶心「猎」字）
+    color: '#B0342A',
+  },
   X: {
     url: 'https://x.com/AheheXx?s=09',
     icon: 'ri:twitter-x-fill',
@@ -114,8 +120,8 @@ export const socialConfig: SocialConfig = {
   },
   music: {
     url: 'https://music.douyin.com/qishui/share/playlist?playlist_id=7310550250141696009',
-    icon: 'ri:netease-cloud-music-line', // 使用通用音乐线性图标
-    color: '#e60026',
+    icon: '/soda-music.png', // 汽水音乐官方图标
+    color: '#1EA9FE',
   },
   // #google: https://plus.google.com/yourname || google
   // # about: https://about.me/amehime || address-card || "#3b5998"
