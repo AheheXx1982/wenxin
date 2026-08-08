@@ -22,6 +22,7 @@ import Footer from '@components/layout/Footer.astro';
 import '@styles/index.css';
 import { Tooltips } from 'astro-tooltips';
 import FloatingGroup from '@components/layout/FloatingGroup.astro';
+import ChatWidget from '@components/companion/ChatWidget.tsx';
 import MobileDrawer from '@components/layout/MobileDrawer.astro';
 import GlobalMusicPlayer from '@components/music/GlobalMusicPlayer.astro';
 
@@ -141,6 +142,7 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
       <FloatingGroup />
       <MobileDrawer type={siderType} lang={currentLang} />
       <GlobalMusicPlayer />
+      <ChatWidget client:load />
     </div>
   </body>
 </html>

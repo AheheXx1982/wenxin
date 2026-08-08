@@ -41,6 +41,17 @@ import { throttle } from 'es-toolkit';
   </div>
 
   <button
+    id="ai-chat-btn"
+    class="bg-background/80 hover:bg-background flex-center size-8 rounded-full shadow-lg backdrop-blur-sm transition-colors duration-200"
+    aria-label="AI 助手"
+    title="AI 助手"
+    data-tooltip-interactive="false"
+    data-tooltip-placement="left"
+  >
+    <Icon name="ri:chat-3-line" class="size-4" />
+  </button>
+
+  <button
     id="toggle-nav"
     class="flex-center bg-background/80 hover:bg-background size-9 rounded-full shadow-lg backdrop-blur-sm transition-colors duration-200"
     aria-label="展开/收起工具栏"
@@ -62,6 +73,7 @@ import { throttle } from 'es-toolkit';
     const floatingNav = document.getElementById('floating-nav');
     const navContent = document.getElementById('nav-content');
     const toggleNav = document.getElementById('toggle-nav');
+    const aiChatBtn = document.getElementById('ai-chat-btn');
     const menuNavIcon = toggleNav?.querySelector('.menu-nav-icon');
     const closeNavIcon = toggleNav?.querySelector('.close-nav-icon');
 
@@ -84,6 +96,12 @@ import { throttle } from 'es-toolkit';
     };
 
     toggleNav?.addEventListener('click', handleToggleNav);
+
+    // AI 助手：派发事件给 ChatWidget 打开聊天窗口
+    const aiChatHandler = () => {
+      window.dispatchEvent(new CustomEvent('open-ai-chat'));
+    };
+    aiChatBtn?.addEventListener('click', aiChatHandler);
 
     // 控制导航栏显示/隐藏
     let lastScrollY = window.scrollY;
@@ -139,6 +157,7 @@ import { throttle } from 'es-toolkit';
       scrollToTop?.removeEventListener('click', throttledScrollToTop);
       scrollToBottom?.removeEventListener('click', throttledScrollToBottom);
       toggleNav?.removeEventListener('click', handleToggleNav);
+      aiChatBtn?.removeEventListener('click', aiChatHandler);
     };
   }
 
