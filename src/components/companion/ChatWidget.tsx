@@ -2,6 +2,18 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 const API_BASE = import.meta.env.PUBLIC_COMPANION_API || 'https://companion-production-09e7.up.railway.app';
 
+// 本地文章搜索索引缓存（首次加载后复用）
+interface ArticleEntry {
+  title: string;
+  url: string;
+  summary: string;
+  content: string;
+  tags: string[];
+  categories: string[];
+  date: string;
+}
+let articleIndexCache: ArticleEntry[] | null = null;
+
 interface Message {
   role: 'user' | 'assistant' | 'system';
   content: string;
@@ -14,6 +26,7 @@ interface SearchResult {
   tags: string[];
   score: number;
   confidence: string;
+  source: 'article' | 'wiki';
 }
 
 const WELCOME_MESSAGE: Message = {
@@ -21,6 +34,30 @@ const WELCOME_MESSAGE: Message = {
   content:
     '嗨，我是**问心-AI助手** 🗡️\n\n以心为镜，以剑为锋，既问本心，亦斩执念。\n\n我可以：\n💬 听你吐槽、陪你聊天\n🌙 聊生活、情感、深夜心事\n🧘 说点人生感悟\n📈 聊聊投资与 AI\n\n今天想说点什么？',
 };
+
+// 本地文章搜索：标题/标签/分类/正文关键词匹配
+function searchArticles(query: string, index: ArticleEntry[]): ArticleEntry[] {
+  const q = query.trim().toLowerCase();
+  if (!q || index.length === 0) return [];
+  const terms = q.split(/\s+/).filter(Boolean);
+  const scored: { a: ArticleEntry; score: number }[] = [];
+  for (const a of index) {
+    const title = a.title.toLowerCase();
+    const tags = a.tags.join(' ').toLowerCase();
+    const cats = a.categories.join(' ').toLowerCase();
+    const content = a.content.toLowerCase();
+    let score = 0;
+    for (const t of terms) {
+      if (title.includes(t)) score += 10;
+      if (cats.includes(t)) score += 6;
+      if (tags.includes(t)) score += 4;
+      if (content.includes(t)) score += 1;
+    }
+    if (score > 0) scored.push({ a, score });
+  }
+  scored.sort((x, y) => y.score - x.score);
+  return scored.slice(0, 5).map((s) => s.a);
+}
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -52,22 +89,56 @@ export default function ChatWidget() {
     return () => window.removeEventListener('open-ai-chat', openHandler);
   }, []);
 
+  // 预加载本地文章索引（只拉一次）
+  const loadArticleIndex = useCallback(async (): Promise<ArticleEntry[]> => {
+    if (articleIndexCache) return articleIndexCache;
+    try {
+      const resp = await fetch('/data/search-index.json');
+      if (resp.ok) {
+        const data = await resp.json();
+        articleIndexCache = data.articles || [];
+        return articleIndexCache;
+      }
+    } catch {}
+    return [];
+  }, []);
+
   // ── 发送消息（聊天 + 搜索合一）──
   const sendMessage = async () => {
     const text = input.trim();
     if (!text || streaming) return;
 
-    // 1. 先尝试知识库搜索：命中显示结果卡片，未命中再走聊天
+    // 1. 本地文章索引搜索：命中直接显示文章卡片（站内文章，可点进原文）
+    const index = await loadArticleIndex();
+    const articleHits = searchArticles(text, index);
+    if (articleHits.length > 0) {
+      setSearchResults(
+        articleHits.map((a) => ({
+          title: a.title,
+          url: a.url,
+          summary: a.summary || a.content.slice(0, 120),
+          tags: a.tags,
+          score: 0,
+          confidence: '',
+          source: 'article',
+        })),
+      );
+      setSearchQuery(text);
+      setInput('');
+      return;
+    }
+
+    // 2. 后端 Wiki 搜索：命中显示 Wiki 结果卡片
     try {
       const searchResp = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(text)}&top_k=5`);
       if (searchResp.ok) {
         const searchData = await searchResp.json();
         const hits = searchData.results || [];
         if (hits.length > 0) {
-          setSearchResults(hits);
+          setSearchResults(hits.map((h: any) => ({ ...h, source: 'wiki' as const })));
           setSearchQuery(text);
           setInput('');
-          return; // 有搜索结果 → 显示卡片，不走聊天
+          return;
         }
       }
     } catch {
@@ -75,6 +146,7 @@ export default function ChatWidget() {
     }
     setSearchResults(null);
 
+    // 3. 都没命中 → 走正常聊天
     const userMsg: Message = { role: 'user', content: text };
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
@@ -218,21 +290,32 @@ export default function ChatWidget() {
                   <a
                     key={i}
                     href={r.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={r.source === 'wiki' ? '_blank' : undefined}
+                    rel={r.source === 'wiki' ? 'noopener noreferrer' : undefined}
                     className="block rounded-xl border border-gray-200 bg-white p-3 shadow-sm transition-all hover:border-pink-300 hover:shadow"
                   >
-                    <div className="text-sm font-semibold text-gray-800">{r.title}</div>
-                    <div className="mt-1 line-clamp-2 text-xs text-gray-500">{r.summary}</div>
-                    {r.tags.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-1">
-                        {r.tags.slice(0, 4).map((tag, ti) => (
-                          <span key={ti} className="rounded-full bg-pink-50 px-2 py-0.5 text-[10px] text-pink-500">
-                            {tag}
-                          </span>
-                        ))}
+                    <div className="flex items-start gap-2">
+                      <span
+                        className={`mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[9px] font-semibold ${
+                          r.source === 'article' ? 'bg-rose-50 text-rose-500' : 'bg-indigo-50 text-indigo-500'
+                        }`}
+                      >
+                        {r.source === 'article' ? '文章' : '知识库'}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="text-sm font-semibold text-gray-800">{r.title}</div>
+                        <div className="mt-1 line-clamp-2 text-xs text-gray-500">{r.summary}</div>
+                        {r.tags.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {r.tags.slice(0, 4).map((tag, ti) => (
+                              <span key={ti} className="rounded-full bg-pink-50 px-2 py-0.5 text-[10px] text-pink-500">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </a>
                 ))}
               </div>
@@ -248,7 +331,7 @@ export default function ChatWidget() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="搜索知识库或聊天，如：按摩 / 今天好累…"
+                placeholder="搜索文章或聊天，如：新加坡 / 今天好累…"
                 rows={1}
                 className="flex-1 resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm transition-colors outline-none focus:border-pink-300 focus:bg-white"
                 disabled={streaming}
