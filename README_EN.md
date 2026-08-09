@@ -137,9 +137,9 @@ pnpm build
 
 ## 📈 Changelog
 
-🎯 **Current Version: v1.0.0 (2026-08-09)**
+🎯 **Current Version: v1.1.0 (2026-08-09)**
 
-### v1.0.0 — Production Release 🚀
+### v1.1.0 — Site Cleanup & Optimization
 
 - ✅ **Crypto Removal**: Fully cleaned crypto residue, unified images to life/culture themes (webp)
 - ✅ **RSS Fix**: Fixed self-referencing bug; Chinese feed restored (20 items)

@@ -137,9 +137,9 @@ pnpm build
 
 ## 📈 更新日志 / Changelog
 
-🎯 **当前版本: v1.0.0 (2026-08-09)**
+🎯 **当前版本: v1.1.0 (2026-08-09)**
 
-### v1.0.0 — 正式版 / Production Release 🚀
+### v1.1.0 — 全站清理与优化 / Site Cleanup & Optimization
 
 - ✅ **去加密化**：彻底清理加密货币残留，图片统一生活/文化主题（webp）
 - ✅ **RSS 修复**：修复自指 bug，中文 Feed 恢复正常（20 条）
