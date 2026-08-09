@@ -35,17 +35,26 @@ export async function GET(context: APIContext) {
   // 确保 posts 存在且为数组
   const validPosts = allPosts && Array.isArray(allPosts) ? allPosts : [];
 
-  // 分离中英文文章
-  const zhPosts = validPosts.filter((post) => !(post.slug || '').startsWith('en/'));
-  const enPosts = validPosts.filter((post) => (post.slug || '').startsWith('en/'));
-
-  // 获取静态页面
-  const staticPages = ['', 'about', 'investment', 'illusionary-thoughts', 'rss.xml'];
-  const enStaticPages = ['en', 'en/about', 'en/investment', 'en/illusionary-thoughts', 'en/rss.xml'];
+  // 分离中英文文章（Astro7 p.slug 非 string，用 id 兜底）
+  const zhPosts = validPosts.filter((post) => {
+    const s = (post as any).slug || (post as any).id || '';
+    return !String(s).startsWith('en/');
+  });
+  const enPosts = validPosts.filter((post) => {
+    const s = (post as any).slug || (post as any).id || '';
+    return String(s).startsWith('en/');
+  });
 
   // 生成中文文章URL列表
   const zhPostUrls = zhPosts.map((post) => {
-    const postUrl = `${site}article/${post.data.link ?? (post.slug || '').split('/').pop() ?? post.slug}/`;
+    const rawSlug = (post as any).slug || (post as any).id || '';
+    const slug =
+      typeof rawSlug === 'string'
+        ? rawSlug.split('/').pop()
+        : String((post as any).id || '')
+            .split('/')
+            .pop();
+    const postUrl = `${site}article/${post.data.link ?? slug}/`;
     const lastMod = post.data.date.toISOString().split('T')[0];
     return {
       loc: postUrl,
@@ -57,8 +66,15 @@ export async function GET(context: APIContext) {
 
   // 生成英文文章URL列表
   const enPostUrls = enPosts.map((post) => {
-    const slug = post.slug.replace('en/', '');
-    const postUrl = `${site}en/article/${post.data.link ?? slug.split('/').pop() ?? slug}/`;
+    const rawSlug = (post as any).slug || (post as any).id || '';
+    const slug =
+      typeof rawSlug === 'string'
+        ? rawSlug.replace('en/', '').split('/').pop()
+        : String((post as any).id || '')
+            .replace('en/', '')
+            .split('/')
+            .pop();
+    const postUrl = `${site}en/article/${post.data.link ?? slug}/`;
     const lastMod = post.data.date.toISOString().split('T')[0];
     return {
       loc: postUrl,
@@ -68,25 +84,61 @@ export async function GET(context: APIContext) {
     };
   });
 
-  // 生成中文静态页面URL列表
+  // 问心站栏目/功能页（顶级栏目 + 归档 + 标签 + 信息页）
+  const staticPages = [
+    // 首页
+    { path: '', priority: 1.0 },
+    // 顶级栏目（无 categories 前缀）
+    { path: 'invest', priority: 0.9 },
+    { path: 'insight', priority: 0.9 },
+    { path: 'massage', priority: 0.8 },
+    { path: 'nanyang', priority: 0.8 },
+    { path: 'kindred', priority: 0.8 },
+    // 分类索引
+    { path: 'categories/invest', priority: 0.7 },
+    { path: 'categories/insight', priority: 0.7 },
+    { path: 'categories/massage', priority: 0.7 },
+    { path: 'categories/nanyang', priority: 0.7 },
+    { path: 'categories/kindred', priority: 0.7 },
+    // 信息页
+    { path: 'about', priority: 0.7 },
+    { path: 'archives', priority: 0.6 },
+    { path: 'categories', priority: 0.6 },
+    { path: 'tags', priority: 0.5 },
+    // 功能页
+    { path: 'investment', priority: 0.6 },
+    { path: 'illusionary-thoughts', priority: 0.5 },
+    // RSS
+    { path: 'rss.xml', priority: 0.4 },
+  ];
+
+  // 中文静态页面URL
   const zhPageUrls = staticPages.map((page) => {
-    const pageUrl = page ? `${site}${page}/` : `${site}`;
+    const pageUrl = page.path ? `${site}${page.path}/` : `${site}`;
     return {
       loc: pageUrl,
       lastmod: new Date().toISOString().split('T')[0],
-      changefreq: 'daily',
-      priority: page === '' ? 1.0 : page === 'about' ? 0.7 : page === 'investment' ? 0.6 : page === 'illusionary-thoughts' ? 0.5 : 0.4,
+      changefreq: page.path === '' ? 'daily' : 'weekly',
+      priority: page.priority,
     };
   });
 
-  // 生成英文静态页面URL列表
+  // 英文静态页面URL
+  const enStaticPages = staticPages
+    .filter((p) => p.path !== '')
+    .map((page) => ({
+      path: `en/${page.path}`,
+      priority: page.priority,
+    }));
+  enStaticPages.unshift({ path: 'en', priority: 0.9 });
+
   const enPageUrls = enStaticPages.map((page) => {
-    const pageUrl = `${site}${page}/`;
+    const pageUrl = `${site}${page.path}/`;
     return {
       loc: pageUrl,
       lastmod: new Date().toISOString().split('T')[0],
-      changefreq: 'daily',
-      priority: page === 'en' ? 0.9 : page === 'en/about' ? 0.7 : page === 'en/investment' ? 0.6 : page === 'en/illusionary-thoughts' ? 0.5 : 0.4,
+      changefreq: 'weekly',
+      priority: page.priority,
     };
   });
 

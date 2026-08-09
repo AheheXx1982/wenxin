@@ -1,119 +1,103 @@
-# 🚀 SilentXx / 寂静猎手
+# 🚀 问心 / WenXin
 
-_Modern Static Site Generator with Component Architecture_  
-_基于 Astro 的现代化静态站点生成器，集成先进的组件架构_
+_问心｜一个纯血天蝎的精神自留地 · 以心为镜，以剑为锋，既问本心，亦斩执念_
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Astro](https://img.shields.io/badge/Astro-5.13.2-ff5d01?logo=astro)](https://astro.build/)
+[![Astro](https://img.shields.io/badge/Astro-7.1.3-ff5d01?logo=astro)](https://astro.build/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178c6?logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.0.0-38b2ac?logo=tailwind-css)](https://tailwindcss.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.3.3-38b2ac?logo=tailwind-css)](https://tailwindcss.com/)
 [![React](https://img.shields.io/badge/React-19.1.1-61dafb?logo=react)](https://reactjs.org/)
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://vercel.com/)
 
-[🌍 Live Demo](https://www.silentxx.com) • [📖 中文文档](#-项目前言--project-overview) • [📖 English Docs](./README_EN.md) •  
-[🚀 Quick Start](#-安装部署--installation--deployment) • [🏗️ Architecture](#-项目结构--project-structure) • [📰 Auto News](#-自动新闻聚合--auto-news-aggregation)
-
----
-
-## 📖 项目前言 / Project Overview
-
-初见此主题，其光影之美宛若星河涌动，令人心神皆醉，多亏了自己这双近视又老花的双重慧眼，只是由于女主人工作太忙无暇更新，而本人技术水平又十分有限，刚开始几乎无从下手。
-
-好在人还未老，尚能折腾几下，再怎么说，想当年咱也是个重装高手，费了些功夫，终于也算有了一点小小成果，至少自己用起来是没多大问题了，并且我还在原主题的基础上进行了一些必要与非必要的修改，以完善和增强系统性能，创新指数粗略估计已经达到 5 颗星水平~
-
-At first sight of this theme, its beauty of light and shadow was like the surging of the galaxy, intoxicating to the soul. Thanks to my double “wise eyes” of nearsightedness and presbyopia, I could still appreciate it. However, since the hostess has been too busy with work to update it, and my own technical level is quite limited, I was almost at a loss in the beginning.
-
-Fortunately, I am not yet old, still able to toss around a little. After all, in those years I was also a reinstallation expert. After some effort, I finally achieved a little result. At least for my own use, there is not much problem. Moreover, I have made some necessary and unnecessary modifications on the basis of the original theme, to improve and enhance system performance. By rough estimate, the innovation index has already reached a five-star level~
-
-感谢原作者和余弦的贡献与指导，也感谢勤劳又学习意志超强的自己，坦白讲，半个月前我还不懂怎么使用 GitHub 和 VS Code，尽管困难重重，但我的热情却从丝毫不减，有时候为了修改代码，我老人家居然还能熬夜到凌晨四点半，这种锲而不舍的精神足以感动富婆~
-
-Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being so diligent and having such strong willpower to learn. To be honest, half a month ago I didn't even know how to use GitHub or VS Code. Despite all the difficulties, my enthusiasm never waned. Sometimes, just to tweak a bit of code, this old fellow could even stay up until 4:30 in the morning. Such perseverance is enough to move even a rich lady~
-
-特别感谢 ChatGPT、Gemini，通义灵码以及他的外国小表弟 Qoder，在我的亲切关怀与悉心指导下，它们通力协作，辛勤耕耘，最终还是勉强交出了一份能看的答卷，也让我的智商从 250 瞬间飙升至 250+，实现了从人类到（程序）猿类的反向进化，也许，这就是所谓"返璞归真"的内涵本质~
-
-Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its little foreign cousin Qoder. Under my kind care and meticulous guidance, they worked together tirelessly, and in the end barely managed to hand in a passable answer. This even made my IQ skyrocket from 250 to 250+, achieving a reverse evolution from human to (program) ape. Perhaps, this is the very essence of what they call "returning to simplicity." ~
+[🌍 Live Demo](https://wenxin.silentxx.com) • [📖 English Docs](./README_EN.md) •
+[🚀 Quick Start](#-安装部署--installation--deployment) • [🏗️ Architecture](#-项目结构--project-structure)
 
 ---
 
-## 🏆 项目特色 / Project Features
+## 📖 项目简介 / Project Overview
 
-| 特性 / Feature                        | 说明 / Description                   | 优势 / Advantage                             |
-| ------------------------------------- | ------------------------------------ | -------------------------------------------- |
-| 🚀 **Astro SSG**                      | 静态站点生成 / Static Site Generator | 极速加载，SEO 友好 / Fast load, SEO friendly |
-| ⚡ **部分水合 / Partial Hydration**   | 按需 JavaScript / On-demand JS       | 减少包大小 / Reduce bundle size              |
-| 🎨 **shadcn/ui**                      | 现代化组件库 / Modern UI Components  | 一致的设计语言 / Consistent design           |
-| 📱 **响应式设计 / Responsive Design** | 多设备适配 / Multi-device support    | 完美移动端体验 / Perfect mobile experience   |
+**问心**（WenXin）是 SilentXx 生态下的**个人精神自留地**，一个纯血天蝎的生活随笔、投资思考与情感记录站。
 
----
+品牌结构：
 
-## 📈 性能指标 / Performance Metrics
+- **顶部 LOGO**：SilentXx（与主站统一的品牌标识）
+- **网站名**：问心（banner / SEO）
+- **作者名**：问心剑（侧边栏 / 署名）
 
-| 指标 / Metric                    | 分数 / Score | 说明 / Description                     |
-| -------------------------------- | ------------ | -------------------------------------- |
-| 🚀 **性能 / Performance**        | 98/100       | 极速加载体验 / Fast load experience    |
-| ♿ **可访问性 / Accessibility**  | 95/100       | 无障碍友好 / Accessibility friendly    |
-| 🔍 **SEO**                       | 100/100      | 搜索引擎优化 / Search engine optimized |
-| 📱 **最佳实践 / Best Practices** | 96/100       | 现代化标准 / Modern standard           |
-
-_数据来源 / Source: [Lighthouse Performance Test](https://developers.google.com/speed/pagespeed/insights/)_
+内容栏目：
+| 栏目 | URL | 内容 |
+|------|-----|------|
+| 🏠 首页 | `/` | 最新内容流 |
+| 📈 投资 × AI | `/invest` | 投资思考与 AI 话题 |
+| ✨ 瞬间 | `/insight` | 生活随笔 / 心情记录 |
+| 💆 按摩大叔 | `/massage` | 按摩店日常 |
+| 🌏 南洋往事 | `/nanyang` | 新加坡生活故事 |
+| 🎵 何处觅知音 | `/kindred` | 情感与共鸣 |
 
 ---
 
-## 📁 项目结构 / Project Structure
+## ✨ 核心功能 / Key Features
+
+| 功能                 | 说明                                                    |
+| -------------------- | ------------------------------------------------------- |
+| 🚀 **Astro 7 SSG**   | 静态站点生成，极速加载                                  |
+| 🌐 **双语**          | 中文为主 + 英文基础页                                   |
+| 🤖 **问心-AI 助手**  | 天蝎风陪伴 AI（persona: wenxin），聊天 + 知识库搜索合一 |
+| 🎵 **音乐播放器**    | 黑胶风格悬浮播放器，最小化卡通脸                        |
+| 🗺️ **标签图谱**      | Obsidian 风格 SVG 力导向关系图谱                        |
+| 🌊 **瀑布流视图**    | 瞬间栏目小红书风格瀑布流 + 列表切换                     |
+| 📱 **响应式设计**    | 移动端适配 + 抽屉菜单                                   |
+| 📰 **RSS + Sitemap** | 全站 Feed + Sitemap                                     |
+
+---
+
+## 🏗️ 项目结构 / Project Structure
 
 ```plaintext
-SilentXx/
-├── src/                    # 源代码 / Source Code
-│   ├── components/         # 组件库 / Component library
-│   ├── constants/          # 常量配置 / Constants
-│   ├── content/            # 内容管理 / Content management
-│   │   └── blog/           # 博客文章 / Blog posts
-│   ├── layouts/            # 布局模板 / Layout templates
-│   ├── pages/              # 页面路由 / Page routes
-│   │   ├── rss.xml.ts      # RSS订阅 / RSS feed
-│   │   └── sitemap-index.xml.ts  # 站点地图 / Sitemap
-│   └── styles/             # 样式文件 / Style files
-├── public/                 # 静态资源 / Static assets
-│   ├── fonts/              # 字体文件 / Font files
-│   └── img/                # 图片资源 / Image assets
-├── astro.config.mjs        # Astro 配置 / Astro configuration
-├── tailwind.config.mjs     # Tailwind CSS 配置 / Tailwind CSS configuration
-├── package.json            # 项目依赖 / Project dependencies
-└── tsconfig.json           # TypeScript 配置 / TypeScript configuration
+wenxin/
+├── src/
+│   ├── components/         # 组件库（播放器/AI助手/瀑布流/图谱）
+│   ├── constants/          # 配置（site-config/i18n/category）
+│   ├── content/
+│   │   └── blog/           # 内容（瞬间/按摩/南洋/知音等）
+│   ├── layouts/            # 布局模板
+│   ├── lib/                # 核心库（content/cover/i18n）
+│   ├── pages/              # 页面路由 + RSS/Sitemap 端点
+│   │   ├── [slug].astro    # 顶级栏目动态路由（/invest /insight 等）
+│   │   ├── rss.xml.ts      # 中文 RSS Feed
+│   │   ├── sitemap-index.xml.ts  # 全站 Sitemap
+│   │   └── article/        # 文章详情
+│   └── styles/             # 样式文件
+├── public/
+│   ├── images/posts/       # 瞬间文章配图（生活内容）
+│   ├── img/                # 栏目封面图
+│   └── videos/             # 视频素材
+├── astro.config.mjs        # Astro 配置
+├── _config.yml             # Shoka 分类映射（category_map）
+└── package.json            # 项目依赖
 ```
 
 ---
 
 ## 📋 环境要求 / Requirements
 
-- Node.js >= 18.x
+- Node.js >= 22.12
 - pnpm >= 10.x
 - Git
-
----
-
-## 🔧 环境变量配置 / Environment Variables
-
-要使用 Auto-News 系统，您需要配置以下环境变量：
-
-```bash
-# 复制 .env.example 文件并重命名为 .env
-cp .env.example .env
-
-# 编辑 .env 文件，填写您的实际值
-```
-
-详细配置说明请查看 [.env.example](.env.example) 文件。
 
 ---
 
 ## 🛠️ 开发命令 / Development Commands
 
 ```bash
-# 开发环境 / Development
+# 开发环境
+pnpm dev              # 启动开发服务器（localhost:4321）
 
-pnpm dev              # 启动开发服务器 / Start dev server
-pnpm build            # 构建生产版本 / Build production
-pnpm preview          # 预览构建结果 / Preview build
+# 构建生产版本
+pnpm build            # 静态构建（输出到 dist/）
+
+# 预览构建结果
+pnpm preview
 ```
 
 ---
@@ -121,102 +105,64 @@ pnpm preview          # 预览构建结果 / Preview build
 ## 🔧 安装部署 / Installation & Deployment
 
 ```bash
-# 1. 克隆项目 / Clone repo
-git clone https://github.com/AheheXx1982/SilentXx.git
-cd SilentXx
+# 1. 克隆项目
+git clone https://github.com/AheheXx1982/wenxin.git
+cd wenxin
 
-# 2. 安装依赖 / Install dependencies
+# 2. 安装依赖
 pnpm install
 
-# 3. 启动开发服务器 / Start dev server
+# 3. 启动开发服务器
 pnpm dev
 
-# 4. 构建生产版本 / Build production
+# 4. 构建生产版本
 pnpm build
-
-# 5. 预览构建结果 / Preview build
-pnpm preview
 ```
 
----
+**部署架构**：
 
-## 🔧 基本配置 / Basic Config
-
-- [src/constants/site-config.ts](src/constants/site-config.ts) 修改站点信息 / modify site info
-
----
-
-## 🎨 主题定制 / Theme Customization
-
-```css
-:root {
-  --primary: 351 77% 62%;
-  --primary-foreground: 355.7 100% 97.3%;
-}
-```
+- **前端**：Vercel（GitHub main 分支自动部署 → `wenxin.silentxx.com`）
+- **AI 助手后端**：与主站共用 Railway companion（persona: wenxin 分支）
+- **数据库**：无（静态站点 + JSON 数据文件）
 
 ---
 
-## 📝 内容管理 / Content Management
+## 🤖 问心-AI 助手
 
-新文章放在 [src/content/blog/](src/content/blog/):
-
-## ``plain
-
-title: '文章标题 / Title'
-description: '文章描述 / Description'
-date: 2025-01-01
-category: '分类名称 / Category'
-tags: ['标签 1 / Tag1', '标签 2 / Tag2']
-
----
-
-# 文章内容 / Content
-
-你的 Markdown 内容...
-
-````plain
-
----
-
-## 📡 RSS 与 站点地图 / RSS & Sitemap
-
-本项目支持 RSS 订阅和站点地图功能：
-
-- RSS 订阅地址: [https://yourdomain.com/rss.xml](https://yourdomain.com/rss.xml)
-- 站点地图地址: [https://yourdomain.com/sitemap-index.xml](https://yourdomain.com/sitemap-index.xml)
-
-这些功能有助于搜索引擎更好地索引您的网站内容，并为读者提供内容订阅功能。
+- **人设**：天蝎座、外冷内热、陪伴模式为主、说话像写随笔、不推买卖
+- **技术**：与主站共用 FastAPI + DeepSeek 后端，通过 `persona: 'wenxin'` 切换人格
+- **能力**：聊天 + 知识库搜索合一（输入即搜，命中显示文章卡片）
 
 ---
 
 ## 📈 更新日志 / Changelog
 
-🎯 最新版本 / Latest: v0.5.0 (2025-12-26)
+🎯 **当前版本: v1.0.0 (2026-08-09)**
 
-✨ **版本更新** / **Version Update**
+### v1.0.0 — 正式版 / Production Release 🚀
 
-✅ **v0.5.0** - 系统清理与优化大版本 / System Cleanup and Optimization Major Version
+- ✅ **去加密化**：彻底清理加密货币残留，图片统一生活/文化主题（webp）
+- ✅ **RSS 修复**：修复自指 bug，中文 Feed 恢复正常（20 条）
+- ✅ **Sitemap 升级**：补全全部栏目页/分类页（167 URL，0 破损）
+- ✅ **域名修正**：site 配置从 silentxx.com → wenxin.silentxx.com
+- ✅ **品牌定案**：顶部 LOGO=SilentXx，网站名=问心，作者名=问心剑
+- ✅ **AI 助手**：问心剑 persona 上线，搜索 + 聊天合一
+- ✅ **瞬间内容**：SOUL/朋友圈社交内容导入管道上线（130+ 篇文章）
+- ✅ **构建健壮**：399 页面成功构建，零错误
 
-- ✅ **内容清理**: 彻底移除加密货币相关内容，聚焦美股期权交易 / Completely removed cryptocurrency-related content, focus on US stock options trading
-- ✅ **Docker清理**: 移除Docker环境配置，简化开发环境为Node.js+pnpm / Removed Docker environment, simplified to Node.js+pnpm
-- ✅ **文档更新**: 更新所有技术文档和配置说明 / Updated all technical documentation and configuration guides
-- ✅ **分类体系**: 完善期权相关四大分类体系 / Improved options-related four major category system
-- ✅ **品牌一致**: 统一品牌标识为SilentXx｜寂静猎手 / Unified brand identity as SilentXx｜寂静猎手
-- ✅ **系统健壮**: 183个页面成功构建，无错误无警告 / 183 pages successfully built, no errors or warnings
+### v0.5.0 — 站点重构 (2026-08-02)
 
-✅ **v0.28.1** - 彩色球组件音频文件 404 错误修复 / FloatingColorBalls component audio file 404 errors fixed
+- ✅ **栏目重构**：开心乐园/神级音乐删除，新增瞬间/投资×AI
+- ✅ **瀑布流**：小红书风格瞬间视图上线
+- ✅ **标签图谱**：关系图谱 + 标签云双视图
 
-- 修复了 FloatingColorBalls.astro 组件中的音频文件引用错误 / Fixed audio file reference errors in FloatingColorBalls.astro component
-- 将 18 种颜色成功映射到 6 个现有音频文件 / Successfully mapped 18 colors to 6 existing audio files
-- 消除了所有音频文件相关的 404 错误 / Eliminated all audio file related 404 errors
+---
 
-✅ 版本号从 v0.2.5 升级到 v0.2.8 / Version upgraded from v0.2.5 to v0.2.8
-✅ 幻念集页面优化：实现随机展示内容功能，每次打开页面显示 50%随机内容，确保展示数量为偶数以保持页面对齐美观
-✅ 名人名言模块增强：新增加密货币领域名言，完善中英文对照
-✅ RSS 和 Sitemap 优化：完善多语言支持，确保搜索引擎更好地索引网站内容
+## 🛠️ 技术文档 / Technical Docs
 
-[📋 查看完整更新历史 → CHANGELOG.md](CHANGELOG.md)
+- [技术文档 0.5.md](技术文档%200.5.md) — 完整更新日志与架构演进
+- [搭建文档.md](搭建文档.md) — 搭建记录
+- [docs/cover-images.md](docs/cover-images.md) — 封面图片系统
 
 ---
 
@@ -224,25 +170,12 @@ tags: ['标签 1 / Tag1', '标签 2 / Tag2']
 
 ### 核心灵感 / Inspiration
 
-- [师傅👩🏻余弦の博客](https://space.cosine.ren/)
-- [太师傅🧔🏻‍♀️Hexo Shoka](https://github.com/amehime/hexo-theme-shoka)
+- [余弦の博客](https://space.cosine.ren/)
+- [Hexo Shoka](https://github.com/amehime/hexo-theme-shoka)
 
 ### 技术支持 / Tech Support
 
-- [Astro](https://astro.build/)
-- [Vercel](https://vercel.com/)
-- [shadcn/ui](https://ui.shadcn.com/)
+- [Astro](https://astro.build/) • [Vercel](https://vercel.com/) • [Railway](https://railway.app/) • [DeepSeek](https://deepseek.com/)
 
-### AI 助手 / AI Assistant
-
-- [Qoder](https://qoder.com/)
-- [ChatGPT](https://chat.openai.com/)
-- [通义灵码](https://tongyi.aliyun.com/lingma)
-- [Gemini](https://gemini.google.com/)
-
-让我们一起构建更好的技术社区！ / Let's build a better tech community together!
-
-[🔝 Back to Top](#top)
-
-_Made with ❤️ by SilentXx Team_
-_Copyright © 2020-2025 SilentXx. All rights reserved._
+_Made with ❤️ by 问心剑_
+_Copyright © 2020-2026 SilentXx. All rights reserved._

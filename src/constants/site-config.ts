@@ -67,7 +67,7 @@ export const siteConfig: SiteConfig = {
   author: '问心剑', // 作者名称
 
   enableJSGridCover: false, // 是否启用 color4bg 的背景
-  site: 'https://www.silentxx.com',
+  site: 'https://wenxin.silentxx.com',
 
   // 添加 navLinks 配置
   navLinks: [

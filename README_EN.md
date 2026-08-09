@@ -1,82 +1,87 @@
-# 🚀 SilentXx
+# 🚀 WenXin / 问心
 
-_Modern Static Site Generator with Component Architecture_
+_A Scorpio's Personal Space · A mirror to the heart, a blade to the edge — ask the heart within, sever the attachments_
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Astro](https://img.shields.io/badge/Astro-5.13.2-ff5d01?logo=astro)](https://astro.build/)
+[![Astro](https://img.shields.io/badge/Astro-7.1.3-ff5d01?logo=astro)](https://astro.build/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178c6?logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.0.0-38b2ac?logo=tailwind-css)](https://tailwindcss.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.3.3-38b2ac?logo=tailwind-css)](https://tailwindcss.com/)
 [![React](https://img.shields.io/badge/React-19.1.1-61dafb?logo=react)](https://reactjs.org/)
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://vercel.com/)
 
-[🌍 Live Demo](https://www.silentxx.com) • [📖 Documentation](#-project-overview) •  
+[🌍 Live Demo](https://wenxin.silentxx.com) • [📖 中文文档](./README.md) •
 [🚀 Quick Start](#-installation--deployment) • [🏗️ Architecture](#-project-structure)
 
 ---
 
 ## 📖 Project Overview
 
-At first sight of this theme, its beauty of light and shadow was like the surging of the galaxy, intoxicating to the soul. Thanks to my double "wise eyes" of nearsightedness and presbyopia, I could still appreciate it. However, since the hostess has been too busy with work to update it, and my own technical level is quite limited, I was almost at a loss in the beginning.
+**WenXin** (问心) is a **personal spiritual sanctuary** within the SilentXx ecosystem — a place for life essays, investment reflections, and emotional records from a pure-blooded Scorpio.
 
-Fortunately, I am not yet old, still able to toss around a little. After all, in those years I was also a reinstallation expert. After some effort, I finally achieved a little result. At least for my own use, there is not much problem. Moreover, I have made some necessary and unnecessary modifications on the basis of the original theme, to improve and enhance system performance. By rough estimate, the innovation index has already reached a five-star level~
+**Brand Structure**:
 
-Thanks to the original author and to Cosine for their contributions and guidance, and also to myself for being so diligent and having such strong willpower to learn. To be honest, half a month ago I didn't even know how to use GitHub or VS Code. Despite all the difficulties, my enthusiasm never waned. Sometimes, just to tweak a bit of code, this old fellow could even stay up until 4:30 in the morning. Such perseverance is enough to move even a rich lady~
+- **Top Logo**: SilentXx (unified brand with main site)
+- **Site Name**: 问心 (WenXin — banner/SEO)
+- **Author Name**: 问心剑 (WenXinJian — sidebar/signature)
 
-Special thanks to ChatGPT, Gemini, Tongyi Lingma, and its little foreign cousin Qoder. Under my kind care and meticulous guidance, they worked together tirelessly, and in the end barely managed to hand in a passable answer. This even made my IQ skyrocket from 250 to 250+, achieving a reverse evolution from human to (program) ape. Perhaps, this is the very essence of what they call "returning to simplicity." ~
-
----
-
-## 🏆 Project Features
-
-| Feature                  | Description           | Advantage                 |
-| ------------------------ | --------------------- | ------------------------- |
-| 🚀 **Astro SSG**         | Static Site Generator | Fast load, SEO friendly   |
-| ⚡ **Partial Hydration** | On-demand JavaScript  | Reduce bundle size        |
-| 🎨 **shadcn/ui**         | Modern UI Components  | Consistent design         |
-| 📱 **Responsive Design** | Multi-device support  | Perfect mobile experience |
-
----
-
-## 📈 Performance Metrics
-
-| Metric                | Score   | Description             |
-| --------------------- | ------- | ----------------------- |
-| 🚀 **Performance**    | 98/100  | Fast load experience    |
-| ♿ **Accessibility**  | 95/100  | Accessibility friendly  |
-| 🔍 **SEO**            | 100/100 | Search engine optimized |
-| 📱 **Best Practices** | 96/100  | Modern standard         |
-
-_Source: [Lighthouse Performance Test](https://developers.google.com/speed/pagespeed/insights/)_
+**Content Sections**:
+| Section | URL | Content |
+|---------|-----|---------|
+| 🏠 Home | `/` | Latest content feed |
+| 📈 Invest × AI | `/invest` | Investing thoughts & AI topics |
+| ✨ Moments | `/insight` | Life essays / moods |
+| 💆 Massage Uncle | `/massage` | Massage shop daily life |
+| 🌏 Nanyang Stories | `/nanyang` | Singapore life stories |
+| 🎵 Kindred Souls | `/kindred` | Emotions & resonance |
 
 ---
 
-## 📁 Project Structure
+## ✨ Key Features
+
+| Feature                    | Description                                                            |
+| -------------------------- | ---------------------------------------------------------------------- |
+| 🚀 **Astro 7 SSG**         | Static site generation, blazing fast                                   |
+| 🌐 **Bilingual**           | Chinese primary + English base pages                                   |
+| 🤖 **WenXin AI Assistant** | Scorpio-style companion AI (persona: wenxin), unified chat + KB search |
+| 🎵 **Music Player**        | Vinyl-style floating player, minimized cartoon face                    |
+| 🗺️ **Tag Graph**           | Obsidian-style SVG force-directed relationship graph                   |
+| 🌊 **Waterfall View**      | Xiaohongshu-style masonry for Moments + list toggle                    |
+| 📱 **Responsive Design**   | Mobile adaptation + drawer menu                                        |
+| 📰 **RSS + Sitemap**       | Full-site feeds + sitemap                                              |
+
+---
+
+## 🏗️ Project Structure
 
 ```plaintext
-SilentXx/
-├── src/                    # Source Code
-│   ├── components/         # Component library
-│   ├── constants/          # Constants
-│   ├── content/            # Content management
-│   │   └── blog/           # Blog posts
+wenxin/
+├── src/
+│   ├── components/         # Components (player/AI/waterfall/graph)
+│   ├── constants/          # Config (site-config/i18n/category)
+│   ├── content/
+│   │   └── blog/           # Content (moments/massage/nanyang/kindred)
 │   ├── layouts/            # Layout templates
-│   ├── pages/              # Page routes
-│   │   ├── rss.xml.ts      # RSS feed
-│   │   └── sitemap-index.xml.ts  # Sitemap
+│   ├── lib/                # Core libraries (content/cover/i18n)
+│   ├── pages/              # Page routes + RSS/Sitemap endpoints
+│   │   ├── [slug].astro    # Top-level section dynamic route
+│   │   ├── rss.xml.ts      # Chinese RSS Feed
+│   │   ├── sitemap-index.xml.ts  # Full-site Sitemap
+│   │   └── article/        # Article details
 │   └── styles/             # Style files
-├── public/                 # Static assets
-│   ├── fonts/              # Font files
-│   └── img/                # Image assets
+├── public/
+│   ├── images/posts/       # Moments article images (life content)
+│   ├── img/                # Section cover images
+│   └── videos/             # Video assets
 ├── astro.config.mjs        # Astro configuration
-├── tailwind.config.mjs     # Tailwind CSS configuration
-├── package.json            # Project dependencies
-└── tsconfig.json           # TypeScript configuration
+├── _config.yml             # Shoka category mapping
+└── package.json            # Project dependencies
 ```
 
 ---
 
 ## 📋 Requirements
 
-- Node.js >= 18.x
+- Node.js >= 22.12
 - pnpm >= 10.x
 - Git
 
@@ -86,10 +91,13 @@ SilentXx/
 
 ```bash
 # Development
+pnpm dev              # Start dev server (localhost:4321)
 
-pnpm dev              # Start dev server
-pnpm build            # Build production
-pnpm preview          # Preview build
+# Build production
+pnpm build            # Static build (output to dist/)
+
+# Preview build
+pnpm preview
 ```
 
 ---
@@ -98,8 +106,8 @@ pnpm preview          # Preview build
 
 ```bash
 # 1. Clone repo
-git clone https://github.com/AheheXx1982/SilentXx.git
-cd SilentXx
+git clone https://github.com/AheheXx1982/wenxin.git
+cd wenxin
 
 # 2. Install dependencies
 pnpm install
@@ -109,95 +117,52 @@ pnpm dev
 
 # 4. Build production
 pnpm build
-
-# 5. Preview build
-pnpm preview
 ```
 
----
+**Deployment Architecture**:
 
-## 🌐 One-Click Deploy
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/AheheXx1982/SilentXx)
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/AheheXx1982/SilentXx)
-
----
-
-## 🔧 Basic Config
-
-- [src/constants/site-config.ts](src/constants/site-config.ts) modify site info
+- **Frontend**: Vercel (auto-deploy from GitHub main → `wenxin.silentxx.com`)
+- **AI Assistant Backend**: Shared Railway companion (persona: wenxin branch)
+- **Database**: None (static site + JSON data files)
 
 ---
 
-## 🎨 Theme Customization
+## 🤖 WenXin AI Assistant
 
-```css
-:root {
-  --primary: 351 77% 62%;
-  --primary-foreground: 355.7 100% 97.3%;
-}
-```
-
----
-
-## 📝 Content Management
-
-New articles go in [src/content/blog/](src/content/blog/):
-
-```plain
----
-title: 'Article Title'
-description: 'Article Description'
-date: 2025-01-01
-category: 'Category Name'
-tags: ['Tag1', 'Tag2']
----
-
-# Content
-
-Your Markdown content...
-```
-
----
-
-## 📡 RSS & Sitemap
-
-This project supports RSS feeds and sitemap functionality:
-
-- RSS feed URL: [https://yourdomain.com/rss.xml](https://yourdomain.com/rss.xml)
-- Sitemap URL: [https://yourdomain.com/sitemap-index.xml](https://yourdomain.com/sitemap-index.xml)
-
-These features help search engines better index your website content and provide content subscription functionality for readers.
+- **Persona**: Scorpio, cold outside warm inside, companion-first, writes like essays, never recommends trades
+- **Tech**: Shared FastAPI + DeepSeek backend with main site, persona switching via `persona: 'wenxin'`
+- **Capabilities**: Unified chat + KB search (input searches first, hits show article cards)
 
 ---
 
 ## 📈 Changelog
 
-🎯 Latest: v0.5.0 (2025-12-26)
+🎯 **Current Version: v1.0.0 (2026-08-09)**
 
-✨ **Version Update**
+### v1.0.0 — Production Release 🚀
 
-✅ **v0.5.0** - System Cleanup and Optimization Major Version
+- ✅ **Crypto Removal**: Fully cleaned crypto residue, unified images to life/culture themes (webp)
+- ✅ **RSS Fix**: Fixed self-referencing bug; Chinese feed restored (20 items)
+- ✅ **Sitemap Upgrade**: Added all section/category pages (167 URLs, 0 broken)
+- ✅ **Domain Fix**: site config corrected from silentxx.com → wenxin.silentxx.com
+- ✅ **Brand Finalized**: Top logo=SilentXx, site name=问心, author=问心剑
+- ✅ **AI Assistant**: WenXinJian persona live, unified search + chat
+- ✅ **Moments Content**: SOUL/social import pipeline (130+ articles)
+- ✅ **Build Health**: 399 pages built successfully, zero errors
 
-- ✅ **Content Cleanup**: Completely removed cryptocurrency-related content, focus on US stock options trading
-- ✅ **Docker Cleanup**: Removed Docker environment configuration, simplified development environment to Node.js+pnpm
-- ✅ **Documentation Update**: Updated all technical documentation and configuration guides
-- ✅ **Category System**: Improved options-related four major category system
-- ✅ **Brand Consistency**: Unified brand identity as SilentXx｜寂静猎手
-- ✅ **System Robustness**: 183 pages successfully built, no errors or warnings
+### v0.5.0 — Site Restructure (2026-08-02)
 
-✅ **v0.28.1** - FloatingColorBalls component audio file 404 errors fixed
+- ✅ **Section Restructure**: Removed happy/music sections, added Moments/Invest×AI
+- ✅ **Waterfall**: Xiaohongshu-style Moments view
+- ✅ **Tag Graph**: Relationship graph + tag cloud dual view
 
-- Fixed audio file reference errors in FloatingColorBalls.astro component
-- Successfully mapped 18 colors to 6 existing audio files
-- Eliminated all audio file related 404 errors
+---
 
-✅ Version upgraded from v0.2.5 to v0.2.8
-✅ Illusionary Thoughts page optimization: Implemented random content display feature, showing 50% random content each time the page is opened, ensuring an even number of displays to maintain page alignment and aesthetics
-✅ Quote module enhancement: Added cryptocurrency-related quotes, improved Chinese-English translation
-✅ RSS and Sitemap optimization: Enhanced multilingual support to ensure search engines better index website content
+## 🛠️ Technical Documentation
 
-[📋 View full changelog → CHANGELOG.md](CHANGELOG.md)
+- [技术文档 0.5.md](技术文档%200.5.md) — Full changelog & architecture evolution (Chinese)
+- [搭建文档.md](搭建文档.md) — Build notes (Chinese)
+- [docs/cover-images.md](docs/cover-images.md) — Cover image system
 
 ---
 
@@ -205,25 +170,12 @@ These features help search engines better index your website content and provide
 
 ### Inspiration
 
-- [Master👩🏻Cosine's Blog](https://space.cosine.ren/)
-- [Grandmaster🧔🏻‍♀️Hexo Shoka](https://github.com/amehime/hexo-theme-shoka)
+- [余弦の博客](https://space.cosine.ren/)
+- [Hexo Shoka](https://github.com/amehime/hexo-theme-shoka)
 
 ### Tech Support
 
-- [Astro](https://astro.build/)
-- [Vercel](https://vercel.com/)
-- [shadcn/ui](https://ui.shadcn.com/)
+- [Astro](https://astro.build/) • [Vercel](https://vercel.com/) • [Railway](https://railway.app/) • [DeepSeek](https://deepseek.com/)
 
-### AI Assistant
-
-- [Qoder](https://qoder.com/)
-- [ChatGPT](https://chat.openai.com/)
-- [通义灵码](https://tongyi.aliyun.com/lingma)
-- [Gemini](https://gemini.google.com/)
-
-Let's build a better tech community together!
-
-[🔝 Back to Top](#top)
-
-_Made with ❤️ by SilentXx Team_
-_Copyright © 2020-2025 SilentXx. All rights reserved._
+_Made with ❤️ by 问心剑_
+_Copyright © 2020-2026 SilentXx. All rights reserved._

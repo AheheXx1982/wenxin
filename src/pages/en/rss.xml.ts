@@ -85,8 +85,16 @@ export async function GET(context: APIContext) {
           // 验证日期
           const pubDate = post.data.date && !isNaN(new Date(post.data.date).getTime()) ? post.data.date : new Date();
 
-          // 生成链接，确保不会出现 undefined
-          const postLink = post.data.link ? `/en/article/${post.data.link}` : `/en/article/${post.slug.replace('en/', '').split('/').pop() ?? 'post'}`;
+          // 生成链接，确保不会出现 undefined（Astro7 p.slug 非 string，用 id 兜底）
+          const rawSlug = (post as any).slug || (post as any).id || '';
+          const slug =
+            typeof rawSlug === 'string'
+              ? rawSlug.replace('en/', '').split('/').pop()
+              : String((post as any).id || '')
+                  .replace('en/', '')
+                  .split('/')
+                  .pop();
+          const postLink = post.data.link ? `/en/article/${post.data.link}` : `/en/article/${slug ?? 'post'}`;
 
           return {
             title: title,
