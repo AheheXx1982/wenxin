@@ -30,8 +30,13 @@ export const GET: APIRoute = async () => {
   const articles = posts
     .filter((p) => p.data.lang !== 'en')
     .map((p) => {
+      const rawSlug = (p as any).slug || (p as any).id || '';
       const slug =
-        p.data.slug || (typeof p.slug === 'string' ? p.slug.split('/').pop() : String(p.slug));
+        typeof rawSlug === 'string'
+          ? rawSlug.split('/').pop()
+          : String((p as any).id || '')
+              .split('/')
+              .pop();
       const body = stripMarkdown(p.body || '');
       return {
         title: p.data.title || '',
