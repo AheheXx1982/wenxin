@@ -57,7 +57,7 @@ type SocialConfig = {
 
 // https://shoka.lostyu.me/computer-science/note/theme-shoka-doc/config/
 export const siteConfig: SiteConfig = {
-  title: '问心剑', // 网站名称
+  title: '问心', // 网站名称
   alternate: '问心剑', // 网站别名
   subtitle: 'AI · 生活 · 随笔', // 副标题
   name: '问心剑',
