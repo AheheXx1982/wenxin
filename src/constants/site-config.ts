@@ -72,32 +72,11 @@ export const siteConfig: SiteConfig = {
   // 添加 navLinks 配置
   navLinks: [
     { name: '首页', href: '/' },
-    { name: '课程', href: '/categories/options-basics/course' },
-    { name: '实盘', href: '/categories/options-basics/trading-journal' },
     { name: '关于', href: '/about' },
     { name: '幻念集', href: '/illusionary-thoughts' },
   ],
 
-  featuredCategories: [
-    {
-      link: '/categories/options-basics/trading-journal',
-      label: '实盘分享',
-      image: '/img/options/2.webp',
-      description: '实盘交易记录',
-    },
-    {
-      link: '/categories/cashflow-utopia/option-selling',
-      label: '期权卖方策略',
-      image: '/img/options/3.webp',
-      description: '期权卖方策略',
-    },
-    {
-      link: '/categories/cashflow-utopia/drip',
-      label: '全球高息股轮动',
-      image: '/img/cashflow-utopia/4.webp',
-      description: '全球高息股轮动',
-    },
-  ],
+  featuredCategories: [],
 };
 
 // 社交媒体配置

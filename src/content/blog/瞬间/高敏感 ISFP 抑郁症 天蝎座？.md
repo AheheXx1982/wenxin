@@ -7,7 +7,7 @@ updated: 2026-08-02
 tags: ['高敏感', 'ISFP', '自我认知']
 categories: ['瞬间']
 lang: 'zh'
-cover: '/images/posts/isfp-ai/chatgpt.webp'
+cover: '/images/posts/isfp-ai/chatgpt.jpg'
 source: soul
 type: moment
 ---
