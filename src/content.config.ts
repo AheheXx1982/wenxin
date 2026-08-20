@@ -14,6 +14,7 @@ const blogCollection = defineCollection({
       .or(z.array(z.array(z.string())))
       .optional(),
     lang: z.string().optional(),
+    cover: z.string().optional(),
     source: z.string().optional(),
     type: z.string().optional(),
   }),

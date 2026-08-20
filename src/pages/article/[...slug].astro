@@ -159,7 +159,7 @@ if (categoryArr?.length) {
 <Layout title={`${post.data.title}${categoryStr} | ${siteShortName}`} description={description} siderType={HomeSiderType.POST}>
   <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <TwoColumnLayout>
-    <Cover slot="cover" />
+    <Cover slot="cover" data={post} />
     <HomeSider slot="sider" type={HomeSiderType.POST} lang={currentLang} />
     <QuoteMarquee />
     <div class="article-enhanced shadow-box bg-gradient-start flex flex-col gap-2 p-4 pt-6 md:px-5 md:py-4">
