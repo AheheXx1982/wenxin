@@ -126,16 +126,5 @@ export const seoConfig = {
 // 图片获取优先级：子目录 -> 一级目录 -> articles目录
 // 一级目录的图片正在更新中，以确保与各主题的相关性并避免与其他目录重复
 // 请参见 src/lib/cover.ts 中的 getDefaultCoversForPath 和 getRandomCoverForPath 函数
-export const defaultCoverList = [
-  '/img/articles/1.webp',
-  '/img/articles/2.webp',
-  '/img/articles/3.webp',
-  '/img/articles/4.webp',
-  '/img/articles/5.webp',
-  '/img/articles/6.webp',
-  '/img/articles/7.webp',
-  '/img/articles/8.webp',
-  '/img/articles/9.webp',
-  '/img/articles/10.webp',
-  '/img/articles/11.webp',
-];
+// 2026-08-20：用户指定无图文章的默认配图为绿绒蒿（lvronghao.webp），文章没有配图时一律使用这张
+export const defaultCoverList = ['/img/articles/lvronghao.webp'];

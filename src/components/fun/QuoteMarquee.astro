@@ -4,65 +4,195 @@ interface Props {
   lang?: string; // 语言参数
 }
 
-const { speed = 25, lang = 'zh' } = Astro.props;
+const { speed = 35, lang = 'zh' } = Astro.props;
 
-// 王小波格言（中文）
+// 名言列表（中文）—— 王小波语录
 const wangXiaoboQuotesZh = [
-  '一个人只拥有此生此世是不够的，他还应该拥有诗意的世界。——王小波',
-  '我活在世上，无非想要明白些道理，遇见些有趣的事。——王小波',
-  '人的一切痛苦，本质上都是对自己无能的愤怒。——王小波',
-  '人生唯一有把握不会落空的等待是那必然到来的死亡。——王小波',
-  '智慧本身就是好的。有一天我们都会死去，追求智慧的道路还会有人走着。——王小波',
-  '一个人想象自己不懂得的事很容易浪漫。——王小波',
-  '生活是天籁，需要静神倾听。——王小波',
-  '人应该有所信仰，有所敬畏。——王小波',
-  '正确的看法是，这是对一个人的打击，给他带来了痛苦，但是也使他成长。——王小波',
-  '一个人快乐或悲伤，只要不是装出来的，就必有其道理。——王小波',
+  '人的一切痛苦，本质上都是对自己的无能的愤怒。——王小波',
+  '不愿清醒，宁愿一直沉迷放纵。不知归路，宁愿一世无悔追逐。——王小波',
+  '我来这个世界，不是为了繁衍后代，而是来看花怎么开，水怎么流，太阳怎么升起，夕阳何时落下。我活在世上，无非想要明白些道理，遇见些有趣的事。生命是一场偶然，我在其中寻找因果。——王小波',
+  '那一天我二十一岁，在我一生的黄金时代，我有好多奢望。我想爱，想吃，还想在一瞬间变成天上半明半暗的云。后来我才知道，生活就是个缓慢受锤的过程，人一天天老下去，奢望也一天天消逝，最后变得像挨了锤的牛一样。可是我过二十一岁生日时没有预见到这一点。我觉得自己会永远生猛下去，什么也锤不了我。——王小波',
+  '忽然之间心底涌起强烈的渴望，前所未有：我要爱，要生活，把眼前的一世当作一百世一样。这里的道理很明白：我思故我在，既然我存在，就不能装作不存在。无论如何，我要为自己负起责任。——王小波',
+  '什么样的灵魂就要什么样的养料，越悲怆的时候我越想嬉皮。——王小波',
+  '我选择沉默的主要原因之一：从话语中，你很少能学到人性，从沉默中却能。假如还想学得更多，那就要继续一声不吭。——王小波',
+  '深思熟虑的结果往往就是说不清楚。——王小波',
+  '我相信这不是我一个人的经历：傍晚时分，你坐在屋檐下，看着天慢慢地黑下去，心里寂寞而凄凉，感到自己的生命被剥夺了。当时我是个年轻人，但我害怕这样生活下去，衰老下去。在我看来，这是比死亡更可怕的事。——王小波',
+  '在我周围，像我这种性格的人特多——在公众场合什么都不说，到了私下里却妙语连珠，换言之，对信得过的人什么都说，对信不过的人什么都不说。保持沉默是怯懦的。——王小波',
+  '一个人只有今生今世是不够的，他还应当有诗意的世界。——王小波',
+  '当我跨过沉沦的一切，向着永恒开战的时候，你是我的军旗。——王小波',
+  '不管我本人多么平庸，我总觉得对你的爱很美。——王小波',
+  '不相信世界就是这样，在明知道有的时候必须低头，有的人必将失去，有的东西命中注定不能长久的时候，依然要说，在第一千个选择之外，还有第一千零一个可能，有一扇窗等着我打开，然后有光透进来。——王小波',
+  '活下去的诀窍是：保持愚蠢，又不能知道自己有多蠢。——王小波',
+  '如果我会发光，就不必害怕黑暗。如果我自己是那么美好，那么一切恐惧就可以烟消云散。于是我开始存下了一点希望——如果我能做到，那么我就战胜了寂寞的命运。——王小波',
+  '人活在世上，就是为了忍受摧残，一直到死，想明了这一点，一切都能泰然处之。——王小波',
+  '虽然岁月如流，什么都会过去，但总有些东西，发生了就不能抹杀。——王小波',
+  '你要是愿意，我就永远爱你，你要是不愿意，我就永远相思。——王小波',
+  '人在年轻时，最头疼的一件事就是决定自己这一生要做什么。——王小波',
+  '人在无端微笑时，不是百无聊赖，就是痛苦难当。这些笑容都是在笑自己，不是在笑别人。——王小波',
+  '似水流年是一个人所有的一切，只有这个东西才真正归你所有。其余的一切，都是片刻的欢娱和不幸，转眼间就已跑到那似水流年里去了。——王小波',
+  '什么是似水流年？就如一个人中了邪躺在河底，眼看潺潺流水，波光粼粼，落叶，浮木，空玻璃瓶，一样一样从身上流过去。——王小波',
+  '真实就是无法醒来。不管怎么哭喊怎么大闹，就是无法从那样的梦中清醒过来，这就是现实。——王小波',
+  '一切都在不可避免的走向庸俗。——王小波',
+  '每个人的贱都是天生的，永远不可改变。你越想掩饰自己的贱，就会更贱。唯一的逃脱办法就是承认自己的贱并设法喜欢这一点。——王小波',
+  '我对自己的要求很低：我活在世上，无非想要明白些道理，遇见些有趣的事。倘能如我愿，我的一生就算成功。——王小波',
+  '绝望是无限的美好。——王小波',
+  '生活是天籁，需要凝神静听。——王小波',
+  '梦具有一种荒诞的真实性，而真实有一种真实的荒诞性。——王小波',
+  '我时常回到童年，用一片童心来思考问题，很多烦恼的问题就变得易解。——王小波',
+  '告诉你，一想到你，我这张丑脸上就泛起微笑。还有在我安静的时候，你就从我内心深处浮现，就好像阿芙罗蒂从浪花里浮现一样。——王小波',
+  '所有无聊的事情都会衍生出很多细节让你觉得它复杂而有趣，投入其中而浑然不知其无聊的本质。——王小波',
+  '趋利避害是人类的共性，可大家都追求这样一个过程，最终就会挤在低处，像蛆一样熙熙攘攘……。——王小波',
+  '很不幸的是，任何一种负面的生活都能产生很多烂七八糟的细节，使它变得蛮有趣的；人就在这种有趣中沉沦下去，从根本上忘记了这种生活需要改进。——王小波',
+  '生为冰山，就该淡淡地爱海流、爱风，并且在偶然接触时，全心全意地爱另一块冰山。——王小波',
+  '人在年轻的时候，觉得到处都是人，别人的事就是你的事，到了中年以后，才觉得世界上除了家人已经一无所有了。——王小波',
+  '一个人快乐或悲伤，只要不是装出来的，就必有其道理。你可以去分享他的快乐，同情他的悲伤，却不可以命令他怎样怎样，因为这是违背人类的天性的。——王小波',
+  '我和你就像两个小孩子，围着一个神秘的果酱罐，一点一点地尝它，看看里面有多少甜。——王小波',
+  '照我的看法，每个人的本性都是好吃懒做，好色贪淫，假如你克勤克俭，守身如玉，这就犯了矫饰之罪，比好吃懒做好色贪淫更可恶。——王小波',
+  '什么排山倒海的力量也止不住两个相爱过的人的互助。我觉得我爱了你了，从此以后，不管什么时候我都不能对你无动于衷。——王小波',
+  '当一切都“开始了”以后，这世界上再没有什么可怕的事。我现在只是有点怕死。等死了以后就不怕了。——王小波',
+  '这世界上有些事就是为了让你干了以后后悔而设，所以你不管干了什么事，都不要后悔。——王小波',
+  '人和人是不平等的，其中最重要的，是人与人有知识的差异。——王小波',
+  '满天都是星星，好像一场冻结了的大雨。那时候我们一无所有，也没有什么能妨碍我们享受静夜。——王小波',
+  '强忍悲痛，活在这个世上。——王小波',
+  '什么都不是爱的对手，除了爱。——王小波',
+  '我好像在池塘的水底，从一个月亮走向另一个月亮。——王小波',
+  '我认为每个人都是有本质的，像我的本质就是流氓，土匪，如果放到合适的地方就大放光彩，可是在城市里做个市民，在学校里做个教员就很不合适了。——王小波',
+  '人活在世界上，快乐和痛苦本就分不清。所以我只求它货真价实。——王小波',
+  '这个世界自始至终只有两种人：一种是像我这样的人，一种是不像我这样的人。——王小波',
+  '这种冷淡使我痛心，但我也赞成它对心怀叵测的人保持距离。——王小波',
+  '我爱你爱到不自私的地步，就像一个人手里一只鸽子飞走了，他从心里祝福那鸽子的飞翔。——王小波',
+  '在我看来，春天里一棵小草的生长，它没有什么目的；风起时一匹公马发情，它也没有什么目的。我要抱着草长马发情的伟大真诚去做一切事，而不是在人前羞羞答答地表演。——王小波',
+  '然而岁月如流，一切都已发生过了，发生过的事，再没有改变的余地。——王小波',
+  '我认为低智、偏执、思想贫乏是最大的邪恶。按这个标准，别人说我最善良，就是我最邪恶时；别人说我最邪恶，就是我最善良时。——王小波',
+  '以后我就成了她打盹的枕头。因为我喜欢她，就心甘情愿地被枕着，肩膀压麻了也没说什么。——王小波',
+  '人人都渴望爱情，但只有有人关心的人才能够体会到什么叫做爱情。如你所知，我的问题就是没人关心。——王小波',
+  '这辈子我干什么都可以，就是不能做一个一无所能，就能明辨是非的人。——王小波',
+  '我老觉得爱情奇怪，它是一种宿命的东西。对我来说，它的内容就是“碰上了，然后就爱上，然后一点办法也没有了。”——王小波',
+  '人需要思想，如同需要空气和水一样。——王小波',
+  '人必须过他可以接受的生活，这恰恰是他改变一切的动力。——王小波',
+  '口沫飞溅，对别人大做价值评判，层次很低。——王小波',
+  '当语及他人时，首先该把他当个寻常人，然后再论他的善恶是非。——王小波',
+  '人忠于已知事实叫作诚实，不忠于事实就叫作虚伪。还有些人只忠于经过选择的事实，这既不叫诚实，也不叫虚伪，我把它叫作浮嚣。——王小波',
+  '痞是不好的，但其根源不在道德上，真正的原因是贫乏。——王小波',
+  '善良要建立在真实的基础上，所以让我去选择道德根基，我愿选实事求是。——王小波',
+  '闭起嘴来被人当成傻瓜，胜于张开嘴消除一切疑虑。——王小波',
+  '人活着总要有个主题，使你魂梦系之。——王小波',
+  '岁月如流，就如月在当空，照着我们每一个人，但是每个人的生活都不一样。——王小波',
+  '活在世上，不必什么都知道，只知道最好的就够了。——王小波',
+  '一个人想像自己不懂得的事很容易浪漫。——王小波',
+  '人生是一条寂寞的路，要有一本有趣的书来消磨旅途。——王小波',
+  '我把我整个灵魂都给你，连同它的怪癖，耍小脾气，忽明忽暗，一千八百种坏毛病。它真讨厌，只有一点好，爱你。——王小波',
+  '你想知道我对你的爱情是什么吗？就是从心底里喜欢你，觉得你的一举一动都很亲切，不高兴你比喜欢我更喜欢别人。你要是喜欢了别人我会哭，但是还是喜欢你。——王小波',
+  '我的勇气和你的勇气加起来，对付这个世界总够了吧？去向世界发出我们的声音，我一个人是不敢的，有了你，我就敢。——王小波',
+  '只希望你和我好，互不猜忌，也互不称誉，安如平日。你和我说话像对自己说话一样，我和你说话也像对自己说话一样。——王小波',
+  '你是非常可爱的人，真应该遇到最好的人，我也真希望我就是。——王小波',
+  '别怕美好的一切消失，咱们先来让它存在。——王小波',
+  '祝你今天愉快，你明天的愉快留着我明天再祝。——王小波',
+  '咱们应当在一起，否则就太伤天害理啦。——王小波',
+  '但愿我和你，是一支唱不完的歌。——王小波',
+  '我不要孤独，孤独是丑的，令人作呕的，灰色的。我要和你相通，共存，还有你的温暖，都是迷人的啊！——王小波',
+  '我决不为了仪式爱你，我是正经爱你呢。——王小波',
 ];
 
-// 王小波格言（英文）
+// 名言列表（英文）—— 王小波语录
 const wangXiaoboQuotesEn = [
-  'A person who only has this life is not enough; he should also have a poetic world. —— Wang Xiaobo',
-  'I live in this world, just wanting to understand some truths and encounter some interesting things. —— Wang Xiaobo',
   "All human suffering is essentially anger at one's own incompetence. —— Wang Xiaobo",
-  'The only wait in life that is certain not to be in vain is the inevitable death. —— Wang Xiaobo',
-  'Wisdom itself is good. One day we will all die, but the path of pursuing wisdom will still be walked by others. —— Wang Xiaobo',
-  "It's easy for a person to be romantic about things they don't understand. —— Wang Xiaobo",
-  'Life is music from heaven, requiring quiet listening. —— Wang Xiaobo',
-  'People should have faith and reverence. —— Wang Xiaobo',
-  'The correct view is that this is a blow to a person, bringing him pain, but also making him grow. —— Wang Xiaobo',
-  "A person's happiness or sadness, as long as it's not fake, must have its reason. —— Wang Xiaobo",
+  'Unwilling to stay awake, preferring to remain lost in indulgence. Knowing not the way back, preferring a life of pursuit without regret. —— Wang Xiaobo',
+  'I came to this world not to reproduce, but to see how flowers bloom, how water flows, how the sun rises, and when the sunset falls. Living in this world, I merely wish to understand some truths and encounter some interesting things. Life is an accident, and in it I seek causality. —— Wang Xiaobo',
+  'On that day I was twenty-one, in the golden age of my life, I had so many extravagant hopes. I wanted to love, to eat, and to turn in an instant into a half-bright, half-dark cloud in the sky. Later I came to know that life is a process of being slowly hammered down; a person grows old day by day, and extravagant hopes fade day by day, until at last one becomes like an ox that has been beaten. But I did not foresee this on my twenty-first birthday. I felt I would stay forever fierce, and nothing could hammer me down. —— Wang Xiaobo',
+  'Suddenly a fierce longing rose from the bottom of my heart, unprecedented: I want to love, to live, to treat this one lifetime as if it were a hundred. The reasoning here is plain: I think, therefore I am. Since I exist, I cannot pretend not to exist. In any case, I must take responsibility for myself. —— Wang Xiaobo',
+  'What kind of soul demands what kind of nourishment; the more tragic I feel, the more I want to be flippant. —— Wang Xiaobo',
+  'One of my main reasons for choosing silence: from words you rarely learn about human nature, but from silence you can. If you want to learn even more, you must remain silent. —— Wang Xiaobo',
+  'The result of deep deliberation often defies articulation. —— Wang Xiaobo',
+  'I believe this is not an experience unique to me: at dusk, sitting under the eaves, watching the sky slowly darken, feeling lonely and desolate in your heart, sensing that your life is being taken from you. I was a young man then, but I was afraid of living on this way, aging this way. To me, this was more terrifying than death. —— Wang Xiaobo',
+  'Around me, there are many people of my temperament — saying nothing in public, yet eloquent in private. In other words, they tell everything to those they trust, and nothing to those they do not. Keeping silent is cowardly. —— Wang Xiaobo',
+  'It is not enough to have only this life; one should also have a poetic world. —— Wang Xiaobo',
+  'When I cross all that is sunk and fallen, and march to war against eternity, you are my battle flag. —— Wang Xiaobo',
+  'No matter how mediocre I am, I always feel that my love for you is beautiful. —— Wang Xiaobo',
+  "Not believing that the world is like this — knowing that sometimes one must bow one's head, some people are destined to be lost, some things are fated not to last — still saying that beyond the thousandth choice, there is a thousand-and-first possibility, a window waiting for me to open, and then light streams through. —— Wang Xiaobo",
+  'The secret to surviving is: remain foolish, without ever knowing how foolish you are. —— Wang Xiaobo',
+  'If I can shine, I need not fear the darkness. If I myself am so beautiful, then all fear can dissolve like smoke. So I began to save up a little hope — if I can manage this, then I have conquered the fate of loneliness. —— Wang Xiaobo',
+  'To live in this world is to endure being broken down, until death. Once you understand this, you can face everything with equanimity. —— Wang Xiaobo',
+  'Though the years flow on and everything passes, there are always some things that, once they happen, can never be erased. —— Wang Xiaobo',
+  'If you are willing, I will love you forever; if you are unwilling, I will yearn for you forever. —— Wang Xiaobo',
+  'When one is young, the most vexing thing is deciding what to do with this one life. —— Wang Xiaobo',
+  'When a person smiles for no reason, it is either out of utter boredom or unbearable pain. These smiles are laughing at oneself, not at others. —— Wang Xiaobo',
+  'The flowing years are all a person truly possesses; everything else is but moments of joy and misfortune, gone in the blink of an eye into those flowing years. —— Wang Xiaobo',
+  'What are the flowing years? It is like a man possessed, lying at the bottom of a river, watching the murmuring water, the glistening waves, fallen leaves, driftwood, empty glass bottles, passing over his body one by one. —— Wang Xiaobo',
+  'Reality is that from which you cannot wake. No matter how you cry out or rage, you cannot wake from such a dream — that is reality. —— Wang Xiaobo',
+  'Everything is inevitably marching toward vulgarity. —— Wang Xiaobo',
+  "Everyone's baseness is innate and can never be changed. The more you try to hide your baseness, the baser you become. The only escape is to admit your baseness and manage to like it. —— Wang Xiaobo",
+  'My demands on myself are low: living in this world, I merely wish to understand some truths and encounter some interesting things. If that wish is granted, my life counts as a success. —— Wang Xiaobo',
+  'Despair is infinitely beautiful. —— Wang Xiaobo',
+  'Life is the music of heaven; one must listen with a concentrated mind. —— Wang Xiaobo',
+  'Dreams possess an absurd reality, and reality possesses a real absurdity. —— Wang Xiaobo',
+  "I often return to childhood, thinking with a child's heart, and many vexing problems become easy to solve. —— Wang Xiaobo",
+  'Let me tell you, the moment I think of you, a smile rises on my ugly face. And when I am quiet, you emerge from the depths of my heart, just as Aphrodite emerges from the waves. —— Wang Xiaobo',
+  'All boring things spawn so many details that they seem complex and interesting, and you sink into them unaware of their boring essence. —— Wang Xiaobo',
+  'Seeking benefit and avoiding harm is common to all humans, but when everyone pursues this same course, in the end they all crowd together in the low places, jostling like maggots. —— Wang Xiaobo',
+  'Unfortunately, any kind of negative life can produce many messy details that make it quite interesting; and in that interest people sink down, fundamentally forgetting that this life needs improving. —— Wang Xiaobo',
+  "Born an iceberg, one should love the currents and the wind faintly, and upon chance contact, love another iceberg with all one's heart. —— Wang Xiaobo",
+  "When one is young, one feels people are everywhere and others' affairs are one's own; only after middle age does one realize that apart from family, there is nothing left in the world. —— Wang Xiaobo",
+  "A person's happiness or sadness, as long as it is not put on, must have its reason. You may share in his happiness and sympathize with his sorrow, but you cannot command him this way or that, for that would violate human nature. —— Wang Xiaobo",
+  'You and I are like two little children, circling a mysterious jar of jam, tasting it bit by bit to see how much sweetness lies inside. —— Wang Xiaobo',
+  "In my view, everyone's nature is to love ease and loathe work, to lust and covet. If you are frugal and diligent and keep yourself pure as jade, you commit the crime of affectation, which is more detestable than loving ease and lusting. —— Wang Xiaobo",
+  'No force that moves mountains can stop two people who have loved from helping each other. I feel that I have loved you, and from now on, at no time can I be indifferent to you. —— Wang Xiaobo',
+  'Once everything has "begun," there is nothing left in this world to fear. I am only a little afraid of death now. After I die, I will not be afraid anymore. —— Wang Xiaobo',
+  'Some things in this world exist precisely to make you regret doing them afterwards, so no matter what you do, do not regret it. —— Wang Xiaobo',
+  'People are not equal, and the most important inequality is the difference in knowledge. —— Wang Xiaobo',
+  'The sky is full of stars, like a great frozen rain. At that time we had nothing, and nothing could keep us from enjoying the quiet night. —— Wang Xiaobo',
+  'Bearing grief with strength, living on in this world. —— Wang Xiaobo',
+  'Nothing is a match for love, except love. —— Wang Xiaobo',
+  'I seem to be at the bottom of a pond, walking from one moon to another. —— Wang Xiaobo',
+  'I believe everyone has an essence; mine is that of a rogue, a bandit — if placed somewhere suitable I would shine brilliantly, but as a city dweller or a schoolteacher I am quite out of place. —— Wang Xiaobo',
+  'In this world, joy and pain were never clearly separable. So I only ask that it be genuine. —— Wang Xiaobo',
+  'From beginning to end, there are only two kinds of people in this world: those like me, and those unlike me. —— Wang Xiaobo',
+  'This coldness pains me, but I also approve of it keeping its distance from those with ulterior motives. —— Wang Xiaobo',
+  "I love you to the point of unselfishness, like a person from whose hand a dove has flown away, blessing the dove's flight from the bottom of his heart. —— Wang Xiaobo",
+  'In my view, the growth of a blade of grass in spring has no purpose; when the wind rises and a stallion is in heat, that too has no purpose. I want to do everything with the great sincerity of grass growing and horses in heat, not perform coyly in front of others. —— Wang Xiaobo',
+  'Yet the years flow on, and everything has already happened; what has happened admits no further change. —— Wang Xiaobo',
+  'I believe low intelligence, bigotry, and poverty of thought are the greatest evils. By this standard, when others say I am most kind, that is when I am most evil; when others say I am most evil, that is when I am most kind. —— Wang Xiaobo',
+  'After that, I became the pillow for her naps. Because I liked her, I let myself be pillowed willingly, saying nothing even when my shoulder went numb. —— Wang Xiaobo',
+  'Everyone longs for love, but only those who are cared for can truly experience what love is. As you know, my problem is that no one cares about me. —— Wang Xiaobo',
+  'In this life I can do anything, except become a person who, knowing nothing at all, can still distinguish right from wrong. —— Wang Xiaobo',
+  'I have always felt that love is strange; it is something fated. For me, its content is: "we met, then fell in love, and then there was simply nothing to be done about it." —— Wang Xiaobo',
+  'People need thought as they need air and water. —— Wang Xiaobo',
+  'One must live a life one can accept; that is precisely the driving force for changing everything. —— Wang Xiaobo',
+  'Sputtering spittle and loudly passing value judgments on others is low-grade. —— Wang Xiaobo',
+  'When speaking of others, first treat him as an ordinary person, then discuss his good and evil, right and wrong. —— Wang Xiaobo',
+  'Loyalty to known facts is called honesty; disloyalty to facts is called hypocrisy. There are also those loyal only to selected facts — this is neither honesty nor hypocrisy; I call it bluster. —— Wang Xiaobo',
+  'Ruffianism is bad, but its root is not moral; the real cause is impoverishment. —— Wang Xiaobo',
+  'Goodness must be built on truth; so if I must choose a moral foundation, I would choose seeking truth from facts. —— Wang Xiaobo',
+  'Better to be taken for a fool with your mouth shut than to open it and dispel every doubt. —— Wang Xiaobo',
+  'A person must have a theme in life, something that haunts his dreams. —— Wang Xiaobo',
+  "The years flow on, like the moon hanging in the sky, shining on each of us — yet everyone's life is different. —— Wang Xiaobo",
+  'In this world, you need not know everything; it is enough to know only the best. —— Wang Xiaobo',
+  'It is easy for a person to be romantic about things he does not understand. —— Wang Xiaobo',
+  'Life is a lonely road; it needs an interesting book to while away the journey. —— Wang Xiaobo',
+  'I give you my whole soul, together with its quirks, its little tempers, its flickering light and shadow, its one thousand eight hundred bad habits. It is truly annoying — it has only one good point: it loves you. —— Wang Xiaobo',
+  'Do you want to know what my love for you is? It is liking you from the bottom of my heart, finding every move you make dear, and being unhappy when you like others more than me. If you come to like someone else, I will cry — but I will still like you. —— Wang Xiaobo',
+  "My courage plus your courage should be enough to take on this world, shouldn't it? I dare not raise our voice to the world alone, but with you, I dare. —— Wang Xiaobo",
+  'I only wish for us to be well, without suspicion, without flattery, peaceful as usual — you talk to me as if talking to yourself, and I talk to you as if talking to myself. —— Wang Xiaobo',
+  'You are a very lovely person, who truly deserves the best person; and I sincerely hope that person is me. —— Wang Xiaobo',
+  'Do not fear the disappearance of all beautiful things; let us first make them exist. —— Wang Xiaobo',
+  "I wish you a pleasant day today; tomorrow's pleasantness I will save to wish you tomorrow. —— Wang Xiaobo",
+  'We ought to be together, otherwise it would be a crime against heaven and reason. —— Wang Xiaobo',
+  'May you and I be a song that never ends. —— Wang Xiaobo',
+  'I do not want loneliness; loneliness is ugly, nauseating, gray. I want to be connected with you, to coexist with you — and your warmth is all enchanting! —— Wang Xiaobo',
+  'I do not love you for the sake of ceremony; I love you in earnest. —— Wang Xiaobo',
 ];
 
-// 郭春林格言（中文）—— 基于其《哲学智慧与人生思考》《唤醒心力，重构心智》讲座中的代表性观点
-const guoChunlinQuotesZh = [
-  '认知决定你的格局，也决定你和财富之间的差距。——郭春林',
-  '人这一生，无非是想活得自由、通透、富足。——郭春林',
-  '透过现象看本质，是认知世界的第一课。——郭春林',
-  '哲学不是空谈，是澄清概念、设定判断、构建系统。——郭春林',
-  '感性思维靠本能，因果思维靠逻辑，辩证思维靠立体，系统思维靠整体。——郭春林',
-  '人一生至少有一半的时间在应对各种无力感，战胜无力，才能向上生长。——郭春林',
-  '看清世界本来的样子，才能做出不后悔的选择。——郭春林',
-  '思考的深度，决定一个人能走多远。——郭春林',
-];
+// 名言列表（中文）—— 内容待更新
+const guoChunlinQuotesZh: string[] = [];
 
-// 郭春林格言（英文）
-const guoChunlinQuotesEn = [
-  'Cognition determines your horizon, and the gap between you and wealth. —— Guo Chunlin',
-  'What we seek in life is simply to live freely, clearly, and abundantly. —— Guo Chunlin',
-  'Seeing through appearances to the essence is the first lesson of understanding the world. —— Guo Chunlin',
-  'Philosophy is not empty talk — it is clarifying concepts, forming judgments, and building systems. —— Guo Chunlin',
-  'Perceptual thinking relies on instinct, causal thinking on logic, dialectical thinking on perspective, and systemic thinking on the whole. —— Guo Chunlin',
-  'We spend half our lives coping with powerlessness; overcoming it is how we grow upward. —— Guo Chunlin',
-  'Only by seeing the world as it truly is can you make choices without regret. —— Guo Chunlin',
-  'The depth of your thinking decides how far you can go. —— Guo Chunlin',
-];
+// 名言列表（英文）—— 内容待更新
+const guoChunlinQuotesEn: string[] = [];
 
-// 根据语言选择相应的名言列表（问心站：王小波 + 郭春林）
+// 根据语言选择相应的名言列表
 const quotes = lang === 'en' ? [...wangXiaoboQuotesEn, ...guoChunlinQuotesEn] : [...wangXiaoboQuotesZh, ...guoChunlinQuotesZh];
 
-// 随机选择一条名言
-const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+// 随机选择一条名言（列表为空时显示占位提示）
+const randomQuote = quotes.length > 0 ? quotes[Math.floor(Math.random() * quotes.length)] : '名言内容待更新……';
 ---
 
 <div class="w-full overflow-hidden py-3">
@@ -80,7 +210,7 @@ const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
       .marquee-content {
         display: inline-block;
         padding-left: 100%;
-        animation: marquee linear infinite;
+        animation: marquee linear 1 forwards;
       }
 
       .marquee-content:hover {
@@ -89,7 +219,19 @@ const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
     </style>
 
     <div class="marquee-content" style={`animation-duration: ${speed}s;`}>
-      <span class="mx-4 text-sm text-gray-600 italic">"{randomQuote}"</span>
+      <span class="mx-4 text-sm text-gray-600 italic" data-quote>"{randomQuote}"</span>
     </div>
   </div>
 </div>
+
+<script define:vars={{ quotes }}>
+  // 每次页面加载时重新随机选择一条名言（而非使用构建时的固定值）
+  (function () {
+    const span = document.querySelector('[data-quote]');
+    if (!span) return;
+    if (quotes && quotes.length > 0) {
+      const idx = Math.floor(Math.random() * quotes.length);
+      span.textContent = `"${quotes[idx]}"`;
+    }
+  })();
+</script>
