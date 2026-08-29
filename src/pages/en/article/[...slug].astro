@@ -76,7 +76,10 @@ if (categoryArr && categoryArr.length >= 2) {
     <Cover slot="cover" data={post} />
     <HomeSider slot="sider" type={HomeSiderType.POST} lang="en" />
     <QuoteMarquee />
-    <div class="shadow-box bg-gradient-start flex flex-col gap-2 p-4 pt-6 md:px-5 md:py-4">
+    <div
+      class={`shadow-box bg-gradient-start flex flex-col gap-2 p-4 pt-6 md:px-5 md:py-4 ${post.data.bgImage ? 'article-bg' : ''}`}
+      style={post.data.bgImage ? { '--article-bg-img': `url('${post.data.bgImage}')` } : undefined}
+    >
       <nav class="text-muted-foreground flex items-center gap-2 text-sm">
         <div class="flex items-center gap-1">
           <Icon name="fa6-solid:house-chimney" class="h-4 w-4" />
@@ -96,3 +99,17 @@ if (categoryArr && categoryArr.length >= 2) {
     </div>
   </TwoColumnLayout>
 </Layout>
+
+<style>
+  /* 文章正文背景图（frontmatter bgImage 触发）：图片 + 半透明遮罩保证文字可读 */
+  .article-bg {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)),
+      var(--article-bg-img);
+    background-size: cover;
+    background-position: center;
+  }
+  :global(.dark) .article-bg {
+    background-image: linear-gradient(rgba(12, 12, 18, 0.88), rgba(12, 12, 18, 0.88)),
+      var(--article-bg-img);
+  }
+</style>

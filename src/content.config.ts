@@ -15,6 +15,7 @@ const blogCollection = defineCollection({
       .optional(),
     lang: z.string().optional(),
     cover: z.string().optional(),
+    bgImage: z.string().optional(),
     source: z.string().optional(),
     type: z.string().optional(),
   }),

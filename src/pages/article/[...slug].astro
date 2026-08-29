@@ -162,7 +162,10 @@ if (categoryArr?.length) {
     <Cover slot="cover" data={post} />
     <HomeSider slot="sider" type={HomeSiderType.POST} lang={currentLang} />
     <QuoteMarquee />
-    <div class="article-enhanced shadow-box bg-gradient-start flex flex-col gap-2 p-4 pt-6 md:px-5 md:py-4">
+    <div
+      class={`article-enhanced shadow-box bg-gradient-start flex flex-col gap-2 p-4 pt-6 md:px-5 md:py-4 ${post.data.bgImage ? 'article-bg' : ''}`}
+      style={post.data.bgImage ? { '--article-bg-img': `url('${post.data.bgImage}')` } : undefined}
+    >
       <!-- Article Title -->
       <h1 class="article-title mb-8 text-center">{title}</h1>
 
@@ -228,3 +231,17 @@ if (categoryArr?.length) {
     </div>
   </TwoColumnLayout>
 </Layout>
+
+<style>
+  /* 文章正文背景图（frontmatter bgImage 触发）：图片 + 半透明遮罩保证文字可读 */
+  .article-bg {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)),
+      var(--article-bg-img);
+    background-size: cover;
+    background-position: center;
+  }
+  :global(.dark) .article-bg {
+    background-image: linear-gradient(rgba(12, 12, 18, 0.88), rgba(12, 12, 18, 0.88)),
+      var(--article-bg-img);
+  }
+</style>
