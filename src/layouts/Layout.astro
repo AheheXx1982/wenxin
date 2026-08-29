@@ -1,6 +1,7 @@
 ---
 import { HomeSiderType } from '@constants/enum';
 import { getLanguageFromAstroUrl, getSeoConfig, getSiteConfig } from '@lib/i18n';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title: string;
@@ -44,6 +45,7 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <ClientRouter />
     <!-- 为不同浏览器和设备提供多种尺寸的favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -141,7 +143,7 @@ const { title = seoConfig.title, description = seoConfig.description, siderType,
       <Footer since={2020} lang={currentLang} />
       <FloatingGroup />
       <MobileDrawer type={siderType} lang={currentLang} />
-      <GlobalMusicPlayer />
+      <GlobalMusicPlayer transition:persist />
       <ChatWidget client:load />
     </div>
   </body>
