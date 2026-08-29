@@ -33,7 +33,7 @@ export async function GET(context: APIContext) {
   const allPosts = await getCollection('blog');
 
   // 确保 posts 存在且为数组
-  const validPosts = allPosts && Array.isArray(allPosts) ? allPosts : [];
+  const validPosts = allPosts && Array.isArray(allPosts) ? allPosts.filter((p) => !p.data.hidden) : [];
 
   // 分离中英文文章（Astro7 p.slug 非 string，用 id 兜底）
   const zhPosts = validPosts.filter((post) => {

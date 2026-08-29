@@ -6,7 +6,11 @@ import { i18nUI } from '@constants/i18n';
 
 import type { BlogPost } from 'types/blog';
 
-export async function getSortedPosts(lang?: Language, excludeIntro: boolean = false): Promise<CollectionEntry<'blog'>[]> {
+export async function getSortedPosts(
+  lang?: Language,
+  excludeIntro: boolean = false,
+  includeHidden: boolean = false
+): Promise<CollectionEntry<'blog'>[]> {
   const posts = await getCollection('blog');
 
   // 确保始终返回数组，即使没有文章
@@ -33,8 +37,11 @@ export async function getSortedPosts(lang?: Language, excludeIntro: boolean = fa
       })
     : filteredPosts;
 
+  // 排除隐藏文章（hidden: true 不出现在任何列表，但文章页仍可访问）
+  const visiblePosts = includeHidden ? finalPosts : finalPosts.filter((post) => !post.data.hidden);
+
   // Astro 7 compat: glob loader uses 'id' instead of 'slug'
-  const normalizedPosts = finalPosts.map((post) => ({
+  const normalizedPosts = visiblePosts.map((post) => ({
     ...post,
     slug: post.slug || post.id || '',
   }));

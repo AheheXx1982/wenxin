@@ -28,7 +28,7 @@ function flattenCategories(c: unknown): string[] {
 export const GET: APIRoute = async () => {
   const posts = await getCollection('blog');
   const articles = posts
-    .filter((p) => p.data.lang !== 'en')
+    .filter((p) => p.data.lang !== 'en' && !p.data.hidden)
     .map((p) => {
       const rawSlug = (p as any).slug || (p as any).id || '';
       const slug =

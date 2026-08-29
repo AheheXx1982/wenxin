@@ -16,7 +16,7 @@ import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
 
 export async function getStaticPaths() {
-  const posts = await getSortedPosts('en', true);
+  const posts = await getSortedPosts('en', true, true);
 
   return posts.map((post) => {
     // 使用文件名作为 slug，不包含路径
@@ -38,7 +38,7 @@ const categoryArr = getCategoryArr(categories?.[0]);
 const isOptionsArticle = categoryArr?.length > 0 && categoryArr[0] === '期权入门与基础';
 
 // Get all posts for series navigation
-const allPosts = await getSortedPosts('en', true);
+const allPosts = await getSortedPosts('en', true, true);
 
 // Find previous and next posts in the same category
 let prevPost = null;

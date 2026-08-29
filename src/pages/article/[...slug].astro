@@ -19,7 +19,7 @@ import { getLanguageFromAstroUrl, getSiteConfig } from '@lib/i18n';
 import OptionsBrandBanner from '@components/options/OptionsBrandBanner.astro';
 
 export async function getStaticPaths() {
-  const postCollections = await getSortedPosts('zh', true);
+  const postCollections = await getSortedPosts('zh', true, true);
 
   // 确保 postCollections 存在且为数组
   if (!postCollections || !Array.isArray(postCollections)) {
@@ -108,7 +108,7 @@ const categoryStr = categoryArr?.length ? ` | ${categoryArr.join(' / ')}` : '';
 const isOptionsArticle = categoryArr?.length > 0 && categoryArr[0] === '期权入门与基础';
 
 // Get all posts for series navigation
-const allPosts = await getSortedPosts(currentLang as 'zh' | 'en', true);
+const allPosts = await getSortedPosts(currentLang as 'zh' | 'en', true, true);
 
 // Find previous and next posts in the same category
 let prevPost = null;

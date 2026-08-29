@@ -6,7 +6,9 @@ export async function getStaticPaths() {
   const blogPosts = await getCollection('blog');
 
   // 按日期排序，添加数据验证
-  const sortedPosts = blogPosts?.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()) ?? [];
+  const sortedPosts = blogPosts
+    ?.filter((p) => !p.data.hidden)
+    ?.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()) ?? [];
 
   return [
     {
