@@ -18,16 +18,11 @@ type: moment
 
 我和孙哥的智慧
 
-![配图01](/images/posts/sunyuchen-twitter/img-01.webp)
-
 其实只差那么一点点～#孙宇晨
 
+![配图01](/images/posts/sunyuchen-twitter/img-01.webp)
 ![配图02](/images/posts/qq-xiaobing/img-01.webp)
-
 ![配图03](/images/posts/qq-xiaobing/img-02.webp)
-
 ![配图04](/images/posts/qq-xiaobing/img-03.webp)
-
 ![配图05](/images/posts/qq-xiaobing/img-04.webp)
-
 ![配图06](/images/posts/qq-xiaobing/img-05.webp)
