@@ -131,7 +131,7 @@ export async function getRandomLatestPosts(count: number, lang?: Language): Prom
 
 // 首页推荐池（用户指定：优质长文候选，按栏目配额制）
 const HOME_POOL: Record<string, string[]> = {
-  何处觅知音: ['from-love-loss-to-cashflow'], // 差点吃上软饭的我
+  何处觅知音: ['where-are-you-my-love', 'from-love-loss-to-cashflow'], // 娘子(置顶) / 差点吃上软饭的我
   按摩大叔: ['five-star-reviews', 'massage-road-1'], // 五星级好评 / 按摩不归路一
   南洋往事: ['recalling-my-days-in-singapore', 'searching-for-my-boyfriend'], // 追忆 / 寻找消失的男朋友
   '投资 × AI': ['retail-investor-journey', 'qbts-interview'], // 小散户 / 小虎访谈
@@ -191,7 +191,7 @@ export async function getHomePosts(lang?: Language): Promise<CollectionEntry<'bl
     }
   }
 
-  // 去重（保险）并按日期降序
+  // 去重（保险）；featured 置顶排最前，其余按日期降序
   const seen = new Set<string>();
   const unique = picked.filter((p) => {
     const key = postSlug(p);
@@ -200,7 +200,12 @@ export async function getHomePosts(lang?: Language): Promise<CollectionEntry<'bl
     return true;
   });
 
-  return unique.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+  return unique.sort((a, b) => {
+    const af = a.data.featured ? 1 : 0;
+    const bf = b.data.featured ? 1 : 0;
+    if (af !== bf) return bf - af; // featured 置顶优先
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+  });
 }
 
 // 为文章获取封面图片：优先从正文提取第一张图片，其次 frontmatter cover，最后分类固定封面
