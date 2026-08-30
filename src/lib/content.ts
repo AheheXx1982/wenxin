@@ -171,27 +171,41 @@ function postCategory(post: CollectionEntry<'blog'>): string {
   return Array.isArray(cats[0]) ? String(cats[0][0]) : String(cats[0]);
 }
 
-// 首页文章：栏目配额制——用户指定优质池优先，配额不足时栏目内随机补足
+// 首页文章：栏目配额制——featured 固定置顶，用户指定优质池优先，配额不足时栏目内随机补足
 export async function getHomePosts(lang?: Language): Promise<CollectionEntry<'blog'>[]> {
   const posts = await getSortedPosts(lang, true);
   const bySlug = new Map(posts.map((p) => [postSlug(p), p]));
 
   const picked: CollectionEntry<'blog'>[] = [];
 
+  // 0) featured 文章固定置顶（不参与随机，永远入选）
+  const featuredPosts = posts
+    .filter((p) => p.data.featured)
+    .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+  const featuredSlugs = new Set(featuredPosts.map(postSlug));
+  picked.push(...featuredPosts);
+
   for (const [category, quota] of Object.entries(HOME_QUOTA)) {
-    const poolSlugs = HOME_POOL[category] || [];
-    // 该栏目文章（非池）
-    const rest = posts.filter((p) => postCategory(p) === category && !poolSlugs.includes(postSlug(p)));
+    const poolSlugs = (HOME_POOL[category] || []).filter((s) => !featuredSlugs.has(s));
+    // 该栏目已入选的 featured 数（从配额中扣除）
+    const featuredInCat = featuredPosts.filter((p) => postCategory(p) === category).length;
+    const effectiveQuota = quota - featuredInCat;
+    if (effectiveQuota <= 0) continue;
+
+    // 该栏目文章（非池、非 featured）
+    const rest = posts.filter(
+      (p) => postCategory(p) === category && !poolSlugs.includes(postSlug(p)) && !featuredSlugs.has(postSlug(p)),
+    );
 
     if (category === '瞬间') {
       // 瞬间无池：直接随机 quota 篇
-      picked.push(...shuffleArray(rest).slice(0, quota));
+      picked.push(...shuffleArray(rest).slice(0, effectiveQuota));
     } else {
       // 池文章优先（池内随机取配额），配额不足时从栏目随机补足
       const poolPicked = shuffleArray(
         poolSlugs.map((s) => bySlug.get(s)).filter((p): p is CollectionEntry<'blog'> => Boolean(p)),
-      ).slice(0, quota);
-      const need = quota - poolPicked.length;
+      ).slice(0, effectiveQuota);
+      const need = effectiveQuota - poolPicked.length;
       const restPicked = need > 0 ? shuffleArray(rest).slice(0, need) : [];
       picked.push(...poolPicked, ...restPicked);
     }
