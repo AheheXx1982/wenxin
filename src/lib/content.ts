@@ -9,7 +9,7 @@ import type { BlogPost } from 'types/blog';
 export async function getSortedPosts(
   lang?: Language,
   excludeIntro: boolean = false,
-  includeHidden: boolean = false
+  includeHidden: boolean = false,
 ): Promise<CollectionEntry<'blog'>[]> {
   const posts = await getCollection('blog');
 
@@ -127,6 +127,33 @@ export async function getRandomLatestPosts(count: number, lang?: Language): Prom
 
   // 返回指定数量的文章
   return shuffled.slice(0, count);
+}
+
+// 新增函数：首页文章——置顶文章(featured)优先固定显示，其余随机补足
+export async function getHomePosts(count: number, lang?: Language): Promise<CollectionEntry<'blog'>[]> {
+  const posts = await getSortedPosts(lang, true);
+
+  const featured = posts
+    .filter((post) => post.data.featured)
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+  const rest = posts.filter((post) => !post.data.featured);
+
+  // Fisher-Yates 洗牌随机打乱非置顶文章
+  const shuffled = [...rest];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  // 置顶优先，随机补足
+  const picked = [...featured];
+  for (const post of shuffled) {
+    if (picked.length >= count) break;
+    picked.push(post);
+  }
+
+  return picked.slice(0, count);
 }
 
 // 为文章获取封面图片：优先从正文提取第一张图片，其次 frontmatter cover，最后分类固定封面

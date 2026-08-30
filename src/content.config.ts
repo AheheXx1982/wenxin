@@ -17,6 +17,7 @@ const blogCollection = defineCollection({
     cover: z.string().optional(),
     bgImage: z.string().optional(),
     hidden: z.boolean().optional(),
+    featured: z.boolean().optional(), // 置顶文章：首页优先显示
     source: z.string().optional(),
     type: z.string().optional(),
   }),

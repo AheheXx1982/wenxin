@@ -6,12 +6,12 @@ import Cover from '@components/ui/cover/Cover.astro';
 import { HomeSiderType } from '@constants/enum';
 import Layout from '@layouts/Layout.astro';
 import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
-import { getRandomLatestPosts } from '@lib/content';
+import { getHomePosts } from '@lib/content';
 import { getSeoConfig } from '@lib/i18n';
 import { Icon } from 'astro-icon/components';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
-const posts = await getRandomLatestPosts(5, 'zh');
+const posts = await getHomePosts(5, 'zh');
 const seoConfig = getSeoConfig('zh');
 ---
 
