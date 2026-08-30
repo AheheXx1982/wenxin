@@ -110,11 +110,31 @@ const isOptionsArticle = categoryArr?.length > 0 && categoryArr[0] === '期权�
 // Get all posts for series navigation
 const allPosts = await getSortedPosts(currentLang as 'zh' | 'en', true, true);
 
-// Find previous and next posts in the same category
+// Find previous and next posts: 优先按 series 字段串联，否则按二级分类
 let prevPost = null;
 let nextPost = null;
 
-if (categoryArr && categoryArr.length >= 2) {
+const currentPostSlug =
+  post.data?.slug ?? post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
+
+// 1) series 字段系列（如"按摩不归路"）：同 series 按 seriesOrder 排序
+const currentSeries = post.data?.series as string | undefined;
+if (currentSeries) {
+  const seriesPosts = allPosts.filter((p) => p.data.series === currentSeries);
+  seriesPosts.sort((a, b) => {
+    const ao = (a.data.seriesOrder as number | undefined) ?? 0;
+    const bo = (b.data.seriesOrder as number | undefined) ?? 0;
+    return ao - bo;
+  });
+  const idx = seriesPosts.findIndex((p) => {
+    const pSlug = p.data?.link ?? (typeof p.slug === 'string' ? (p.slug || '').split('/').pop() : p.slug);
+    return pSlug === currentPostSlug;
+  });
+  if (idx !== -1) {
+    prevPost = idx > 0 ? seriesPosts[idx - 1] : null;
+    nextPost = idx < seriesPosts.length - 1 ? seriesPosts[idx + 1] : null;
+  }
+} else if (categoryArr && categoryArr.length >= 2) {
   // Get the second level category (e.g., '为什么要学习期权')
   const seriesCategory = categoryArr[1];
 
@@ -235,13 +255,11 @@ if (categoryArr?.length) {
 <style>
   /* 文章正文背景图（frontmatter bgImage 触发）：图片 + 半透明遮罩保证文字可读 */
   .article-bg {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)),
-      var(--article-bg-img);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), var(--article-bg-img);
     background-size: cover;
     background-position: center;
   }
   :global(.dark) .article-bg {
-    background-image: linear-gradient(rgba(12, 12, 18, 0.88), rgba(12, 12, 18, 0.88)),
-      var(--article-bg-img);
+    background-image: linear-gradient(rgba(12, 12, 18, 0.88), rgba(12, 12, 18, 0.88)), var(--article-bg-img);
   }
 </style>
