@@ -11,7 +11,7 @@ import { getSeoConfig } from '@lib/i18n';
 import { Icon } from 'astro-icon/components';
 import QuoteMarquee from '@components/fun/QuoteMarquee.astro';
 
-const posts = await getHomePosts(5, 'zh');
+const posts = await getHomePosts('zh');
 const seoConfig = getSeoConfig('zh');
 ---
 

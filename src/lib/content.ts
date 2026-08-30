@@ -129,31 +129,78 @@ export async function getRandomLatestPosts(count: number, lang?: Language): Prom
   return shuffled.slice(0, count);
 }
 
-// 新增函数：首页文章——置顶文章(featured)优先固定显示，其余随机补足
-export async function getHomePosts(count: number, lang?: Language): Promise<CollectionEntry<'blog'>[]> {
-  const posts = await getSortedPosts(lang, true);
+// 首页推荐池（用户指定：优质长文候选，按栏目配额制）
+const HOME_POOL: Record<string, string[]> = {
+  何处觅知音: ['from-love-loss-to-cashflow'], // 差点吃上软饭的我
+  按摩大叔: ['five-star-reviews', 'massage-road-1'], // 五星级好评 / 按摩不归路一
+  南洋往事: ['recalling-my-days-in-singapore', 'searching-for-my-boyfriend'], // 追忆 / 寻找消失的男朋友
+  '投资 × AI': ['retail-investor-journey', 'qbts-interview'], // 小散户 / 小虎访谈
+};
+// 栏目配额：南洋/何处内容多安排 2 篇，按摩/投资 1 篇，瞬间随机 2 篇
+const HOME_QUOTA: Record<string, number> = {
+  何处觅知音: 2,
+  按摩大叔: 1,
+  南洋往事: 2,
+  '投资 × AI': 1,
+  瞬间: 2,
+};
 
-  const featured = posts
-    .filter((post) => post.data.featured)
-    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-
-  const rest = posts.filter((post) => !post.data.featured);
-
-  // Fisher-Yates 洗牌随机打乱非置顶文章
-  const shuffled = [...rest];
+// Fisher-Yates 洗牌
+function shuffleArray<T>(arr: T[]): T[] {
+  const shuffled = [...arr];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
+  return shuffled;
+}
 
-  // 置顶优先，随机补足
-  const picked = [...featured];
-  for (const post of shuffled) {
-    if (picked.length >= count) break;
-    picked.push(post);
+function postSlug(post: CollectionEntry<'blog'>): string {
+  return post.data.slug || (typeof post.slug === 'string' ? post.slug.split('/').pop() || '' : '');
+}
+
+function postCategory(post: CollectionEntry<'blog'>): string {
+  const cats = post.data.categories;
+  if (!cats || !Array.isArray(cats) || cats.length === 0) return '';
+  return Array.isArray(cats[0]) ? String(cats[0][0]) : String(cats[0]);
+}
+
+// 首页文章：栏目配额制——用户指定优质池优先，配额不足时栏目内随机补足
+export async function getHomePosts(lang?: Language): Promise<CollectionEntry<'blog'>[]> {
+  const posts = await getSortedPosts(lang, true);
+  const bySlug = new Map(posts.map((p) => [postSlug(p), p]));
+
+  const picked: CollectionEntry<'blog'>[] = [];
+
+  for (const [category, quota] of Object.entries(HOME_QUOTA)) {
+    const poolSlugs = HOME_POOL[category] || [];
+    // 该栏目文章（非池）
+    const rest = posts.filter((p) => postCategory(p) === category && !poolSlugs.includes(postSlug(p)));
+
+    if (category === '瞬间') {
+      // 瞬间无池：直接随机 quota 篇
+      picked.push(...shuffleArray(rest).slice(0, quota));
+    } else {
+      // 池文章优先（池内随机取配额），配额不足时从栏目随机补足
+      const poolPicked = shuffleArray(
+        poolSlugs.map((s) => bySlug.get(s)).filter((p): p is CollectionEntry<'blog'> => Boolean(p)),
+      ).slice(0, quota);
+      const need = quota - poolPicked.length;
+      const restPicked = need > 0 ? shuffleArray(rest).slice(0, need) : [];
+      picked.push(...poolPicked, ...restPicked);
+    }
   }
 
-  return picked.slice(0, count);
+  // 去重（保险）并按日期降序
+  const seen = new Set<string>();
+  const unique = picked.filter((p) => {
+    const key = postSlug(p);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  return unique.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 }
 
 // 为文章获取封面图片：优先从正文提取第一张图片，其次 frontmatter cover，最后分类固定封面
