@@ -133,7 +133,13 @@ export async function getRandomLatestPosts(count: number, lang?: Language): Prom
 const HOME_POOL: Record<string, string[]> = {
   何处觅知音: ['where-are-you-my-love', 'from-love-loss-to-cashflow', 'forrest-gump-why'], // 娘子(置顶) / 软饭 / 阿甘
   按摩大叔: ['five-star-reviews', 'massage-road-1'], // 五星级好评 / 按摩不归路一
-  南洋往事: ['recalling-my-days-in-singapore', 'searching-for-my-boyfriend', 'dream-journal'], // 追忆 / 寻找消失的男朋友 / 梦境回忆录
+  南洋往事: [
+    'recalling-my-days-in-singapore',
+    'searching-for-my-boyfriend',
+    'dream-journal',
+    'love-debt-massage-career',
+    'myanmar-scam-near-miss',
+  ], // 追忆 / 寻找消失的男朋友 / 梦境回忆录 / 谈恋爱欠巨款 / 缅北诈骗
   '投资 × AI': ['retail-investor-journey', 'qbts-interview'], // 小散户 / 小虎访谈
 };
 // 栏目配额：南洋/何处内容多安排 2 篇，按摩/投资 1 篇，瞬间随机 2 篇
