@@ -34,6 +34,8 @@ const pickGradient = (seed: string) => {
 // 提取正文纯文本摘要（无标题卡片用正文片段填充）
 const plainText = (post: CollectionEntry<'blog'>): string =>
   (post.body || '')
+    .replace(/<video[\s\S]*?<\/video>/gi, ' ') // 去掉视频块（含 fallback 文字）
+    .replace(/<audio[\s\S]*?<\/audio>/gi, ' ')
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/#{1,6}\s*/g, '')
