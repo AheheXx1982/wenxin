@@ -102,7 +102,7 @@ function buildHeadingTree(flatHeadings: Array<{ id: string; text: string; level:
   return tree;
 }
 
-export function TableOfContents({ defaultExpanded = false }: TableOfContentsProps = {}) {
+export function SilentXxSmartToc({ defaultExpanded = false }: TableOfContentsProps = {}) {
   const [mode, setMode] = useState<TocMode>('none');
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [paragraphs, setParagraphs] = useState<ParaItem[]>([]);

@@ -2,7 +2,7 @@
 import { HomeSiderType, HomeSiderSegmentType } from '@constants/enum';
 import { cn } from '@lib/utils';
 import HomeInfo from './HomeInfo.astro';
-import { TableOfContents } from './TableOfContents';
+import { SilentXxSmartToc } from './SilentXxSmartToc';
 import HomeSiderSegmented from '@components/ui/segmented/HomeSiderSegmented';
 import { getLanguageFromAstroUrl, getUIText } from '@lib/i18n';
 
@@ -51,7 +51,7 @@ const defaultSegmentType = type === HomeSiderType.POST ? HomeSiderSegmentType.DI
       <HomeInfo lang={currentLang} />
     </div>
     <div slot="directory">
-      {type === HomeSiderType.POST && <TableOfContents client:load defaultExpanded />}
+      {type === HomeSiderType.POST && <SilentXxSmartToc client:load defaultExpanded />}
     </div>
   </sider-content>
 </div>
