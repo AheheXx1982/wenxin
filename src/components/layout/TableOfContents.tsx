@@ -8,8 +8,33 @@ interface Heading {
   parent?: Heading;
 }
 
+interface ParaItem {
+  id: string;
+  text: string;
+}
+
 interface TableOfContentsProps {
   defaultExpanded?: boolean; // Configuration option for default expand/collapse state
+}
+
+type TocMode = 'headings' | 'paragraphs' | 'none';
+
+// 段落目录阈值：正文有效段落数 >= 5 才生成段落导航
+const PARAGRAPH_MIN_COUNT = 5;
+// 段落最短字数（太短的无意义段落不参与目录）
+const PARAGRAPH_MIN_CHARS = 12;
+// 目录项预览字数
+const PARAGRAPH_PREVIEW_CHARS = 18;
+
+// 生成保留中文的锚点 id（原兜底规则会删掉中文导致 heading-0/heading-1 弱 id）
+function makeAnchorId(text: string, index: number, prefix: string): string {
+  const slug = text
+    .toLowerCase()
+    .replace(/[^\w\u4e00-\u9fa5\s-]/g, '') // 保留汉字/字母/数字/空格/连字符
+    .replace(/\s+/g, '-')
+    .trim()
+    .slice(0, 60);
+  return slug || `${prefix}-${index}`;
 }
 
 // Calculate hierarchical numbering for headings
@@ -78,7 +103,9 @@ function buildHeadingTree(flatHeadings: Array<{ id: string; text: string; level:
 }
 
 export function TableOfContents({ defaultExpanded = false }: TableOfContentsProps = {}) {
+  const [mode, setMode] = useState<TocMode>('none');
   const [headings, setHeadings] = useState<Heading[]>([]);
+  const [paragraphs, setParagraphs] = useState<ParaItem[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
@@ -132,130 +159,156 @@ export function TableOfContents({ defaultExpanded = false }: TableOfContentsProp
 
   // Auto-expand parents when activeId changes
   useEffect(() => {
-    if (activeId && headings.length > 0) {
-      const activeHeading = findHeadingById(headings, activeId);
-      if (activeHeading) {
-        const parentIds = getParentIds(activeHeading);
-
-        // Include the active heading itself if it has children
-        const allHeadingsToProcess = [...parentIds];
-        if (activeHeading.children.length > 0) {
-          allHeadingsToProcess.unshift(activeId);
-        }
-
-        if (allHeadingsToProcess.length > 0) {
-          setExpandedIds((prev) => {
-            const newSet = new Set(prev);
-
-            // For each parent level, apply accordion effect
-            const parentsByLevel: { [level: number]: string[] } = {};
-
-            // Group parents by level
-            allHeadingsToProcess.forEach((parentId) => {
-              const parentHeading = findHeadingById(headings, parentId);
-              if (parentHeading) {
-                if (!parentsByLevel[parentHeading.level]) {
-                  parentsByLevel[parentHeading.level] = [];
-                }
-                parentsByLevel[parentHeading.level].push(parentId);
-              }
-            });
-
-            // For each level, close siblings and open the required parent
-            Object.keys(parentsByLevel).forEach((levelStr) => {
-              const level = parseInt(levelStr);
-              const parentsAtLevel = parentsByLevel[level];
-
-              parentsAtLevel.forEach((parentId) => {
-                const parentHeading = findHeadingById(headings, parentId);
-                if (parentHeading) {
-                  // Close siblings at this level
-                  const siblingIds = getSiblingIds(parentHeading);
-                  siblingIds.forEach((siblingId) => newSet.delete(siblingId));
-
-                  // Open this parent
-                  newSet.add(parentId);
-                }
-              });
-            });
-
-            return newSet;
-          });
-        }
-      }
+    if (mode !== 'headings' || !activeId || headings.length === 0) {
+      return;
     }
-  }, [activeId, headings]);
+    const activeHeading = findHeadingById(headings, activeId);
+    if (!activeHeading) {
+      return;
+    }
+    const parentIds = getParentIds(activeHeading);
+
+    // Include the active heading itself if it has children
+    const allHeadingsToProcess = [...parentIds];
+    if (activeHeading.children.length > 0) {
+      allHeadingsToProcess.unshift(activeId);
+    }
+
+    if (allHeadingsToProcess.length > 0) {
+      setExpandedIds((prev) => {
+        const newSet = new Set(prev);
+
+        // For each parent level, apply accordion effect
+        const parentsByLevel: { [level: number]: string[] } = {};
+
+        // Group parents by level
+        allHeadingsToProcess.forEach((parentId) => {
+          const parentHeading = findHeadingById(headings, parentId);
+          if (parentHeading) {
+            if (!parentsByLevel[parentHeading.level]) {
+              parentsByLevel[parentHeading.level] = [];
+            }
+            parentsByLevel[parentHeading.level].push(parentId);
+          }
+        });
+
+        // For each level, close siblings and open the required parent
+        Object.keys(parentsByLevel).forEach((levelStr) => {
+          const level = parseInt(levelStr);
+          const parentsAtLevel = parentsByLevel[level];
+
+          parentsAtLevel.forEach((parentId) => {
+            const parentHeading = findHeadingById(headings, parentId);
+            if (parentHeading) {
+              // Close siblings at this level
+              const siblingIds = getSiblingIds(parentHeading);
+              siblingIds.forEach((siblingId) => newSet.delete(siblingId));
+
+              // Open this parent
+              newSet.add(parentId);
+            }
+          });
+        });
+
+        return newSet;
+      });
+    }
+  }, [activeId, headings, mode]);
 
   useEffect(() => {
     const articleContent = document.querySelector('article');
     if (!articleContent) return;
 
-    // Get all heading elements in the article
-    const headingElements = articleContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    // ---- 1. 收集标题 (h2-h6，h1 是文章标题在 article 外) ----
+    const headingElements = articleContent.querySelectorAll('h2, h3, h4, h5, h6');
 
-    // If no headings, don't show TOC
-    if (headingElements.length === 0) return;
-
-    // Process heading elements
-    const flatHeadings: Array<{ id: string; text: string; level: number }> = Array.from(headingElements).map(
-      (heading, index) => {
-        // Use existing ID or create fallback ID
-        let id = heading.id;
-        if (!id) {
-          // Create slug-like ID from text content
-          const text = heading.textContent || '';
-          id =
-            text
-              .toLowerCase()
-              .replace(/[^\w\s-]/g, '') // Remove special characters except words, spaces, hyphens
-              .replace(/\s+/g, '-') // Replace spaces with hyphens
-              .trim() || `heading-${index}`; // Fallback to index-based ID
-
-          // Set the ID on the element for future use
-          heading.id = id;
-        }
-
-        return {
-          id,
-          text: heading.textContent || '',
-          level: parseInt(heading.tagName.substring(1)), // Get heading level (1-6)
-        };
-      },
-    );
-
-    // Build hierarchical structure
-    const headingTree = buildHeadingTree(flatHeadings);
-
-    // Calculate numbering for each heading
-    calculateHeadingNumbers(headingTree);
-    setHeadings(headingTree);
-
-    // Set initial expanded state based on configuration
-    if (defaultExpanded) {
-      const allIds = new Set<string>();
-      function collectIds(headings: Heading[]) {
-        headings.forEach((heading) => {
-          if (heading.children.length > 0) {
-            allIds.add(heading.id);
-          }
-          collectIds(heading.children);
-        });
+    // 给无 id 的标题生成稳定锚点（保留中文）
+    headingElements.forEach((heading, index) => {
+      if (!heading.id) {
+        heading.id = makeAnchorId(heading.textContent || '', index, 'h');
       }
-      collectIds(headingTree);
-      setExpandedIds(allIds);
+    });
+
+    if (headingElements.length >= 2) {
+      // ---- 标题目录模式 ----
+      const flatHeadings: Array<{ id: string; text: string; level: number }> = Array.from(headingElements).map((heading) => ({
+        id: heading.id,
+        text: heading.textContent || '',
+        level: parseInt(heading.tagName.substring(1)), // Get heading level (2-6)
+      }));
+
+      const headingTree = buildHeadingTree(flatHeadings);
+      calculateHeadingNumbers(headingTree);
+      setHeadings(headingTree);
+      setParagraphs([]);
+      setMode('headings');
+
+      // Set initial expanded state based on configuration
+      if (defaultExpanded) {
+        const allIds = new Set<string>();
+        function collectIds(headings: Heading[]) {
+          headings.forEach((heading) => {
+            if (heading.children.length > 0) {
+              allIds.add(heading.id);
+            }
+            collectIds(heading.children);
+          });
+        }
+        collectIds(headingTree);
+        setExpandedIds(allIds);
+      }
+    } else {
+      // ---- 2. 段落目录模式：无标题/单标题的文章，用段落生成导航 ----
+      const paras = Array.from(articleContent.querySelectorAll('p')).filter((p) => {
+        const t = (p.textContent || '').trim();
+        if (t.length < PARAGRAPH_MIN_CHARS) return false; // 太短
+        if (p.querySelector('img')) return false; // 纯图片段落
+        if (p.closest('blockquote')) return false; // 引用块内的
+        if (p.closest('li')) return false; // 列表项内的
+        if (p.closest('table')) return false; // 表格内的
+        return true;
+      });
+
+      if (paras.length >= PARAGRAPH_MIN_COUNT) {
+        const items: ParaItem[] = paras.map((p, i) => {
+          if (!p.id) {
+            p.id = `para-${i + 1}`;
+          }
+          const t = (p.textContent || '').trim();
+          const preview = t.length > PARAGRAPH_PREVIEW_CHARS ? `${t.slice(0, PARAGRAPH_PREVIEW_CHARS)}…` : t;
+          return { id: p.id, text: preview };
+        });
+        setParagraphs(items);
+        setHeadings([]);
+        setMode('paragraphs');
+      } else {
+        setMode('none');
+        setHeadings([]);
+        setParagraphs([]);
+      }
     }
 
-    // Listen for scroll events to update active heading
-    const handleScroll = () => {
-      const headingElements = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+    // ---- 滚动监听：高亮当前阅读位置 ----
+    const getTargets = (): HTMLElement[] => {
+      if (mode === 'headings') {
+        return Array.from(document.querySelectorAll('h2, h3, h4, h5, h6'));
+      }
+      if (mode === 'paragraphs') {
+        return Array.from(document.querySelectorAll('p[id^="para-"]'));
+      }
+      return [];
+    };
 
-      // Find the currently visible heading
+    const handleScroll = () => {
+      const targets = getTargets();
+      if (targets.length === 0) return;
+
       let current = '';
-      for (const heading of headingElements) {
-        const rect = heading.getBoundingClientRect();
-        // Check if heading is in viewport or above it (with some offset for header)
+      for (const target of targets) {
+        const rect = target.getBoundingClientRect();
+        // Check if target is in viewport or above it (with some offset for header)
         if (rect.top <= 120) {
-          current = heading.id;
+          current = target.id;
         } else {
           break;
         }
@@ -274,63 +327,64 @@ export function TableOfContents({ defaultExpanded = false }: TableOfContentsProp
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [activeId, defaultExpanded]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
 
-  const handleHeadingClick = (id: string) => {
+  const handleItemClick = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      // Immediately set activeId and trigger expand logic
       setActiveId(id);
 
-      // Also immediately trigger the expand logic for this heading
-      const clickedHeading = findHeadingById(headings, id);
-      if (clickedHeading) {
-        const parentIds = getParentIds(clickedHeading);
-        // Include the clicked heading itself if it has children
-        if (clickedHeading.children.length > 0) {
-          parentIds.unshift(id);
-        }
+      // Immediately trigger the expand logic for this heading
+      if (mode === 'headings') {
+        const clickedHeading = findHeadingById(headings, id);
+        if (clickedHeading) {
+          const parentIds = getParentIds(clickedHeading);
+          // Include the clicked heading itself if it has children
+          if (clickedHeading.children.length > 0) {
+            parentIds.unshift(id);
+          }
 
-        if (parentIds.length > 0) {
-          setExpandedIds((prev) => {
-            const newSet = new Set(prev);
+          if (parentIds.length > 0) {
+            setExpandedIds((prev) => {
+              const newSet = new Set(prev);
 
-            // For each parent level, apply accordion effect
-            const parentsByLevel: { [level: number]: string[] } = {};
+              // For each parent level, apply accordion effect
+              const parentsByLevel: { [level: number]: string[] } = {};
 
-            // Group parents by level
-            parentIds.forEach((parentId) => {
-              const parentHeading = findHeadingById(headings, parentId);
-              if (parentHeading) {
-                if (!parentsByLevel[parentHeading.level]) {
-                  parentsByLevel[parentHeading.level] = [];
-                }
-                parentsByLevel[parentHeading.level].push(parentId);
-              }
-            });
-
-            // For each level, close siblings and open the required parent
-            Object.keys(parentsByLevel).forEach((levelStr) => {
-              const level = parseInt(levelStr);
-              const parentsAtLevel = parentsByLevel[level];
-
-              parentsAtLevel.forEach((parentId) => {
+              // Group parents by level
+              parentIds.forEach((parentId) => {
                 const parentHeading = findHeadingById(headings, parentId);
                 if (parentHeading) {
-                  // Close siblings at this level
-                  const siblingIds = getSiblingIds(parentHeading);
-                  siblingIds.forEach((siblingId) => newSet.delete(siblingId));
-
-                  // Open this parent
-                  newSet.add(parentId);
+                  if (!parentsByLevel[parentHeading.level]) {
+                    parentsByLevel[parentHeading.level] = [];
+                  }
+                  parentsByLevel[parentHeading.level].push(parentId);
                 }
               });
-            });
 
-            return newSet;
-          });
+              // For each level, close siblings and open the required parent
+              Object.keys(parentsByLevel).forEach((levelStr) => {
+                const level = parseInt(levelStr);
+                const parentsAtLevel = parentsByLevel[level];
+
+                parentsAtLevel.forEach((parentId) => {
+                  const parentHeading = findHeadingById(headings, parentId);
+                  if (parentHeading) {
+                    // Close siblings at this level
+                    const siblingIds = getSiblingIds(parentHeading);
+                    siblingIds.forEach((siblingId) => newSet.delete(siblingId));
+
+                    // Open this parent
+                    newSet.add(parentId);
+                  }
+                });
+              });
+
+              return newSet;
+            });
+          }
         }
       }
     }
@@ -348,7 +402,7 @@ export function TableOfContents({ defaultExpanded = false }: TableOfContentsProp
             href={`#${heading.id}`}
             onClick={(e) => {
               e.preventDefault();
-              handleHeadingClick(heading.id);
+              handleItemClick(heading.id);
             }}
             className={`group hover:bg-muted/60 hover:text-foreground relative flex items-center rounded-md py-2 text-sm transition-all duration-200 ${
               isActive
@@ -378,7 +432,35 @@ export function TableOfContents({ defaultExpanded = false }: TableOfContentsProp
     });
   };
 
-  if (headings.length === 0) {
+  const renderParagraphs = (): React.ReactElement[] => {
+    return paragraphs.map((para, index) => {
+      const isActive = activeId === para.id;
+      return (
+        <div key={para.id} className="relative">
+          <a
+            href={`#${para.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleItemClick(para.id);
+            }}
+            className={`group hover:bg-muted/60 hover:text-foreground relative flex items-center rounded-md py-1.5 text-xs transition-all duration-200 ${
+              isActive
+                ? 'bg-primary/10 text-primary border-l-primary hover:text-primary hover:bg-primary/10 border-l-2 font-medium'
+                : 'text-muted-foreground hover:border-l-primary/40 hover:border-l-2'
+            } `}
+            style={{ paddingLeft: '0.75rem', paddingRight: '0.5rem' }}
+            aria-label={para.text}
+          >
+            <span className="text-muted-foreground/70 mr-1.5 shrink-0">{index + 1}.</span>
+            <span className="block flex-1 truncate leading-relaxed">{para.text}</span>
+            {isActive && <span className="text-primary ml-2 text-xs">•</span>}
+          </a>
+        </div>
+      );
+    });
+  };
+
+  if (mode === 'none' || (mode === 'headings' && headings.length === 0) || (mode === 'paragraphs' && paragraphs.length === 0)) {
     return (
       <div className="text-muted-foreground py-6 text-center">
         <div className="text-sm">暂无目录</div>
@@ -388,7 +470,7 @@ export function TableOfContents({ defaultExpanded = false }: TableOfContentsProp
 
   return (
     <nav className="toc-container max-h-[calc(100vh-8rem)] overflow-auto" aria-label="文章目录">
-      <div className="space-y-1 pr-2">{renderHeadings(headings)}</div>
+      <div className="space-y-1 pr-2">{mode === 'headings' ? renderHeadings(headings) : renderParagraphs()}</div>
     </nav>
   );
 }
