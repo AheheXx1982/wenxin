@@ -1,0 +1,115 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getSortedPosts, getRandomPosts } from '@lib/content';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  currentPost: CollectionEntry<'blog'>;
+  lang?: 'zh' | 'en';
+}
+
+const { currentPost, lang = 'zh' } = Astro.props;
+
+// 当前文章信息
+const currentSlug =
+  currentPost.data?.slug ??
+  currentPost.data?.link ??
+  (typeof currentPost.slug === 'string' ? (currentPost.slug || '').split('/').pop() : currentPost.slug);
+const currentCats: string[] = (currentPost.data.categories || []).flat(Infinity).map(String);
+const currentTags: string[] = currentPost.data.tags || [];
+
+const allPosts = await getSortedPosts(lang, true);
+
+// 推荐逻辑：同分类优先（按标签重叠度排序），不足随机补足，最多 3 篇
+const sameCategory = allPosts.filter((p) => {
+  if ((p.data.slug ?? (typeof p.slug === 'string' ? (p.slug || '').split('/').pop() : p.slug)) === currentSlug) return false;
+  const pCats: string[] = (p.data.categories || []).flat(Infinity).map(String);
+  return pCats.some((c) => currentCats.includes(c));
+});
+
+const scored = sameCategory.map((p) => {
+  const pTags: string[] = p.data.tags || [];
+  const overlap = pTags.filter((t) => currentTags.includes(t)).length;
+  return { post: p, overlap };
+});
+
+scored.sort((a, b) => {
+  if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+  return new Date(b.post.data.date).getTime() - new Date(a.post.data.date).getTime();
+});
+
+let recommended = scored.slice(0, 3).map((s) => s.post);
+
+// 不足 3 篇：随机补足（排除当前文章和已推荐的）
+if (recommended.length < 3) {
+  const exclude = new Set([
+    currentSlug,
+    ...recommended.map((p) => p.data.slug ?? (typeof p.slug === 'string' ? (p.slug || '').split('/').pop() : p.slug)),
+  ]);
+  const randoms = (await getRandomPosts(6, lang)).filter((p) => {
+    const slug = p.data.slug ?? (typeof p.slug === 'string' ? (p.slug || '').split('/').pop() : p.slug);
+    return !exclude.has(slug);
+  });
+  for (const p of randoms) {
+    if (recommended.length >= 3) break;
+    recommended.push(p);
+  }
+}
+
+// 没推荐到 3 篇则不显示区块
+if (recommended.length === 0) {
+  return null;
+}
+
+const uiText = {
+  zh: { title: '推荐阅读', subtitle: '你可能也会喜欢' },
+  en: { title: 'Recommended', subtitle: 'You may also like' },
+};
+const text = uiText[lang as keyof typeof uiText];
+
+function articleLink(post: CollectionEntry<'blog'>) {
+  const slug =
+    post.data?.slug ?? post.data?.link ?? (typeof post.slug === 'string' ? (post.slug || '').split('/').pop() : post.slug);
+  const prefix = lang === 'en' ? '/en' : '';
+  return `${prefix}/article/${slug}`;
+}
+
+function catName(post: CollectionEntry<'blog'>) {
+  const cats = post.data.categories;
+  if (!cats || !Array.isArray(cats) || cats.length === 0) return '';
+  const first = cats[0];
+  return Array.isArray(first) ? String(first[first.length - 1]) : String(first);
+}
+---
+
+{
+  recommended.length > 0 && (
+    <section class="recommended-posts shadow-box bg-gradient-start mt-8 overflow-hidden rounded-xl p-6 md:p-4">
+      <div class="mb-4 flex items-baseline gap-3">
+        <h3 class="text-primary flex items-center gap-2 text-lg font-bold md:text-base">
+          <Icon name="ri:heart-3-line" class="h-5 w-5" />
+          {text.title}
+        </h3>
+        <span class="text-muted-foreground text-sm">{text.subtitle}</span>
+      </div>
+
+      <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
+        {recommended.map((post) => (
+          <a
+            href={articleLink(post)}
+            class="group bg-background/50 hover:bg-background/80 border-border/20 hover:border-primary/30 flex flex-col gap-2 rounded-lg border p-4 transition-all duration-300 hover:shadow-md"
+          >
+            <div class="text-muted-foreground flex items-center gap-2 text-xs">
+              {catName(post) && <span class="bg-primary/10 text-primary rounded-full px-2 py-0.5">{catName(post)}</span>}
+              <span>{new Date(post.data.date).toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US')}</span>
+            </div>
+            <h4 class="text-primary group-hover:text-blue line-clamp-2 text-sm font-semibold transition-colors">
+              {post.data.title}
+            </h4>
+            {post.data.description && <p class="text-muted-foreground line-clamp-2 text-xs">{post.data.description}</p>}
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}

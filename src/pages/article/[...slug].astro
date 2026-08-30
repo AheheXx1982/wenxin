@@ -8,6 +8,7 @@ import Layout from '@layouts/Layout.astro';
 import TwoColumnLayout from '@layouts/TwoColumnLayout.astro';
 import { getCategoryArr, getSortedPosts, getCategoryLink } from '@lib/content';
 import SeriesNavigation from '@components/post/SeriesNavigation.astro';
+import RecommendedPosts from '@components/post/RecommendedPosts.astro';
 import { parseDate } from '@lib/datetime';
 import readingTime from 'reading-time';
 import { Icon } from 'astro-icon/components';
@@ -248,6 +249,8 @@ if (categoryArr?.length) {
       </article>
       <!-- Series Navigation -->
       <SeriesNavigation prevPost={prevPost} nextPost={nextPost} lang={currentLang} />
+      <!-- Recommended Reading -->
+      <RecommendedPosts currentPost={post} lang={currentLang} />
     </div>
   </TwoColumnLayout>
 </Layout>
