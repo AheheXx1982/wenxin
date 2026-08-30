@@ -51,7 +51,7 @@ const defaultSegmentType = type === HomeSiderType.POST ? HomeSiderSegmentType.DI
       <HomeInfo lang={currentLang} />
     </div>
     <div slot="directory">
-      {type === HomeSiderType.POST && <TableOfContents client:load />}
+      {type === HomeSiderType.POST && <TableOfContents client:load defaultExpanded />}
     </div>
   </sider-content>
 </div>
