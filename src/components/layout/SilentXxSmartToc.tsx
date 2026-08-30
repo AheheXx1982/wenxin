@@ -17,7 +17,7 @@ interface TableOfContentsProps {
   defaultExpanded?: boolean; // Configuration option for default expand/collapse state
 }
 
-type TocMode = 'headings' | 'paragraphs' | 'none';
+type TocMode = 'headings' | 'pseudo' | 'paragraphs' | 'none';
 
 // 段落目录阈值：正文有效段落数 >= 5 才生成段落导航
 const PARAGRAPH_MIN_COUNT = 5;
@@ -25,6 +25,11 @@ const PARAGRAPH_MIN_COUNT = 5;
 const PARAGRAPH_MIN_CHARS = 12;
 // 目录项预览字数
 const PARAGRAPH_PREVIEW_CHARS = 18;
+// 伪标题识别：独立成段的短句（作者当小标题用的普通段落）
+// 长度范围 [PSEUDO_MIN_CHARS, PSEUDO_MAX_CHARS]，数量 >= PSEUDO_MIN_COUNT 才启用伪标题目录
+const PSEUDO_MIN_CHARS = 5;
+const PSEUDO_MAX_CHARS = 30;
+const PSEUDO_MIN_COUNT = 3;
 
 // 生成保留中文的锚点 id（原兜底规则会删掉中文导致 heading-0/heading-1 弱 id）
 function makeAnchorId(text: string, index: number, prefix: string): string {
@@ -258,29 +263,56 @@ export function SilentXxSmartToc({ defaultExpanded = false }: TableOfContentsPro
         setExpandedIds(allIds);
       }
     } else {
-      // ---- 2. 段落目录模式：无标题/单标题的文章，用段落生成导航 ----
-      const paras = Array.from(articleContent.querySelectorAll('p')).filter((p) => {
+      // ---- 无标题/单标题：先识别「伪标题」（作者当小标题的独立短句），再退化为段落导航 ----
+      const allParas = Array.from(articleContent.querySelectorAll('p')).filter((p) => {
         const t = (p.textContent || '').trim();
-        if (t.length < PARAGRAPH_MIN_CHARS) return false; // 太短
         if (p.querySelector('img')) return false; // 纯图片段落
         if (p.closest('blockquote')) return false; // 引用块内的
         if (p.closest('li')) return false; // 列表项内的
         if (p.closest('table')) return false; // 表格内的
+        if (t.length < 2) return false; // 空段落
         return true;
       });
 
-      if (paras.length >= PARAGRAPH_MIN_COUNT) {
-        const items: ParaItem[] = paras.map((p, i) => {
-          if (!p.id) {
-            p.id = `para-${i + 1}`;
-          }
+      // 2a. 伪标题识别：独立成段的短句（5-30 字），数量 >= 3 时视为文章小标题
+      const pseudoCandidates = allParas.filter((p) => {
+        const t = (p.textContent || '').trim();
+        return t.length >= PSEUDO_MIN_CHARS && t.length <= PSEUDO_MAX_CHARS;
+      });
+
+      if (pseudoCandidates.length >= PSEUDO_MIN_COUNT) {
+        const items: ParaItem[] = pseudoCandidates.map((p, i) => {
           const t = (p.textContent || '').trim();
-          const preview = t.length > PARAGRAPH_PREVIEW_CHARS ? `${t.slice(0, PARAGRAPH_PREVIEW_CHARS)}…` : t;
-          return { id: p.id, text: preview };
+          p.id = `toc-${makeAnchorId(t, i, 'pseudo')}`;
+          return { id: p.id, text: t };
         });
         setParagraphs(items);
         setHeadings([]);
-        setMode('paragraphs');
+        setMode('pseudo');
+      } else if (allParas.length >= PARAGRAPH_MIN_COUNT) {
+        // 2b. 段落目录模式：没有伪标题时，用段落生成导航
+        const paras = allParas.filter((p) => {
+          const t = (p.textContent || '').trim();
+          return t.length >= PARAGRAPH_MIN_CHARS;
+        });
+
+        if (paras.length >= PARAGRAPH_MIN_COUNT) {
+          const items: ParaItem[] = paras.map((p, i) => {
+            if (!p.id) {
+              p.id = `para-${i + 1}`;
+            }
+            const t = (p.textContent || '').trim();
+            const preview = t.length > PARAGRAPH_PREVIEW_CHARS ? `${t.slice(0, PARAGRAPH_PREVIEW_CHARS)}…` : t;
+            return { id: p.id, text: preview };
+          });
+          setParagraphs(items);
+          setHeadings([]);
+          setMode('paragraphs');
+        } else {
+          setMode('none');
+          setHeadings([]);
+          setParagraphs([]);
+        }
       } else {
         setMode('none');
         setHeadings([]);
@@ -293,8 +325,8 @@ export function SilentXxSmartToc({ defaultExpanded = false }: TableOfContentsPro
       if (mode === 'headings') {
         return Array.from(document.querySelectorAll('h2, h3, h4, h5, h6'));
       }
-      if (mode === 'paragraphs') {
-        return Array.from(document.querySelectorAll('p[id^="para-"]'));
+      if (mode === 'pseudo' || mode === 'paragraphs') {
+        return Array.from(document.querySelectorAll('p[id^="toc-"], p[id^="para-"]'));
       }
       return [];
     };
@@ -452,7 +484,9 @@ export function SilentXxSmartToc({ defaultExpanded = false }: TableOfContentsPro
             aria-label={para.text}
           >
             <span className="text-muted-foreground/70 mr-1.5 shrink-0">{index + 1}.</span>
-            <span className="block flex-1 truncate leading-relaxed">{para.text}</span>
+            <span className={`block flex-1 truncate leading-relaxed ${mode === 'pseudo' ? 'font-medium' : ''}`}>
+              {para.text}
+            </span>
             {isActive && <span className="text-primary ml-2 text-xs">•</span>}
           </a>
         </div>
@@ -460,7 +494,11 @@ export function SilentXxSmartToc({ defaultExpanded = false }: TableOfContentsPro
     });
   };
 
-  if (mode === 'none' || (mode === 'headings' && headings.length === 0) || (mode === 'paragraphs' && paragraphs.length === 0)) {
+  if (
+    mode === 'none' ||
+    (mode === 'headings' && headings.length === 0) ||
+    ((mode === 'pseudo' || mode === 'paragraphs') && paragraphs.length === 0)
+  ) {
     return (
       <div className="text-muted-foreground py-6 text-center">
         <div className="text-sm">暂无目录</div>
