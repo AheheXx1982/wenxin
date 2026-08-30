@@ -142,13 +142,13 @@ const HOME_POOL: Record<string, string[]> = {
   ], // 追忆 / 寻找消失的男朋友 / 梦境回忆录 / 谈恋爱欠巨款 / 缅北诈骗
   '投资 × AI': ['retail-investor-journey', 'qbts-interview'], // 小散户 / 小虎访谈
 };
-// 栏目配额：南洋/何处内容多安排 2 篇，按摩/投资 1 篇，瞬间随机 2 篇
+// 栏目配额：何处内容多安排 2 篇，南洋/按摩/投资 1 篇，瞬间随机 1 篇
 const HOME_QUOTA: Record<string, number> = {
   何处觅知音: 2,
   按摩大叔: 1,
-  南洋往事: 2,
+  南洋往事: 1,
   '投资 × AI': 1,
-  瞬间: 2,
+  瞬间: 1,
 };
 
 // Fisher-Yates 洗牌
