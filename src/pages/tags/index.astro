@@ -260,11 +260,11 @@ const graphDataJson = JSON.stringify(graphData).replace(/</g, '\\u003c');
         zoom = 1; // 平移与缩放状态（Obsidian 式交互）
 
       // Obsidian 式高亮：聚焦节点+直接关联保持清晰，其余节点/标签/连线淡出
-      // hover 清除延迟：鼠标离开节点/线后 250ms 才淡出，方便顺着高亮路径滑到关联节点（防"晃没"）
+      // hover 清除延迟：鼠标离开节点/线后 400ms 才淡出，方便顺着高亮路径滑到关联节点（防"晃没"）
       let hoverTimer = null;
       function scheduleClear() {
         clearTimeout(hoverTimer);
-        hoverTimer = setTimeout(() => setHover(null, false), 250);
+        hoverTimer = setTimeout(() => setHover(null, false), 400);
       }
       function setHover(node, on) {
         if (on) {
