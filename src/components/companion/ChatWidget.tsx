@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 
-const API_BASE = import.meta.env.PUBLIC_COMPANION_API || 'https://companion-production-09e7.up.railway.app';
+const API_BASE = import.meta.env.PUBLIC_COMPANION_API || 'https://companion-vercel-two.vercel.app';
 
 // 本地文章搜索索引缓存（首次加载后复用）
 interface ArticleEntry {
