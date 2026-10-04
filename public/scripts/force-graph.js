@@ -1,8 +1,8 @@
 /*!
- * ForceGraph 统一知识图谱引擎 v1.0.1 · 2026-10-04（v1.0.1：单击锁定修复——拖拽阈值 3→12px / 触摸 8→14px / 点按时限 500→800ms；标签 pointer-events:none——他人标签盖球不再抢悬停 / 锁错节点）
+ * ForceGraph 统一知识图谱引擎 v1.0.2 · 2026-10-04（v1.0.1：单击锁定修复——拖拽阈值 3→12px / 触摸 8→14px / 点按时限 500→800ms；标签 pointer-events:none——他人标签盖球不再抢悬停 / 锁错节点 · v1.0.2：单击锁定改「5 秒自动恢复」+ 锁定优先于悬停——锁定期间鼠标移动 / 悬停不夺高亮〔顺线找关系不被打断〕；再点续时 / 点空白即恢复）
  * SilentXx 三站统一图谱：结构 · 样式 · 交互一致，便于维护
  *
- * 鼠标三态：悬停 = 临时高亮预览（移开复原）· 单击 = 锁定高亮（不自动隐藏）· 双击 = 打开链接
+ * 鼠标三态：悬停 = 临时高亮预览（移开复原）· 单击 = 锁定高亮（5 秒后自动恢复；锁定期间悬停不夺焦）· 双击 = 打开链接
  * 触屏手势：单指拖拽平移 · 双指捏合缩放 · 点按 = 锁定 · 双击 = 打开
  * 数量自适应：逻辑画布随节点数扩展（spread = √(N/120)，0.85–1.9）；
  *             窄屏（宽 < 620）额外加宽画布 + 初始缩放居中（手机可分屏阅读）
@@ -179,7 +179,8 @@
     var hoverId = null,
       selId = null,
       litMap = null;
-    var hoverTimer = null;
+    var hoverTimer = null,
+      selTimer = null;
     var moved = false,
       dragging = false,
       startX = 0,
@@ -206,6 +207,14 @@
         hoverId = null;
         repaint();
       }, 400);
+    }
+    function armSelLock() {
+      // v1.0.2：单击锁定 5 秒后自动恢复（锁定期间鼠标移动 / 悬停不夺高亮——顺线找关系不被打断；再点续时 / 点空白即恢复）
+      clearTimeout(selTimer);
+      selTimer = setTimeout(function () {
+        selId = null;
+        repaint();
+      }, 5000);
     }
     function openNode(n) {
       if (!n) return;
@@ -241,7 +250,7 @@
     // —— 高亮绘制：悬停预览 / 单击锁定共用；锁定球加紫环 ——
     function repaint() {
       var i, e, c;
-      var node = nodeById[hoverId || selId] || null;
+      var node = nodeById[selId || hoverId] || null; // v1.0.2：锁定优先于悬停（锁定期间经过球 / 线不夺高亮）
       litMap = null;
       if (node) {
         var lit = {};
@@ -376,6 +385,7 @@
         var click = function () {
           if (moved || recentTouch()) return;
           selId = n.id; // 单击 = 锁定高亮（不打开）
+          armSelLock(); // v1.0.2：5 秒自动恢复（再点续时）
           repaint();
         };
         var dclick = function () {
@@ -589,9 +599,11 @@
         var n = tEl ? nodeById[tEl.getAttribute('data-node')] : pickNode(cx, cy);
         if (n) {
           selId = n.id;
+          armSelLock(); // v1.0.2：5 秒自动恢复
           repaint(); // 点按 = 锁定高亮
           showTip(n, cx, cy);
         } else {
+          clearTimeout(selTimer); // v1.0.2：点空白立即恢复
           selId = null;
           repaint();
         }
@@ -605,6 +617,7 @@
       if (moved || recentTouch()) return;
       var t = ev.target;
       if (t && t.closest && (t.closest('[data-node]') || t.closest('[data-edge]'))) return;
+      clearTimeout(selTimer); // v1.0.2：点空白立即恢复
       selId = null;
       repaint();
       hideTip();
@@ -628,7 +641,7 @@
     }
 
     var api = {
-      version: '1.0.1',
+      version: '1.0.2',
       view: function () {
         return { zoom: zoom, panX: panX, panY: panY, selId: selId, hoverId: hoverId };
       },
