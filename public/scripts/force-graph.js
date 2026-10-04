@@ -1,5 +1,5 @@
 /*!
- * ForceGraph 统一知识图谱引擎 v1.0.0 · 2026-09-27
+ * ForceGraph 统一知识图谱引擎 v1.0.1 · 2026-10-04（v1.0.1：单击锁定修复——拖拽阈值 3→12px / 触摸 8→14px / 点按时限 500→800ms；标签 pointer-events:none——他人标签盖球不再抢悬停 / 锁错节点）
  * SilentXx 三站统一图谱：结构 · 样式 · 交互一致，便于维护
  *
  * 鼠标三态：悬停 = 临时高亮预览（移开复原）· 单击 = 锁定高亮（不自动隐藏）· 双击 = 打开链接
@@ -398,6 +398,7 @@
         t.setAttribute('data-node', n.id);
         t.textContent = n.label;
         t.style.cursor = 'pointer';
+        t.style.pointerEvents = 'none'; // v1.0.1：标签不再拦截指针——密集区他人标签盖住球时不再抢悬停 / 锁错节点（点击 / 双击只认球）
         t.addEventListener('click', click);
         t.addEventListener('dblclick', dclick);
         t.addEventListener('mouseenter', enter);
@@ -479,9 +480,12 @@
       if (!dragging) return;
       var dx = ev.clientX - startX,
         dy = ev.clientY - startY;
-      if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
-      panX = startPanX + dx;
-      panY = startPanY + dy;
+      // v1.0.1：拖拽判定阈值 3→12——真机点击手抖（3~8px）不再被误判为拖拽而吞掉单击
+      if (Math.abs(dx) + Math.abs(dy) > 12) moved = true;
+      if (moved) {
+        panX = startPanX + dx;
+        panY = startPanY + dy;
+      } // v1.0.1：未过阈值不误平移（点球画面不飘）
     });
     window.addEventListener('mouseup', function () {
       dragging = false;
@@ -537,7 +541,8 @@
           lastTouchY = t0.clientY;
           var dx2 = t0.clientX - startX,
             dy2 = t0.clientY - startY;
-          if (Math.abs(dx2) + Math.abs(dy2) > 8) {
+          if (Math.abs(dx2) + Math.abs(dy2) > 14) {
+            // v1.0.1：8→14（手指微滚仍算点按）
             moved = true;
             touchMoved = true;
           }
@@ -567,7 +572,7 @@
           return;
         }
         dragging = false;
-        if (touchMoved || Date.now() - touchT0 > 500) return;
+        if (touchMoved || Date.now() - touchT0 > 800) return; // v1.0.1：500→800ms（轻按稍慢也认点按锁定）
         var cx = lastTouchX,
           cy = lastTouchY,
           now = Date.now();
@@ -623,7 +628,7 @@
     }
 
     var api = {
-      version: '1.0.0',
+      version: '1.0.1',
       view: function () {
         return { zoom: zoom, panX: panX, panY: panY, selId: selId, hoverId: hoverId };
       },
@@ -646,5 +651,5 @@
     return api;
   }
 
-  window.ForceGraph = { version: '1.0.0', init: init };
+  window.ForceGraph = { version: '1.0.1', init: init };
 })();
