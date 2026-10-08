@@ -680,15 +680,15 @@ const THEME_COLORS = [
     }
   }
 
-  /* 颜色球播放音乐时的发光/波纹效果（2026-08-03 从 FloatingColorBalls 移植） */
-  .color-ball-random.playing,
-  .snake-ball.playing {
-    animation: musicPlaying 1.5s ease-in-out infinite;
-    z-index: 55;
+  /* 颜色球播放音乐时的发光/波纹效果（动态创建的球不含 astro-cid，需 :global 才能匹配） */
+  :global(.color-ball-random.playing),
+  :global(.snake-ball.playing) {
+    animation: musicPlaying 1.5s ease-in-out infinite !important;
+    z-index: 55 !important;
   }
 
-  .color-ball-random.playing::before,
-  .snake-ball.playing::before {
+  :global(.color-ball-random.playing::before),
+  :global(.snake-ball.playing::before) {
     content: '';
     position: absolute;
     top: -5px;
@@ -701,8 +701,8 @@ const THEME_COLORS = [
     opacity: 0.6;
   }
 
-  .color-ball-random.playing::after,
-  .snake-ball.playing::after {
+  :global(.color-ball-random.playing::after),
+  :global(.snake-ball.playing::after) {
     content: '';
     position: absolute;
     top: -10px;
