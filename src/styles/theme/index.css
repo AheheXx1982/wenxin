@@ -224,6 +224,28 @@
   --theme-color-light: #fbbf24;
   --theme-color-dark: #d97706;
 }
+
+/* 补齐：深海蓝/石板灰（2026-10-08 修复：颜色球点击后无对应样式） */
+[data-theme-color="indigo"] {
+  --primary: 239 84% 67%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 239 84% 67%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #6366f1;
+  --theme-color-light: #818cf8;
+  --theme-color-dark: #4f46e5;
+}
+
+[data-theme-color="slate"] {
+  --primary: 215 16% 47%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 215 16% 47%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #64748b;
+  --theme-color-light: #94a3b8;
+  --theme-color-dark: #475569;
+}
+
 .dark {
   --gradient-bg-start: #1f2937;
   --gradient-bg-end: #374151;
@@ -435,5 +457,22 @@
   --theme-color-dark: #d97706;
 }
 
+.dark[data-theme-color="indigo"] {
+  --primary: 239 84% 67%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 239 84% 67%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #6366f1;
+  --theme-color-light: #818cf8;
+  --theme-color-dark: #4f46e5;
+}
 
-
+.dark[data-theme-color="slate"] {
+  --primary: 215 16% 47%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 215 16% 47%;
+  --accent-foreground: 210 40% 98%;
+  --theme-color: #64748b;
+  --theme-color-light: #94a3b8;
+  --theme-color-dark: #475569;
+}
